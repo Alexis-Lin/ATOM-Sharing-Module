@@ -170,6 +170,30 @@
     color:var(--heat);font-size:14px;padding-top:1px;}
   .oq .q b{font-weight:700;} .oq .q p{margin:2px 0 0;color:var(--muted);font-size:13px;}
 
+  /* source→subject binding */
+  .bind{display:flex;flex-direction:column;gap:9px;}
+  .brow{display:grid;grid-template-columns:1fr 30px 150px 1fr;gap:12px;align-items:center;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:11px 16px;box-shadow:var(--shadow);font-size:13.5px;}
+  @media(max-width:760px){.brow{grid-template-columns:1fr;gap:4px;} .brow .arrow{display:none;}}
+  .brow .src{color:var(--muted);}
+  .brow .src b{color:var(--ink);font-weight:700;display:block;font-size:14px;}
+  .brow .arrow{color:var(--heat);font-family:var(--mono);font-weight:700;text-align:center;}
+  .brow .subject{font-weight:700;font-size:14px;}
+  .brow .atoms-hint{color:var(--faint);font-size:12px;font-family:var(--mono);letter-spacing:.02em;}
+  .decided{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;
+    font-weight:700;letter-spacing:.08em;background:var(--ok-soft);color:var(--ok);
+    padding:3px 10px;border-radius:100px;vertical-align:middle;}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
+  @media(max-width:760px){.tiers{grid-template-columns:1fr;}}
+  .tier{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:15px 17px;box-shadow:var(--shadow);}
+  .tier .tl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--heat-ink);}
+  .tier h3{margin:5px 0 4px;font-size:15px;}
+  .tier p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55;}
+  .tier .cost{margin-top:9px;font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .q.done{opacity:.62;} .q.done b{text-decoration:line-through;text-decoration-color:var(--heat);text-decoration-thickness:1.5px;}
+
   footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--faint);
     font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 </style>
@@ -195,7 +219,7 @@
       <div class="layer heat-rail">
         <div class="rail"><div class="node">1</div></div>
         <div class="lcard"><div class="ltop"><span class="lcode">Subject 分享主体</span><span class="lq">我在分享“什么”？</span></div>
-          <div class="ldesc">以“我练过的记录”为视角的入口：某次训练 · 某周打卡 · 某个动作 · 某个成就 · 官方内容 · 数据导出。</div></div>
+          <div class="ldesc"><b>分享源决定主体</b>——从哪里发起就分享什么，用户无需选择：某次训练 · 某周打卡 · 某个动作 · 某个成就 · 高光火柴人 · 官方内容 · 数据导出。</div></div>
       </div>
       <div class="layer heat-rail">
         <div class="rail"><div class="node">2</div></div>
@@ -205,7 +229,7 @@
       <div class="layer">
         <div class="rail"><div class="node">3</div></div>
         <div class="lcard"><div class="ltop"><span class="lcode">Assembly 组装模板</span><span class="lq">积木怎么“排”？</span></div>
-          <div class="ldesc">默认强意见 + 菜单式勾选并存；三种版式：短图（固定卡片）· 长图（可叠加）· 卡片（最小单元）。UI 个性化集中在此层。</div></div>
+          <div class="ldesc">自由度三级：<b>L1 默认模板</b>（零配置）→ <b>L2 精选模板 2~4 个</b>（横滑切换）→ <b>L3 高阶自由勾选</b>（“自定义”入口）。版式：短图 · 长图 · 卡片。UI 个性化集中在此层。</div></div>
       </div>
       <div class="layer">
         <div class="rail"><div class="node">4</div></div>
@@ -217,6 +241,32 @@
         <div class="lcard"><div class="ltop"><span class="lcode">Path 分发链路</span><span class="lq">怎么“送达”对方？</span></div>
           <div class="ldesc">A→B 送达 · 平台无感适配尺寸（小红书/IG/微信/Story）· 二维码水印 · 公域 H5 跳转下载。</div></div>
       </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">第 ① 层规则 / Source → Subject</div>
+    <h2>分享源决定主体 <span class="decided">✓ 已决策 07-16</span></h2>
+    <p class="lede">从哪里发起分享，就分享什么——主体由发起位置隐式决定，用户永远不需要先“选择我要分享什么”。</p>
+    <div class="bind" style="margin-top:20px">
+      <div class="brow"><div class="src"><b>动作库 · 动作详情页</b>(a)</div><div class="arrow">→</div><div class="subject">单个动作</div><div class="atoms-hint">动作卡 + 肌肉热力图</div></div>
+      <div class="brow"><div class="src"><b>某节课页面</b>(b)</div><div class="arrow">→</div><div class="subject">官方课程</div><div class="atoms-hint">课程卡</div></div>
+      <div class="brow"><div class="src"><b>课后报告 / 训练记录</b>(c)</div><div class="arrow">→</div><div class="subject">单次训练</div><div class="atoms-hint">总结数据 + 热力图 + 动作列表</div></div>
+      <div class="brow"><div class="src"><b>影像记录 / 高光火柴人动态</b>(d)</div><div class="arrow">→</div><div class="subject">高光影像（火柴人）</div><div class="atoms-hint">AI 火柴人 + 高光视频</div></div>
+      <div class="brow"><div class="src"><b>周期统计页（周/月/年）</b>(e)</div><div class="arrow">→</div><div class="subject">周期打卡</div><div class="atoms-hint">周期统计 + 历史对比</div></div>
+      <div class="brow"><div class="src"><b>成就 / PB / 雷达页</b>(f)</div><div class="arrow">→</div><div class="subject">成就</div><div class="atoms-hint">成就标识 / 雷达图</div></div>
+    </div>
+    <p class="lede" style="font-size:13px;margin-top:14px">注：火柴人既是“单次训练”里的可选<b>原子</b>，也因入口 (d) 成为独立<b>主体</b>——同一积木，两种调用，正是原子化架构的意义。</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">第 ③ 层规则 / Freedom Tiers</div>
+    <h2>主体内自由度三级 <span class="decided">✓ 已决策 07-16</span></h2>
+    <p class="lede">主体内的组合“一定程度自由，但尽量保持简单”——渐进式披露：普通用户零决策，高阶用户有出口。模板 = 预设的原子勾选状态 + 版式，L2 与 L3 底层同构，代码只有一套。</p>
+    <div class="tiers">
+      <div class="tier"><div class="tl">L1 · Default</div><h3>默认模板</h3><p>发起分享即出图，替用户做好强意见决策。</p><div class="cost">决策成本 · 0 步</div></div>
+      <div class="tier"><div class="tl">L2 · Curated</div><h3>精选模板 2~4 个</h3><p>每主体预设几个常见原子组合 + 版式，横滑切换。</p><div class="cost">决策成本 · 1 步</div></div>
+      <div class="tier"><div class="tl">L3 · Custom</div><h3>高阶自由勾选</h3><p>菜单式勾选原子，入口收敛在模板列表末位“自定义”。</p><div class="cost">决策成本 · N 步 · 自愿进入</div></div>
     </div>
   </section>
 
@@ -320,8 +370,8 @@
     <div class="eyebrow">待决策 / Open Questions</div>
     <h2>下周对齐</h2>
     <div class="oq" style="margin-top:20px">
-      <div class="q"><div><b>自由组合 vs 强意见默认的边界</b><p>完全菜单式，还是默认组合为主、少量可调？</p></div></div>
-      <div class="q"><div><b>单动作分享的信息颗粒度</b><p>动作详情页很多模块——全部分享，还是部分可选（可隐藏 AI / 视频）？</p></div></div>
+      <div class="q done"><div><b>自由组合 vs 强意见默认的边界</b><p>✓ 已决策：分享源决定主体；主体内自由度三级（默认模板 → 精选模板 → 高阶自由勾选）。</p></div></div>
+      <div class="q"><div><b>单动作分享的信息颗粒度</b><p>动作详情页很多模块——可收敛为：该主体的 L2 精选模板各含哪些原子。</p></div></div>
       <div class="q"><div><b>肌肉热力图的深度</b><p>是否恢复侧面视图？是否做交互式 + 男女版？（历史因布局搁置，非技术问题）</p></div></div>
       <div class="q"><div><b>外化指标的依赖</b><p>评级 / 雷达 / 环需先补齐功能，分享才能自动纳入——先占位。</p></div></div>
       <div class="q"><div><b>上线优先级与节奏</b><p>单次训练 &gt; 单动作 / 周期 / 官方课程——下周确认具体节奏。</p></div></div>
