@@ -170,6 +170,32 @@
     color:var(--heat);font-size:14px;padding-top:1px;}
   .oq .q b{font-weight:700;} .oq .q p{margin:2px 0 0;color:var(--muted);font-size:13px;}
 
+  /* entity × relation matrix */
+  .exr{border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow-x:auto;background:var(--surface);}
+  .exr table{min-width:720px;}
+  .exr thead th:first-child{text-align:left;}
+  .exr tbody td{white-space:normal;font-size:12.5px;color:var(--muted);text-align:left;vertical-align:top;line-height:1.5;min-width:140px;}
+  .exr tbody td b{color:var(--ink);display:block;font-size:13px;}
+  .cellcode{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em;display:block;margin-bottom:2px;}
+  .exr td.hot{background:var(--heat-soft);border-left:2px solid var(--heat);}
+  .exr td.hot b{color:var(--heat-ink);}
+  .exr td.void{opacity:.45;}
+  .rhead{font-family:var(--mono);font-size:11px;letter-spacing:.06em;}
+  .rhead small{display:block;font-family:var(--cjk);font-size:11.5px;color:var(--muted);letter-spacing:0;font-weight:500;}
+  .contrast{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;}
+  @media(max-width:760px){.contrast{grid-template-columns:1fr;}}
+  .cbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:15px 18px;box-shadow:var(--shadow);}
+  .cbox .ct{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+  .cbox h3{margin:5px 0 3px;font-size:15.5px;}
+  .cbox .say{color:var(--heat-ink);font-size:13px;font-weight:600;margin:0 0 6px;}
+  .cbox p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55;}
+  .cbox.inst{border-color:var(--heat);}
+  /* polymorph strip */
+  .poly{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+  .poly table{min-width:640px;}
+  .poly tbody td{white-space:normal;font-size:12.5px;color:var(--muted);text-align:left;line-height:1.5;}
+  .poly tbody th{font-size:13px;}
+
   /* source→subject binding */
   .bind{display:flex;flex-direction:column;gap:9px;}
   .brow{display:grid;grid-template-columns:1fr 30px 150px 1fr;gap:12px;align-items:center;
@@ -245,18 +271,87 @@
   </section>
 
   <section>
+    <div class="eyebrow">第 ① 层模型 / What Can Be Shared</div>
+    <h2>分享体 = 内容实体 × 用户关系态 <span class="decided">✓ 已决策 07-16</span></h2>
+    <p class="lede">同样是“分享一节课”，其实是两个不同的分享体——课程本身（内容），和“这节课被我练过之后”（实例）。任何官方内容都有机会叠加“用户 × 内容”的关系。</p>
+    <div class="contrast">
+      <div class="cbox"><div class="ct" style="color:var(--faint)">R0 · 内容态</div><h3>分享课程内容</h3>
+        <p class="say">“这节课很好，推荐给你”</p><p>展示课程的模板与内容（官方数据）。动力弱，但链公域 H5，<b>引流价值最高</b>。</p></div>
+      <div class="cbox inst"><div class="ct" style="color:var(--heat-ink)">R1 · 实例态</div><h3>分享训练结果</h3>
+        <p class="say">“这节课被我练成了这样”</p><p>做了几个动作、卡路里、次数与容量（用户 × 内容数据）。<b>分享动力最强</b>。</p></div>
+    </div>
+
+    <div class="exr" style="margin-top:22px">
+      <table>
+        <thead><tr>
+          <th>实体 ＼ 关系态</th>
+          <th class="rhead">R0<small>内容态 · “这个好”</small></th>
+          <th class="rhead">R1<small>实例态 · “我练成这样”</small></th>
+          <th class="rhead">R2<small>聚合态 · “我在成长”</small></th>
+          <th class="rhead">R3<small>衍生态 · “我达成了”</small></th>
+        </tr></thead>
+        <tbody>
+          <tr><th>E1 动作</th>
+            <td><span class="cellcode">E1·R0</span><b>动作卡</b>类武将卡，链公域动作库</td>
+            <td><span class="cellcode">E1·R1</span><b>单动作结果</b>次数/重量/火柴人/AI 点评</td>
+            <td><span class="cellcode">E1·R2</span><b>动作历史</b>历史记录、PB 曲线</td>
+            <td><span class="cellcode">E1·R3</span><b>动作徽章</b>达成/评分</td></tr>
+          <tr><th>E2 课程</th>
+            <td><span class="cellcode">E2·R0</span><b>课程卡</b>链公域课程库</td>
+            <td class="hot"><span class="cellcode">E2·R1 · P0</span><b>课后报告</b>总结+热力图+动作列表</td>
+            <td><span class="cellcode">E2·R2</span><b>N 刷趋势</b>该课成绩变化</td>
+            <td><span class="cellcode">E2·R3</span><b>课程评级</b>A/B/S/SS</td></tr>
+          <tr><th>E3 计划/挑战</th>
+            <td><span class="cellcode">E3·R0</span><b>计划简介卡</b></td>
+            <td><span class="cellcode">E3·R1</span><b>某次挑战完成</b></td>
+            <td><span class="cellcode">E3·R2</span><b>计划进度</b></td>
+            <td><span class="cellcode">E3·R3</span><b>挑战勋章</b></td></tr>
+          <tr><th>E0 全局（我）</th>
+            <td class="void"><span class="cellcode">E0·R0</span>—（个人主页属未来社区话题）</td>
+            <td><span class="cellcode">E0·R1</span><b>单次自由训练</b></td>
+            <td class="hot"><span class="cellcode">E0·R2 · P1</span><b>周期打卡</b>周/月/年 · streak</td>
+            <td class="hot"><span class="cellcode">E0·R3 · P1</span><b>成就</b>雷达/勋章墙/PB 集</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span>动力梯度：R1 &gt; R3 ≈ R2 &gt; R0（实例最有动力；内容态动力弱、引流价值最高）</span>
+    </div>
+    <p class="lede" style="font-size:13px;margin-top:12px">高光影像/火柴人动态 = 依附任意 R1 实例的<b>媒体资产</b>，可切出单独分享；数据导出（给 Agent）= 任意格子换 Markdown/CSV 载体输出，属第④层 Pro 变体。</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">第 ② 层规则 / Atom Polymorphism ★</div>
+    <h2>原子的多态性：一个模板，多种数据绑定</h2>
+    <p class="lede">同一原子在 R0~R3 下版式复用、只换数据绑定——这就是“针对共性模块设计模板”的落点：设计师按原子出模板（标注适配绑定态 + 空状态规则），不是按页面出图；开发侧组件 = <code>template + bindingMode + data</code>。</p>
+    <div class="poly" style="margin-top:20px">
+      <table>
+        <thead><tr><th style="text-align:left">原子</th><th class="rhead">R0 内容态</th><th class="rhead">R1 实例态</th><th class="rhead">R2 聚合态</th></tr></thead>
+        <tbody>
+          <tr><th>肌肉热力图</th><td>解剖态：主动肌 / 协同肌</td><td>本次练到的肌群 × 强度</td><td>周期肌群覆盖热度（常练/欠练）</td></tr>
+          <tr><th>总结性指标</th><td>官方参数：时长 / 动作数 / 难度</td><td>标题 · 日期 · 课程名 · 动作数 · 卡路里 · 容量</td><td>累计次数 / 总时长 / 活跃天 / streak</td></tr>
+          <tr><th>动作列表</th><td>官方动作编排</td><td>我实际完成的组 / 次 / 重</td><td>高频动作 Top N</td></tr>
+          <tr><th>历史对比</th><td class="void">—</td><td>本次 vs 上次 / vs PB</td><td>趋势曲线</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
     <div class="eyebrow">第 ① 层规则 / Source → Subject</div>
     <h2>分享源决定主体 <span class="decided">✓ 已决策 07-16</span></h2>
     <p class="lede">从哪里发起分享，就分享什么——主体由发起位置隐式决定，用户永远不需要先“选择我要分享什么”。</p>
-    <div class="bind" style="margin-top:20px">
-      <div class="brow"><div class="src"><b>动作库 · 动作详情页</b>(a)</div><div class="arrow">→</div><div class="subject">单个动作</div><div class="atoms-hint">动作卡 + 肌肉热力图</div></div>
-      <div class="brow"><div class="src"><b>某节课页面</b>(b)</div><div class="arrow">→</div><div class="subject">官方课程</div><div class="atoms-hint">课程卡</div></div>
-      <div class="brow"><div class="src"><b>课后报告 / 训练记录</b>(c)</div><div class="arrow">→</div><div class="subject">单次训练</div><div class="atoms-hint">总结数据 + 热力图 + 动作列表</div></div>
-      <div class="brow"><div class="src"><b>影像记录 / 高光火柴人动态</b>(d)</div><div class="arrow">→</div><div class="subject">高光影像（火柴人）</div><div class="atoms-hint">AI 火柴人 + 高光视频</div></div>
-      <div class="brow"><div class="src"><b>周期统计页（周/月/年）</b>(e)</div><div class="arrow">→</div><div class="subject">周期打卡</div><div class="atoms-hint">周期统计 + 历史对比</div></div>
-      <div class="brow"><div class="src"><b>成就 / PB / 雷达页</b>(f)</div><div class="arrow">→</div><div class="subject">成就</div><div class="atoms-hint">成就标识 / 雷达图</div></div>
+    <p class="lede" style="font-size:13px;margin-top:8px">当分享源同时命中两个关系态（动作详情页里既有官方内容又有我的历史），默认取用户数据态，提供轻量切换。</p>
+    <div class="bind" style="margin-top:16px">
+      <div class="brow"><div class="src"><b>动作库 · 动作详情页</b>(a)</div><div class="arrow">→</div><div class="subject">E1·R0 动作卡<br><span class="atoms-hint">有历史可切 E1·R2</span></div><div class="atoms-hint">动作卡 + 热力图(解剖态)</div></div>
+      <div class="brow"><div class="src"><b>某节课页面</b>(b)</div><div class="arrow">→</div><div class="subject">E2·R0 课程卡<br><span class="atoms-hint">练过可切 E2·R1/R2</span></div><div class="atoms-hint">课程卡</div></div>
+      <div class="brow"><div class="src"><b>课后报告 / 训练记录</b>(c)</div><div class="arrow">→</div><div class="subject">E2·R1 课后报告</div><div class="atoms-hint">总结数据 + 热力图 + 动作列表</div></div>
+      <div class="brow"><div class="src"><b>影像记录 / 高光火柴人动态</b>(d)</div><div class="arrow">→</div><div class="subject">R1 附属媒体资产</div><div class="atoms-hint">AI 火柴人 + 高光视频</div></div>
+      <div class="brow"><div class="src"><b>周期统计页（周/月/年）</b>(e)</div><div class="arrow">→</div><div class="subject">E0·R2 周期打卡</div><div class="atoms-hint">周期统计 + 历史对比</div></div>
+      <div class="brow"><div class="src"><b>成就 / PB / 雷达页</b>(f)</div><div class="arrow">→</div><div class="subject">E0·R3 成就</div><div class="atoms-hint">成就标识 / 雷达图</div></div>
+      <div class="brow"><div class="src"><b>已训练动作 · 历史记录页</b>(g)</div><div class="arrow">→</div><div class="subject">E1·R2 动作历史</div><div class="atoms-hint">历史曲线 + PB</div></div>
     </div>
-    <p class="lede" style="font-size:13px;margin-top:14px">注：火柴人既是“单次训练”里的可选<b>原子</b>，也因入口 (d) 成为独立<b>主体</b>——同一积木，两种调用，正是原子化架构的意义。</p>
+    <p class="lede" style="font-size:13px;margin-top:14px">注：火柴人既是“课后报告”里的可选<b>原子</b>，也因入口 (d) 可作为媒体资产单独分享——同一积木，两种调用，正是原子化架构的意义。</p>
   </section>
 
   <section>
@@ -271,22 +366,22 @@
   </section>
 
   <section>
-    <div class="eyebrow">第 ① 层 / Subjects</div>
-    <h2>分享主体清单</h2>
-    <p class="lede">训练结果类分享动力最强（每次都不同、最像健身房打卡）；官方内容动力最弱。→ 先做训练结果，再补其余。</p>
+    <div class="eyebrow">第 ① 层 / Priority</div>
+    <h2>分享体优先级</h2>
+    <p class="lede">R1 实例态动力最强（每次都不同、最像健身房打卡）；R0 内容态动力最弱但引流价值最高。→ 先做课后报告，再补其余。</p>
     <div class="grid g2" style="margin-top:22px">
-      <div class="card subj"><div class="st"><h3>单次训练 / 课后报告</h3><span class="pri p0">P0</span></div>
+      <div class="card subj"><div class="st"><h3>课后报告 <span class="atoms-hint mono">E2·R1</span></h3><span class="pri p0">P0</span></div>
         <p>练完一节课 / 一次 workout 的结果</p><div class="tags"><span class="tag ok">✓ 已有（较简陋）</span><span class="tag">高意愿</span></div></div>
-      <div class="card subj"><div class="st"><h3>周期打卡（周/月/年）</h3><span class="pri p1">P1</span></div>
+      <div class="card subj"><div class="st"><h3>周期打卡 <span class="atoms-hint mono">E0·R2</span></h3><span class="pri p1">P1</span></div>
         <p>7 天 / 本月 / 今年累计的统计概览</p><div class="tags"><span class="tag miss">缺</span><span class="tag">高意愿</span></div></div>
-      <div class="card subj"><div class="st"><h3>单个动作</h3><span class="pri p1">P1</span></div>
-        <p>某个动作 + 历史记录 / 动作卡</p><div class="tags"><span class="tag miss">缺</span><span class="tag">中意愿</span></div></div>
-      <div class="card subj"><div class="st"><h3>成就 / 里程碑</h3><span class="pri p1">P1</span></div>
+      <div class="card subj"><div class="st"><h3>单动作结果与历史 <span class="atoms-hint mono">E1·R1/R2</span></h3><span class="pri p1">P1</span></div>
+        <p>某动作本次表现 + 历史记录 / PB</p><div class="tags"><span class="tag miss">缺</span><span class="tag">中意愿</span></div></div>
+      <div class="card subj"><div class="st"><h3>成就 / 里程碑 <span class="atoms-hint mono">E0·R3</span></h3><span class="pri p1">P1</span></div>
         <p>PB · 勋章 · 评级 · 体适能雷达升级</p><div class="tags"><span class="tag miss">缺 · 依赖功能补全</span><span class="tag">高意愿</span></div></div>
-      <div class="card subj"><div class="st"><h3>高光图 / 视频</h3><span class="pri p2">P2</span></div>
+      <div class="card subj"><div class="st"><h3>R1 附属媒体（高光/火柴人）</h3><span class="pri p2">P2</span></div>
         <p>自拍氛围图 · 高光动作视频</p><div class="tags"><span class="tag warn">部分</span><span class="tag">中意愿</span></div></div>
-      <div class="card subj"><div class="st"><h3>数据导出（给 AI / Agent）</h3><span class="pri p2">P2 · Pro</span></div>
-        <p>Markdown / CSV 结构化数据接口</p><div class="tags"><span class="tag miss">缺</span><span class="tag">极客高意愿</span></div></div>
+      <div class="card subj"><div class="st"><h3>官方内容卡 <span class="atoms-hint mono">E1/E2·R0</span></h3><span class="pri p2">P2</span></div>
+        <p>动作卡 / 课程卡，落公域 H5</p><div class="tags"><span class="tag miss">缺</span><span class="tag">低意愿 · 高引流</span></div></div>
     </div>
   </section>
 
