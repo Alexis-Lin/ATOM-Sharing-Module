@@ -1,0 +1,333 @@
+<title>Body Park Atom · 分享模块设计框架</title>
+<style>
+  :root{
+    --bg:#F7F8FA; --surface:#FFFFFF; --surface-2:#FBFCFD;
+    --ink:#16191F; --muted:#5A6270; --faint:#8A93A1;
+    --line:#E4E7EC; --line-strong:#D3D8E0;
+    --heat:#F0502E; --heat-soft:#FCE9E3; --heat-ink:#B83A1E;
+    --ok:#17976B; --ok-soft:#E4F3ED;
+    --warn:#C77D12; --warn-soft:#F8EEDD;
+    --miss:#7B8494; --miss-soft:#EEF0F3;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
+    --radius:14px; --radius-sm:9px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0F1216; --surface:#171B21; --surface-2:#1B2027;
+      --ink:#E8EAED; --muted:#98A0AE; --faint:#6C7684;
+      --line:#262B33; --line-strong:#333A45;
+      --heat:#FF6A44; --heat-soft:#2A1811; --heat-ink:#FF8C6B;
+      --ok:#3FB98C; --ok-soft:#122019;
+      --warn:#E0A542; --warn-soft:#241C10;
+      --miss:#8A93A1; --miss-soft:#20252C;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#F7F8FA; --surface:#FFFFFF; --surface-2:#FBFCFD;
+    --ink:#16191F; --muted:#5A6270; --faint:#8A93A1;
+    --line:#E4E7EC; --line-strong:#D3D8E0;
+    --heat:#F0502E; --heat-soft:#FCE9E3; --heat-ink:#B83A1E;
+    --ok:#17976B; --ok-soft:#E4F3ED; --warn:#C77D12; --warn-soft:#F8EEDD;
+    --miss:#7B8494; --miss-soft:#EEF0F3;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F1216; --surface:#171B21; --surface-2:#1B2027;
+    --ink:#E8EAED; --muted:#98A0AE; --faint:#6C7684;
+    --line:#262B33; --line-strong:#333A45;
+    --heat:#FF6A44; --heat-soft:#2A1811; --heat-ink:#FF8C6B;
+    --ok:#3FB98C; --ok-soft:#122019; --warn:#E0A542; --warn-soft:#241C10;
+    --miss:#8A93A1; --miss-soft:#20252C;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);
+    line-height:1.6;-webkit-font-smoothing:antialiased;font-size:15px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px;}
+  section{margin-top:64px;}
+  h2{font-size:22px;font-weight:700;letter-spacing:-.01em;margin:0 0 4px;text-wrap:balance;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--heat-ink);font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--heat);border-radius:2px;}
+  .lede{color:var(--muted);max-width:64ch;margin:8px 0 0;}
+  code,.mono{font-family:var(--mono);}
+
+  /* ---------- header ---------- */
+  header{padding:60px 0 8px;border-bottom:1px solid var(--line);}
+  .brandline{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--faint);display:flex;align-items:center;gap:12px;}
+  .atom-badge{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;
+    border:1.5px solid var(--heat);color:var(--heat);font-size:14px;position:relative;flex:none;}
+  h1{font-size:clamp(30px,5vw,46px);line-height:1.08;font-weight:800;letter-spacing:-.025em;
+    margin:22px 0 0;text-wrap:balance;max-width:16ch;}
+  h1 em{font-style:normal;color:var(--heat);}
+  .sub{color:var(--muted);font-size:17px;margin:18px 0 26px;max-width:56ch;}
+  .stars{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px;}
+  .star{display:inline-flex;align-items:baseline;gap:8px;background:var(--surface);border:1px solid var(--line);
+    border-radius:100px;padding:8px 16px 8px 14px;box-shadow:var(--shadow);}
+  .star b{font-size:15px;font-weight:700;}
+  .star span{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
+  .star::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--heat);align-self:center;}
+  .meta{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.04em;
+    display:flex;flex-wrap:wrap;gap:6px 18px;padding-bottom:18px;}
+
+  /* ---------- layer stack ---------- */
+  .stack{display:flex;flex-direction:column;gap:0;position:relative;}
+  .layer{display:grid;grid-template-columns:56px 1fr;gap:20px;position:relative;padding:14px 0;}
+  .layer .rail{position:relative;display:flex;justify-content:center;}
+  .node{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none;z-index:2;
+    background:var(--surface);border:1.5px solid var(--line-strong);font-family:var(--mono);
+    font-weight:700;font-size:16px;color:var(--ink);box-shadow:var(--shadow);}
+  .layer:not(:last-child) .rail::after{content:"";position:absolute;top:44px;bottom:-14px;left:50%;
+    width:2px;transform:translateX(-50%);background:linear-gradient(var(--line-strong),var(--line));z-index:1;}
+  .lcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 20px;box-shadow:var(--shadow);border-left:3px solid var(--heat);}
+  .lcard .ltop{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .lcode{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--heat-ink);}
+  .lname{font-size:16px;font-weight:700;}
+  .lq{color:var(--faint);font-size:13px;font-family:var(--mono);}
+  .ldesc{color:var(--muted);font-size:13.5px;margin-top:5px;}
+  .heat-rail .node{border-color:var(--heat);color:var(--heat);background:var(--heat-soft);}
+  .layer:nth-child(1) .lcard{border-left-color:#F0502E}
+  .layer:nth-child(2) .lcard{border-left-color:#F0502E}
+  .layer:nth-child(3) .lcard{border-left-color:#F2743E}
+  .layer:nth-child(4) .lcard{border-left-color:#E79A3B}
+  .layer:nth-child(5) .lcard{border-left-color:#C9A94E}
+
+  /* ---------- generic grids/cards ---------- */
+  .grid{display:grid;gap:14px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr;} .layer{grid-template-columns:44px 1fr;gap:14px;}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;box-shadow:var(--shadow);}
+
+  /* subjects */
+  .subj{display:flex;flex-direction:column;gap:8px;}
+  .subj .st{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .subj h3{margin:0;font-size:15.5px;font-weight:700;}
+  .subj p{margin:0;color:var(--muted);font-size:13px;}
+  .pri{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:6px;flex:none;}
+  .p0{background:var(--heat);color:#fff;} .p1{background:var(--heat-soft);color:var(--heat-ink);border:1px solid var(--heat);}
+  .p2{background:var(--miss-soft);color:var(--miss);border:1px solid var(--line);}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+  .tag{font-size:11.5px;font-family:var(--mono);letter-spacing:.02em;padding:2px 8px;border-radius:100px;border:1px solid var(--line);color:var(--muted);}
+  .tag.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent;}
+  .tag.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent;}
+  .tag.miss{background:var(--miss-soft);color:var(--miss);border-color:transparent;}
+
+  /* atom catalog */
+  .atomgroup{margin-bottom:18px;}
+  .atomgroup > h3{font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 12px;display:flex;align-items:center;gap:10px;}
+  .atomgroup > h3::after{content:"";flex:1;height:1px;background:var(--line);}
+  .atoms{display:flex;flex-wrap:wrap;gap:10px;}
+  .atom{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:10px 14px;box-shadow:var(--shadow);min-width:150px;flex:1 1 180px;max-width:260px;}
+  .atom .an{font-weight:700;font-size:14px;display:flex;align-items:center;gap:7px;}
+  .atom .ad{color:var(--faint);font-size:12px;margin-top:3px;line-height:1.45;}
+  .atom.diff{border-color:var(--heat);background:linear-gradient(180deg,var(--heat-soft),var(--surface) 60%);}
+  .atom.diff .an::after{content:"独有";font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+    background:var(--heat);color:#fff;padding:1px 6px;border-radius:100px;margin-left:auto;font-weight:700;}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+
+  /* matrix */
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:13px;background:var(--surface);}
+  th,td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap;}
+  thead th{position:sticky;top:0;background:var(--surface-2);font-size:12px;font-weight:700;color:var(--ink);
+    border-bottom:1.5px solid var(--line-strong);}
+  tbody th{text-align:left;font-weight:600;color:var(--ink);background:var(--surface-2);
+    position:sticky;left:0;z-index:1;border-right:1px solid var(--line);min-width:130px;}
+  td .full{color:var(--heat);font-size:15px;font-weight:700;}
+  td .opt{color:var(--muted);font-size:15px;}
+  td .na{color:var(--faint);opacity:.5;}
+  tbody tr:hover td,tbody tr:hover th{background:var(--heat-soft);}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:12.5px;color:var(--muted);font-family:var(--mono);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+
+  /* roadmap */
+  .road{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  @media(max-width:760px){.road{grid-template-columns:1fr;}}
+  .phase{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  .phase::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;}
+  .phase.a::before{background:var(--heat)} .phase.b::before{background:#F2743E}
+  .phase.c::before{background:#E79A3B} .phase.d::before{background:#C9A94E}
+  .phase .pn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;}
+  .phase h3{margin:6px 0 8px;font-size:15px;}
+  .phase ul{margin:0;padding-left:16px;color:var(--muted);font-size:12.5px;line-height:1.55;}
+
+  /* open questions */
+  .oq{counter-reset:q;display:flex;flex-direction:column;gap:10px;}
+  .oq .q{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px 16px;box-shadow:var(--shadow);}
+  .oq .q::before{counter-increment:q;content:"0" counter(q);font-family:var(--mono);font-weight:700;
+    color:var(--heat);font-size:14px;padding-top:1px;}
+  .oq .q b{font-weight:700;} .oq .q p{margin:2px 0 0;color:var(--muted);font-size:13px;}
+
+  footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--faint);
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brandline"><span class="atom-badge">⚛</span> Body Park Atom · 用户分享模块</div>
+    <h1>一套分享模块，<em>覆盖全 App 全场景</em></h1>
+    <p class="sub">排列组合是无穷的，但底层的原子模块是有限的。把分享拆成五个可独立替换的层，代码只维护一套——不同入口只是调用不同的内容原子、模板与载体。</p>
+    <div class="stars">
+      <div class="star"><b>流量</b><span>Traffic</span></div>
+      <div class="star"><b>传播</b><span>Spread</span></div>
+      <div class="star"><b>留存</b><span>Retention</span></div>
+    </div>
+    <div class="meta"><span>v0.1 · 低保真框架阶段</span><span>来源：2026-07-16 架构讨论会议</span><span>下周对齐：模块清单 + 大面样式</span></div>
+  </header>
+
+  <section>
+    <div class="eyebrow">核心抽象 / The Model</div>
+    <h2>五层解耦模型</h2>
+    <p class="lede">每一层正交、可独立替换。“存图 / 甩链接 / 扫码”只是第 ④⑤ 层的不同选择，不改变前三层；新增分享场景只需在 ①② 层配置映射。</p>
+    <div class="stack" style="margin-top:26px">
+      <div class="layer heat-rail">
+        <div class="rail"><div class="node">1</div></div>
+        <div class="lcard"><div class="ltop"><span class="lcode">Subject 分享主体</span><span class="lq">我在分享“什么”？</span></div>
+          <div class="ldesc">以“我练过的记录”为视角的入口：某次训练 · 某周打卡 · 某个动作 · 某个成就 · 官方内容 · 数据导出。</div></div>
+      </div>
+      <div class="layer heat-rail">
+        <div class="rail"><div class="node">2</div></div>
+        <div class="lcard"><div class="ltop"><span class="lcode">Atom 内容原子</span><span class="lq">用哪些“积木”表达？</span></div>
+          <div class="ldesc">有限的可复用积木：总结数据 · 动作列表 · 肌肉热力图 · 周期统计 · 火柴人 · 雷达图 · 氛围图……</div></div>
+      </div>
+      <div class="layer">
+        <div class="rail"><div class="node">3</div></div>
+        <div class="lcard"><div class="ltop"><span class="lcode">Assembly 组装模板</span><span class="lq">积木怎么“排”？</span></div>
+          <div class="ldesc">默认强意见 + 菜单式勾选并存；三种版式：短图（固定卡片）· 长图（可叠加）· 卡片（最小单元）。UI 个性化集中在此层。</div></div>
+      </div>
+      <div class="layer">
+        <div class="rail"><div class="node">4</div></div>
+        <div class="lcard"><div class="ltop"><span class="lcode">Carrier 载体格式</span><span class="lq">以什么“形式”输出？</span></div>
+          <div class="ldesc">图片（直发）· 链接 H5（可交互、自带引流）· 二维码（扫码跳转）。格式决定平台适配尺寸。</div></div>
+      </div>
+      <div class="layer">
+        <div class="rail"><div class="node">5</div></div>
+        <div class="lcard"><div class="ltop"><span class="lcode">Path 分发链路</span><span class="lq">怎么“送达”对方？</span></div>
+          <div class="ldesc">A→B 送达 · 平台无感适配尺寸（小红书/IG/微信/Story）· 二维码水印 · 公域 H5 跳转下载。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">第 ① 层 / Subjects</div>
+    <h2>分享主体清单</h2>
+    <p class="lede">训练结果类分享动力最强（每次都不同、最像健身房打卡）；官方内容动力最弱。→ 先做训练结果，再补其余。</p>
+    <div class="grid g2" style="margin-top:22px">
+      <div class="card subj"><div class="st"><h3>单次训练 / 课后报告</h3><span class="pri p0">P0</span></div>
+        <p>练完一节课 / 一次 workout 的结果</p><div class="tags"><span class="tag ok">✓ 已有（较简陋）</span><span class="tag">高意愿</span></div></div>
+      <div class="card subj"><div class="st"><h3>周期打卡（周/月/年）</h3><span class="pri p1">P1</span></div>
+        <p>7 天 / 本月 / 今年累计的统计概览</p><div class="tags"><span class="tag miss">缺</span><span class="tag">高意愿</span></div></div>
+      <div class="card subj"><div class="st"><h3>单个动作</h3><span class="pri p1">P1</span></div>
+        <p>某个动作 + 历史记录 / 动作卡</p><div class="tags"><span class="tag miss">缺</span><span class="tag">中意愿</span></div></div>
+      <div class="card subj"><div class="st"><h3>成就 / 里程碑</h3><span class="pri p1">P1</span></div>
+        <p>PB · 勋章 · 评级 · 体适能雷达升级</p><div class="tags"><span class="tag miss">缺 · 依赖功能补全</span><span class="tag">高意愿</span></div></div>
+      <div class="card subj"><div class="st"><h3>高光图 / 视频</h3><span class="pri p2">P2</span></div>
+        <p>自拍氛围图 · 高光动作视频</p><div class="tags"><span class="tag warn">部分</span><span class="tag">中意愿</span></div></div>
+      <div class="card subj"><div class="st"><h3>数据导出（给 AI / Agent）</h3><span class="pri p2">P2 · Pro</span></div>
+        <p>Markdown / CSV 结构化数据接口</p><div class="tags"><span class="tag miss">缺</span><span class="tag">极客高意愿</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">第 ② 层 / Atom Catalog ★</div>
+    <h2>内容原子目录</h2>
+    <p class="lede">分享内容的有限积木。会议已验证 5 个高意愿通用原子 + 3 个自有差异化原子；每个原子自带所需数据字段与空状态策略（不再出现一堆 0 / — / 空）。</p>
+
+    <div style="margin-top:22px">
+      <div class="atomgroup"><h3>数据类 · Data</h3><div class="atoms">
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>训练总结指标</div><div class="ad">时长 / 容量 / 卡路里 / 心率 / 组次</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>周期统计</div><div class="ad">周·月·年累计次数 / 时长 / 天数 / 连续</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>历史对比</div><div class="ad">vs 上次 / vs PB / 本月第几次（现场可算）</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>数据具象化类比</div><div class="ad">1800kg = 一辆车 · 卡路里 = 几个汉堡</div></div>
+      </div></div>
+
+      <div class="atomgroup"><h3>结构类 · Structure</h3><div class="atoms">
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>动作列表 Log</div><div class="ad">力量训练动作明细：组 / 次 / 重量 / RPE</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>肌肉热力图</div><div class="ad">练到的肌群着色 · 主/次肌 · 正/侧视图</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>动作卡</div><div class="ad">动作“名片”（类武将卡），链公域动作库</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--miss)"></span>课程卡</div><div class="ad">官方课程简介卡，链公域课程库</div></div>
+      </div></div>
+
+      <div class="atomgroup"><h3>差异化 / AI 类 · Moat ★</h3><div class="atoms">
+        <div class="atom diff"><div class="an">AI 识别火柴人</div><div class="ad">动作姿态识别形态——视觉上最独特</div></div>
+        <div class="atom diff"><div class="an">动作分析结论 / Tips</div><div class="ad">AI 对动作的点评与建议</div></div>
+        <div class="atom diff"><div class="an">体适能雷达图</div><div class="ad">六维评估，“每练一次涨一点”</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>外化成就标识</div><div class="ad">评级 / 勋章 / 进度环 / 六边形 PPS</div></div>
+      </div></div>
+
+      <div class="atomgroup"><h3>情绪 & 引流类 · Emotion & Growth</h3><div class="atoms">
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--miss)"></span>氛围图 / 自拍</div><div class="ad">用户上传，无则系统配图兜底</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--miss)"></span>标题 / 日期 / 文案</div><div class="ad">课名 · 日期（关键锚点，必留）· 鼓励文案</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>二维码 / 水印</div><div class="ad">图底品牌二维码，扫码跳公域 H5</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>App 下载入口</div><div class="ad">H5 页内“打开 / 下载 App”，转化核心</div></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">第 ①×② 层 / Mapping</div>
+    <h2>主体 × 原子 映射矩阵</h2>
+    <p class="lede">每个主体 = 一套默认组合（强意见）+ 一批可选原子（菜单式勾选）。“单次训练”默认三件套 = 总结数据 + 肌肉热力图 + 动作列表，再叠加独有的火柴人 / AI 结论。</p>
+    <div class="scroll" style="margin-top:20px">
+      <table>
+        <thead><tr><th style="text-align:left">原子 ＼ 主体</th><th>单次训练</th><th>周期打卡</th><th>单动作</th><th>成就</th><th>官方课程</th></tr></thead>
+        <tbody>
+          <tr><th>训练总结指标</th><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="opt">○</span></td><td><span class="opt">○</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>周期统计</th><td><span class="na">—</span></td><td><span class="full">●</span></td><td><span class="na">—</span></td><td><span class="opt">○</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>历史对比</th><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>数据具象化类比</th><td><span class="opt">○</span></td><td><span class="opt">○</span></td><td><span class="opt">○</span></td><td><span class="opt">○</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>动作列表 Log</th><td><span class="full">●</span></td><td><span class="opt">○</span></td><td><span class="na">—</span></td><td><span class="na">—</span></td><td><span class="opt">○</span></td></tr>
+          <tr><th>肌肉热力图</th><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="opt">○</span></td><td><span class="opt">○</span></td></tr>
+          <tr><th>动作卡</th><td><span class="na">—</span></td><td><span class="na">—</span></td><td><span class="full">●</span></td><td><span class="na">—</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>课程卡</th><td><span class="opt">○</span></td><td><span class="na">—</span></td><td><span class="na">—</span></td><td><span class="na">—</span></td><td><span class="full">●</span></td></tr>
+          <tr><th>AI 火柴人</th><td><span class="opt">○</span></td><td><span class="na">—</span></td><td><span class="full">●</span></td><td><span class="na">—</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>动作分析 Tips</th><td><span class="opt">○</span></td><td><span class="na">—</span></td><td><span class="opt">○</span></td><td><span class="na">—</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>体适能雷达</th><td><span class="opt">○</span></td><td><span class="opt">○</span></td><td><span class="na">—</span></td><td><span class="full">●</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>外化成就标识</th><td><span class="opt">○</span></td><td><span class="opt">○</span></td><td><span class="opt">○</span></td><td><span class="full">●</span></td><td><span class="na">—</span></td></tr>
+          <tr><th>氛围图 / 自拍</th><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="opt">○</span></td><td><span class="opt">○</span></td><td><span class="opt">○</span></td></tr>
+          <tr><th>标题 / 日期 / 文案</th><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td></tr>
+          <tr><th>二维码 / 水印</th><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td><td><span class="full">●</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend"><span><span class="full">●</span> 默认展示</span><span><span class="opt">○</span> 可选（菜单勾选）</span><span><span class="na">—</span> 不适用</span></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">落地路线 / Rollout</div>
+    <h2>四阶段推进</h2>
+    <div class="road" style="margin-top:22px">
+      <div class="phase a"><div class="pn">Phase 1</div><h3>框架输出</h3><ul><li>梳理原子模块清单</li><li>明确模块边界与场景</li><li>低保真，暂不涉 UI 细节</li></ul></div>
+      <div class="phase b"><div class="pn">Phase 2</div><h3>核心上线</h3><ul><li>优先训练结果类分享</li><li>快速验证反馈与传播</li></ul></div>
+      <div class="phase c"><div class="pn">Phase 3</div><h3>场景补全</h3><ul><li>单动作 / 周期 / 官方课程</li><li>覆盖全用户场景</li></ul></div>
+      <div class="phase d"><div class="pn">Phase 4</div><h3>配套完善</h3><ul><li>公域 H5 页面</li><li>多平台适配 + 二维码引流</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">待决策 / Open Questions</div>
+    <h2>下周对齐</h2>
+    <div class="oq" style="margin-top:20px">
+      <div class="q"><div><b>自由组合 vs 强意见默认的边界</b><p>完全菜单式，还是默认组合为主、少量可调？</p></div></div>
+      <div class="q"><div><b>单动作分享的信息颗粒度</b><p>动作详情页很多模块——全部分享，还是部分可选（可隐藏 AI / 视频）？</p></div></div>
+      <div class="q"><div><b>肌肉热力图的深度</b><p>是否恢复侧面视图？是否做交互式 + 男女版？（历史因布局搁置，非技术问题）</p></div></div>
+      <div class="q"><div><b>外化指标的依赖</b><p>评级 / 雷达 / 环需先补齐功能，分享才能自动纳入——先占位。</p></div></div>
+      <div class="q"><div><b>上线优先级与节奏</b><p>单次训练 &gt; 单动作 / 周期 / 官方课程——下周确认具体节奏。</p></div></div>
+      <div class="q"><div><b>面向 Agent 导出的形态</b><p>归入 Pro；格式（Markdown / CSV / JSON）与字段范围待定。</p></div></div>
+    </div>
+  </section>
+
+  <footer><span>Body Park Atom · 用户分享模块设计框架 v0.1</span><span>框架别歪了 · 风格越往后越自由</span></footer>
+</div>
