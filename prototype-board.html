@@ -1,0 +1,483 @@
+<title>Body Park Atom · 分享模块低保真原型板</title>
+<style>
+  :root{
+    --bg:#F7F8FA; --surface:#FFFFFF; --surface-2:#F1F3F6; --canvas:#FAFBFC;
+    --ink:#16191F; --muted:#5A6270; --faint:#98A0AC;
+    --line:#E4E7EC; --line-strong:#C9CFD8; --wire:#B9C1CC;
+    --heat:#F0502E; --heat-soft:#FCE9E3; --heat-ink:#B83A1E;
+    --ok:#17976B; --ok-soft:#E4F3ED;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --radius:14px; --radius-sm:9px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F1216;--surface:#171B21;--surface-2:#20252D;--canvas:#141920;
+      --ink:#E8EAED;--muted:#98A0AE;--faint:#6C7684;--line:#262B33;--line-strong:#3A424E;--wire:#4A5462;
+      --heat:#FF6A44;--heat-soft:#2A1811;--heat-ink:#FF8C6B;--ok:#3FB98C;--ok-soft:#122019;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="light"]{--bg:#F7F8FA;--surface:#FFFFFF;--surface-2:#F1F3F6;--canvas:#FAFBFC;
+    --ink:#16191F;--muted:#5A6270;--faint:#98A0AC;--line:#E4E7EC;--line-strong:#C9CFD8;--wire:#B9C1CC;
+    --heat:#F0502E;--heat-soft:#FCE9E3;--heat-ink:#B83A1E;--ok:#17976B;--ok-soft:#E4F3ED;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme="dark"]{--bg:#0F1216;--surface:#171B21;--surface-2:#20252D;--canvas:#141920;
+    --ink:#E8EAED;--muted:#98A0AE;--faint:#6C7684;--line:#262B33;--line-strong:#3A424E;--wire:#4A5462;
+    --heat:#FF6A44;--heat-soft:#2A1811;--heat-ink:#FF8C6B;--ok:#3FB98C;--ok-soft:#122019;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px 96px;}
+  section{margin-top:56px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--heat-ink);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--heat);border-radius:2px;}
+  .lede{color:var(--muted);max-width:66ch;margin:6px 0 0;font-size:14px;}
+  header{padding:52px 0 20px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(26px,4.5vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .sub{color:var(--muted);margin:12px 0 0;max-width:60ch;}
+  .note{display:inline-flex;gap:8px;align-items:center;margin-top:18px;font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.04em;
+    border:1px dashed var(--line-strong);border-radius:100px;padding:6px 14px;}
+
+  /* atom cards */
+  .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:14px;margin-top:18px;}
+  .acard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 14px 14px;display:flex;flex-direction:column;gap:10px;}
+  .ahead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .code{font-family:var(--mono);font-size:11px;font-weight:700;background:var(--ink);color:var(--bg);padding:2px 7px;border-radius:6px;letter-spacing:.04em;}
+  .acard.moat .code{background:var(--heat);color:#fff;}
+  .aname{font-weight:700;font-size:13.5px;flex:1;}
+  .binds{display:flex;gap:4px;}
+  .bind{font-family:var(--mono);font-size:9.5px;color:var(--muted);border:1px solid var(--line-strong);border-radius:4px;padding:1px 4px;letter-spacing:.03em;}
+  .bind.on{background:var(--heat-soft);color:var(--heat-ink);border-color:var(--heat);}
+  .wf{background:var(--canvas);border:1.5px dashed var(--wire);border-radius:var(--radius-sm);padding:12px;min-height:132px;display:flex;flex-direction:column;gap:8px;justify-content:center;}
+  .anote{font-size:11px;color:var(--faint);font-family:var(--mono);letter-spacing:.02em;line-height:1.5;}
+
+  /* wireframe primitives */
+  .ph{height:8px;border-radius:4px;background:var(--wire);opacity:.55;}
+  .ph.s{width:38%} .ph.m{width:62%} .ph.l{width:85%} .ph.xs{width:22%;height:6px}
+  .row{display:flex;align-items:center;gap:8px;}
+  .num{font-family:var(--mono);font-weight:700;color:var(--ink);}
+  .lbl{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+  .tile{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 8px;display:flex;flex-direction:column;gap:3px;}
+  .tile .num{font-size:14px;}
+  .tile.hot .num{color:var(--heat);}
+  .days{display:flex;gap:6px;align-items:center;}
+  .day{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--wire);}
+  .day.f{background:var(--heat);border-color:var(--heat);}
+  .day.h{background:var(--heat-soft);border-color:var(--heat);}
+  .bar{height:14px;border-radius:4px;background:var(--wire);opacity:.5;}
+  .bar.hot{background:var(--heat);opacity:1;}
+  .chip{font-family:var(--mono);font-size:9px;font-weight:700;background:var(--heat);color:#fff;border-radius:100px;padding:1px 7px;letter-spacing:.05em;}
+  .exrow{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 9px;}
+  .exrow .dotm{width:10px;height:10px;border-radius:3px;background:var(--wire);flex:none;}
+  .exrow .setrep{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);}
+  .quote{font-size:12.5px;color:var(--muted);text-align:center;font-style:italic;}
+  .btnwf{background:var(--heat);color:#fff;border-radius:8px;text-align:center;font-size:12px;font-weight:700;padding:8px;letter-spacing:.05em;}
+  svg{display:block;max-width:100%;}
+  svg text{font-family:var(--mono);}
+
+  /* template phones */
+  .tples{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px;margin-top:20px;align-items:start;}
+  .tp{display:flex;flex-direction:column;gap:10px;}
+  .tphead{display:flex;align-items:baseline;gap:8px;}
+  .tphead .tcode{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--heat-ink);}
+  .tphead b{font-size:14px;}
+  .tphead .default{font-family:var(--mono);font-size:9px;background:var(--ok-soft);color:var(--ok);padding:2px 7px;border-radius:100px;font-weight:700;letter-spacing:.06em;}
+  .phone{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);}
+  .blk{border:1.5px dashed var(--wire);border-radius:8px;padding:8px 9px;position:relative;display:flex;flex-direction:column;gap:6px;justify-content:center;background:var(--surface);}
+  .blk .bcode{position:absolute;top:-8px;right:8px;font-family:var(--mono);font-size:9px;font-weight:700;background:var(--ink);color:var(--bg);border-radius:4px;padding:0 5px;}
+  .blk.moat .bcode{background:var(--heat);color:#fff;}
+  .blk.moat{border-color:var(--heat);}
+  .tpnote{font-size:11.5px;color:var(--faint);font-family:var(--mono);line-height:1.5;}
+  .minitiles{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+  .minitile{background:var(--surface-2);border-radius:4px;padding:4px 5px;display:flex;flex-direction:column;gap:2px;}
+  .minitile .num{font-size:10px;} .minitile .ph{height:4px;}
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">⚛ Body Park Atom · 用户分享模块</div>
+    <h1>低保真原型板 <span style="color:var(--heat)">Atom Wireframes</span></h1>
+    <p class="sub">17 个内容原子（大类 A 数据 · B 结构 · C AI差异化 · D 情绪 · G 引流）+ P0 课后报告的 4 个精选模板。刻意略抽象、近单色——只谈骨架与信息结构，不谈字体颜色风格。</p>
+    <div class="note">灰=占位 · 橙=数据焦点 · 虚线=模块边界 · R 标签=支持的数据绑定态</div>
+  </header>
+
+  <!-- ============ A 数据类 ============ -->
+  <section>
+    <div class="eyebrow">大类 A / 数据类 Data</div>
+    <h2>数字说话的模块</h2>
+    <div class="agrid">
+
+      <div class="acard">
+        <div class="ahead"><span class="code">A1</span><span class="aname">总结性指标</span>
+          <span class="binds"><span class="bind on">R0</span><span class="bind on">R1</span><span class="bind on">R2</span></span></div>
+        <div class="wf">
+          <div class="row"><div class="ph m"></div><span class="lbl" style="margin-left:auto">07·16</span></div>
+          <div class="tiles">
+            <div class="tile hot"><span class="num">42:18</span><div class="ph xs"></div></div>
+            <div class="tile"><span class="num">386</span><div class="ph xs"></div></div>
+            <div class="tile"><span class="num">1.8t</span><div class="ph xs"></div></div>
+            <div class="tile"><span class="num">12</span><div class="ph xs"></div></div>
+            <div class="tile"><span class="num">148</span><div class="ph xs"></div></div>
+            <div class="tile"><span class="num">86</span><div class="ph xs"></div></div>
+          </div>
+        </div>
+        <div class="anote">标题·日期·课程名+宫格指标；缺项重排为满格，不留空宫</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">A2</span><span class="aname">周期统计</span>
+          <span class="binds"><span class="bind on">R2</span></span></div>
+        <div class="wf">
+          <div class="days"><span class="day f"></span><span class="day f"></span><span class="day"></span><span class="day f"></span><span class="day h"></span><span class="day f"></span><span class="day"></span></div>
+          <div class="row" style="margin-top:4px"><span class="num" style="font-size:26px">5<span style="font-size:12px;color:var(--faint)">/7</span></span><div style="flex:1"></div><span class="num">312<span class="lbl"> min</span></span></div>
+          <div class="row"><span class="lbl">streak 12 天</span><div class="ph s" style="margin-left:auto"></div></div>
+        </div>
+        <div class="anote">周/月/年三档；新用户以目标进度占位</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">A3</span><span class="aname">历史对比</span>
+          <span class="binds"><span class="bind on">R1</span><span class="bind on">R2</span></span></div>
+        <div class="wf">
+          <div class="row"><span class="lbl" style="width:34px">上次</span><div class="bar" style="width:52%"></div></div>
+          <div class="row"><span class="lbl" style="width:34px">本次</span><div class="bar hot" style="width:74%"></div><span class="chip">PB</span></div>
+          <div class="row" style="margin-top:2px"><span class="lbl">本月第 8 次 · +12%</span></div>
+        </div>
+        <div class="anote">vs 上次 / vs PB / 本月第 N 次；无历史→整体隐藏并重排</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">A4</span><span class="aname">具象化类比</span>
+          <span class="binds"><span class="bind on">R1</span><span class="bind on">R2</span></span></div>
+        <div class="wf" style="align-items:center;text-align:center">
+          <span class="num" style="font-size:22px">1,800<span class="lbl"> kg</span></span>
+          <span class="lbl">≈</span>
+          <svg width="88" height="34" viewBox="0 0 88 34" aria-label="car">
+            <rect x="8" y="12" width="72" height="12" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="24" y="4" width="34" height="12" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <circle cx="24" cy="27" r="5.5" fill="none" stroke="var(--heat)" stroke-width="2.5"/>
+            <circle cx="63" cy="27" r="5.5" fill="none" stroke="var(--heat)" stroke-width="2.5"/>
+          </svg>
+          <span class="lbl">举起了一辆车</span>
+        </div>
+        <div class="anote">容量→车、卡路里→汉堡；素材映射库；未达阈值不触发</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ B 结构类 ============ -->
+  <section>
+    <div class="eyebrow">大类 B / 结构类 Structure</div>
+    <h2>有骨架的模块</h2>
+    <div class="agrid">
+
+      <div class="acard">
+        <div class="ahead"><span class="code">B1</span><span class="aname">动作列表 Log</span>
+          <span class="binds"><span class="bind on">R0</span><span class="bind on">R1</span><span class="bind on">R2</span></span></div>
+        <div class="wf">
+          <div class="exrow"><span class="dotm"></span><div class="ph m"></div><span class="setrep">4×12 · 60kg</span></div>
+          <div class="exrow"><span class="dotm" style="background:var(--heat)"></span><div class="ph s"></div><span class="setrep">3×10 · 80kg</span></div>
+          <div class="exrow"><span class="dotm"></span><div class="ph m"></div><span class="setrep">3×15</span></div>
+          <div class="row"><span class="lbl" style="margin:0 auto">+ 9 个动作</span></div>
+        </div>
+        <div class="anote">R0=官方编排 / R1=实际组次重 / R2=高频 Top N；超长折叠</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">B2</span><span class="aname">肌肉热力图</span>
+          <span class="binds"><span class="bind on">R0</span><span class="bind on">R1</span><span class="bind on">R2</span></span></div>
+        <div class="wf" style="flex-direction:row;justify-content:center;gap:20px;align-items:center">
+          <svg width="64" height="120" viewBox="0 0 64 120" aria-label="body front">
+            <circle cx="32" cy="12" r="9" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="18" y="26" width="28" height="40" rx="9" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="6" y="28" width="9" height="34" rx="4.5" fill="var(--heat)" opacity=".85"/>
+            <rect x="49" y="28" width="9" height="34" rx="4.5" fill="var(--heat)" opacity=".85"/>
+            <rect x="21" y="29" width="10" height="14" rx="4" fill="var(--heat)" opacity=".5"/>
+            <rect x="33" y="29" width="10" height="14" rx="4" fill="var(--heat)" opacity=".5"/>
+            <rect x="20" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="34" y="70" width="10" height="42" rx="5" fill="var(--heat)" opacity=".25"/>
+          </svg>
+          <svg width="64" height="120" viewBox="0 0 64 120" aria-label="body back">
+            <circle cx="32" cy="12" r="9" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="18" y="26" width="28" height="40" rx="9" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="21" y="30" width="22" height="18" rx="6" fill="var(--heat)" opacity=".35"/>
+            <rect x="6" y="28" width="9" height="34" rx="4.5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="49" y="28" width="9" height="34" rx="4.5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="20" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <rect x="34" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="anote">正/背（侧面待决策）；R0=主动/协同肌 · R1=本次强度 · R2=周期覆盖；底层=肌肉字典</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">B3</span><span class="aname">动作卡</span>
+          <span class="binds"><span class="bind on">R0</span></span></div>
+        <div class="wf">
+          <div style="background:var(--surface-2);border-radius:6px;height:52px;display:grid;place-items:center">
+            <svg width="42" height="34" viewBox="0 0 42 34"><circle cx="21" cy="7" r="4" fill="none" stroke="var(--wire)" stroke-width="2"/><path d="M21 11 L21 22 M21 14 L11 19 M21 14 L31 19 M21 22 L14 32 M21 22 L28 32" stroke="var(--wire)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div class="ph m"></div>
+          <div class="row"><span class="bind">胸·主</span><span class="bind">肩·协</span><span class="lbl" style="margin-left:auto">→ 公域动作库</span></div>
+        </div>
+        <div class="anote">类"武将卡/水浒卡"的说明书名片；链公域 H5</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">B4</span><span class="aname">课程卡</span>
+          <span class="binds"><span class="bind on">R0</span></span></div>
+        <div class="wf">
+          <div style="background:var(--surface-2);border-radius:6px;height:58px;display:grid;place-items:center">
+            <svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" fill="none" stroke="var(--wire)" stroke-width="2"/><path d="M12 9 L21 15 L12 21 Z" fill="var(--wire)"/></svg>
+          </div>
+          <div class="ph l"></div>
+          <div class="row"><span class="bind">30 min</span><span class="bind">中级</span><span class="bind">12 动作</span></div>
+        </div>
+        <div class="anote">官方课程简介；链公域课程库 H5</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ C AI 差异化 ============ -->
+  <section>
+    <div class="eyebrow">大类 C / AI 差异化 Moat ★</div>
+    <h2>只有我们拿得出的模块</h2>
+    <div class="agrid">
+
+      <div class="acard moat">
+        <div class="ahead"><span class="code">C1</span><span class="aname">AI 识别火柴人</span>
+          <span class="binds"><span class="bind on">R1</span></span></div>
+        <div class="wf" style="align-items:center">
+          <svg width="120" height="118" viewBox="0 0 120 118">
+            <g stroke="var(--wire)" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round">
+              <circle cx="52" cy="14" r="8"/><path d="M52 22 L52 52 M52 30 L30 42 M52 30 L74 40 M52 52 L38 84 L36 108 M52 52 L66 84 L70 108"/>
+            </g>
+            <g stroke="var(--heat)" stroke-width="2.5" fill="none" stroke-linecap="round">
+              <circle cx="60" cy="14" r="8"/><path d="M60 22 L60 52 M60 30 L36 38 M60 30 L84 34 M60 52 L44 82 L42 108 M60 52 L76 82 L82 108"/>
+            </g>
+            <circle cx="60" cy="52" r="3.5" fill="var(--heat)"/>
+            <path d="M76 82 q8 -8 2 -16" stroke="var(--ink)" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+            <text x="88" y="72" font-size="10" fill="var(--ink)">92°</text>
+          </svg>
+        </div>
+        <div class="anote">橙=我的姿态 · 灰=标准姿态叠影 · 关节角标注；无识别则不展示</div>
+      </div>
+
+      <div class="acard moat">
+        <div class="ahead"><span class="code">C2</span><span class="aname">AI 分析结论 / Tips</span>
+          <span class="binds"><span class="bind on">R1</span></span></div>
+        <div class="wf">
+          <div class="row"><span class="chip" style="background:var(--ok)">87 分</span><div class="ph s"></div></div>
+          <div class="row"><span class="lbl">✓</span><div class="ph l"></div></div>
+          <div class="row"><span class="lbl">✓</span><div class="ph m"></div></div>
+          <div class="row"><span class="lbl" style="color:var(--heat)">!</span><div class="ph m"></div></div>
+        </div>
+        <div class="anote">识别结果的总结与建议；用户可选隐藏"练得不好"的项</div>
+      </div>
+
+      <div class="acard moat">
+        <div class="ahead"><span class="code">C3</span><span class="aname">体适能雷达图</span>
+          <span class="binds"><span class="bind on">R2</span><span class="bind on">R3</span></span></div>
+        <div class="wf" style="align-items:center">
+          <svg width="120" height="112" viewBox="0 0 120 112">
+            <polygon points="60,8 105,34 105,78 60,104 15,78 15,34" fill="none" stroke="var(--wire)" stroke-width="1.5" opacity=".6"/>
+            <polygon points="60,32 82,45 82,67 60,80 38,67 38,45" fill="none" stroke="var(--wire)" stroke-width="1" opacity=".4"/>
+            <polygon points="60,18 96,40 88,74 60,94 26,70 32,38" fill="var(--heat)" opacity=".22" stroke="var(--heat)" stroke-width="2"/>
+            <circle cx="96" cy="40" r="3" fill="var(--heat)"/>
+          </svg>
+        </div>
+        <div class="anote">六维体适能；"每练一次涨一点"；游戏化外观</div>
+      </div>
+
+      <div class="acard moat">
+        <div class="ahead"><span class="code">C4</span><span class="aname">外化成就标识</span>
+          <span class="binds"><span class="bind on">R3</span></span></div>
+        <div class="wf" style="flex-direction:row;align-items:center;justify-content:center;gap:18px">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--wire)" stroke-width="3" opacity=".4"/>
+            <path d="M36 6 A30 30 0 1 1 12 52" fill="none" stroke="var(--heat)" stroke-width="3.5" stroke-linecap="round"/>
+            <text x="36" y="45" font-size="26" font-weight="700" text-anchor="middle" fill="var(--ink)">S</text>
+          </svg>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div class="row"><span class="day f" style="border-radius:4px"></span><div class="ph s"></div></div>
+            <div class="row"><span class="day h" style="border-radius:4px"></span><div class="ph s"></div></div>
+            <div class="row"><span class="day" style="border-radius:4px"></span><div class="ph s"></div></div>
+          </div>
+        </div>
+        <div class="anote">评级 A/B/S/SS · 勋章 · 进度环 · Push/Pull/Squat 六边形；依赖功能补全，先占位</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ D 情绪类 + G 引流类 ============ -->
+  <section>
+    <div class="eyebrow">大类 D + G / 情绪 Emotion · 引流 Growth</div>
+    <h2>给感受与给转化的模块</h2>
+    <div class="agrid">
+
+      <div class="acard">
+        <div class="ahead"><span class="code">D1</span><span class="aname">氛围图 / 自拍</span>
+          <span class="binds"><span class="bind on">R1</span><span class="bind on">R2</span></span></div>
+        <div class="wf" style="align-items:center;justify-content:center">
+          <svg width="150" height="86" viewBox="0 0 150 86">
+            <rect x="1" y="1" width="148" height="84" rx="8" fill="var(--surface-2)" stroke="var(--wire)" stroke-width="1.5"/>
+            <circle cx="112" cy="24" r="9" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            <path d="M14 68 L52 36 L80 60 L102 44 L136 70" fill="none" stroke="var(--wire)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="anote">用户上传优先；无上传→系统配图池兜底（不留空）</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">D2</span><span class="aname">高光视频</span>
+          <span class="binds"><span class="bind on">R1</span></span></div>
+        <div class="wf" style="align-items:center;justify-content:center">
+          <svg width="150" height="86" viewBox="0 0 150 86">
+            <rect x="1" y="1" width="148" height="84" rx="8" fill="var(--surface-2)" stroke="var(--wire)" stroke-width="1.5"/>
+            <circle cx="75" cy="43" r="16" fill="none" stroke="var(--heat)" stroke-width="2.5"/>
+            <path d="M70 35 L84 43 L70 51 Z" fill="var(--heat)"/>
+            <rect x="10" y="72" width="130" height="4" rx="2" fill="var(--wire)" opacity=".5"/>
+            <rect x="10" y="72" width="46" height="4" rx="2" fill="var(--heat)"/>
+          </svg>
+        </div>
+        <div class="anote">依附 R1 实例的媒体资产；可切出单独分享</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">D3</span><span class="aname">鼓励文案 / Quote</span>
+          <span class="binds"><span class="bind">R0</span><span class="bind">R1</span><span class="bind">R2</span><span class="bind">R3</span></span></div>
+        <div class="wf" style="align-items:center;justify-content:center">
+          <span style="font-size:26px;color:var(--heat);font-weight:800;line-height:1">“</span>
+          <div class="ph m" style="margin:0 auto"></div>
+          <div class="ph s" style="margin:0 auto"></div>
+        </div>
+        <div class="anote">按数据情境从文案库选（PB / streak / 首练）</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">G1</span><span class="aname">二维码 / 品牌水印</span>
+          <span class="binds"><span class="bind">全部</span></span></div>
+        <div class="wf" style="flex-direction:row;align-items:center;gap:12px">
+          <svg width="46" height="46" viewBox="0 0 46 46">
+            <rect x="1" y="1" width="44" height="44" rx="6" fill="none" stroke="var(--wire)" stroke-width="1.5"/>
+            <rect x="7" y="7" width="12" height="12" rx="2" fill="none" stroke="var(--ink)" stroke-width="2"/>
+            <rect x="27" y="7" width="12" height="12" rx="2" fill="none" stroke="var(--ink)" stroke-width="2"/>
+            <rect x="7" y="27" width="12" height="12" rx="2" fill="none" stroke="var(--ink)" stroke-width="2"/>
+            <rect x="28" y="28" width="5" height="5" fill="var(--heat)"/><rect x="35" y="34" width="4" height="4" fill="var(--ink)"/>
+          </svg>
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px"><div class="ph s"></div><div class="ph m"></div></div>
+        </div>
+        <div class="anote">图片载体必带（引流兜底）；扫码落对应公域 H5</div>
+      </div>
+
+      <div class="acard">
+        <div class="ahead"><span class="code">G2</span><span class="aname">App 下载入口</span>
+          <span class="binds"><span class="bind">H5 必带</span></span></div>
+        <div class="wf" style="justify-content:flex-end">
+          <div class="ph l" style="margin-bottom:auto"></div><div class="ph m"></div>
+          <div class="btnwf">打开 / 下载 App</div>
+        </div>
+        <div class="anote">H5 载体页内固定；deeplink 优先，未装落商店</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ P0 模板 ============ -->
+  <section>
+    <div class="eyebrow">组装示例 / P0 · 课后报告 E2·R1</div>
+    <h2>L2 精选模板 × 4</h2>
+    <p class="lede">模板 = 预设的原子组合 + 版式。T1 即 L1 默认；列表末位"自定义"进入 L3 勾选。规则：G1 图片必带；A3/A4 无数据自动隐藏重排；D1 无上传系统兜底。</p>
+    <div class="tples">
+
+      <div class="tp">
+        <div class="tphead"><span class="tcode">T1</span><b>战报短图</b><span class="default">L1 默认</span></div>
+        <div class="phone" style="aspect-ratio:4/5.4">
+          <div class="blk"><span class="bcode">A1</span>
+            <div class="row"><div class="ph m"></div><span class="lbl" style="margin-left:auto">07·16</span></div>
+            <div class="minitiles"><div class="minitile"><span class="num">42:18</span><div class="ph"></div></div><div class="minitile"><span class="num">386</span><div class="ph"></div></div><div class="minitile"><span class="num">1.8t</span><div class="ph"></div></div></div>
+          </div>
+          <div class="blk" style="flex:1"><span class="bcode">B2</span>
+            <svg width="44" height="82" viewBox="0 0 64 120" style="margin:0 auto">
+              <circle cx="32" cy="12" r="9" fill="none" stroke="var(--wire)" stroke-width="2"/>
+              <rect x="18" y="26" width="28" height="40" rx="9" fill="none" stroke="var(--wire)" stroke-width="2"/>
+              <rect x="6" y="28" width="9" height="34" rx="4.5" fill="var(--heat)" opacity=".8"/>
+              <rect x="49" y="28" width="9" height="34" rx="4.5" fill="var(--heat)" opacity=".8"/>
+              <rect x="21" y="29" width="22" height="14" rx="5" fill="var(--heat)" opacity=".4"/>
+              <rect x="20" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+              <rect x="34" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="blk"><span class="bcode">G1</span><div class="row"><span class="day" style="border-radius:4px;border-color:var(--ink)"></span><div class="ph m"></div></div></div>
+        </div>
+        <div class="tpnote">一键出图 · 固定比例 · 平台自动适配尺寸</div>
+      </div>
+
+      <div class="tp">
+        <div class="tphead"><span class="tcode">T2</span><b>完整长图</b></div>
+        <div class="phone">
+          <div class="blk"><span class="bcode">A1</span>
+            <div class="row"><div class="ph m"></div><span class="lbl" style="margin-left:auto">07·16</span></div>
+            <div class="minitiles"><div class="minitile"><span class="num">42:18</span><div class="ph"></div></div><div class="minitile"><span class="num">386</span><div class="ph"></div></div><div class="minitile"><span class="num">1.8t</span><div class="ph"></div></div></div>
+          </div>
+          <div class="blk"><span class="bcode">B2</span>
+            <svg width="36" height="64" viewBox="0 0 64 120" style="margin:0 auto"><circle cx="32" cy="12" r="9" fill="none" stroke="var(--wire)" stroke-width="2"/><rect x="18" y="26" width="28" height="40" rx="9" fill="none" stroke="var(--wire)" stroke-width="2"/><rect x="6" y="28" width="9" height="34" rx="4.5" fill="var(--heat)" opacity=".8"/><rect x="49" y="28" width="9" height="34" rx="4.5" fill="var(--heat)" opacity=".8"/><rect x="20" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/><rect x="34" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/></svg>
+          </div>
+          <div class="blk"><span class="bcode">B1</span>
+            <div class="exrow" style="padding:4px 7px"><span class="dotm"></span><div class="ph m"></div><span class="setrep">4×12</span></div>
+            <div class="exrow" style="padding:4px 7px"><span class="dotm" style="background:var(--heat)"></span><div class="ph s"></div><span class="setrep">3×10</span></div>
+            <div class="exrow" style="padding:4px 7px"><span class="dotm"></span><div class="ph m"></div><span class="setrep">3×15</span></div>
+          </div>
+          <div class="blk"><span class="bcode">A3</span>
+            <div class="row"><span class="lbl" style="width:26px">上次</span><div class="bar" style="width:46%;height:9px"></div></div>
+            <div class="row"><span class="lbl" style="width:26px">本次</span><div class="bar hot" style="width:68%;height:9px"></div><span class="chip">PB</span></div>
+          </div>
+          <div class="blk"><span class="bcode">G1</span><div class="row"><span class="day" style="border-radius:4px;border-color:var(--ink)"></span><div class="ph m"></div></div></div>
+        </div>
+        <div class="tpnote">想多长多长 · 有点有面 · 勾选增删原子</div>
+      </div>
+
+      <div class="tp">
+        <div class="tphead"><span class="tcode">T3</span><b>AI 特色版</b><span class="default" style="background:var(--heat-soft);color:var(--heat-ink)">独有 ★</span></div>
+        <div class="phone" style="aspect-ratio:4/5.8">
+          <div class="blk moat" style="flex:1"><span class="bcode">C1</span>
+            <svg width="86" height="86" viewBox="0 0 120 118" style="margin:0 auto">
+              <g stroke="var(--wire)" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"><circle cx="52" cy="14" r="8"/><path d="M52 22 L52 52 M52 30 L30 42 M52 30 L74 40 M52 52 L38 84 L36 108 M52 52 L66 84 L70 108"/></g>
+              <g stroke="var(--heat)" stroke-width="2.5" fill="none" stroke-linecap="round"><circle cx="60" cy="14" r="8"/><path d="M60 22 L60 52 M60 30 L36 38 M60 30 L84 34 M60 52 L44 82 L42 108 M60 52 L76 82 L82 108"/></g>
+            </svg>
+          </div>
+          <div class="blk moat"><span class="bcode">C2</span>
+            <div class="row"><span class="chip" style="background:var(--ok)">87</span><div class="ph l"></div></div>
+            <div class="row"><span class="lbl">✓</span><div class="ph m"></div></div>
+          </div>
+          <div class="blk"><span class="bcode">A1</span><div class="row"><span class="num">42:18</span><span class="num" style="color:var(--muted)">386</span><div class="ph s" style="margin-left:auto"></div></div></div>
+          <div class="blk"><span class="bcode">G1</span><div class="row"><span class="day" style="border-radius:4px;border-color:var(--ink)"></span><div class="ph m"></div></div></div>
+        </div>
+        <div class="tpnote">火柴人当主角 · 竞品拿不出的一张图</div>
+      </div>
+
+      <div class="tp">
+        <div class="tphead"><span class="tcode">T4</span><b>极简晒图</b></div>
+        <div class="phone" style="aspect-ratio:4/5.8">
+          <div class="blk" style="flex:1;justify-content:flex-end;background:var(--surface-2)"><span class="bcode">D1</span>
+            <svg width="100%" height="40" viewBox="0 0 150 40" preserveAspectRatio="none"><path d="M6 36 L48 10 L78 30 L104 16 L144 38" fill="none" stroke="var(--wire)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="row" style="align-items:baseline"><span class="num" style="font-size:30px;color:var(--heat)">1.8<span style="font-size:13px">t</span></span><span class="lbl">总容量</span></div>
+          </div>
+          <div class="blk"><span class="bcode">A4</span>
+            <div class="row" style="justify-content:center;gap:10px"><span class="lbl">≈</span>
+              <svg width="58" height="22" viewBox="0 0 88 34"><rect x="8" y="12" width="72" height="12" rx="5" fill="none" stroke="var(--wire)" stroke-width="2.5"/><rect x="24" y="4" width="34" height="12" rx="5" fill="none" stroke="var(--wire)" stroke-width="2.5"/><circle cx="24" cy="27" r="5.5" fill="none" stroke="var(--heat)" stroke-width="3"/><circle cx="63" cy="27" r="5.5" fill="none" stroke="var(--heat)" stroke-width="3"/></svg>
+              <span class="lbl">一辆车</span></div>
+          </div>
+          <div class="blk"><span class="bcode">G1</span><div class="row"><span class="day" style="border-radius:4px;border-color:var(--ink)"></span><div class="ph m"></div></div></div>
+        </div>
+        <div class="tpnote">氛围图全幅 + 一个大数字 · 情绪价值</div>
+      </div>
+    </div>
+  </section>
+
+  <footer><span>Body Park Atom · 低保真原型板 v0.1</span><span>灰盒骨架 · 风格创意留给下一步</span></footer>
+</div>
