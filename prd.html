@@ -1,0 +1,436 @@
+<title>Body Park Atom · 分享模块 PRD v0.9</title>
+<style>
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --ok:#256B43; --ok-soft:#E3F1E7;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--ok:#3FBB74;--ok-soft:#14211A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;--ok:#256B43;--ok-soft:#E3F1E7;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--ok:#3FBB74;--ok-soft:#14211A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 100px;}
+  section{margin-top:58px;}
+  h2{font-size:21px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  h3{font-size:15.5px;font-weight:700;margin:22px 0 8px;}
+  p{margin:8px 0;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:68ch;font-size:14px;}
+  .mono{font-family:var(--mono);}
+  code{font-family:var(--mono);font-size:.92em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+  header{padding:52px 0 24px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(26px,4.5vw,40px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);}
+  .grid{display:grid;gap:12px;} .g2{grid-template-columns:1fr 1fr;} .g3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:820px){.g2,.g3{grid-template-columns:1fr;}}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:var(--surface);}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-size:12px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);}
+  .tag{font-size:11px;font-family:var(--mono);padding:1px 7px;border-radius:var(--r-sm);border:1px solid var(--line-strong);color:var(--muted);white-space:nowrap;}
+  .tag.p0{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .tag.must{background:var(--acc-soft);color:var(--acc-ink);border-color:var(--acc);}
+  ul{margin:6px 0;padding-left:20px;} li{margin:4px 0;}
+  .callout{border-left:3px solid var(--acc);background:var(--surface);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);margin:14px 0;font-size:13.5px;color:var(--muted);}
+  .callout b{color:var(--ink);}
+
+  /* ===== interactive logic map ===== */
+  .srcchips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 20px;}
+  .srcchip{font-family:var(--cjk);font-size:12.5px;border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);
+    padding:6px 12px;cursor:pointer;color:var(--muted);transition:all .12s;}
+  .srcchip:hover{border-color:var(--acc);color:var(--ink);}
+  .srcchip:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  .srcchip.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1fr;gap:0;align-items:stretch;}
+  @media(max-width:820px){.flow{grid-template-columns:1fr;} .flow .farrow{transform:rotate(90deg);margin:2px auto;}}
+  .fnode{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:5px;}
+  .fnode .fk{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+  .fnode .fv{font-weight:700;font-size:14.5px;}
+  .fnode .fd{color:var(--muted);font-size:12.5px;line-height:1.5;}
+  .fnode.hot{border-color:var(--acc);border-left:3px solid var(--acc);}
+  .farrow{display:grid;place-items:center;color:var(--acc-ink);font-family:var(--mono);font-weight:700;font-size:16px;}
+  .prinote{margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--faint);}
+
+  /* ===== interactive wireframe ===== */
+  .studio{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:22px;align-items:start;margin-top:20px;}
+  @media(max-width:820px){.studio{grid-template-columns:1fr;}}
+  .panel{display:flex;flex-direction:column;gap:16px;}
+  .pgroup .pk{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .pgroup .pk::after{content:"";flex:1;height:1px;background:var(--line);}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;}
+  .tab{border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);padding:7px 13px;cursor:pointer;font-size:12.5px;color:var(--muted);transition:all .12s;}
+  .tab:hover{border-color:var(--acc);color:var(--ink);}
+  .tab:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  .tab.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .tab .tc{font-family:var(--mono);font-size:10px;margin-right:5px;}
+  .achk{display:flex;flex-wrap:wrap;gap:7px;}
+  .achip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);
+    padding:5px 10px;cursor:pointer;font-size:12px;color:var(--muted);transition:all .12s;user-select:none;}
+  .achip .ac{font-family:var(--mono);font-size:10px;font-weight:700;}
+  .achip:hover{border-color:var(--acc);}
+  .achip:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  .achip.on{background:var(--acc-soft);color:var(--acc-ink);border-color:var(--acc);}
+  .achip.on::before{content:"✓";font-size:10px;font-weight:700;}
+  .achip.lock{opacity:.66;cursor:not-allowed;}
+  .achip.lock::after{content:"必带";font-family:var(--mono);font-size:9px;background:var(--ink);color:var(--bg);padding:0 5px;border-radius:var(--r-sm);}
+  .statusline{font-family:var(--mono);font-size:11.5px;color:var(--faint);border:1px dashed var(--line-strong);border-radius:var(--r-sm);padding:7px 12px;}
+  .statusline b{color:var(--acc-ink);}
+
+  .stage{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .phone{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:8px;
+    box-shadow:var(--shadow);width:min(320px,100%);transition:aspect-ratio .2s;overflow:hidden;}
+  .phone.ratio-34{aspect-ratio:3/4.35;} .phone.ratio-11{aspect-ratio:1/1.22;} .phone.ratio-916{aspect-ratio:9/17;} .phone.ratio-long{aspect-ratio:auto;}
+  .blk{border:1.5px dashed var(--wire);border-radius:var(--r-sm);padding:8px 10px;position:relative;display:flex;flex-direction:column;gap:6px;justify-content:center;background:var(--surface);flex:none;}
+  .blk.grow{flex:1;min-height:56px;}
+  .blk .bc{position:absolute;top:-8px;right:8px;font-family:var(--mono);font-size:9px;font-weight:700;background:var(--ink);color:var(--bg);border-radius:var(--r-sm);padding:0 5px;z-index:1;}
+  .blk.moat{border-color:var(--acc);} .blk.moat .bc{background:var(--acc);color:var(--on-acc);}
+  .row{display:flex;align-items:center;gap:8px;}
+  .ph{height:7px;border-radius:var(--r-sm);background:var(--wire);opacity:.55;}
+  .ph.s{width:36%}.ph.m{width:60%}.ph.l{width:84%}
+  .num{font-family:var(--mono);font-weight:700;}
+  .lbl{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;}
+  .mini3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+  .mt{background:var(--surface-2);border-radius:var(--r-sm);padding:5px 6px;display:flex;flex-direction:column;gap:2px;}
+  .mt .num{font-size:11px;} .mt .ph{height:4px;}
+  .bar{height:9px;border-radius:var(--r-sm);background:var(--wire);opacity:.5;}
+  .bar.hot{background:var(--acc);opacity:1;}
+  .chipk{font-family:var(--mono);font-size:9px;font-weight:700;background:var(--acc);color:var(--on-acc);border-radius:var(--r-sm);padding:1px 6px;}
+  .empty-hint{color:var(--faint);font-family:var(--mono);font-size:11px;text-align:center;padding:20px 0;}
+  .canvaswrap{width:100%;display:flex;justify-content:center;}
+
+  /* static screen strip */
+  .screens{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
+  @media(max-width:820px){.screens{grid-template-columns:1fr;}}
+  .screen{display:flex;flex-direction:column;gap:10px;}
+  .schead{display:flex;align-items:baseline;gap:8px;}
+  .scnum{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--acc-ink);}
+  .schead b{font-size:14px;}
+  .scframe{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:7px;aspect-ratio:9/16;}
+  .scnote{font-size:11.5px;color:var(--faint);font-family:var(--mono);line-height:1.55;}
+  .btncapsule{background:var(--acc);color:var(--on-acc);border-radius:100px;text-align:center;font-size:11.5px;font-weight:700;padding:7px;letter-spacing:.04em;}
+  .navbar{display:flex;gap:6px;align-items:center;}
+  .navbar .ph{height:6px;}
+  .shsheet{margin-top:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px;display:flex;gap:8px;justify-content:space-around;}
+  .shsheet .ic{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--wire);}
+  footer{margin-top:76px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">⚛ Body Park Atom · 用户分享模块</div>
+    <h1>阶段性 PRD：原子化分享 <span style="color:var(--acc-ink)">Phase 2 · 课后报告</span></h1>
+    <div class="meta">
+      <span class="mchip hot">v0.9 评审稿</span><span class="mchip">2026-07-17</span>
+      <span class="mchip">范围：P0 · E2·R1 课后报告</span><span class="mchip">受众：PM / 设计 / 工程</span>
+      <span class="mchip">状态：待下周评审确认</span>
+    </div>
+    <p class="lede" style="margin-top:16px">配套文档：<span class="mono">README.md</span>（完整架构）· <span class="mono">framework-map</span>（框架图）· <span class="mono">prototype-board</span>（全原子线框）。本 PRD 只锁定第一个可上线切片。</p>
+  </header>
+
+  <!-- ========== 1 PRD ========== -->
+  <section>
+    <div class="eyebrow">01 / 背景与目标</div>
+    <h2>为什么做、做到什么程度算成</h2>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card">
+        <h3 style="margin-top:0">背景</h3>
+        <ul style="font-size:13.5px;color:var(--muted)">
+          <li>现状课后分享"0000 很难看"，用户想分享只能截图（截图是兜底，说明需求真实存在）。</li>
+          <li>竞品（练就/乐测/Ladder 等）已验证：总结数据 + 肌肉热力图 + 动作列表三件套是高意愿分享内容。</li>
+          <li>我们有竞品拿不出的差异化：AI 火柴人、动作分析、体适能雷达。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">目标（北极星：流量 · 传播 · 留存）</h3>
+        <ul style="font-size:13.5px;color:var(--muted)">
+          <li>练完一节课的用户，<b style="color:var(--ink)">3 次点击内</b>产出一张拿得出手的战报图。</li>
+          <li>上线 2 周：分享发起率、完成率基线建立；扫码/链接回流路径打通（Phase 4 完整化）。</li>
+          <li>工程侧沉淀 ShareKit：<b style="color:var(--ink)">全 App 唯一分享模块</b>，后续新场景=配置不是开发。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><b>非目标（本期不做）</b>：公域 H5 与链接/二维码载体（Phase 4）· 单动作/周期/教练/官方内容分享（Phase 3）· 成就体系与雷达外化（依赖功能补全，占位）· Agent 数据导出（Pro，另立项）。</div>
+  </section>
+
+  <section>
+    <div class="eyebrow">02 / 功能需求</div>
+    <h2>需求清单（P0 切片）</h2>
+    <div class="scroll" style="margin-top:16px">
+      <table>
+        <thead><tr><th>#</th><th>需求</th><th>说明 / 验收要点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">FR-1</td><td><b>分享入口</b></td><td>课后报告页 / 训练记录详情页常驻分享按钮；分享体由入口隐式绑定（E2·R1），用户无需选择"分享什么"</td><td><span class="tag p0">P0</span></td></tr>
+          <tr><td class="mono">FR-2</td><td><b>模板选择（L1/L2）</b></td><td>进入即渲染 T1 默认模板（零配置可直接发）；横滑切换 T1~T4；末位入口"自定义"</td><td><span class="tag p0">P0</span></td></tr>
+          <tr><td class="mono">FR-3</td><td><b>自定义勾选（L3）</b></td><td>菜单式勾选原子，勾选即显示、取消即隐藏并重排；G1 水印必带不可取消</td><td><span class="tag p0">P0</span></td></tr>
+          <tr><td class="mono">FR-4</td><td><b>满格规则</b></td><td>任一原子无数据：自动隐藏 + 版面重排，禁止出现 0/—/空宫格；A1 宫格按可用字段 3/4/6 档降级</td><td><span class="tag must">必须</span></td></tr>
+          <tr><td class="mono">FR-5</td><td><b>平台尺寸适配</b></td><td>短图默认 3:4；选择渠道自动切：小红书 3:4 / IG 1:1 / Story 9:16；长图不限高、宽度统一</td><td><span class="tag p0">P0</span></td></tr>
+          <tr><td class="mono">FR-6</td><td><b>导出与分发</b></td><td>生成图片→系统分享面板 / 保存相册；图底 G1 品牌水印+二维码（本期二维码落 App 下载页）</td><td><span class="tag p0">P0</span></td></tr>
+          <tr><td class="mono">FR-7</td><td><b>氛围图兜底</b></td><td>D1 支持用户上传；未上传时从系统配图池自动配图，不出现空位</td><td><span class="tag p0">P0</span></td></tr>
+          <tr><td class="mono">FR-8</td><td><b>埋点</b></td><td>share_initiated / template_switched / atom_toggled / share_completed(渠道) / qr_scanned</td><td><span class="tag must">必须</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>边界 Case（进验收）</h3>
+    <ul style="font-size:13.5px;color:var(--muted)">
+      <li>无心率设备 → A1 心率宫格不出现，宫格降档；无 AI 识别 → T3 模板不出现在模板列表。</li>
+      <li>动作列表 &gt; 12 条 → 短图折叠为"+N 个动作"，长图完整展示。</li>
+      <li>无历史数据（首练）→ A3 整体隐藏；自由训练无课程名 → A1 标题降级为"力量训练 · 日期"。</li>
+    </ul>
+  </section>
+
+  <!-- ========== 2 interactive logic ========== -->
+  <section>
+    <div class="eyebrow">03 / 逻辑图（可交互）</div>
+    <h2>分享链路：源 → 分享体 → 模板 → 载体</h2>
+    <p class="lede">核心规则「<b>分享源决定分享体</b>」。点击任意分享源，查看它绑定的矩阵格子、默认原子组合与载体。灰色为后续阶段范围。</p>
+    <div class="srcchips" id="srcChips"></div>
+    <div class="flow">
+      <div class="fnode hot"><span class="fk">① 分享源 Source</span><span class="fv" id="fSrc">课后报告 / 训练记录</span><span class="fd" id="fSrcD">用户练完一节课，在报告页点分享</span></div>
+      <div class="farrow">→</div>
+      <div class="fnode hot"><span class="fk">② 分享体 Subject</span><span class="fv mono" id="fCell">E2·R1 课后报告</span><span class="fd" id="fCellD">实例态：这节课被我练成了这样</span></div>
+      <div class="farrow">→</div>
+      <div class="fnode"><span class="fk">③ 默认原子 → 模板</span><span class="fv mono" id="fAtoms">A1 + B2 + B1 + G1</span><span class="fd" id="fAtomsD">L1 默认 T1；L2 横滑 T1~T4；L3 自定义勾选</span></div>
+      <div class="farrow">→</div>
+      <div class="fnode"><span class="fk">④ 载体 Carrier</span><span class="fv" id="fCar">图片（+水印二维码）</span><span class="fd" id="fCarD">平台尺寸自动适配；H5/QR 属 Phase 4</span></div>
+    </div>
+    <div class="prinote" id="fPri">优先级：P0 · 本期范围 ✓</div>
+  </section>
+
+  <!-- ========== 3 interactive wireframe ========== -->
+  <section>
+    <div class="eyebrow">04 / 线框图（可交互 · 分享编辑器）</div>
+    <h2>试玩产品逻辑：切模板 · 勾原子 · 换尺寸</h2>
+    <p class="lede">这是 FR-2 / FR-3 / FR-4 / FR-5 的活规格：左侧是编辑器控件（即 App 内交互），右侧手机画布实时重排。给设计师的规则都写在控件旁。</p>
+
+    <div class="studio">
+      <div class="panel">
+        <div class="pgroup">
+          <div class="pk">模板 L1/L2 · 横滑切换（FR-2）</div>
+          <div class="tabs" id="tplTabs"></div>
+        </div>
+        <div class="pgroup">
+          <div class="pk">原子勾选 L3（FR-3 · 勾=显示 / 去勾=隐藏重排）</div>
+          <div class="achk" id="atomChips"></div>
+        </div>
+        <div class="pgroup">
+          <div class="pk">渠道尺寸（FR-5 · 用户无感自动切）</div>
+          <div class="tabs" id="sizeTabs"></div>
+        </div>
+        <div class="statusline" id="status">当前：<b>T1 战报短图</b> · 3:4 · 3 个原子</div>
+        <div class="callout" style="margin:0"><b>设计规则</b>：G1 必带不可取消；用户改动勾选后模板态变为「自定义」；T3 仅当本次训练有 AI 识别数据时出现；切尺寸只改画布裁切与排版密度，不改内容。</div>
+      </div>
+
+      <div class="stage">
+        <div class="canvaswrap"><div class="phone ratio-34" id="canvas"></div></div>
+        <div class="scnote" id="canvasNote">画布 = 最终分享图（非 App 界面）；虚线块 = 原子模块，角标为原子编码</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 4 screens ========== -->
+  <section>
+    <div class="eyebrow">05 / 页面流线框（三屏）</div>
+    <h2>入口 → 编辑器 → 分发</h2>
+    <div class="screens">
+      <div class="screen">
+        <div class="schead"><span class="scnum">S1</span><b>课后报告页（入口）</b></div>
+        <div class="scframe">
+          <div class="navbar"><div class="ph s"></div><div style="flex:1"></div><div class="ph" style="width:18px"></div></div>
+          <div class="blk"><div class="row"><div class="ph m"></div><span class="lbl">07·17</span></div><div class="mini3"><div class="mt"><span class="num">42:18</span><div class="ph"></div></div><div class="mt"><span class="num">386</span><div class="ph"></div></div><div class="mt"><span class="num">1.8t</span><div class="ph"></div></div></div></div>
+          <div class="blk grow"><div class="ph l"></div><div class="ph m"></div><div class="ph l"></div></div>
+          <div class="btncapsule">分享战报</div>
+        </div>
+        <div class="scnote">FR-1：常驻按钮；点击即带上下文（sessionId）进入编辑器 —— 分享体已被入口决定，无"选择分享什么"步骤</div>
+      </div>
+      <div class="screen">
+        <div class="schead"><span class="scnum">S2</span><b>分享编辑器</b></div>
+        <div class="scframe">
+          <div class="navbar"><div class="ph" style="width:14px"></div><div style="flex:1"></div><span class="lbl">分享</span></div>
+          <div class="blk grow" style="border-style:solid"><span class="lbl" style="text-align:center">画布预览（上方 04 节可交互）</span><div class="ph l" style="margin:0 auto"></div><div class="ph m" style="margin:0 auto"></div></div>
+          <div class="row" style="justify-content:center;gap:5px"><span class="chipk">T1</span><span class="lbl">T2 · T3 · T4 · 自定义</span></div>
+          <div class="shsheet"><span class="ic"></span><span class="ic"></span><span class="ic"></span><span class="ic"></span></div>
+        </div>
+        <div class="scnote">FR-2/3/5：进入即 T1 可发（零决策）；底部渠道栏点击=选尺寸+调起分发；"自定义"展开原子勾选抽屉</div>
+      </div>
+      <div class="screen">
+        <div class="schead"><span class="scnum">S3</span><b>分发（系统面板）</b></div>
+        <div class="scframe">
+          <div class="blk grow" style="border-style:solid;opacity:.6"><span class="lbl" style="text-align:center">生成图 · 底部含 G1 水印+QR</span></div>
+          <div class="blk"><div class="row"><span class="lbl">保存相册</span><span class="lbl" style="margin-left:auto">微信 · 小红书 · IG…</span></div></div>
+          <div class="btncapsule" style="opacity:.85">已分享 ✓</div>
+        </div>
+        <div class="scnote">FR-6/8：导出即埋 share_completed(渠道)；扫码落 App 下载页（Phase 4 换公域 H5 报告页）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5 metrics & plan ========== -->
+  <section>
+    <div class="eyebrow">06 / 数据与节奏</div>
+    <h2>怎么衡量、怎么排期</h2>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card">
+        <h3 style="margin-top:0">埋点与指标</h3>
+        <ul style="font-size:13.5px;color:var(--muted)">
+          <li><b style="color:var(--ink)">发起率</b>：share_initiated / 课后报告曝光</li>
+          <li><b style="color:var(--ink)">完成率</b>：share_completed / share_initiated（分渠道）</li>
+          <li>模板分布与 atom_toggled：验证 L2 预设是否命中真实偏好，反哺模板调整（模板即配置，可服务端改）</li>
+          <li>qr_scanned → 安装归因：为 Phase 4 公域 H5 建基线</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">里程碑（对应工程 M1~M2）</h3>
+        <ul style="font-size:13.5px;color:var(--muted)">
+          <li><b style="color:var(--ink)">W1</b>：设计按原子出规格（先 B2/A1/B1/G1）；工程搭 ShareKit 四层骨架</li>
+          <li><b style="color:var(--ink)">W2~3</b>：T1 端到端跑通（L1 一键出图）→ 内测</li>
+          <li><b style="color:var(--ink)">W4</b>：T2~T4 + L3 勾选 + 渠道尺寸 → 灰度上线</li>
+          <li>Phase 3/4（单动作、周期、公域 H5）按数据表现排期</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><b>待评审确认</b>：① 肌肉热力图是否含侧面视图/男女版（影响 B2 规格）② T2~T4 的原子预设是否如本 PRD ③ 双态分享源（动作页等）默认取用户数据态的规则 ④ 二维码本期落下载页的临时方案。</div>
+  </section>
+
+  <footer><span>Body Park Atom · 分享模块 PRD v0.9 · 附交互 Demo</span><span>框架别歪了 · 风格越往后越自由</span></footer>
+</div>
+
+<script>
+(function(){
+  /* ---------- data ---------- */
+  var SOURCES=[
+    {k:'c',n:'课后报告/训练记录',cell:'E2·R1 课后报告',cd:'实例态：这节课被我练成了这样',atoms:'A1 + B2 + B1 + G1',ad:'L1 默认 T1；L2 横滑 T1~T4；L3 自定义',car:'图片（+水印二维码）',cad:'平台尺寸自动适配',pri:'P0 · 本期范围 ✓',hot:true,d:'用户练完一节课，在报告页点分享'},
+    {k:'e',n:'周期统计页',cell:'E0·R2 周期打卡',cd:'聚合态：我在坚持、我在成长',atoms:'A2 + A3 + D1 + G1',ad:'周/月/年三档模板',car:'图片',cad:'同一载体层复用',pri:'P1 · Phase 3',d:'周报/月报视图内点分享'},
+    {k:'a',n:'动作详情页',cell:'E1·R0 动作卡（有历史切 E1·R2）',cd:'双态源：默认取用户数据态，轻量切换',atoms:'B3 + B2(解剖态) + G1',ad:'有训练史叠加历史曲线',car:'图片 / H5(链公域动作库)',cad:'H5 属 Phase 4',pri:'P1~P2 · Phase 3',d:'动作库中某动作页点分享'},
+    {k:'f',n:'成就 / PB / 雷达页',cell:'E0·R3 成就',cd:'衍生态：我达成了',atoms:'C4 + C3 + A4 + G1',ad:'依赖成就体系补全，先占位',car:'图片',cad:'',pri:'P1 占位',d:'达成 PB / 获得徽章时'},
+    {k:'d',n:'影像 / 火柴人动态',cell:'R1 附属媒体资产',cd:'依附实例的媒体切片',atoms:'C1 + D2 + G1',ad:'火柴人是独有差异化',car:'图片 / 视频',cad:'视频导出后续评估',pri:'P2',d:'高光影像页点分享'},
+    {k:'b',n:'某节课页面',cell:'E2·R0 课程卡（练过切 R1/R2）',cd:'内容态："这节课很好推荐给你"',atoms:'B4 + G1',ad:'引流价值最高',car:'H5(链公域课程库)',cad:'Phase 4',pri:'P2 · Phase 4',d:'课程详情页点分享'},
+    {k:'h',n:'教练主页',cell:'E4·R0 教练卡（跟练史切 E4·R2)',cd:'人也是实体；师徒关系叙事',atoms:'B5 + G1',ad:'R2 叠加跟练 N 节/时长',car:'图片 / H5',cad:'Phase 4',pri:'P2',d:'教练/老师页点分享'},
+    {k:'j',n:'肌肉字典页',cell:'E5·R0/R2 肌肉卡',cd:'分类实体："我×肱二头肌的历史"',atoms:'B6 + B2 + G1',ad:'数据已有，视图缺',car:'图片',cad:'',pri:'P2',d:'肌群详情页点分享'},
+    {k:'k',n:'器械详情页',cell:'E6·R0/R2 器械卡',cd:'"我最爱的哑铃"叙事',atoms:'B7 + G1',ad:'依赖器械维度打点',car:'图片',cad:'',pri:'P2',d:'器械页点分享'},
+    {k:'l',n:'模式统计视图',cell:'E7·R2 模式平衡',cd:'专业向：推拉比、欠练模式',atoms:'B8 + G1',ad:'PPS 六边形/雷达的数据地基',car:'图片',cad:'',pri:'P2',d:'体适能/模式报告内点分享'},
+    {k:'H',n:'健康域（体重/饮食/跑步/睡眠）',cell:'E8~E11 · 预留',cd:'大一统健康数据中心假设',atoms:'H1~H7（预留原子）',ad:'三档隐私分级约束',car:'图片',cad:'随数据域上线',pri:'P3 · 预留',d:'未来健康域各视图'}
+  ];
+  var srcWrap=document.getElementById('srcChips');
+  function setSrc(s,btn){
+    document.getElementById('fSrc').textContent=s.n;
+    document.getElementById('fSrcD').textContent=s.d;
+    document.getElementById('fCell').textContent=s.cell;
+    document.getElementById('fCellD').textContent=s.cd;
+    document.getElementById('fAtoms').textContent=s.atoms;
+    document.getElementById('fAtomsD').textContent=s.ad;
+    document.getElementById('fCar').textContent=s.car;
+    document.getElementById('fCarD').textContent=s.cad||'—';
+    document.getElementById('fPri').textContent='优先级：'+s.pri;
+    Array.prototype.forEach.call(srcWrap.children,function(c){c.classList.remove('on');});
+    btn.classList.add('on');
+  }
+  SOURCES.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.className='srcchip'+(i===0?' on':''); b.type='button'; b.textContent=s.n;
+    b.addEventListener('click',function(){setSrc(s,b);});
+    srcWrap.appendChild(b);
+  });
+
+  /* ---------- wireframe studio ---------- */
+  var ATOMS={
+    A1:{n:'总结指标'},B2:{n:'肌肉热力图'},B1:{n:'动作列表'},A3:{n:'历史对比'},
+    C1:{n:'AI 火柴人',moat:true},C2:{n:'AI Tips',moat:true},D1:{n:'氛围图'},A4:{n:'具象类比'},G1:{n:'水印/QR',lock:true}
+  };
+  var ORDER=['D1','C1','C2','A1','B2','B1','A3','A4','G1'];
+  var TPLS=[
+    {id:'T1',n:'战报短图',set:['A1','B2','G1'],long:false},
+    {id:'T2',n:'完整长图',set:['A1','B2','B1','A3','G1'],long:true},
+    {id:'T3',n:'AI 特色版',set:['C1','C2','A1','G1'],long:false},
+    {id:'T4',n:'极简晒图',set:['D1','A4','G1'],long:false}
+  ];
+  var SIZES=[{id:'34',n:'小红书 3:4',cls:'ratio-34'},{id:'11',n:'IG 1:1',cls:'ratio-11'},{id:'916',n:'Story 9:16',cls:'ratio-916'}];
+  var state={tpl:'T1',on:{},size:'34',custom:false};
+  TPLS[0].set.forEach(function(a){state.on[a]=true;});
+
+  function rend(code){
+    var d=document.createElement('div');
+    d.className='blk'+(ATOMS[code].moat?' moat':'');
+    d.innerHTML='<span class="bc">'+code+'</span>';
+    function add(h){var e=document.createElement('div');e.innerHTML=h;while(e.firstChild)d.appendChild(e.firstChild);}
+    if(code==='A1') add('<div class="row"><div class="ph m"></div><span class="lbl">07·17</span></div><div class="mini3"><div class="mt"><span class="num">42:18</span><div class="ph"></div></div><div class="mt"><span class="num">386</span><div class="ph"></div></div><div class="mt"><span class="num">1.8t</span><div class="ph"></div></div></div>');
+    if(code==='B2'){d.classList.add('grow');add('<svg width="40" height="74" viewBox="0 0 64 120" style="margin:0 auto"><circle cx="32" cy="12" r="9" fill="none" stroke="var(--wire)" stroke-width="2"/><rect x="18" y="26" width="28" height="40" rx="9" fill="none" stroke="var(--wire)" stroke-width="2"/><rect x="6" y="28" width="9" height="34" rx="4.5" fill="var(--acc)" opacity=".85"/><rect x="49" y="28" width="9" height="34" rx="4.5" fill="var(--acc)" opacity=".85"/><rect x="21" y="29" width="22" height="14" rx="5" fill="var(--acc)" opacity=".4"/><rect x="20" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/><rect x="34" y="70" width="10" height="42" rx="5" fill="none" stroke="var(--wire)" stroke-width="2"/></svg>');}
+    if(code==='B1') add('<div class="row"><span class="lbl">◻</span><div class="ph m"></div><span class="lbl" style="margin-left:auto">4×12</span></div><div class="row"><span class="lbl">◻</span><div class="ph s"></div><span class="lbl" style="margin-left:auto">3×10</span></div><div class="row"><span class="lbl" style="margin:0 auto">+9 个动作</span></div>');
+    if(code==='A3') add('<div class="row"><span class="lbl" style="width:24px">上次</span><div class="bar" style="width:46%"></div></div><div class="row"><span class="lbl" style="width:24px">本次</span><div class="bar hot" style="width:68%"></div><span class="chipk">PB</span></div>');
+    if(code==='C1'){d.classList.add('grow');add('<svg width="66" height="66" viewBox="0 0 120 118" style="margin:0 auto"><g stroke="var(--wire)" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"><circle cx="52" cy="14" r="8"/><path d="M52 22 L52 52 M52 30 L30 42 M52 30 L74 40 M52 52 L38 84 L36 108 M52 52 L66 84 L70 108"/></g><g stroke="var(--acc)" stroke-width="2.5" fill="none" stroke-linecap="round"><circle cx="60" cy="14" r="8"/><path d="M60 22 L60 52 M60 30 L36 38 M60 30 L84 34 M60 52 L44 82 L42 108 M60 52 L76 82 L82 108"/></g></svg>');}
+    if(code==='C2') add('<div class="row"><span class="chipk" style="background:var(--ok);color:#fff">87</span><div class="ph l"></div></div><div class="row"><span class="lbl">✓</span><div class="ph m"></div></div>');
+    if(code==='D1'){d.classList.add('grow');add('<svg width="100%" height="46" viewBox="0 0 150 46" preserveAspectRatio="none"><path d="M8 40 L50 14 L80 34 L106 20 L144 42" fill="none" stroke="var(--wire)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="row" style="align-items:baseline"><span class="num" style="font-size:22px;color:var(--acc-ink)">1.8<span style="font-size:11px">t</span></span><span class="lbl">总容量</span></div>');}
+    if(code==='A4') add('<div class="row" style="justify-content:center;gap:8px"><span class="lbl">≈</span><svg width="50" height="19" viewBox="0 0 88 34"><rect x="8" y="12" width="72" height="12" rx="2" fill="none" stroke="var(--wire)" stroke-width="2.5"/><rect x="24" y="4" width="34" height="12" rx="2" fill="none" stroke="var(--wire)" stroke-width="2.5"/><circle cx="24" cy="27" r="5.5" fill="none" stroke="var(--acc)" stroke-width="3"/><circle cx="63" cy="27" r="5.5" fill="none" stroke="var(--acc)" stroke-width="3"/></svg><span class="lbl">一辆车</span></div>');
+    if(code==='G1') add('<div class="row"><span style="width:16px;height:16px;border:1.5px solid var(--ink);border-radius:var(--r-sm);flex:none"></span><div class="ph m"></div><span class="lbl" style="margin-left:auto">BODY PARK</span></div>');
+    return d;
+  }
+
+  var canvas=document.getElementById('canvas'), tplWrap=document.getElementById('tplTabs'),
+      atomWrap=document.getElementById('atomChips'), sizeWrap=document.getElementById('sizeTabs'),
+      status=document.getElementById('status');
+
+  function paint(){
+    canvas.innerHTML='';
+    var tpl=TPLS.filter(function(t){return t.id===state.tpl;})[0];
+    var isLong=tpl&&tpl.long;
+    canvas.className='phone '+(isLong?'ratio-long':({34:'ratio-34',11:'ratio-11',916:'ratio-916'})[state.size]);
+    var shown=ORDER.filter(function(c){return state.on[c];});
+    if(!shown.length){var e=document.createElement('div');e.className='empty-hint';e.textContent='（空 —— 至少保留一个内容原子）';canvas.appendChild(e);}
+    shown.forEach(function(c){canvas.appendChild(rend(c));});
+    Array.prototype.forEach.call(tplWrap.children,function(b){b.classList.toggle('on',!state.custom&&b.dataset.id===state.tpl);});
+    Array.prototype.forEach.call(atomWrap.children,function(b){b.classList.toggle('on',!!state.on[b.dataset.code]);});
+    Array.prototype.forEach.call(sizeWrap.children,function(b){b.classList.toggle('on',b.dataset.id===state.size);});
+    var n=shown.length, tname=state.custom?'自定义':(tpl?tpl.id+' '+tpl.n:'');
+    var sname=(SIZES.filter(function(s){return s.id===state.size;})[0]||{}).n||'';
+    status.innerHTML='当前：<b>'+tname+'</b> · '+(isLong?'长图（不限高）':sname)+' · '+n+' 个原子';
+  }
+  TPLS.forEach(function(t){
+    var b=document.createElement('button');b.type='button';b.className='tab';b.dataset.id=t.id;
+    b.innerHTML='<span class="tc">'+t.id+'</span>'+t.n;
+    b.addEventListener('click',function(){
+      state.tpl=t.id;state.custom=false;state.on={};t.set.forEach(function(a){state.on[a]=true;});paint();
+    });
+    tplWrap.appendChild(b);
+  });
+  ORDER.forEach(function(c){
+    var b=document.createElement('button');b.type='button';
+    b.className='achip'+(ATOMS[c].lock?' lock':'');b.dataset.code=c;
+    b.innerHTML='<span class="ac">'+c+'</span>'+ATOMS[c].n;
+    b.addEventListener('click',function(){
+      if(ATOMS[c].lock)return;
+      state.on[c]=!state.on[c];state.custom=true;paint();
+    });
+    atomWrap.appendChild(b);
+  });
+  SIZES.forEach(function(s){
+    var b=document.createElement('button');b.type='button';b.className='tab';b.dataset.id=s.id;b.textContent=s.n;
+    b.addEventListener('click',function(){state.size=s.id;paint();});
+    sizeWrap.appendChild(b);
+  });
+  paint();
+})();
+</script>
