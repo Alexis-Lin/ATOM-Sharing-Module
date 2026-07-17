@@ -341,6 +341,44 @@
   </section>
 
   <section>
+    <div class="eyebrow">扩展预留 / Health Hub Reserve 🔮</div>
+    <h2>健康域扩展：大一统健康数据中心视角</h2>
+    <p class="lede">假设未来 Body Park 是统一的健康运动数据中心（对标 Apple Health 14 大类 / Health Connect 6 大类）。检验结论：<b>架构不需要改</b>——新域接入 = 矩阵加实体行 + 原子目录加 H 系原子；关系态、表现形式、载体、链路全部复用。</p>
+
+    <div class="scroll" style="margin-top:20px">
+      <table>
+        <thead><tr><th style="text-align:left">Body Park 域</th><th>Apple Health</th><th>Health Connect</th><th>分享价值</th><th>隐私默认</th></tr></thead>
+        <tbody>
+          <tr><th>活动 / 运动</th><td>Activity · Workouts · Mobility</td><td>Activity</td><td>高</td><td><span class="tag ok">✓ 可分享</span></td></tr>
+          <tr><th>身体测量</th><td>Body Measurements</td><td>Body measurements</td><td>高（趋势叙事）</td><td><span class="tag warn">⚠ 默认只显趋势</span></td></tr>
+          <tr><th>营养 / 饮食</th><td>Nutrition</td><td>Nutrition</td><td>高</td><td><span class="tag ok">✓ 可分享</span></td></tr>
+          <tr><th>睡眠</th><td>Sleep</td><td>Sleep</td><td>高</td><td><span class="tag ok">✓ 可分享</span></td></tr>
+          <tr><th>心肺 / 生命体征</th><td>Heart · Vitals · Respiratory</td><td>Vitals</td><td>中（VO2max 有炫耀价值）</td><td><span class="tag warn">⚠ 谨慎</span></td></tr>
+          <tr><th>心理 / 正念</th><td>Mental Wellbeing</td><td>Wellness</td><td>低~中</td><td><span class="tag warn">⚠ 谨慎</span></td></tr>
+          <tr><th>周期</th><td>Cycle Tracking</td><td>Cycle tracking</td><td>—</td><td><span class="tag miss">🚫 禁止分享</span></td></tr>
+          <tr><th>医疗类</th><td>Medications · Symptoms · Hearing…</td><td>（部分入 Vitals）</td><td>—</td><td><span class="tag miss">🚫 禁止分享</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exr" style="margin-top:16px">
+      <table>
+        <thead><tr><th>预留实体 ＼ 关系态</th><th class="rhead">R0</th><th class="rhead">R1</th><th class="rhead">R2</th><th class="rhead">R3</th></tr></thead>
+        <tbody>
+          <tr><th>E8 身体指标</th><td>指标科普卡</td><td>单次称重（弱）</td><td class="hot"><b>体重/体脂趋势</b>变化量优先</td><td>减重里程碑</td></tr>
+          <tr><th>E9 饮食/膳食</th><td>食物/食谱卡</td><td class="hot"><b>一餐打卡</b>照片+宏量</td><td>营养周报 · 热量收支</td><td>连续打卡徽章</td></tr>
+          <tr><th>E10 运动会话</th><td>运动方式科普卡</td><td class="hot"><b>单次跑步</b>路线+配速+心率</td><td>月跑量 · 配速趋势</td><td>“百公里俱乐部”</td></tr>
+          <tr><th>E11 睡眠</th><td>睡眠科普卡</td><td class="hot"><b>昨晚睡眠</b>结构图+时长</td><td>睡眠周报 · 规律性</td><td>早睡/规律徽章</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span>三档隐私分级：✓ 默认可分享 · ⚠ 谨慎（默认藏绝对值，主动勾选才外显）· 🚫 禁止（数据中心收录，分享端永不出现）</span>
+    </div>
+    <p class="lede" style="font-size:13px;margin-top:12px">预留原子 H1~H7：体重趋势图 · 营养摘要环 · 饮食打卡卡 · 睡眠结构图 · 运动路线卡 · 活动环/步数 · 心肺摘要。协同效应：大一统数据中心让 <b>Pro 数据导出（给 Agent）</b>叙事更完整——我们成为聚合方而非被聚合方。</p>
+  </section>
+
+  <section>
     <div class="eyebrow">第 ② 层规则 / Atom Polymorphism ★</div>
     <h2>原子的多态性：一个模板，多种数据绑定</h2>
     <p class="lede">同一原子在 R0~R3 下版式复用、只换数据绑定——这就是“针对共性模块设计模板”的落点：设计师按原子出模板（标注适配绑定态 + 空状态规则），不是按页面出图；开发侧组件 = <code>template + bindingMode + data</code>。</p>
