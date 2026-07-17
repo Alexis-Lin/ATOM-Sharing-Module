@@ -252,7 +252,7 @@
 | 原子 | 说明 | 所需数据字段 | 空状态策略 | 差异化 |
 |---|---|---|---|---|
 | **氛围图 / 自拍** | 用户上传或系统配图 | userImg? / systemImgPool | 无上传→系统配图兜底 | 通用 |
-| **标题 / 日期 / 文案** | 课名、日期、鼓励文案 | title, date, copy | 日期为关键锚点，必留 | 通用 |
+| **鼓励文案 / Quote** | 按数据情境从文案库选（PB/streak/首练）；标题·日期已内含于 A1 | copyPool, triggerContext | 无匹配情境则不出现 | 通用 |
 | **高光视频** | 动作高光片段 | videoClip | 无则不纳入 | 🟡 |
 
 ### 3.5 引流类原子（Growth）
@@ -282,7 +282,7 @@
 | 体适能雷达 | ○ | ○ | — | ● | — |
 | 外化成就标识 | ○ | ○ | ○ | ● | — |
 | 氛围图/自拍 | ● | ● | ○ | ○ | ○ |
-| 标题/日期/文案 | ● | ● | ● | ● | ● |
+| 鼓励文案/Quote (D3) | ○ | ○ | ○ | ○ | ○ |
 | 二维码/水印 | ● | ● | ● | ● | ● |
 
 > "单次训练"的默认三件套 = **总结数据 + 肌肉热力图 + 动作列表**（国内 3 个竞品都是这三要素，被验证"有点有面、有成就感"），再叠加我们独有的火柴人/AI 结论作为差异化。
@@ -416,6 +416,73 @@
 4. **外化指标（评级/雷达/环）**需先补齐功能，分享才能自动纳入——先占位。
 5. **优先级**：单次训练 > 单动作 / 周期 / 官方课程——下周确认具体上线节奏。
 6. **面向 Agent 导出**归入 Pro——格式（Markdown/CSV/JSON）与字段范围待定。
+
+---
+
+## 13. 推进计划：产品 / 设计 / 工程
+
+### 13.1 产品（下一步：锁定 P0 需求单）
+
+1. **P0 范围**：E2·R1 课后报告 + 模板 T1~T4 + 图片载体 + 平台尺寸适配 + G1 水印。链接/H5、二维码载体随公域页面（Phase 4）跟进。
+2. **边界 case 清单**（进需求单验收项）：无心率、无 AI 识别、单原子超长（动作 >12 个折叠）、无历史（A3 隐藏重排）、无上传图（D1 系统兜底）、纯自由训练无课程名。
+3. **平台尺寸矩阵**：小红书 3:4 / IG Feed 1:1 / IG Story 9:16 / 微信对话原图 / 保存本地——每模板声明支持档位，点渠道自动套裁切。
+4. **北极星埋点**：分享发起率、分享完成率、二维码扫码回流、H5 打开→下载转化。上线两周看数据再定 Phase 3 顺序。
+
+### 13.2 UI 设计（给天逸的工作方式）
+
+- **按原子出组件规格，不按页面出图**。每个原子一页规格：`变体 = 绑定态(R) × 表现形式 × 尺寸档(短图/长图/卡片)`，附空状态、极值、深浅色两版。
+- **顺序**：先做被引用最多的四个——B2 肌肉热力图、A1 总结指标、B1 动作列表、G1 水印条；再拼 T1~T4 模板。
+- **Figma 库结构直接映射本架构**：`Tokens（VI 基线：色板/圆角语义/字体）→ Atoms（21 组件）→ Templates（模板即原子实例的 Auto Layout 组合）`。这样设计文件与代码结构同构，交付即规格。
+- 低保真原型板（`prototype-board.html`）作为规格起点，逐原子替换为高保真。
+
+### 13.3 工程（可复用架构模块：ShareKit）
+
+**目标**：全 App 唯一的分享模块，"新场景 = 配置，不是开发"。
+
+**四层管线**（与五层模型对应，①②合并为数据面）：
+
+```
+DataProvider 层   每实体一个 Provider，实现统一接口：
+                  provide(entityId, relationState) -> AtomData[]
+                  · 原子声明 requiredFields + emptyPolicy(hide/fallback/rearrange)
+                  · 隐私分级在此层强制：禁止级实体不注册，分享入口不出现
+        ↓
+Composition 层    模板注册表（JSON/服务端可下发）：
+                  Template = { subjectCell, atoms[{code, format, options}], layout }
+                  · L1/L2/L3 同构：模板 = 预设勾选态；L3 = 用户改勾选态
+                  · 组合器执行"满格"规则：缺数据原子自动隐藏并重排
+        ↓
+Render 层         原子组件库（App 原生 + H5 同一套模板 DSL）：
+                  render(AtomSpec, AtomData, theme) -> View
+                  · 短图=固定画板 / 长图=纵向拼接 / 卡片=独立画板
+                  · 服务端出图兜底（分享给未装 App 的 H5 场景）
+        ↓
+Carrier 层        导出与分发：
+                  image(尺寸预设+水印+QR注入) / H5(公域路由+deeplink) / QR
+                  · 平台尺寸档位表与 Composition 解耦
+                  · 埋点在此层统一打
+```
+
+**核心数据契约**（伪码）：
+
+```ts
+type RelationState = 'R0'|'R1'|'R2'|'R3'
+interface ShareSubject { entity: EntityType; entityId: string; state: RelationState }
+interface AtomSpec { code: AtomCode; format: FormatType; binding: RelationState }
+interface AtomProvider {
+  supports: AtomCode[]
+  provide(subject: ShareSubject): Promise<AtomData | Empty>  // Empty 携带 emptyPolicy
+}
+interface Template { id: string; cell: string /*E2R1*/; atoms: AtomSpec[]; layout: 'short'|'long'|'card' }
+```
+
+**里程碑**：
+- **M1**（对应 Phase 2）：ShareKit 内核 + E2·R1 Provider + T1 模板 + 图片载体。
+- **M2**：模板注册表服务端化 + L3 勾选 + T2~T4。
+- **M3**（对应 Phase 4）：公域 H5 渲染复用模板 DSL + QR/链接载体 + 回流归因。
+- **M4**：新实体接入手册化——写一个 Provider + 配一份模板 JSON 即上线（E5/E6/E7 用此路径验证）。
+
+**接入新分享场景的标准流程**（M4 后）：定义实体格子 → 实现 Provider → 配模板 JSON → 在分享源挂入口。零 UI 开发（复用原子组件），零分发开发（复用载体层）。
 
 ---
 
