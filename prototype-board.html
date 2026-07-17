@@ -1,29 +1,29 @@
 <title>Body Park Atom · 分享模块低保真原型板</title>
 <style>
   :root{
-    --bg:#F7F8FA; --surface:#FFFFFF; --surface-2:#F1F3F6; --canvas:#FAFBFC;
-    --ink:#16191F; --muted:#5A6270; --faint:#98A0AC;
-    --line:#E4E7EC; --line-strong:#C9CFD8; --wire:#B9C1CC;
-    --heat:#F0502E; --heat-soft:#FCE9E3; --heat-ink:#B83A1E;
-    --ok:#17976B; --ok-soft:#E4F3ED;
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --heat:#6FCC1B; --heat-soft:#ECF8DC; --heat-ink:#47940B;
+    --ok:#256B43; --ok-soft:#E3F1E7;
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
     --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     --radius:14px; --radius-sm:9px;
     --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
   }
   @media (prefers-color-scheme:dark){
-    :root{--bg:#0F1216;--surface:#171B21;--surface-2:#20252D;--canvas:#141920;
-      --ink:#E8EAED;--muted:#98A0AE;--faint:#6C7684;--line:#262B33;--line-strong:#3A424E;--wire:#4A5462;
-      --heat:#FF6A44;--heat-soft:#2A1811;--heat-ink:#FF8C6B;--ok:#3FB98C;--ok-soft:#122019;
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --heat:#A3E635;--heat-soft:#1F2A10;--heat-ink:#BEF264;--ok:#3FBB74;--ok-soft:#14211A;
       --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
   }
-  :root[data-theme="light"]{--bg:#F7F8FA;--surface:#FFFFFF;--surface-2:#F1F3F6;--canvas:#FAFBFC;
-    --ink:#16191F;--muted:#5A6270;--faint:#98A0AC;--line:#E4E7EC;--line-strong:#C9CFD8;--wire:#B9C1CC;
-    --heat:#F0502E;--heat-soft:#FCE9E3;--heat-ink:#B83A1E;--ok:#17976B;--ok-soft:#E4F3ED;
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --heat:#6FCC1B;--heat-soft:#ECF8DC;--heat-ink:#47940B;--ok:#256B43;--ok-soft:#E3F1E7;
     --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
-  :root[data-theme="dark"]{--bg:#0F1216;--surface:#171B21;--surface-2:#20252D;--canvas:#141920;
-    --ink:#E8EAED;--muted:#98A0AE;--faint:#6C7684;--line:#262B33;--line-strong:#3A424E;--wire:#4A5462;
-    --heat:#FF6A44;--heat-soft:#2A1811;--heat-ink:#FF8C6B;--ok:#3FB98C;--ok-soft:#122019;
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --heat:#A3E635;--heat-soft:#1F2A10;--heat-ink:#BEF264;--ok:#3FBB74;--ok-soft:#14211A;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
 
   *{box-sizing:border-box}
@@ -46,7 +46,7 @@
   .acard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 14px 14px;display:flex;flex-direction:column;gap:10px;}
   .ahead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .code{font-family:var(--mono);font-size:11px;font-weight:700;background:var(--ink);color:var(--bg);padding:2px 7px;border-radius:6px;letter-spacing:.04em;}
-  .acard.moat .code{background:var(--heat);color:#fff;}
+  .acard.moat .code{background:var(--heat);color:#10240A;}
   .aname{font-weight:700;font-size:13.5px;flex:1;}
   .binds{display:flex;gap:4px;}
   .bind{font-family:var(--mono);font-size:9.5px;color:var(--muted);border:1px solid var(--line-strong);border-radius:4px;padding:1px 4px;letter-spacing:.03em;}
@@ -63,19 +63,19 @@
   .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
   .tile{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 8px;display:flex;flex-direction:column;gap:3px;}
   .tile .num{font-size:14px;}
-  .tile.hot .num{color:var(--heat);}
+  .tile.hot .num{color:var(--heat-ink);}
   .days{display:flex;gap:6px;align-items:center;}
   .day{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--wire);}
   .day.f{background:var(--heat);border-color:var(--heat);}
   .day.h{background:var(--heat-soft);border-color:var(--heat);}
   .bar{height:14px;border-radius:4px;background:var(--wire);opacity:.5;}
   .bar.hot{background:var(--heat);opacity:1;}
-  .chip{font-family:var(--mono);font-size:9px;font-weight:700;background:var(--heat);color:#fff;border-radius:100px;padding:1px 7px;letter-spacing:.05em;}
+  .chip{font-family:var(--mono);font-size:9px;font-weight:700;background:var(--heat);color:#10240A;border-radius:100px;padding:1px 7px;letter-spacing:.05em;}
   .exrow{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 9px;}
   .exrow .dotm{width:10px;height:10px;border-radius:3px;background:var(--wire);flex:none;}
   .exrow .setrep{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);}
   .quote{font-size:12.5px;color:var(--muted);text-align:center;font-style:italic;}
-  .btnwf{background:var(--heat);color:#fff;border-radius:8px;text-align:center;font-size:12px;font-weight:700;padding:8px;letter-spacing:.05em;}
+  .btnwf{background:var(--heat);color:#10240A;border-radius:8px;text-align:center;font-size:12px;font-weight:700;padding:8px;letter-spacing:.05em;}
   svg{display:block;max-width:100%;}
   svg text{font-family:var(--mono);}
 
@@ -89,7 +89,7 @@
   .phone{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);}
   .blk{border:1.5px dashed var(--wire);border-radius:8px;padding:8px 9px;position:relative;display:flex;flex-direction:column;gap:6px;justify-content:center;background:var(--surface);}
   .blk .bcode{position:absolute;top:-8px;right:8px;font-family:var(--mono);font-size:9px;font-weight:700;background:var(--ink);color:var(--bg);border-radius:4px;padding:0 5px;}
-  .blk.moat .bcode{background:var(--heat);color:#fff;}
+  .blk.moat .bcode{background:var(--heat);color:#10240A;}
   .blk.moat{border-color:var(--heat);}
   .tpnote{font-size:11.5px;color:var(--faint);font-family:var(--mono);line-height:1.5;}
   .minitiles{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
@@ -465,7 +465,7 @@
         <div class="phone" style="aspect-ratio:4/5.8">
           <div class="blk" style="flex:1;justify-content:flex-end;background:var(--surface-2)"><span class="bcode">D1</span>
             <svg width="100%" height="40" viewBox="0 0 150 40" preserveAspectRatio="none"><path d="M6 36 L48 10 L78 30 L104 16 L144 38" fill="none" stroke="var(--wire)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <div class="row" style="align-items:baseline"><span class="num" style="font-size:30px;color:var(--heat)">1.8<span style="font-size:13px">t</span></span><span class="lbl">总容量</span></div>
+            <div class="row" style="align-items:baseline"><span class="num" style="font-size:30px;color:var(--heat-ink)">1.8<span style="font-size:13px">t</span></span><span class="lbl">总容量</span></div>
           </div>
           <div class="blk"><span class="bcode">A4</span>
             <div class="row" style="justify-content:center;gap:10px"><span class="lbl">≈</span>
