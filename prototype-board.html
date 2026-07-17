@@ -8,7 +8,7 @@
     --ok:#256B43; --ok-soft:#E3F1E7;
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
     --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    --radius:3px; --radius-sm:2px;
+    --radius:5px; --radius-sm:2px;
     --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
   }
   @media (prefers-color-scheme:dark){
@@ -75,7 +75,7 @@
   .exrow .dotm{width:10px;height:10px;border-radius:2px;background:var(--wire);flex:none;}
   .exrow .setrep{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);}
   .quote{font-size:12.5px;color:var(--muted);text-align:center;font-style:italic;}
-  .btnwf{background:var(--heat);color:#10240A;border-radius:2px;text-align:center;font-size:12px;font-weight:700;padding:8px;letter-spacing:.05em;}
+  .btnwf{background:var(--heat);color:#10240A;border-radius:100px;text-align:center;font-size:12px;font-weight:700;padding:8px;letter-spacing:.05em;}
   svg{display:block;max-width:100%;}
   svg text{font-family:var(--mono);}
 
@@ -86,7 +86,7 @@
   .tphead .tcode{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--heat-ink);}
   .tphead b{font-size:14px;}
   .tphead .default{font-family:var(--mono);font-size:9px;background:var(--ok-soft);color:var(--ok);padding:2px 7px;border-radius:2px;font-weight:700;letter-spacing:.06em;}
-  .phone{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:2px;padding:10px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);}
+  .phone{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:5px;padding:10px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);}
   .blk{border:1.5px dashed var(--wire);border-radius:2px;padding:8px 9px;position:relative;display:flex;flex-direction:column;gap:6px;justify-content:center;background:var(--surface);}
   .blk .bcode{position:absolute;top:-8px;right:8px;font-family:var(--mono);font-size:9px;font-weight:700;background:var(--ink);color:var(--bg);border-radius:2px;padding:0 5px;}
   .blk.moat .bcode{background:var(--heat);color:#10240A;}
