@@ -306,8 +306,13 @@
             <td><span class="cellcode">E3·R1</span><b>某次挑战完成</b></td>
             <td><span class="cellcode">E3·R2</span><b>计划进度</b></td>
             <td><span class="cellcode">E3·R3</span><b>挑战勋章</b></td></tr>
+          <tr><th>E4 教练/老师</th>
+            <td><span class="cellcode">E4·R0</span><b>教练介绍卡</b>链公域教练主页；未来含 AI 教练</td>
+            <td><span class="cellcode">E4·R1</span><b>跟练单次记录</b>标注教练的一节课</td>
+            <td><span class="cellcode">E4·R2</span><b>我 × 教练的关系</b>累计跟练 N 节 / 时长 / 进步</td>
+            <td><span class="cellcode">E4·R3</span><b>师徒里程碑</b>如跟练 100 节徽章</td></tr>
           <tr><th>E0 全局（我）</th>
-            <td class="void"><span class="cellcode">E0·R0</span>—（个人主页属未来社区话题）</td>
+            <td><span class="cellcode">E0·R0 · 未来</span><b>个人主页</b>名片 · 照片/视频集 · 成就墙</td>
             <td><span class="cellcode">E0·R1</span><b>单次自由训练</b></td>
             <td class="hot"><span class="cellcode">E0·R2 · P1</span><b>周期打卡</b>周/月/年 · streak</td>
             <td class="hot"><span class="cellcode">E0·R3 · P1</span><b>成就</b>雷达/勋章墙/PB 集</td></tr>
@@ -350,6 +355,8 @@
       <div class="brow"><div class="src"><b>周期统计页（周/月/年）</b>(e)</div><div class="arrow">→</div><div class="subject">E0·R2 周期打卡</div><div class="atoms-hint">周期统计 + 历史对比</div></div>
       <div class="brow"><div class="src"><b>成就 / PB / 雷达页</b>(f)</div><div class="arrow">→</div><div class="subject">E0·R3 成就</div><div class="atoms-hint">成就标识 / 雷达图</div></div>
       <div class="brow"><div class="src"><b>已训练动作 · 历史记录页</b>(g)</div><div class="arrow">→</div><div class="subject">E1·R2 动作历史</div><div class="atoms-hint">历史曲线 + PB</div></div>
+      <div class="brow"><div class="src"><b>教练主页 / 课程页教练区</b>(h)</div><div class="arrow">→</div><div class="subject">E4·R0 教练卡<br><span class="atoms-hint">有跟练史可切 E4·R2</span></div><div class="atoms-hint">教练卡 + 师徒关系数据</div></div>
+      <div class="brow"><div class="src"><b>个人主页（未来）</b>(i)</div><div class="arrow">→</div><div class="subject">E0·R0 个人主页</div><div class="atoms-hint">名片 + 成就墙 + 照片/视频集</div></div>
     </div>
     <p class="lede" style="font-size:13px;margin-top:14px">注：火柴人既是“课后报告”里的可选<b>原子</b>，也因入口 (d) 可作为媒体资产单独分享——同一积木，两种调用，正是原子化架构的意义。</p>
   </section>
@@ -362,6 +369,21 @@
       <div class="tier"><div class="tl">L1 · Default</div><h3>默认模板</h3><p>发起分享即出图，替用户做好强意见决策。</p><div class="cost">决策成本 · 0 步</div></div>
       <div class="tier"><div class="tl">L2 · Curated</div><h3>精选模板 2~4 个</h3><p>每主体预设几个常见原子组合 + 版式，横滑切换。</p><div class="cost">决策成本 · 1 步</div></div>
       <div class="tier"><div class="tl">L3 · Custom</div><h3>高阶自由勾选</h3><p>菜单式勾选原子，入口收敛在模板列表末位“自定义”。</p><div class="cost">决策成本 · N 步 · 自愿进入</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">第 ③ 层词汇 / Format Vocabulary</div>
+    <h2>表现形式词汇表</h2>
+    <p class="lede">原子渲染时可用的表现形式是有限词汇，与数据绑定正交：形式决定“长什么样”，绑定决定“装什么数据”。模板 = 原子组合 × 每个原子选定的形式。</p>
+    <div class="atoms" style="margin-top:18px">
+      <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>数字 Number</div><div class="ad">大数字 · 宫格指标 · 计数 —— A1 A2</div></div>
+      <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>图表 Chart</div><div class="ad">趋势线 · 对比条 · 雷达 · 热力着色 —— A3 C3 B2</div></div>
+      <div class="atom"><div class="an"><span class="dot" style="background:var(--miss)"></span>照片 Photo</div><div class="ad">氛围图 · 自拍 · 封面 —— D1 B3 B4</div></div>
+      <div class="atom"><div class="an"><span class="dot" style="background:var(--miss)"></span>视频 Video</div><div class="ad">高光片段 · 动态回放 —— D2</div></div>
+      <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>徽章 Badge</div><div class="ad">勋章 · 评级字母 · 里程碑 —— C4</div></div>
+      <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>可视化指标 Visual Metric</div><div class="ad">进度环 · 六边形 PPS · 打卡点阵 —— C4 A2</div></div>
+      <div class="atom diff"><div class="an">数字人 Digital Human</div><div class="ad">火柴人姿态 · 未来 3D avatar / 数字分身 —— C1</div></div>
     </div>
   </section>
 
@@ -382,6 +404,10 @@
         <p>自拍氛围图 · 高光动作视频</p><div class="tags"><span class="tag warn">部分</span><span class="tag">中意愿</span></div></div>
       <div class="card subj"><div class="st"><h3>官方内容卡 <span class="atoms-hint mono">E1/E2·R0</span></h3><span class="pri p2">P2</span></div>
         <p>动作卡 / 课程卡，落公域 H5</p><div class="tags"><span class="tag miss">缺</span><span class="tag">低意愿 · 高引流</span></div></div>
+      <div class="card subj"><div class="st"><h3>教练卡 / 师徒关系 <span class="atoms-hint mono">E4·R0/R2</span></h3><span class="pri p2">P2</span></div>
+        <p>教练介绍 + 我跟练 N 节 / 时长（"分享老师国内肯定会有"）</p><div class="tags"><span class="tag miss">缺</span><span class="tag">中意愿 · 关系叙事</span></div></div>
+      <div class="card subj"><div class="st"><h3>个人主页 <span class="atoms-hint mono">E0·R0</span></h3><span class="pri p2">未来</span></div>
+        <p>名片 · 照片/视频集 · 成就墙（依赖社区/主页功能）</p><div class="tags"><span class="tag miss">缺 · 占位</span><span class="tag">中意愿</span></div></div>
     </div>
   </section>
 
@@ -403,6 +429,7 @@
         <div class="atom"><div class="an"><span class="dot" style="background:var(--heat)"></span>肌肉热力图</div><div class="ad">练到的肌群着色 · 主/次肌 · 正/侧视图</div></div>
         <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>动作卡</div><div class="ad">动作“名片”（类武将卡），链公域动作库</div></div>
         <div class="atom"><div class="an"><span class="dot" style="background:var(--miss)"></span>课程卡</div><div class="ad">官方课程简介卡，链公域课程库</div></div>
+        <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>教练卡</div><div class="ad">教练/老师名片；R2 叠加我×教练关系（跟练 N 节/时长）</div></div>
       </div></div>
 
       <div class="atomgroup"><h3>差异化 / AI 类 · Moat ★</h3><div class="atoms">
