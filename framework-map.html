@@ -321,6 +321,11 @@
             <td><span class="cellcode">E6·R1</span><b>本次用它练的记录</b></td>
             <td><span class="cellcode">E6·R2</span><b>我 × 器械的关系</b>最爱的哑铃：用过 N 次 · 练过啥</td>
             <td><span class="cellcode">E6·R3</span><b>器械里程碑</b>如“杠铃 10 吨俱乐部”</td></tr>
+          <tr><th>E7 动作模式</th>
+            <td><span class="cellcode">E7·R0</span><b>模式科普卡</b>上肢推/拉 · 蹲 · 髋铰链 · 定义+代表动作</td>
+            <td><span class="cellcode">E7·R1</span><b>本次模式分布</b>“今天全是推”</td>
+            <td><span class="cellcode">E7·R2</span><b>我的模式平衡</b>推拉比 · 容量占比 · 欠练模式</td>
+            <td><span class="cellcode">E7·R3</span><b>均衡评级</b>PPS 六边形徽章</td></tr>
           <tr><th>E0 全局（我）</th>
             <td><span class="cellcode">E0·R0 · 未来</span><b>个人主页</b>名片 · 照片/视频集 · 成就墙</td>
             <td><span class="cellcode">E0·R1</span><b>单次自由训练</b></td>
@@ -332,7 +337,7 @@
     <div class="legend">
       <span>动力梯度：R1 &gt; R3 ≈ R2 &gt; R0（实例最有动力；内容态动力弱、引流价值最高）</span>
     </div>
-    <p class="lede" style="font-size:13px;margin-top:12px">高光影像/火柴人动态 = 依附任意 R1 实例的<b>媒体资产</b>，可切出单独分享；数据导出（给 Agent）= 任意格子换 Markdown/CSV 载体输出，属第④层 Pro 变体。<br><b>实体轴是开放的</b>：产品内任何“名词”补一行关系态即可成为分享体——E5/E6 正是原子化产品的独有优势，别家拿不出“我和这只哑铃的关系”。</p>
+    <p class="lede" style="font-size:13px;margin-top:12px">高光影像/火柴人动态 = 依附任意 R1 实例的<b>媒体资产</b>，可切出单独分享；数据导出（给 Agent）= 任意格子换 Markdown/CSV 载体输出，属第④层 Pro 变体。<br><b>实体轴是开放的，且分两类</b>：对象实体（E1~E4，具体的东西/人）与分类实体（E5~E7：肌肉·器械·模式，给动作打标签的维度）。分类实体的 R2 天然是“平衡/覆盖”类叙事（推拉比、肌群热度、器械偏好）——原子化产品的独有优势，别家拿不出“我和这只哑铃的关系”。E7 也是 PPS 六边形、体适能雷达的数据地基。</p>
   </section>
 
   <section>
@@ -369,6 +374,7 @@
       <div class="brow"><div class="src"><b>个人主页（未来）</b>(i)</div><div class="arrow">→</div><div class="subject">E0·R0 个人主页</div><div class="atoms-hint">名片 + 成就墙 + 照片/视频集</div></div>
       <div class="brow"><div class="src"><b>肌肉字典 / 肌群详情页</b>(j)</div><div class="arrow">→</div><div class="subject">E5·R0 肌肉卡<br><span class="atoms-hint">有训练史可切 E5·R2</span></div><div class="atoms-hint">肌肉卡 + 热力图(解剖态) + 历史</div></div>
       <div class="brow"><div class="src"><b>器械详情页</b>(k)</div><div class="arrow">→</div><div class="subject">E6·R0 器械卡<br><span class="atoms-hint">用过可切 E6·R2</span></div><div class="atoms-hint">器械卡 + 使用历史</div></div>
+      <div class="brow"><div class="src"><b>模式统计 / 体适能报告视图</b>(l)</div><div class="arrow">→</div><div class="subject">E7·R2 模式平衡</div><div class="atoms-hint">模式卡（PPS 六边形 / 推拉比）</div></div>
     </div>
     <p class="lede" style="font-size:13px;margin-top:14px">注：火柴人既是“课后报告”里的可选<b>原子</b>，也因入口 (d) 可作为媒体资产单独分享——同一积木，两种调用，正是原子化架构的意义。</p>
   </section>
@@ -420,8 +426,8 @@
         <p>教练介绍 + 我跟练 N 节 / 时长（"分享老师国内肯定会有"）</p><div class="tags"><span class="tag miss">缺</span><span class="tag">中意愿 · 关系叙事</span></div></div>
       <div class="card subj"><div class="st"><h3>个人主页 <span class="atoms-hint mono">E0·R0</span></h3><span class="pri p2">未来</span></div>
         <p>名片 · 照片/视频集 · 成就墙（依赖社区/主页功能）</p><div class="tags"><span class="tag miss">缺 · 占位</span><span class="tag">中意愿</span></div></div>
-      <div class="card subj"><div class="st"><h3>肌肉 / 器械关系 <span class="atoms-hint mono">E5/E6·R2</span></h3><span class="pri p2">P2</span></div>
-        <p>肱二头肌练过 N 动作 · 最爱的哑铃用过 N 次（原子化独有）</p><div class="tags"><span class="tag miss">缺（数据部分已有）</span><span class="tag">中意愿 · 独有</span></div></div>
+      <div class="card subj"><div class="st"><h3>肌肉 / 器械 / 模式关系 <span class="atoms-hint mono">E5/E6/E7·R2</span></h3><span class="pri p2">P2</span></div>
+        <p>肱二头肌练过 N 动作 · 最爱的哑铃用过 N 次 · 推拉比（原子化独有）</p><div class="tags"><span class="tag miss">缺（数据部分已有/可算）</span><span class="tag">中意愿 · 专业向 · 独有</span></div></div>
     </div>
   </section>
 
@@ -446,6 +452,7 @@
         <div class="atom"><div class="an"><span class="dot" style="background:var(--warn)"></span>教练卡</div><div class="ad">教练/老师名片；R2 叠加我×教练关系（跟练 N 节/时长）</div></div>
         <div class="atom diff"><div class="an">肌肉卡</div><div class="ad">肌群名片：解剖科普 + 我的历史（N 动作/N 次/总容量）</div></div>
         <div class="atom diff"><div class="an">器械卡</div><div class="ad">器械名片：用法 + 我的关系（用过 N 次、练过啥）</div></div>
+        <div class="atom diff"><div class="an">模式卡</div><div class="ad">动作模式名片：定义 + 我的平衡（推拉比、容量占比）</div></div>
       </div></div>
 
       <div class="atomgroup"><h3>差异化 / AI 类 · Moat ★</h3><div class="atoms">
