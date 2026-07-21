@@ -1,0 +1,251 @@
+<title>分享模板总目录 · Template Catalog v1.0</title>
+<style>
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px 100px;}
+  section{margin-top:52px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:70ch;font-size:14px;margin:6px 0 0;}
+  .mono{font-family:var(--mono);}
+  header{padding:50px 0 24px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(25px,4.2vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+
+  /* grid constants strip */
+  .constants{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .const{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 14px;box-shadow:var(--shadow);font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .const b{color:var(--acc-ink);}
+
+  table{border-collapse:collapse;width:100%;font-size:12.5px;background:var(--surface);}
+  th,td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap;}
+  thead th{background:var(--surface-2);font-size:11.5px;border-bottom:1.5px solid var(--line-strong);}
+  tbody th{text-align:left;font-size:12.5px;}
+  tbody th small{display:block;font-family:var(--mono);font-size:10px;color:var(--faint);font-weight:500;}
+  td.def{color:var(--acc-ink);font-weight:700;}
+  td.sup{color:var(--muted);}
+  td.na{color:var(--line-strong);}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);}
+  .sec-status{font-family:var(--mono);font-size:10.5px;font-weight:700;border-radius:var(--r-sm);padding:2px 8px;vertical-align:middle;margin-left:8px;}
+  .st-p0{background:var(--acc);color:var(--on-acc);} .st-p1{background:var(--acc-soft);color:var(--acc-ink);border:1px solid var(--acc);}
+  .st-p2{background:var(--surface-2);color:var(--muted);border:1px solid var(--line-strong);} .st-h{border:1px dashed var(--line-strong);color:var(--faint);background:none;}
+
+  /* template cards */
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:16px;}
+  .tcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:13px 14px;display:flex;flex-direction:column;gap:9px;}
+  .tcard.moat{border-color:var(--acc);}
+  .thead2{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .tid{font-family:var(--mono);font-size:11px;font-weight:700;background:var(--ink);color:var(--bg);padding:2px 7px;border-radius:var(--r-sm);}
+  .tcard.moat .tid{background:var(--acc);color:var(--on-acc);}
+  .tname{font-weight:700;font-size:13.5px;flex:1;}
+  .tcell{font-family:var(--mono);font-size:10px;color:var(--faint);}
+  .stackbox{display:flex;gap:10px;align-items:flex-start;}
+  .ministack{width:78px;flex:none;background:var(--canvas);border:1.2px solid var(--line-strong);border-radius:var(--r-sm);padding:4px;display:flex;flex-direction:column;gap:3px;}
+  .mblk{border:1px dashed var(--wire);border-radius:var(--r-sm);display:grid;place-items:center;background:var(--surface);
+    font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.02em;min-height:10px;}
+  .mblk.L{border-color:var(--acc);color:var(--acc-ink);font-weight:700;}
+  .mblk.bleed{background:var(--acc-soft);border-style:solid;}
+  .ledger{flex:1;font-family:var(--mono);font-size:10.5px;color:var(--muted);line-height:1.7;}
+  .ledger b{color:var(--acc-ink);}
+  .ratios{display:flex;flex-wrap:wrap;gap:5px;}
+  .rc{font-family:var(--mono);font-size:9.5px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:1px 6px;color:var(--muted);}
+  .rc.def{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .tnote{font-size:11px;color:var(--faint);font-family:var(--mono);line-height:1.55;}
+  .callout{border-left:3px solid var(--acc);background:var(--surface);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);margin:16px 0 0;font-size:13.5px;color:var(--muted);}
+  .callout b{color:var(--ink);}
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">⚛ Body Park Atom · 分享模块 · 模板注册表</div>
+    <h1>分享模板总目录 <span style="color:var(--acc-ink)">Template Catalog</span></h1>
+    <div class="meta">
+      <span class="mchip hot">v1.0 穷举版</span><span class="mchip">17 现役 + 4 预留</span>
+      <span class="mchip">手机端优先 · 默认档 = 拇指滑到就能发</span><span class="mchip">2026-07-17</span>
+    </div>
+    <p class="lede" style="margin-top:14px">全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的<b>网格标准</b>（默认比例档）；切其他比例只换高度预算与降档，规则见 grid-spec。此目录的数据结构 = 工程模板注册表 JSON 的雏形。</p>
+    <div class="constants">
+      <div class="const">逻辑宽 <b>360pt</b> · 导出 @3x</div>
+      <div class="const">边距 <b>24</b> · 原子缝 <b>16</b> · 纵向 <b>8pt</b> 节奏</div>
+      <div class="const">高度档 <b>S</b> 56-88 / <b>M</b> 96-152 / <b>L</b> 弹性·每图一个</div>
+      <div class="const">出血权仅 <b>D 类</b> · G1 图片必带</div>
+      <div class="const">预算 3:4 <b>432</b> / 1:1 <b>312</b> / 4:5 <b>402</b> / 9:16 <b>440</b> / 长图 <b>∞</b></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow">01 / 总览矩阵</div>
+    <h2>模板 × 比例 可用性</h2>
+    <p class="lede">● 默认档（手机端一键出图用它）· ○ 支持 · — 不提供。</p>
+    <div class="scroll" style="margin-top:14px"><table id="matrix"></table></div>
+  </section>
+
+  <div id="groups"></div>
+
+  <section>
+    <div class="callout"><b>给设计的读法</b>：一个模板 = 一张 Figma 画板（360pt 宽 × 默认档高度），内部按账本放原子 Frame。同一原子在不同模板中是<b>同一个组件的实例</b>（变体=绑定态×尺寸档）——先做完 21 个原子组件，17 个模板就是拼装工作。<br><b>给工程的读法</b>：本页每张卡 ≈ <span class="mono">{id, cell, layout, atoms:[{code,h}], ratios}</span> 一条注册表记录；新模板=加记录，不加代码。</div>
+  </section>
+
+  <footer><span>分享模板总目录 v1.0 · 17+4</span><span>新场景 = 配置，不是开发</span></footer>
+</div>
+
+<script>
+(function(){
+  var RATIOS=['3:4','1:1','4:5','9:16','长图'];
+  // stack: [code, heightPt, flags] flags: L=flex protagonist, B=bleed
+  var GROUPS=[
+    {name:'E2·R1 课后报告',status:'P0',note:'Phase 2 上线 · 深钻中',
+     tpls:[
+      {id:'T1',name:'战报短图',def:'3:4',ratios:['3:4','1:1','4:5','9:16'],moat:false,
+       stack:[['A1↓',96],['B2·L',228,'L'],['G1',56]],budget:432,
+       note:'默认模板；1:1 时 B2 降单人 128、A1 保单行'},
+      {id:'T2',name:'完整长图',def:'长图',ratios:['长图'],moat:false,
+       stack:[['A1',144],['B2',240],['B1',248],['G1',56]],budget:784,
+       note:'有点有面完整战报；B1 超 12 动作分段折叠'},
+      {id:'T3',name:'AI 特色版',def:'3:4',ratios:['3:4','9:16'],moat:true,
+       stack:[['C1·L',256,'L'],['C2',88],['G1',56]],budget:432,
+       note:'火柴人主角；仅当本次有 AI 识别数据时出现'},
+      {id:'T4',name:'极简晒图',def:'3:4',ratios:['3:4','1:1','9:16'],moat:false,
+       stack:[['D1·L',272,'LB'],['A4',72],['G1',56]],budget:432,
+       note:'D1 通栏出血 + 一个大数字；情绪价值路线'}
+     ]},
+    {name:'E0·R2 周期打卡',status:'P1',note:'Phase 3',
+     tpls:[
+      {id:'T5',name:'周打卡短图',def:'3:4',ratios:['3:4','1:1','9:16'],moat:false,
+       stack:[['A2',120],['B2覆盖·L',224,'L'],['G1',56]],budget:432,
+       note:'B2 用 R2 覆盖态着色（常练/欠练）'},
+      {id:'T6',name:'周期长图',def:'长图',ratios:['长图'],moat:false,
+       stack:[['A2',120],['A3',88],['B2覆盖',200],['B1 TopN',136],['G1',56]],budget:712,
+       note:'月/年总结；B1 收敛为高频动作 Top N'},
+      {id:'T7',name:'里程碑数字版',def:'3:4',ratios:['3:4','1:1'],moat:false,
+       stack:[['D1·L',272,'LB'],['A4',72],['G1',56]],budget:432,
+       note:'与 T4 同构，数据换 streak/累计（连续 30 天）'}
+     ]},
+    {name:'E1·R1/R2 单动作',status:'P1',note:'Phase 3',
+     tpls:[
+      {id:'T8',name:'动作卡',def:'3:4',ratios:['3:4','1:1'],moat:false,
+       stack:[['B3',180],['B2解剖·L',164,'L'],['G1',56]],budget:432,
+       note:'类武将卡；B2 解剖态（主动/协同肌）'},
+      {id:'T9',name:'动作历史长图',def:'长图',ratios:['长图'],moat:false,
+       stack:[['B3',180],['A3',88],['B1 历史',200],['G1',56]],budget:620,
+       note:'历史记录 + PB 曲线'},
+      {id:'T10',name:'火柴人动作版',def:'3:4',ratios:['3:4','9:16'],moat:true,
+       stack:[['C1·L',256,'L'],['C2',88],['G1',56]],budget:432,
+       note:'与 T3 同构，作用域=单动作'}
+     ]},
+    {name:'E0·R3 成就（占位）',status:'P1',note:'依赖成就体系补全',
+     tpls:[
+      {id:'T11',name:'成就徽章卡',def:'1:1',ratios:['1:1','3:4','9:16'],moat:true,
+       stack:[['C4·L',152,'L'],['A4',72],['G1',56]],budget:312,
+       note:'徽章天然方形，默认 1:1'},
+      {id:'T12',name:'体适能雷达卡',def:'3:4',ratios:['3:4','1:1'],moat:true,
+       stack:[['C3·L',248,'L'],['A2',96],['G1',56]],budget:432,
+       note:'游戏化雷达；"每练一次涨一点"'}
+     ]},
+    {name:'R0 内容卡 + 关系实体',status:'P2',note:'Phase 3/4 · 链公域 H5',
+     tpls:[
+      {id:'T13',name:'课程推荐卡',def:'3:4',ratios:['3:4','1:1'],moat:false,
+       stack:[['B4·L',360,'L'],['G1',56]],budget:432,note:'E2·R0；封面+简介，扫码落课程库'},
+      {id:'T14',name:'教练卡',def:'3:4',ratios:['3:4','1:1'],moat:false,
+       stack:[['B5·L',360,'L'],['G1',56]],budget:432,note:'E4·R0/R2；有跟练史叠关系行'},
+      {id:'T15',name:'肌肉关系卡',def:'3:4',ratios:['3:4','1:1'],moat:true,
+       stack:[['B6',200],['B2 zoom·L',144,'L'],['G1',56]],budget:432,note:'E5·R2；"我×肱二头肌的历史"'},
+      {id:'T16',name:'器械关系卡',def:'3:4',ratios:['3:4','1:1'],moat:true,
+       stack:[['B7·L',360,'L'],['G1',56]],budget:432,note:'E6·R2；"我最爱的哑铃"'},
+      {id:'T17',name:'模式平衡卡',def:'1:1',ratios:['1:1','3:4'],moat:true,
+       stack:[['B8·L',240,'L'],['G1',56]],budget:312,note:'E7·R2；PPS 六边形 + 推拉比'}
+     ]},
+    {name:'健康域预留 🔮',status:'H',note:'随数据域上线自动激活',
+     tpls:[
+      {id:'TH1',name:'体重趋势卡',def:'3:4',ratios:['3:4','1:1'],moat:false,
+       stack:[['H1·L',360,'L'],['G1',56]],budget:432,note:'E8·R2；默认只显变化量（谨慎级隐私）'},
+      {id:'TH2',name:'睡眠卡',def:'3:4',ratios:['3:4','1:1'],moat:false,
+       stack:[['H4·L',360,'L'],['G1',56]],budget:432,note:'E11·R1/R2；结构图+时长'},
+      {id:'TH3',name:'跑步路线卡',def:'3:4',ratios:['3:4','9:16'],moat:false,
+       stack:[['H5·L',272,'L'],['H7',88],['G1',56]],budget:432,note:'E10·R1；路线注意起终点脱敏'},
+      {id:'TH4',name:'饮食打卡卡',def:'1:1',ratios:['1:1','3:4'],moat:false,
+       stack:[['H3·L',168,'LB'],['H2',72],['G1',56]],budget:312,note:'E9·R1；照片出血 + 营养摘要'}
+     ]}
+  ];
+
+  /* master matrix */
+  var mt=document.getElementById('matrix');
+  var thead='<thead><tr><th style="text-align:left">模板</th>'+RATIOS.map(function(r){return '<th>'+r+'</th>';}).join('')+'<th>状态</th></tr></thead>';
+  var rows='';
+  GROUPS.forEach(function(g){
+    g.tpls.forEach(function(t){
+      rows+='<tr><th>'+t.id+' '+t.name+'<small>'+g.name+'</small></th>';
+      RATIOS.forEach(function(r){
+        if(t.def===r) rows+='<td class="def">●</td>';
+        else if(t.ratios.indexOf(r)>=0) rows+='<td class="sup">○</td>';
+        else rows+='<td class="na">—</td>';
+      });
+      var sc={'P0':'st-p0','P1':'st-p1','P2':'st-p2','H':'st-h'}[g.status];
+      rows+='<td><span class="sec-status '+sc+'">'+(g.status==='H'?'预留':g.status)+'</span></td></tr>';
+    });
+  });
+  mt.innerHTML=thead+'<tbody>'+rows+'</tbody>';
+
+  /* group sections */
+  var wrap=document.getElementById('groups');
+  var secIdx=2;
+  GROUPS.forEach(function(g){
+    var sec=document.createElement('section');
+    var sc={'P0':'st-p0','P1':'st-p1','P2':'st-p2','H':'st-h'}[g.status];
+    sec.innerHTML='<div class="eyebrow">0'+secIdx+' / '+g.name+'</div>'+
+      '<h2>'+g.name.split(' ')[0]+' 模板组 <span class="sec-status '+sc+'">'+(g.status==='H'?'预留':g.status)+'</span></h2>'+
+      '<p class="lede">'+g.note+'</p><div class="tgrid"></div>';
+    var grid=sec.querySelector('.tgrid');
+    g.tpls.forEach(function(t){
+      var card=document.createElement('div');
+      card.className='tcard'+(t.moat?' moat':'');
+      var scale=0.32;
+      var stackHtml=t.stack.map(function(s){
+        var cls='mblk'+((s[2]||'').indexOf('L')>=0?' L':'')+((s[2]||'').indexOf('B')>=0?' bleed':'');
+        return '<div class="'+cls+'" style="height:'+Math.max(10,Math.round(s[1]*scale))+'px">'+s[0]+'</div>';
+      }).join('');
+      var ledger=t.stack.map(function(s){return s[0]+' <b>'+s[1]+'</b>';}).join(' + 缝16 + ');
+      var ratioHtml=[t.def].concat(t.ratios.filter(function(r){return r!==t.def;}))
+        .map(function(r,i){return '<span class="rc'+(i===0?' def':'')+'">'+r+(i===0?' 默认':'')+'</span>';}).join('');
+      card.innerHTML='<div class="thead2"><span class="tid">'+t.id+'</span><span class="tname">'+t.name+'</span><span class="tcell">'+(t.def==='长图'?'不限高':'预算 '+t.budget)+'</span></div>'+
+        '<div class="stackbox"><div class="ministack">'+stackHtml+'</div>'+
+        '<div class="ledger">'+ledger+'<br><span style="color:var(--faint)">'+(t.def==='长图'?'总高 '+t.budget+'pt（内容驱动）':'= '+t.budget+'pt ✓')+'</span></div></div>'+
+        '<div class="ratios">'+ratioHtml+'</div>'+
+        '<div class="tnote">'+t.note+'</div>';
+      grid.appendChild(card);
+    });
+    wrap.appendChild(sec);
+    secIdx++;
+  });
+})();
+</script>
