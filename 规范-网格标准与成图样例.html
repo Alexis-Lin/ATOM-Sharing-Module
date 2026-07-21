@@ -1,53 +1,258 @@
-<title>分享成图样例集 · Samples</title>
+<title>规范 · 网格标准与成图样例</title>
 <style>
   :root{
-    --u:1px;
-    --cbg:#FFFFFF; --cink:#141712; --cmut:#6B7266; --cfnt:#9AA294; --cln:#ECEFE9;
-    --cacc:#6FCC1B; --caccink:#47940B;
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
   }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
   *{box-sizing:border-box}
-  body{margin:0;background:#EDEFEA;padding-top:0;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    display:flex;flex-wrap:wrap;gap:40px;padding:40px;align-items:flex-start;}
-  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 100px;}
+  section{margin-top:54px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  h3{font-size:15px;font-weight:700;margin:18px 0 6px;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:68ch;font-size:14px;margin:6px 0 0;}
+  .mono{font-family:var(--mono);}
+  code{font-family:var(--mono);font-size:.92em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+  header{padding:50px 0 24px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(25px,4.2vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:var(--surface);}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;white-space:nowrap;}
+  thead th{background:var(--surface-2);font-size:12px;border-bottom:1.5px solid var(--line-strong);}
+  td.wr{white-space:normal;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);}
+  ul{margin:6px 0;padding-left:20px;} li{margin:4px 0;font-size:13.5px;color:var(--muted);} li b{color:var(--ink);}
+  .callout{border-left:3px solid var(--acc);background:var(--surface);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);margin:14px 0;font-size:13.5px;color:var(--muted);}
+  .callout b{color:var(--ink);}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;box-shadow:var(--shadow);}
+  .grid2{display:grid;gap:12px;grid-template-columns:1fr 1fr;}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr;}}
+  .mnum{font-family:var(--mono);font-weight:700;color:var(--acc-ink);}
 
-  .shot{width:calc(var(--u)*360);background:var(--cbg);box-shadow:0 2px 6px rgba(20,25,35,.08),0 16px 40px -18px rgba(20,25,35,.25);
-    display:flex;flex-direction:column;color:var(--cink);flex:none;overflow:hidden;}
-  .pad{padding:calc(var(--u)*24);display:flex;flex-direction:column;gap:calc(var(--u)*16);flex:1;}
-  .atom{display:flex;flex-direction:column;flex:none;}
-  .t-title{font-size:calc(var(--u)*18);line-height:calc(var(--u)*24);font-weight:700;letter-spacing:-.01em;}
-  .t-numXL{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*44);line-height:calc(var(--u)*48);font-weight:700;font-variant-numeric:tabular-nums;}
-  .t-numL{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*28);line-height:calc(var(--u)*32);font-weight:700;font-variant-numeric:tabular-nums;}
-  .t-numM{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*18);line-height:calc(var(--u)*24);font-weight:700;font-variant-numeric:tabular-nums;}
-  .t-body{font-size:calc(var(--u)*13);line-height:calc(var(--u)*20);}
-  .t-lab{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*10);line-height:calc(var(--u)*16);letter-spacing:.06em;text-transform:uppercase;color:var(--cfnt);font-weight:600;}
-  .row{display:flex;align-items:center;gap:calc(var(--u)*8);}
-  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*12);}
-  .tile .t-lab{margin-top:calc(var(--u)*4);}
-  .exrow{display:flex;align-items:center;height:calc(var(--u)*32);border-bottom:1px solid var(--cln);}
-  .exrow:last-of-type{border-bottom:0;}
-  .exrow .nm{font-size:calc(var(--u)*13);}
-  .exrow .st{margin-left:auto;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*12);font-variant-numeric:tabular-nums;color:var(--cmut);}
-  .exrow .dot{width:calc(var(--u)*6);height:calc(var(--u)*6);border-radius:50%;background:var(--cacc);margin-right:calc(var(--u)*8);flex:none;}
-  .exrow .dot.sub{background:var(--cln);}
-  .fold{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*10);color:var(--cfnt);text-align:center;height:calc(var(--u)*24);display:grid;place-items:center;letter-spacing:.06em;}
-  .legend{display:flex;gap:calc(var(--u)*14);justify-content:center;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*10);color:var(--cmut);}
-  .legend span{display:inline-flex;align-items:center;gap:calc(var(--u)*5);}
-  .sw{width:calc(var(--u)*10);height:calc(var(--u)*10);border-radius:2px;background:var(--cacc);display:inline-block;}
-  .figs{display:flex;gap:calc(var(--u)*28);justify-content:center;flex:1;align-items:center;}
-  .g1{display:flex;flex-direction:row;align-items:center;gap:calc(var(--u)*12);height:calc(var(--u)*56);border-top:1px solid var(--cln);padding-top:calc(var(--u)*12);}
-  .g1 .brandln{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-weight:700;font-size:calc(var(--u)*12);letter-spacing:.14em;}
-  .g1 .slog{font-size:calc(var(--u)*10);color:var(--cfnt);font-family:ui-monospace,"SF Mono",Menlo,monospace;letter-spacing:.03em;}
-  .tips{display:flex;flex-direction:column;gap:calc(var(--u)*6);}
-  .tips .tr{display:flex;gap:calc(var(--u)*8);align-items:baseline;font-size:calc(var(--u)*12.5);line-height:calc(var(--u)*18);}
-  .tips .ic{font-family:ui-monospace,monospace;font-size:calc(var(--u)*11);font-weight:700;color:var(--caccink);flex:none;}
-  .scorechip{font-family:ui-monospace,monospace;font-size:calc(var(--u)*11);font-weight:700;background:var(--cacc);color:#10240A;border-radius:2px;padding:calc(var(--u)*1) calc(var(--u)*8);}
+  /* canvas demos */
+  .canvases{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-end;margin-top:20px;justify-content:center;}
+  .cv{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .cv .cl{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em;text-align:center;line-height:1.5;}
+  .frame{position:relative;background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:var(--r-sm);overflow:hidden;
+    background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 7px,color-mix(in srgb,var(--wire) 22%,transparent) 7px,color-mix(in srgb,var(--wire) 22%,transparent) 8px);}
+  .frame .margin{position:absolute;inset:0;border:12px solid color-mix(in srgb,var(--acc) 10%,transparent);pointer-events:none;}
+  .frame .cols{position:absolute;top:12px;bottom:12px;left:12px;right:12px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;pointer-events:none;}
+  .frame .cols i{background:color-mix(in srgb,var(--acc) 7%,transparent);}
+  .frame .safe{position:absolute;left:0;right:0;background:repeating-linear-gradient(45deg,transparent 0 4px,color-mix(in srgb,var(--ink) 12%,transparent) 4px 6px);pointer-events:none;}
+  .stack{position:absolute;top:12px;left:12px;right:12px;bottom:12px;display:flex;flex-direction:column;gap:8px;}
+  .atomblk{border:1.2px dashed var(--wire);border-radius:var(--r-sm);background:color-mix(in srgb,var(--surface) 82%,transparent);position:relative;display:grid;place-items:center;}
+  .atomblk .t{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.05em;}
+  .atomblk.grow{flex:1;}
+  .atomblk.hotb{border-color:var(--acc);}
+  .dim{position:absolute;font-family:var(--mono);font-size:9px;color:var(--acc-ink);background:var(--bg);padding:0 4px;border-radius:var(--r-sm);}
+
+  /* seam anatomy */
+  .anatomy{display:flex;justify-content:center;margin-top:18px;}
+  .anat{width:min(420px,100%);background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:var(--r-sm);padding:24px;position:relative;display:flex;flex-direction:column;gap:16px;}
+  .anat .ab{border:1.5px dashed var(--wire);border-radius:var(--r-sm);background:var(--surface);padding:16px;position:relative;}
+  .anat .hd{height:24px;display:flex;align-items:center;gap:8px;}
+  .anat .ph{height:8px;border-radius:var(--r-sm);background:var(--wire);opacity:.55;}
+  .anat .lab{position:absolute;font-family:var(--mono);font-size:10px;color:var(--acc-ink);background:var(--bg);padding:0 5px;border-radius:var(--r-sm);white-space:nowrap;}
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 </style>
-<div id="bar" style="position:fixed;top:0;left:0;right:0;z-index:9;background:#141712;color:#E9ECE6;display:flex;align-items:center;gap:16px;padding:10px 24px;font:12px ui-monospace,Menlo,monospace;letter-spacing:.05em">
-  <b>BODY PARK · 成图样例集</b><span style="opacity:.6">宽度统一 360pt · 手机端优先</span>
-  <label style="margin-left:auto;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="capToggle" checked> 显示装箱标注</label>
-</div>
-<div style="height:44px;width:100%"></div>
 
+<div class="wrap">
+  <header>
+    <div class="brand">⚛ Body Park Atom · 分享模块 · 锚 2</div>
+    <h1>分享画布网格规范 <span style="color:var(--acc-ink)">Canvas Grid</span></h1>
+    <div class="meta">
+      <span class="mchip hot">v0.1</span><span class="mchip">从输出尺寸倒推</span><span class="mchip">单位：pt（逻辑）@3x 导出 px</span><span class="mchip">2026-07-17</span>
+    </div>
+    <p class="lede" style="margin-top:14px">工作法三锚之二。核心决策：<b>统一逻辑宽度 360pt</b>——原子都是全宽横条，平台比例差异被归约为"高度预算"问题；所有间距落在 4pt 基准网格上，纵向节奏 8pt。</p>
+  </header>
+
+  <!-- 1 sizes -->
+  <section>
+    <div class="eyebrow">01 / 输出尺寸（倒推起点）</div>
+    <h2>平台档位表</h2>
+    <p class="lede">每档共享同一逻辑宽度 360pt；导出 = 矢量重渲染（非位图缩放）。</p>
+    <div class="scroll" style="margin-top:14px">
+      <table>
+        <thead><tr><th>档位</th><th>比例</th><th>逻辑画布 pt</th><th>标准导出 px</th><th>平台再适配</th><th>内容高度预算*</th></tr></thead>
+        <tbody>
+          <tr><td><b>短图 · 默认</b></td><td class="mono">3:4</td><td class="mono">360 × 480</td><td class="mono">1080 × 1440 @3x</td><td class="wr">小红书可重渲 1242×1656（@3.45x）</td><td class="mono">432 pt</td></tr>
+          <tr><td>IG Feed 方图</td><td class="mono">1:1</td><td class="mono">360 × 360</td><td class="mono">1080 × 1080 @3x</td><td>—</td><td class="mono">312 pt</td></tr>
+          <tr><td>IG 竖图</td><td class="mono">4:5</td><td class="mono">360 × 450</td><td class="mono">1080 × 1350 @3x</td><td>—</td><td class="mono">402 pt</td></tr>
+          <tr><td>Story / 状态</td><td class="mono">9:16</td><td class="mono">360 × 640</td><td class="mono">1080 × 1920 @3x</td><td class="wr">上 64 / 下 88 pt 安全区（平台 UI 遮挡）</td><td class="mono">440 pt</td></tr>
+          <tr><td>长图</td><td class="mono">1080 × N</td><td class="mono">360 × 不限</td><td class="mono">1080 宽 @3x</td><td class="wr">高度 &gt;3600px 时分段导出</td><td class="mono">不限</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lede" style="font-size:12.5px;margin-top:10px">* 内容高度预算 = 画布高 − 上下边距 24×2 −（Story 另减安全区）。微信/相册无强制比例，用 3:4 默认档。</p>
+  </section>
+
+  <!-- 2 grid -->
+  <section>
+    <div class="eyebrow">02 / 网格（三档画布同网格）</div>
+    <h2>边距 24 · 6 列 × 42 · 列距 12 · 纵向 8pt 节奏</h2>
+    <div class="canvases">
+      <div class="cv">
+        <div class="frame" style="width:180px;height:240px">
+          <div class="margin"></div>
+          <div class="cols"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="stack">
+            <div class="atomblk" style="height:72px"><span class="t">A1 · M 144pt</span></div>
+            <div class="atomblk grow hotb"><span class="t">B2 · L 弹性</span></div>
+            <div class="atomblk" style="height:28px"><span class="t">G1 · 56pt</span></div>
+          </div>
+        </div>
+        <span class="cl">3:4 短图 · 预算 432<br>= A1 144 + 缝16 + B2 200 + 缝16 + G1 56 ✓</span>
+      </div>
+      <div class="cv">
+        <div class="frame" style="width:180px;height:180px">
+          <div class="margin"></div>
+          <div class="cols"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="stack">
+            <div class="atomblk" style="height:48px"><span class="t">A1↓ 单行 96pt</span></div>
+            <div class="atomblk grow hotb"><span class="t">B2↓ 单人 128pt</span></div>
+            <div class="atomblk" style="height:28px"><span class="t">G1 · 56pt</span></div>
+          </div>
+        </div>
+        <span class="cl">1:1 · 预算 312<br>= 96 + 16 + 128 + 16 + 56 ✓（原子降档）</span>
+      </div>
+      <div class="cv">
+        <div class="frame" style="width:150px;height:266px">
+          <div class="margin"></div>
+          <div class="safe" style="top:0;height:26px"></div>
+          <div class="safe" style="bottom:0;height:36px"></div>
+          <div class="cols"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="stack" style="top:38px;bottom:48px">
+            <div class="atomblk" style="height:56px"><span class="t">A1 144</span></div>
+            <div class="atomblk grow hotb"><span class="t">B2 加大 + 标签</span></div>
+            <div class="atomblk" style="height:20px"><span class="t">G1 56</span></div>
+          </div>
+        </div>
+        <span class="cl">9:16 Story · 预算 440（斜纹=安全区）<br>B2 吃掉富余 → 开第三层级标签</span>
+      </div>
+    </div>
+    <div class="callout"><b>装箱规则（模板 = 高度预算分配）</b>：固定档原子（S/M）先占位 → 弹性档原子（L）吃掉剩余 → 不足时按降档表收缩 → 仍不足则砍最低优先级原子并重排（满格规则）。每格数字必须落在 8pt 节奏上。</div>
+  </section>
+
+  <!-- 3 seam anatomy -->
+  <section>
+    <div class="eyebrow">03 / 原子接缝解剖</div>
+    <h2>原子之间怎么"焊"</h2>
+    <div class="anatomy">
+      <div class="anat">
+        <span class="lab" style="top:4px;left:50%;transform:translateX(-50%)">画布边距 24</span>
+        <div class="ab">
+          <span class="lab" style="top:-8px;right:10px">原子内边距 16</span>
+          <div class="hd"><span class="ph" style="width:40%"></span><span class="ph" style="width:15%;margin-left:auto"></span></div>
+          <span class="lab" style="top:26px;right:-6px;transform:rotate(90deg);transform-origin:right">头行 24</span>
+          <div class="ph" style="width:85%;margin-top:8px"></div>
+          <div class="ph" style="width:60%;margin-top:8px"></div>
+        </div>
+        <span class="lab" style="top:50%;left:50%;transform:translate(-50%,-50%)">原子间缝 16</span>
+        <div class="ab">
+          <div class="hd"><span class="ph" style="width:30%"></span></div>
+          <div class="ph" style="width:70%;margin-top:8px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:18px">
+      <div class="card">
+        <h3 style="margin-top:0">间距只有六个数</h3>
+        <ul>
+          <li><span class="mnum">4</span> 微间距（标签与数值之间）</li>
+          <li><span class="mnum">8</span> 行间 / 元素间（纵向节奏基准）</li>
+          <li><span class="mnum">12</span> 列距 / 宫格间距</li>
+          <li><span class="mnum">16</span> 原子内边距 / 原子间缝</li>
+          <li><span class="mnum">24</span> 画布边距 / 原子头行高</li>
+          <li><span class="mnum">32</span> 章节级留白（仅长图分段用）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">出血权 Bleed ✓ 已决策 07-17</h3>
+        <ul>
+          <li><b>仅 D 类情绪原子（D1 氛围图 / D2 视频）允许通栏出血</b>——打破 24pt 边距直达画布边缘，制造情绪张力（见极简晒图案例）。</li>
+          <li><b>数据/结构/AI 类原子（A/B/C）严格守边距</b>——数据的可信感来自秩序。</li>
+          <li>G1 永远守边距；出血原子内部的文字仍落回 24pt 内容区（出血的是底，不是字）。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">原子高度三档（8 的倍数）</h3>
+        <ul>
+          <li><b>S 固定 56~88</b>：G1(56) · A4(72) · A3(88) · D3(56)</li>
+          <li><b>M 固定 96~152</b>：A1 全宫格 144 / 降档单行 96 · B1 三行 128 · A2(120)</li>
+          <li><b>L 弹性 ≥128</b>：B2 · C1 · D1 · D2 —— 每张图<b>最多一个 L</b>（它就是主角），吃掉剩余预算</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 type rows -->
+  <section>
+    <div class="eyebrow">04 / 行高与字阶（4pt 网格对齐）</div>
+    <h2>分享图专用字阶</h2>
+    <div class="scroll" style="margin-top:14px">
+      <table>
+        <thead><tr><th>角色</th><th>字号/行高 pt</th><th>字体</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Num-XL</td><td class="mono">44 / 48</td><td>Mono 700</td><td class="wr">极简晒图的大数字（T4）——一张图最多一个</td></tr>
+          <tr><td class="mono">Num-L</td><td class="mono">28 / 32</td><td>Mono 700</td><td class="wr">A1 主指标、A3 对比值</td></tr>
+          <tr><td class="mono">Num-M</td><td class="mono">18 / 24</td><td>Mono 700</td><td class="wr">宫格次指标、B1 组次重</td></tr>
+          <tr><td class="mono">Title</td><td class="mono">18 / 24</td><td>CJK 700</td><td class="wr">课程名/标题（A1 头行）</td></tr>
+          <tr><td class="mono">Body</td><td class="mono">13 / 20</td><td>CJK 400</td><td class="wr">AI Tips 正文、鼓励文案</td></tr>
+          <tr><td class="mono">Label</td><td class="mono">10 / 16</td><td>Mono 600 · 字距 .06em</td><td class="wr">指标标签、图例、日期</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul style="margin-top:10px">
+      <li>数字一律 <code>tabular-nums</code>（等宽数字），宫格才对得齐。</li>
+      <li>正文行宽不超过内容区（312pt ≈ 22 个中文字），AI Tips 超长截断到 3 行。</li>
+      <li>字号只允许表中六档——新增档位需过拼装日评审。</li>
+    </ul>
+  </section>
+
+  <!-- 5 rules -->
+  <section>
+    <div class="eyebrow">05 / 落地约定</div>
+    <h2>给设计与工程的三条硬约定</h2>
+    <ul style="margin-top:10px">
+      <li><b>设计稿以 360pt 逻辑宽建画板</b>（Figma 画板 360 宽，导出 @3x）；原子组件即全宽 Frame，高度按 S/M/L 档位；Auto Layout 间距只用六个数。</li>
+      <li><b>工程渲染以 pt 为单位、导出前整体 ×3</b>；小红书档重渲染 @3.45x，禁止位图放大。</li>
+      <li><b>比例切换 = 只改高度预算与降档选择</b>，不改原子内部布局参数——这保证了"切渠道无感"且实现只有一套。</li>
+    </ul>
+    <div class="callout"><b>与既有文档的关系</b>：本规范是 §13.2 工作法的锚 2 落地；B2 规格页（原子-B2肌肉热力图规格）的尺寸档描述从此对齐本表；PRD 04 节交互 Demo 的三档比例即本规范档位表。原子规格页此后新增"高度档位"字段（S/M/L + 具体 pt）。</div>
+  </section>
+
+
+  <section>
+    <div class="eyebrow">06 / 成图样例（按本规范 1:1 装箱 · 假数据）</div>
+    <h2>规范落到图上长什么样</h2>
+    <p class="lede">8 张组合成图（含 1 张反例），固定浅色皮肤（分享图是内容不是界面）。<label style="font-family:var(--mono);font-size:12px;cursor:pointer;margin-left:8px"><input type="checkbox" id="capToggle" checked> 显示装箱标注</label></p>
+    <div class="samplerow">
 <!-- ============ S1 · 1:1 360×360 ============ -->
 <div class="shot" id="s1" style="height:calc(var(--u)*360)">
   <div class="pad">
@@ -287,6 +492,53 @@
   </div>
 </div>
 
+
+    </div>
+  </section>
+  <footer><span>分享画布网格规范 v0.1 · 锚 2</span><span>装箱规则：固定先占位 · 弹性吃剩余 · 不足则降档</span></footer>
+</div>
+
+<style>
+:root{--u:0.58px;--cbg:#FFFFFF;--cink:#141712;--cmut:#6B7266;--cfnt:#9AA294;--cln:#ECEFE9;--cacc:#6FCC1B;--caccink:#47940B;}
+
+  
+  *{box-sizing:border-box}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;}
+
+  .shot{width:calc(var(--u)*360);background:var(--cbg);box-shadow:0 2px 6px rgba(20,25,35,.08),0 16px 40px -18px rgba(20,25,35,.25);
+    display:flex;flex-direction:column;color:var(--cink);flex:none;overflow:hidden;}
+  .pad{padding:calc(var(--u)*24);display:flex;flex-direction:column;gap:calc(var(--u)*16);flex:1;}
+  .atom{display:flex;flex-direction:column;flex:none;}
+  .t-title{font-size:calc(var(--u)*18);line-height:calc(var(--u)*24);font-weight:700;letter-spacing:-.01em;}
+  .t-numXL{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*44);line-height:calc(var(--u)*48);font-weight:700;font-variant-numeric:tabular-nums;}
+  .t-numL{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*28);line-height:calc(var(--u)*32);font-weight:700;font-variant-numeric:tabular-nums;}
+  .t-numM{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*18);line-height:calc(var(--u)*24);font-weight:700;font-variant-numeric:tabular-nums;}
+  .t-body{font-size:calc(var(--u)*13);line-height:calc(var(--u)*20);}
+  .t-lab{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*10);line-height:calc(var(--u)*16);letter-spacing:.06em;text-transform:uppercase;color:var(--cfnt);font-weight:600;}
+  .row{display:flex;align-items:center;gap:calc(var(--u)*8);}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*12);}
+  .tile .t-lab{margin-top:calc(var(--u)*4);}
+  .exrow{display:flex;align-items:center;height:calc(var(--u)*32);border-bottom:1px solid var(--cln);}
+  .exrow:last-of-type{border-bottom:0;}
+  .exrow .nm{font-size:calc(var(--u)*13);}
+  .exrow .st{margin-left:auto;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*12);font-variant-numeric:tabular-nums;color:var(--cmut);}
+  .exrow .dot{width:calc(var(--u)*6);height:calc(var(--u)*6);border-radius:50%;background:var(--cacc);margin-right:calc(var(--u)*8);flex:none;}
+  .exrow .dot.sub{background:var(--cln);}
+  .fold{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*10);color:var(--cfnt);text-align:center;height:calc(var(--u)*24);display:grid;place-items:center;letter-spacing:.06em;}
+  .legend{display:flex;gap:calc(var(--u)*14);justify-content:center;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:calc(var(--u)*10);color:var(--cmut);}
+  .legend span{display:inline-flex;align-items:center;gap:calc(var(--u)*5);}
+  .sw{width:calc(var(--u)*10);height:calc(var(--u)*10);border-radius:2px;background:var(--cacc);display:inline-block;}
+  .figs{display:flex;gap:calc(var(--u)*28);justify-content:center;flex:1;align-items:center;}
+  .g1{display:flex;flex-direction:row;align-items:center;gap:calc(var(--u)*12);height:calc(var(--u)*56);border-top:1px solid var(--cln);padding-top:calc(var(--u)*12);}
+  .g1 .brandln{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-weight:700;font-size:calc(var(--u)*12);letter-spacing:.14em;}
+  .g1 .slog{font-size:calc(var(--u)*10);color:var(--cfnt);font-family:ui-monospace,"SF Mono",Menlo,monospace;letter-spacing:.03em;}
+  .tips{display:flex;flex-direction:column;gap:calc(var(--u)*6);}
+  .tips .tr{display:flex;gap:calc(var(--u)*8);align-items:baseline;font-size:calc(var(--u)*12.5);line-height:calc(var(--u)*18);}
+  .tips .ic{font-family:ui-monospace,monospace;font-size:calc(var(--u)*11);font-weight:700;color:var(--caccink);flex:none;}
+  .scorechip{font-family:ui-monospace,monospace;font-size:calc(var(--u)*11);font-weight:700;background:var(--cacc);color:#10240A;border-radius:2px;padding:calc(var(--u)*1) calc(var(--u)*8);}
+
+.samplerow{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start;margin-top:18px;}
+</style>
 <script>
 (function(){
   var CAPS = {
@@ -308,8 +560,8 @@
     wrapper.style.cssText='display:flex;flex-direction:column;gap:8px;flex:none';
     var cap = document.createElement('div');
     cap.className='shotcap';
-    cap.style.cssText='font:11px ui-monospace,Menlo,monospace;color:#5C645A;line-height:1.6;max-width:'+el.style.width;
-    cap.innerHTML='<b style="color:#141712">'+CAPS[id][0]+'</b><br>'+CAPS[id][1];
+    cap.style.cssText='font:11px ui-monospace,Menlo,monospace;color:var(--muted);line-height:1.6;max-width:'+el.style.width;
+    cap.innerHTML='<b style="color:var(--ink)">'+CAPS[id][0]+'</b><br>'+CAPS[id][1];
     wrapper.appendChild(cap);
   });
   document.getElementById('capToggle').addEventListener('change',function(e){
