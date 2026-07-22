@@ -1,0 +1,1045 @@
+<title>ATOM 分享模块 · 原子库</title>
+<style>
+  :root{--bg:#F6F7F4;--surface:#FFFFFF;--ink:#141712;--muted:#5C645A;--faint:#939C8F;
+    --line:#E4E8E1;--acc:#6FCC1B;--acc-ink:#47940B;--on-acc:#10240A;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+  @media (prefers-color-scheme:dark){:root{--bg:#0F110E;--surface:#161A15;--ink:#E9ECE6;--muted:#9AA396;
+    --faint:#707A6B;--line:#262B24;--acc:#A3E635;--acc-ink:#BEF264;--on-acc:#10240A;}}
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--acc:#6FCC1B;--acc-ink:#47940B;}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--acc:#A3E635;--acc-ink:#BEF264;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);}
+  .topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap;}
+  .topbar .brand{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;}
+  .topbar .brand em{font-style:normal;color:var(--acc-ink);}
+  .topbar nav{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;}
+  .topbar a{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-decoration:none;
+    border:1px solid var(--line);border-radius:2px;padding:4px 10px;}
+  .topbar a:hover{border-color:var(--acc);color:var(--ink);}
+  .sechead{max-width:1160px;margin:0 auto;padding:26px 20px 0;}
+  .sechead .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--acc-ink);font-weight:700;display:flex;align-items:center;gap:10px;}
+  .sechead .kicker::before{content:"";width:22px;height:2px;background:var(--acc);}
+  .subnote{max-width:1160px;margin:0 auto;padding:8px 20px 0;color:var(--faint);font-family:var(--mono);font-size:11px;}
+  iframe{display:block;width:100%;border:0;}
+  footer{max-width:1160px;margin:0 auto;padding:24px 20px 48px;color:var(--faint);font-family:var(--mono);font-size:11px;
+    border-top:1px solid var(--line);}
+</style>
+<div class="topbar"><span class="brand">📐 <em>BODY PARK ATOM</em> · 原子库</span><nav><a href="#part1">低保真线框总板（22+7 原子）</a><a href="#part2">原子规格 · B2 肌肉热力图</a></nav></div>
+<div class="subnote">全原子低保真线框总板 + 逐个深钻的原子规格（当前：B2）。源文件：原子-低保真线框总板 · 原子-*规格 · 合集由 build-bundles.py 生成，修改请编辑源文件</div>
+<div class="sechead" id="part1"><div class="kicker">01 · 低保真线框总板（22+7 原子）</div></div>
+<iframe title="01 · 低保真线框总板（22+7 原子）" srcdoc="&lt;title&gt;Body Park Atom · 分享模块低保真原型板&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --heat:#6FCC1B; --heat-soft:#ECF8DC; --heat-ink:#47940B;
+    --ok:#256B43; --ok-soft:#E3F1E7;
+    --mono:ui-monospace,&quot;SF Mono&quot;,Menlo,Consolas,monospace;
+    --cjk:&quot;PingFang SC&quot;,&quot;Hiragino Sans GB&quot;,&quot;Microsoft YaHei&quot;,sans-serif;
+    --radius:5px; --radius-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --heat:#A3E635;--heat-soft:#1F2A10;--heat-ink:#BEF264;--ok:#3FBB74;--ok-soft:#14211A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme=&quot;light&quot;]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --heat:#6FCC1B;--heat-soft:#ECF8DC;--heat-ink:#47940B;--ok:#256B43;--ok-soft:#E3F1E7;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme=&quot;dark&quot;]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --heat:#A3E635;--heat-soft:#1F2A10;--heat-ink:#BEF264;--ok:#3FBB74;--ok-soft:#14211A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px 96px;}
+  section{margin-top:56px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--heat-ink);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:&quot;&quot;;width:22px;height:2px;background:var(--heat);border-radius:2px;}
+  .lede{color:var(--muted);max-width:66ch;margin:6px 0 0;font-size:14px;}
+  header{padding:52px 0 20px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(26px,4.5vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .sub{color:var(--muted);margin:12px 0 0;max-width:60ch;}
+  .note{display:inline-flex;gap:8px;align-items:center;margin-top:18px;font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.04em;
+    border:1px dashed var(--line-strong);border-radius:2px;padding:6px 14px;}
+
+  /* atom cards */
+  .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:14px;margin-top:18px;}
+  .acard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 14px 14px;display:flex;flex-direction:column;gap:10px;}
+  .ahead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .code{font-family:var(--mono);font-size:11px;font-weight:700;background:var(--ink);color:var(--bg);padding:2px 7px;border-radius:2px;letter-spacing:.04em;}
+  .acard.moat .code{background:var(--heat);color:#10240A;}
+  .aname{font-weight:700;font-size:13.5px;flex:1;}
+  .binds{display:flex;gap:4px;}
+  .bind{font-family:var(--mono);font-size:9.5px;color:var(--muted);border:1px solid var(--line-strong);border-radius:2px;padding:1px 4px;letter-spacing:.03em;}
+  .bind.on{background:var(--heat-soft);color:var(--heat-ink);border-color:var(--heat);}
+  .wf{background:var(--canvas);border:1.5px dashed var(--wire);border-radius:var(--radius-sm);padding:12px;min-height:132px;display:flex;flex-direction:column;gap:8px;justify-content:center;}
+  .anote{font-size:11px;color:var(--faint);font-family:var(--mono);letter-spacing:.02em;line-height:1.5;}
+
+  /* wireframe primitives */
+  .ph{height:8px;border-radius:2px;background:var(--wire);opacity:.55;}
+  .ph.s{width:38%} .ph.m{width:62%} .ph.l{width:85%} .ph.xs{width:22%;height:6px}
+  .row{display:flex;align-items:center;gap:8px;}
+  .num{font-family:var(--mono);font-weight:700;color:var(--ink);}
+  .lbl{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+  .tile{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:7px 8px;display:flex;flex-direction:column;gap:3px;}
+  .tile .num{font-size:14px;}
+  .tile.hot .num{color:var(--heat-ink);}
+  .days{display:flex;gap:6px;align-items:center;}
+  .day{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--wire);}
+  .day.f{background:var(--heat);border-color:var(--heat);}
+  .day.h{background:var(--heat-soft);border-color:var(--heat);}
+  .bar{height:14px;border-radius:2px;background:var(--wire);opacity:.5;}
+  .bar.hot{background:var(--heat);opacity:1;}
+  .chip{font-family:var(--mono);font-size:9px;font-weight:700;background:var(--heat);color:#10240A;border-radius:2px;padding:1px 7px;letter-spacing:.05em;}
+  .exrow{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:6px 9px;}
+  .exrow .dotm{width:10px;height:10px;border-radius:2px;background:var(--wire);flex:none;}
+  .exrow .setrep{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);}
+  .quote{font-size:12.5px;color:var(--muted);text-align:center;font-style:italic;}
+  .btnwf{background:var(--heat);color:#10240A;border-radius:100px;text-align:center;font-size:12px;font-weight:700;padding:8px;letter-spacing:.05em;}
+  svg{display:block;max-width:100%;}
+  svg text{font-family:var(--mono);}
+
+  /* template phones */
+  .tples{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px;margin-top:20px;align-items:start;}
+  .tp{display:flex;flex-direction:column;gap:10px;}
+  .tphead{display:flex;align-items:baseline;gap:8px;}
+  .tphead .tcode{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--heat-ink);}
+  .tphead b{font-size:14px;}
+  .tphead .default{font-family:var(--mono);font-size:9px;background:var(--ok-soft);color:var(--ok);padding:2px 7px;border-radius:2px;font-weight:700;letter-spacing:.06em;}
+  .phone{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:5px;padding:10px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);}
+  .blk{border:1.5px dashed var(--wire);border-radius:2px;padding:8px 9px;position:relative;display:flex;flex-direction:column;gap:6px;justify-content:center;background:var(--surface);}
+  .blk .bcode{position:absolute;top:-8px;right:8px;font-family:var(--mono);font-size:9px;font-weight:700;background:var(--ink);color:var(--bg);border-radius:2px;padding:0 5px;}
+  .blk.moat .bcode{background:var(--heat);color:#10240A;}
+  .blk.moat{border-color:var(--heat);}
+  .tpnote{font-size:11.5px;color:var(--faint);font-family:var(--mono);line-height:1.5;}
+  .minitiles{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+  .minitile{background:var(--surface-2);border-radius:2px;padding:4px 5px;display:flex;flex-direction:column;gap:2px;}
+  .minitile .num{font-size:10px;} .minitile .ph{height:4px;}
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+&lt;/style&gt;
+
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;header&gt;
+    &lt;div class=&quot;brand&quot;&gt;⚛ Body Park Atom · 用户分享模块&lt;/div&gt;
+    &lt;h1&gt;低保真原型板 &lt;span style=&quot;color:var(--heat)&quot;&gt;Atom Wireframes&lt;/span&gt;&lt;/h1&gt;
+    &lt;p class=&quot;sub&quot;&gt;22 个现役原子（大类 A 数据 · B 结构 · C AI差异化 · D 情绪 · G 引流）+ 7 个健康域预留（H 系）+ P0 课后报告的 4 个精选模板。刻意略抽象、近单色——只谈骨架与信息结构，不谈字体颜色风格。&lt;/p&gt;
+    &lt;div class=&quot;note&quot;&gt;灰=占位 · 绿=数据焦点 · 虚线=模块边界 · R 标签=支持的数据绑定态&lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ============ A 数据类 ============ --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;大类 A / 数据类 Data&lt;/div&gt;
+    &lt;h2&gt;数字说话的模块&lt;/h2&gt;
+    &lt;div class=&quot;agrid&quot;&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;A1&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;总结性指标&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;07·16&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;tiles&quot;&gt;
+            &lt;div class=&quot;tile hot&quot;&gt;&lt;span class=&quot;num&quot;&gt;42:18&lt;/span&gt;&lt;div class=&quot;ph xs&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;tile&quot;&gt;&lt;span class=&quot;num&quot;&gt;386&lt;/span&gt;&lt;div class=&quot;ph xs&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;tile&quot;&gt;&lt;span class=&quot;num&quot;&gt;1.8t&lt;/span&gt;&lt;div class=&quot;ph xs&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;tile&quot;&gt;&lt;span class=&quot;num&quot;&gt;12&lt;/span&gt;&lt;div class=&quot;ph xs&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;tile&quot;&gt;&lt;span class=&quot;num&quot;&gt;148&lt;/span&gt;&lt;div class=&quot;ph xs&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;tile&quot;&gt;&lt;span class=&quot;num&quot;&gt;86&lt;/span&gt;&lt;div class=&quot;ph xs&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;标题·日期·课程名+宫格指标；缺项重排为满格，不留空宫&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;A2&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;周期统计&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div class=&quot;days&quot;&gt;&lt;span class=&quot;day f&quot;&gt;&lt;/span&gt;&lt;span class=&quot;day f&quot;&gt;&lt;/span&gt;&lt;span class=&quot;day&quot;&gt;&lt;/span&gt;&lt;span class=&quot;day f&quot;&gt;&lt;/span&gt;&lt;span class=&quot;day h&quot;&gt;&lt;/span&gt;&lt;span class=&quot;day f&quot;&gt;&lt;/span&gt;&lt;span class=&quot;day&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot; style=&quot;margin-top:4px&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:26px&quot;&gt;5&lt;span style=&quot;font-size:12px;color:var(--faint)&quot;&gt;/7&lt;/span&gt;&lt;/span&gt;&lt;div style=&quot;flex:1&quot;&gt;&lt;/div&gt;&lt;span class=&quot;num&quot;&gt;312&lt;span class=&quot;lbl&quot;&gt; min&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;streak 12 天&lt;/span&gt;&lt;div class=&quot;ph s&quot; style=&quot;margin-left:auto&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;周/月/年三档；新用户以目标进度占位&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;A3&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;历史对比&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:34px&quot;&gt;上次&lt;/span&gt;&lt;div class=&quot;bar&quot; style=&quot;width:52%&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:34px&quot;&gt;本次&lt;/span&gt;&lt;div class=&quot;bar hot&quot; style=&quot;width:74%&quot;&gt;&lt;/div&gt;&lt;span class=&quot;chip&quot;&gt;PB&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot; style=&quot;margin-top:2px&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;本月第 8 次 · +12%&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;vs 上次 / vs PB / 本月第 N 次；无历史→整体隐藏并重排&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;A4&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;具象化类比&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;align-items:center;text-align:center&quot;&gt;
+          &lt;span class=&quot;num&quot; style=&quot;font-size:22px&quot;&gt;1,800&lt;span class=&quot;lbl&quot;&gt; kg&lt;/span&gt;&lt;/span&gt;
+          &lt;span class=&quot;lbl&quot;&gt;≈&lt;/span&gt;
+          &lt;svg width=&quot;88&quot; height=&quot;34&quot; viewBox=&quot;0 0 88 34&quot; aria-label=&quot;car&quot;&gt;
+            &lt;rect x=&quot;8&quot; y=&quot;12&quot; width=&quot;72&quot; height=&quot;12&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;24&quot; y=&quot;4&quot; width=&quot;34&quot; height=&quot;12&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;circle cx=&quot;24&quot; cy=&quot;27&quot; r=&quot;5.5&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;circle cx=&quot;63&quot; cy=&quot;27&quot; r=&quot;5.5&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;span class=&quot;lbl&quot;&gt;举起了一辆车&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;容量→车、卡路里→汉堡；素材映射库；未达阈值不触发&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;A5&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;排行榜&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R3&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;chip&quot;&gt;TOP 12%&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;本课 · 共 1,284 人&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;exrow&quot; style=&quot;padding:4px 8px&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:20px&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;day&quot; style=&quot;width:12px;height:12px&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;span class=&quot;setrep&quot;&gt;2.1t&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;exrow&quot; style=&quot;padding:4px 8px;border:1.5px solid var(--heat);border-radius:var(--r-sm);background:var(--heat-soft)&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:20px;color:var(--heat-ink);font-weight:700&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;day f&quot; style=&quot;width:12px;height:12px&quot;&gt;&lt;/span&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:12px&quot;&gt;我&lt;/span&gt;&lt;span class=&quot;setrep&quot; style=&quot;color:var(--heat-ink);font-weight:700&quot;&gt;1.8t&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;exrow&quot; style=&quot;padding:4px 8px&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:20px&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;day&quot; style=&quot;width:12px;height:12px&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;setrep&quot;&gt;1.7t&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;我 vs 他人（区别于 A3 我 vs 自己）：R1=本课名次 / R2=好友·周期榜 / R3=挑战榜；他人默认脱敏；&amp;lt;10 人只显百分位；名次靠后显百分位不显名次&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ============ B 结构类 ============ --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;大类 B / 结构类 Structure&lt;/div&gt;
+    &lt;h2&gt;有骨架的模块&lt;/h2&gt;
+    &lt;div class=&quot;agrid&quot;&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;B1&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;动作列表 Log&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dotm&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;setrep&quot;&gt;4×12 · 60kg&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dotm&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;span class=&quot;setrep&quot;&gt;3×10 · 80kg&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dotm&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;setrep&quot;&gt;3×15&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin:0 auto&quot;&gt;+ 9 个动作&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;R0=官方编排 / R1=实际组次重 / R2=高频 Top N；超长折叠&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;B2&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;肌肉热力图&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;flex-direction:row;justify-content:center;gap:20px;align-items:center&quot;&gt;
+          &lt;svg width=&quot;64&quot; height=&quot;120&quot; viewBox=&quot;0 0 64 120&quot; aria-label=&quot;body front&quot;&gt;
+            &lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.85&quot;/&gt;
+            &lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.85&quot;/&gt;
+            &lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;14&quot; rx=&quot;4&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.5&quot;/&gt;
+            &lt;rect x=&quot;33&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;14&quot; rx=&quot;4&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.5&quot;/&gt;
+            &lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.25&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;svg width=&quot;64&quot; height=&quot;120&quot; viewBox=&quot;0 0 64 120&quot; aria-label=&quot;body back&quot;&gt;
+            &lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;21&quot; y=&quot;30&quot; width=&quot;22&quot; height=&quot;18&quot; rx=&quot;6&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.35&quot;/&gt;
+            &lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;正/背（侧面待决策）；R0=主动/协同肌 · R1=本次强度 · R2=周期覆盖；底层=肌肉字典&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;B3&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;动作卡&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div style=&quot;background:var(--surface-2);border-radius:2px;height:52px;display:grid;place-items:center&quot;&gt;
+            &lt;svg width=&quot;42&quot; height=&quot;34&quot; viewBox=&quot;0 0 42 34&quot;&gt;&lt;circle cx=&quot;21&quot; cy=&quot;7&quot; r=&quot;4&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;path d=&quot;M21 11 L21 22 M21 14 L11 19 M21 14 L31 19 M21 22 L14 32 M21 22 L28 32&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;/&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;bind&quot;&gt;胸·主&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;肩·协&lt;/span&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;→ 公域动作库&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;类&quot;武将卡/水浒卡&quot;的说明书名片；链公域 H5&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;B4&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;课程卡&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div style=&quot;background:var(--surface-2);border-radius:2px;height:58px;display:grid;place-items:center&quot;&gt;
+            &lt;svg width=&quot;30&quot; height=&quot;30&quot; viewBox=&quot;0 0 30 30&quot;&gt;&lt;circle cx=&quot;15&quot; cy=&quot;15&quot; r=&quot;13&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;path d=&quot;M12 9 L21 15 L12 21 Z&quot; fill=&quot;var(--wire)&quot;/&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;ph l&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;bind&quot;&gt;30 min&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;中级&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;12 动作&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;官方课程简介；链公域课程库 H5&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;B5&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;教练卡&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;
+            &lt;svg width=&quot;34&quot; height=&quot;34&quot; viewBox=&quot;0 0 34 34&quot;&gt;&lt;circle cx=&quot;17&quot; cy=&quot;17&quot; r=&quot;15&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;circle cx=&quot;17&quot; cy=&quot;13&quot; r=&quot;5&quot; fill=&quot;var(--wire)&quot; opacity=&quot;.6&quot;/&gt;&lt;path d=&quot;M8 27 q9 -8 18 0&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;/&gt;&lt;/svg&gt;
+            &lt;div style=&quot;flex:1;display:flex;flex-direction:column;gap:5px&quot;&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;bind&quot;&gt;力量&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;体态&lt;/span&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;→ 公域教练主页&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot; style=&quot;border-top:1px dashed var(--wire);padding-top:6px&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:13px;color:var(--heat-ink)&quot;&gt;26 节&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;跟练&lt;/span&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:13px;margin-left:auto&quot;&gt;14&lt;span class=&quot;lbl&quot;&gt; h&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;时长&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;R0=介绍名片 / R2=叠加我×教练关系行；无跟练史则纯介绍态；未来含 AI 教练&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard moat&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;B6&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;肌肉卡&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;flex-direction:row;gap:14px;align-items:center&quot;&gt;
+          &lt;svg width=&quot;46&quot; height=&quot;88&quot; viewBox=&quot;0 0 64 120&quot;&gt;
+            &lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;20&quot; rx=&quot;4.5&quot; fill=&quot;var(--heat)&quot;/&gt;
+            &lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;20&quot; rx=&quot;4.5&quot; fill=&quot;var(--heat)&quot;/&gt;
+            &lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;div style=&quot;flex:1;display:flex;flex-direction:column;gap:6px&quot;&gt;
+            &lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:13px;color:var(--heat-ink)&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;动作&lt;/span&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:13px&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;次训练&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:13px&quot;&gt;9.2t&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;总容量&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;→ 肌肉字典&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;R0=解剖科普（主动/协同动作）/ R2=我×这块肌肉的历史；依托肌肉字典，独有&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard moat&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;B7&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;器械卡&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;flex-direction:row;gap:14px;align-items:center&quot;&gt;
+          &lt;svg width=&quot;76&quot; height=&quot;40&quot; viewBox=&quot;0 0 96 50&quot;&gt;
+            &lt;rect x=&quot;4&quot; y=&quot;12&quot; width=&quot;10&quot; height=&quot;26&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;rect x=&quot;16&quot; y=&quot;6&quot; width=&quot;10&quot; height=&quot;38&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;rect x=&quot;26&quot; y=&quot;21&quot; width=&quot;44&quot; height=&quot;8&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;rect x=&quot;70&quot; y=&quot;6&quot; width=&quot;10&quot; height=&quot;38&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;rect x=&quot;82&quot; y=&quot;12&quot; width=&quot;10&quot; height=&quot;26&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;div style=&quot;flex:1;display:flex;flex-direction:column;gap:6px&quot;&gt;
+            &lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:13px;color:var(--heat-ink)&quot;&gt;127&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;次使用&lt;/span&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:13px&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;种动作&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;bind&quot;&gt;卧推&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;弯举&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;+9&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;R0=用法介绍 / R2=“我最爱的哑铃”叙事：用过 N 次、练过啥；器械维度独有&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard moat&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;B8&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;模式卡 Pattern&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R0&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;flex-direction:row;gap:14px;align-items:center&quot;&gt;
+          &lt;svg width=&quot;104&quot; height=&quot;100&quot; viewBox=&quot;0 0 120 112&quot;&gt;
+            &lt;polygon points=&quot;60,8 105,34 105,78 60,104 15,78 15,34&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;1.5&quot; opacity=&quot;.6&quot;/&gt;
+            &lt;polygon points=&quot;60,20 82,50 78,76 60,88 34,72 40,42&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.22&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;text x=&quot;60&quot; y=&quot;4&quot; font-size=&quot;9&quot; text-anchor=&quot;middle&quot; fill=&quot;var(--muted)&quot;&gt;推&lt;/text&gt;
+            &lt;text x=&quot;113&quot; y=&quot;36&quot; font-size=&quot;9&quot; text-anchor=&quot;middle&quot; fill=&quot;var(--muted)&quot;&gt;拉&lt;/text&gt;
+            &lt;text x=&quot;113&quot; y=&quot;82&quot; font-size=&quot;9&quot; text-anchor=&quot;middle&quot; fill=&quot;var(--muted)&quot;&gt;蹲&lt;/text&gt;
+            &lt;text x=&quot;60&quot; y=&quot;112&quot; font-size=&quot;9&quot; text-anchor=&quot;middle&quot; fill=&quot;var(--muted)&quot;&gt;铰链&lt;/text&gt;
+            &lt;text x=&quot;7&quot; y=&quot;82&quot; font-size=&quot;9&quot; text-anchor=&quot;middle&quot; fill=&quot;var(--muted)&quot;&gt;旋转&lt;/text&gt;
+            &lt;text x=&quot;7&quot; y=&quot;36&quot; font-size=&quot;9&quot; text-anchor=&quot;middle&quot; fill=&quot;var(--muted)&quot;&gt;核心&lt;/text&gt;
+          &lt;/svg&gt;
+          &lt;div style=&quot;flex:1;display:flex;flex-direction:column;gap:6px&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:15px;color:var(--heat-ink)&quot;&gt;1.3 : 1&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;推拉比&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:26px&quot;&gt;推&lt;/span&gt;&lt;div class=&quot;bar hot&quot; style=&quot;width:64%;height:8px&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:26px&quot;&gt;拉&lt;/span&gt;&lt;div class=&quot;bar&quot; style=&quot;width:48%;height:8px&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;color:var(--heat-ink)&quot;&gt;! 铰链欠练&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;R0=模式科普 / R1=本次分布（“今天全是推”）/ R2=模式平衡·推拉比·欠练提示；PPS 六边形与体适能雷达的数据地基&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ============ C AI 差异化 ============ --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;大类 C / AI 差异化 Moat ★&lt;/div&gt;
+    &lt;h2&gt;只有我们拿得出的模块&lt;/h2&gt;
+    &lt;div class=&quot;agrid&quot;&gt;
+
+      &lt;div class=&quot;acard moat&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;C1&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;AI 识别火柴人&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;align-items:center&quot;&gt;
+          &lt;svg width=&quot;120&quot; height=&quot;118&quot; viewBox=&quot;0 0 120 118&quot;&gt;
+            &lt;g stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; opacity=&quot;.4&quot; stroke-linecap=&quot;round&quot;&gt;
+              &lt;circle cx=&quot;52&quot; cy=&quot;14&quot; r=&quot;8&quot;/&gt;&lt;path d=&quot;M52 22 L52 52 M52 30 L30 42 M52 30 L74 40 M52 52 L38 84 L36 108 M52 52 L66 84 L70 108&quot;/&gt;
+            &lt;/g&gt;
+            &lt;g stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;&gt;
+              &lt;circle cx=&quot;60&quot; cy=&quot;14&quot; r=&quot;8&quot;/&gt;&lt;path d=&quot;M60 22 L60 52 M60 30 L36 38 M60 30 L84 34 M60 52 L44 82 L42 108 M60 52 L76 82 L82 108&quot;/&gt;
+            &lt;/g&gt;
+            &lt;circle cx=&quot;60&quot; cy=&quot;52&quot; r=&quot;3.5&quot; fill=&quot;var(--heat)&quot;/&gt;
+            &lt;path d=&quot;M76 82 q8 -8 2 -16&quot; stroke=&quot;var(--ink)&quot; stroke-width=&quot;1.5&quot; fill=&quot;none&quot; stroke-dasharray=&quot;3 3&quot;/&gt;
+            &lt;text x=&quot;88&quot; y=&quot;72&quot; font-size=&quot;10&quot; fill=&quot;var(--ink)&quot;&gt;92°&lt;/text&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;绿=我的姿态 · 灰=标准姿态叠影 · 关节角标注；无识别则不展示；&quot;数字人&quot;形式的当前形态，未来可扩展 3D avatar&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard moat&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;C2&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;AI 分析结论 / Tips&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;chip&quot; style=&quot;background:var(--ok)&quot;&gt;87 分&lt;/span&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;✓&lt;/span&gt;&lt;div class=&quot;ph l&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;✓&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;color:var(--heat)&quot;&gt;!&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;识别结果的总结与建议；用户可选隐藏&quot;练得不好&quot;的项&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard moat&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;C3&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;体适能雷达图&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R3&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;align-items:center&quot;&gt;
+          &lt;svg width=&quot;120&quot; height=&quot;112&quot; viewBox=&quot;0 0 120 112&quot;&gt;
+            &lt;polygon points=&quot;60,8 105,34 105,78 60,104 15,78 15,34&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;1.5&quot; opacity=&quot;.6&quot;/&gt;
+            &lt;polygon points=&quot;60,32 82,45 82,67 60,80 38,67 38,45&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;1&quot; opacity=&quot;.4&quot;/&gt;
+            &lt;polygon points=&quot;60,18 96,40 88,74 60,94 26,70 32,38&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.22&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;circle cx=&quot;96&quot; cy=&quot;40&quot; r=&quot;3&quot; fill=&quot;var(--heat)&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;六维体适能；&quot;每练一次涨一点&quot;；游戏化外观&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard moat&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;C4&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;外化成就标识&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R3&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;flex-direction:row;align-items:center;justify-content:center;gap:18px&quot;&gt;
+          &lt;svg width=&quot;72&quot; height=&quot;72&quot; viewBox=&quot;0 0 72 72&quot;&gt;
+            &lt;circle cx=&quot;36&quot; cy=&quot;36&quot; r=&quot;30&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;3&quot; opacity=&quot;.4&quot;/&gt;
+            &lt;path d=&quot;M36 6 A30 30 0 1 1 12 52&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;3.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;text x=&quot;36&quot; y=&quot;45&quot; font-size=&quot;26&quot; font-weight=&quot;700&quot; text-anchor=&quot;middle&quot; fill=&quot;var(--ink)&quot;&gt;S&lt;/text&gt;
+          &lt;/svg&gt;
+          &lt;div style=&quot;display:flex;flex-direction:column;gap:6px&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;day f&quot; style=&quot;border-radius:2px&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;day h&quot; style=&quot;border-radius:2px&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;day&quot; style=&quot;border-radius:2px&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;评级 A/B/S/SS · 勋章 · 进度环 · Push/Pull/Squat 六边形；依赖功能补全，先占位&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ============ D 情绪类 + G 引流类 ============ --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;大类 D + G / 情绪 Emotion · 引流 Growth&lt;/div&gt;
+    &lt;h2&gt;给感受与给转化的模块&lt;/h2&gt;
+    &lt;div class=&quot;agrid&quot;&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;D1&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;氛围图 / 自拍&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;align-items:center;justify-content:center&quot;&gt;
+          &lt;svg width=&quot;150&quot; height=&quot;86&quot; viewBox=&quot;0 0 150 86&quot;&gt;
+            &lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;148&quot; height=&quot;84&quot; rx=&quot;2&quot; fill=&quot;var(--surface-2)&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;circle cx=&quot;112&quot; cy=&quot;24&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M14 68 L52 36 L80 60 L102 44 L136 70&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;用户上传优先；无上传→系统配图池兜底（不留空）&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;D2&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;高光视频&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;align-items:center;justify-content:center&quot;&gt;
+          &lt;svg width=&quot;150&quot; height=&quot;86&quot; viewBox=&quot;0 0 150 86&quot;&gt;
+            &lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;148&quot; height=&quot;84&quot; rx=&quot;2&quot; fill=&quot;var(--surface-2)&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;circle cx=&quot;75&quot; cy=&quot;43&quot; r=&quot;16&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;path d=&quot;M70 35 L84 43 L70 51 Z&quot; fill=&quot;var(--heat)&quot;/&gt;
+            &lt;rect x=&quot;10&quot; y=&quot;72&quot; width=&quot;130&quot; height=&quot;4&quot; rx=&quot;2&quot; fill=&quot;var(--wire)&quot; opacity=&quot;.5&quot;/&gt;
+            &lt;rect x=&quot;10&quot; y=&quot;72&quot; width=&quot;46&quot; height=&quot;4&quot; rx=&quot;2&quot; fill=&quot;var(--heat)&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;依附 R1 实例的媒体资产；可切出单独分享&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;D3&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;鼓励文案 / Quote&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind&quot;&gt;R0&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;R2&lt;/span&gt;&lt;span class=&quot;bind&quot;&gt;R3&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;align-items:center;justify-content:center&quot;&gt;
+          &lt;span style=&quot;font-size:26px;color:var(--heat);font-weight:800;line-height:1&quot;&gt;“&lt;/span&gt;
+          &lt;div class=&quot;ph m&quot; style=&quot;margin:0 auto&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;ph s&quot; style=&quot;margin:0 auto&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;按数据情境从文案库选（PB / streak / 首练）&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;G1&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;二维码 / 品牌水印&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind&quot;&gt;全部&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;flex-direction:row;align-items:center;gap:12px&quot;&gt;
+          &lt;svg width=&quot;46&quot; height=&quot;46&quot; viewBox=&quot;0 0 46 46&quot;&gt;
+            &lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;var(--ink)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;var(--ink)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;var(--ink)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;var(--heat)&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;var(--ink)&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;div style=&quot;flex:1;display:flex;flex-direction:column;gap:6px&quot;&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;图片载体必带（引流兜底）；扫码落对应公域 H5&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;G2&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;App 下载入口&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind&quot;&gt;H5 必带&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;justify-content:flex-end&quot;&gt;
+          &lt;div class=&quot;ph l&quot; style=&quot;margin-bottom:auto&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;btnwf&quot;&gt;打开 / 下载 App&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;H5 载体页内固定；deeplink 优先，未装落商店&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ============ H 健康域预留 ============ --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;大类 H / 健康域预留 Health Hub 🔮&lt;/div&gt;
+    &lt;h2&gt;随数据域上线自动进入目录的模块&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;大一统健康数据中心假设下的预留原子（体重/饮食/跑步/睡眠…）。隐私分级：身体绝对值默认只显趋势；医疗、周期类永不进入分享。&lt;/p&gt;
+    &lt;div class=&quot;agrid&quot;&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;H1&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;体重/体脂趋势&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;justify-content:center&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:18px;color:var(--heat-ink)&quot;&gt;−2.4&lt;span class=&quot;lbl&quot;&gt; kg&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;近 30 天&lt;/span&gt;&lt;/div&gt;
+          &lt;svg width=&quot;100%&quot; height=&quot;52&quot; viewBox=&quot;0 0 200 52&quot; preserveAspectRatio=&quot;none&quot;&gt;
+            &lt;path d=&quot;M4 10 L52 18 L96 14 L140 30 L196 40&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+            &lt;path d=&quot;M4 44 L196 44&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;1.5&quot; stroke-dasharray=&quot;4 4&quot;/&gt;
+            &lt;circle cx=&quot;196&quot; cy=&quot;40&quot; r=&quot;3.5&quot; fill=&quot;var(--heat)&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;目标线&lt;/span&gt;&lt;div class=&quot;ph xs&quot; style=&quot;margin-left:auto&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;变化量优先、绝对值默认隐藏（谨慎级隐私）；无 30 天数据缩短窗口&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;H2&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;营养摘要&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;flex-direction:row;gap:14px;align-items:center&quot;&gt;
+          &lt;svg width=&quot;62&quot; height=&quot;62&quot; viewBox=&quot;0 0 72 72&quot;&gt;
+            &lt;circle cx=&quot;36&quot; cy=&quot;36&quot; r=&quot;28&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;6&quot; opacity=&quot;.35&quot;/&gt;
+            &lt;path d=&quot;M36 8 A28 28 0 1 1 10 44&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;text x=&quot;36&quot; y=&quot;41&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot; text-anchor=&quot;middle&quot; fill=&quot;var(--ink)&quot;&gt;1650&lt;/text&gt;
+          &lt;/svg&gt;
+          &lt;div style=&quot;flex:1;display:flex;flex-direction:column;gap:6px&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:24px&quot;&gt;蛋白&lt;/span&gt;&lt;div class=&quot;bar hot&quot; style=&quot;width:70%;height:7px&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:24px&quot;&gt;碳水&lt;/span&gt;&lt;div class=&quot;bar&quot; style=&quot;width:52%;height:7px&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:24px&quot;&gt;脂肪&lt;/span&gt;&lt;div class=&quot;bar&quot; style=&quot;width:34%;height:7px&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;R1=单餐/单日 · R2=周报热量收支；H3 饮食打卡卡=照片+此摘要的组合&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;H4&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;睡眠结构&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;justify-content:center&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:18px&quot;&gt;7&lt;span class=&quot;lbl&quot;&gt; h &lt;/span&gt;42&lt;span class=&quot;lbl&quot;&gt; m&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;chip&quot;&gt;规律 ✓&lt;/span&gt;&lt;/div&gt;
+          &lt;svg width=&quot;100%&quot; height=&quot;34&quot; viewBox=&quot;0 0 200 34&quot; preserveAspectRatio=&quot;none&quot;&gt;
+            &lt;rect x=&quot;4&quot; y=&quot;4&quot; width=&quot;30&quot; height=&quot;26&quot; fill=&quot;var(--wire)&quot; opacity=&quot;.4&quot;/&gt;
+            &lt;rect x=&quot;36&quot; y=&quot;12&quot; width=&quot;48&quot; height=&quot;18&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.8&quot;/&gt;
+            &lt;rect x=&quot;86&quot; y=&quot;4&quot; width=&quot;24&quot; height=&quot;26&quot; fill=&quot;var(--wire)&quot; opacity=&quot;.55&quot;/&gt;
+            &lt;rect x=&quot;112&quot; y=&quot;12&quot; width=&quot;52&quot; height=&quot;18&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.5&quot;/&gt;
+            &lt;rect x=&quot;166&quot; y=&quot;8&quot; width=&quot;30&quot; height=&quot;22&quot; fill=&quot;var(--wire)&quot; opacity=&quot;.4&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;深睡&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;核心&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;REM&lt;/span&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;23:40 → 07:22&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;R1=昨晚结构图 · R2=周报/规律性；对标 Apple Health Sleep 阶段&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;acard&quot;&gt;
+        &lt;div class=&quot;ahead&quot;&gt;&lt;span class=&quot;code&quot;&gt;H5&lt;/span&gt;&lt;span class=&quot;aname&quot;&gt;运动路线卡&lt;/span&gt;
+          &lt;span class=&quot;binds&quot;&gt;&lt;span class=&quot;bind on&quot;&gt;R1&lt;/span&gt;&lt;span class=&quot;bind on&quot;&gt;R2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;wf&quot; style=&quot;flex-direction:row;gap:14px;align-items:center&quot;&gt;
+          &lt;svg width=&quot;76&quot; height=&quot;76&quot; viewBox=&quot;0 0 88 88&quot;&gt;
+            &lt;rect x=&quot;2&quot; y=&quot;2&quot; width=&quot;84&quot; height=&quot;84&quot; rx=&quot;2&quot; fill=&quot;var(--surface-2)&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;path d=&quot;M14 70 C26 40 30 64 44 46 C58 28 56 20 74 16&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;circle cx=&quot;14&quot; cy=&quot;70&quot; r=&quot;4&quot; fill=&quot;none&quot; stroke=&quot;var(--ink)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;circle cx=&quot;74&quot; cy=&quot;16&quot; r=&quot;4&quot; fill=&quot;var(--heat)&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;div style=&quot;flex:1;display:flex;flex-direction:column;gap:6px&quot;&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:15px;color:var(--heat-ink)&quot;&gt;5.2&lt;span class=&quot;lbl&quot;&gt; km&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:12px&quot;&gt;5&#x27;48&quot;&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;配速&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:12px&quot;&gt;152&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;bpm&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;anote&quot;&gt;跑步/骑行等非课程运动会话；R2=月跑量、配速趋势；GPS 轨迹注意起终点脱敏&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ============ P0 模板 ============ --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;组装示例 / P0 · 课后报告 E2·R1&lt;/div&gt;
+    &lt;h2&gt;L2 精选模板 × 4&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;模板 = 预设的原子组合 + 版式。T1 即 L1 默认；列表末位&quot;自定义&quot;进入 L3 勾选。规则：G1 图片必带；A3/A4 无数据自动隐藏重排；D1 无上传系统兜底。&lt;/p&gt;
+    &lt;div class=&quot;tples&quot;&gt;
+
+      &lt;div class=&quot;tp&quot;&gt;
+        &lt;div class=&quot;tphead&quot;&gt;&lt;span class=&quot;tcode&quot;&gt;T1&lt;/span&gt;&lt;b&gt;战报短图&lt;/b&gt;&lt;span class=&quot;default&quot;&gt;L1 默认&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;phone&quot; style=&quot;aspect-ratio:4/5.4&quot;&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;A1&lt;/span&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;07·16&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;minitiles&quot;&gt;&lt;div class=&quot;minitile&quot;&gt;&lt;span class=&quot;num&quot;&gt;42:18&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;minitile&quot;&gt;&lt;span class=&quot;num&quot;&gt;386&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;minitile&quot;&gt;&lt;span class=&quot;num&quot;&gt;1.8t&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot; style=&quot;flex:1&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;B2&lt;/span&gt;
+            &lt;svg width=&quot;44&quot; height=&quot;82&quot; viewBox=&quot;0 0 64 120&quot; style=&quot;margin:0 auto&quot;&gt;
+              &lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+              &lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+              &lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.8&quot;/&gt;
+              &lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.8&quot;/&gt;
+              &lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;22&quot; height=&quot;14&quot; rx=&quot;5&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.4&quot;/&gt;
+              &lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+              &lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;G1&lt;/span&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;day&quot; style=&quot;border-radius:2px;border-color:var(--ink)&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tpnote&quot;&gt;一键出图 · 固定比例 · 平台自动适配尺寸&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;tp&quot;&gt;
+        &lt;div class=&quot;tphead&quot;&gt;&lt;span class=&quot;tcode&quot;&gt;T2&lt;/span&gt;&lt;b&gt;完整长图&lt;/b&gt;&lt;/div&gt;
+        &lt;div class=&quot;phone&quot;&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;A1&lt;/span&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;07·16&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;minitiles&quot;&gt;&lt;div class=&quot;minitile&quot;&gt;&lt;span class=&quot;num&quot;&gt;42:18&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;minitile&quot;&gt;&lt;span class=&quot;num&quot;&gt;386&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;minitile&quot;&gt;&lt;span class=&quot;num&quot;&gt;1.8t&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;B2&lt;/span&gt;
+            &lt;svg width=&quot;36&quot; height=&quot;64&quot; viewBox=&quot;0 0 64 120&quot; style=&quot;margin:0 auto&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.8&quot;/&gt;&lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;var(--heat)&quot; opacity=&quot;.8&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;B1&lt;/span&gt;
+            &lt;div class=&quot;exrow&quot; style=&quot;padding:4px 7px&quot;&gt;&lt;span class=&quot;dotm&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;setrep&quot;&gt;4×12&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;exrow&quot; style=&quot;padding:4px 7px&quot;&gt;&lt;span class=&quot;dotm&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;span class=&quot;setrep&quot;&gt;3×10&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;exrow&quot; style=&quot;padding:4px 7px&quot;&gt;&lt;span class=&quot;dotm&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;setrep&quot;&gt;3×15&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;A3&lt;/span&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:26px&quot;&gt;上次&lt;/span&gt;&lt;div class=&quot;bar&quot; style=&quot;width:46%;height:9px&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:26px&quot;&gt;本次&lt;/span&gt;&lt;div class=&quot;bar hot&quot; style=&quot;width:68%;height:9px&quot;&gt;&lt;/div&gt;&lt;span class=&quot;chip&quot;&gt;PB&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;G1&lt;/span&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;day&quot; style=&quot;border-radius:2px;border-color:var(--ink)&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tpnote&quot;&gt;想多长多长 · 有点有面 · 勾选增删原子&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;tp&quot;&gt;
+        &lt;div class=&quot;tphead&quot;&gt;&lt;span class=&quot;tcode&quot;&gt;T3&lt;/span&gt;&lt;b&gt;AI 特色版&lt;/b&gt;&lt;span class=&quot;default&quot; style=&quot;background:var(--heat-soft);color:var(--heat-ink)&quot;&gt;独有 ★&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;phone&quot; style=&quot;aspect-ratio:4/5.8&quot;&gt;
+          &lt;div class=&quot;blk moat&quot; style=&quot;flex:1&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;C1&lt;/span&gt;
+            &lt;svg width=&quot;86&quot; height=&quot;86&quot; viewBox=&quot;0 0 120 118&quot; style=&quot;margin:0 auto&quot;&gt;
+              &lt;g stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; opacity=&quot;.4&quot; stroke-linecap=&quot;round&quot;&gt;&lt;circle cx=&quot;52&quot; cy=&quot;14&quot; r=&quot;8&quot;/&gt;&lt;path d=&quot;M52 22 L52 52 M52 30 L30 42 M52 30 L74 40 M52 52 L38 84 L36 108 M52 52 L66 84 L70 108&quot;/&gt;&lt;/g&gt;
+              &lt;g stroke=&quot;var(--heat)&quot; stroke-width=&quot;2.5&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;&gt;&lt;circle cx=&quot;60&quot; cy=&quot;14&quot; r=&quot;8&quot;/&gt;&lt;path d=&quot;M60 22 L60 52 M60 30 L36 38 M60 30 L84 34 M60 52 L44 82 L42 108 M60 52 L76 82 L82 108&quot;/&gt;&lt;/g&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk moat&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;C2&lt;/span&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;chip&quot; style=&quot;background:var(--ok)&quot;&gt;87&lt;/span&gt;&lt;div class=&quot;ph l&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;✓&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;A1&lt;/span&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;num&quot;&gt;42:18&lt;/span&gt;&lt;span class=&quot;num&quot; style=&quot;color:var(--muted)&quot;&gt;386&lt;/span&gt;&lt;div class=&quot;ph s&quot; style=&quot;margin-left:auto&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;G1&lt;/span&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;day&quot; style=&quot;border-radius:2px;border-color:var(--ink)&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tpnote&quot;&gt;火柴人当主角 · 竞品拿不出的一张图&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;tp&quot;&gt;
+        &lt;div class=&quot;tphead&quot;&gt;&lt;span class=&quot;tcode&quot;&gt;T4&lt;/span&gt;&lt;b&gt;极简晒图&lt;/b&gt;&lt;/div&gt;
+        &lt;div class=&quot;phone&quot; style=&quot;aspect-ratio:4/5.8&quot;&gt;
+          &lt;div class=&quot;blk&quot; style=&quot;flex:1;justify-content:flex-end;background:var(--surface-2)&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;D1&lt;/span&gt;
+            &lt;svg width=&quot;100%&quot; height=&quot;40&quot; viewBox=&quot;0 0 150 40&quot; preserveAspectRatio=&quot;none&quot;&gt;&lt;path d=&quot;M6 36 L48 10 L78 30 L104 16 L144 38&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;
+            &lt;div class=&quot;row&quot; style=&quot;align-items:baseline&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:30px;color:var(--heat-ink)&quot;&gt;1.8&lt;span style=&quot;font-size:13px&quot;&gt;t&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;总容量&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;A4&lt;/span&gt;
+            &lt;div class=&quot;row&quot; style=&quot;justify-content:center;gap:10px&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;≈&lt;/span&gt;
+              &lt;svg width=&quot;58&quot; height=&quot;22&quot; viewBox=&quot;0 0 88 34&quot;&gt;&lt;rect x=&quot;8&quot; y=&quot;12&quot; width=&quot;72&quot; height=&quot;12&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;rect x=&quot;24&quot; y=&quot;4&quot; width=&quot;34&quot; height=&quot;12&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;circle cx=&quot;24&quot; cy=&quot;27&quot; r=&quot;5.5&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;3&quot;/&gt;&lt;circle cx=&quot;63&quot; cy=&quot;27&quot; r=&quot;5.5&quot; fill=&quot;none&quot; stroke=&quot;var(--heat)&quot; stroke-width=&quot;3&quot;/&gt;&lt;/svg&gt;
+              &lt;span class=&quot;lbl&quot;&gt;一辆车&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;span class=&quot;bcode&quot;&gt;G1&lt;/span&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;day&quot; style=&quot;border-radius:2px;border-color:var(--ink)&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tpnote&quot;&gt;氛围图全幅 + 一个大数字 · 情绪价值&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;footer&gt;&lt;span&gt;Body Park Atom · 低保真原型板 v0.1&lt;/span&gt;&lt;span&gt;灰盒骨架 · 风格创意留给下一步&lt;/span&gt;&lt;/footer&gt;
+&lt;/div&gt;
+"></iframe>
+<div class="sechead" id="part2"><div class="kicker">02 · 原子规格 · B2 肌肉热力图</div></div>
+<iframe title="02 · 原子规格 · B2 肌肉热力图" srcdoc="&lt;title&gt;B2 肌肉热力图 · 原子规格 v0.1&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --ok:#256B43; --ok-soft:#E3F1E7;
+    --mono:ui-monospace,&quot;SF Mono&quot;,Menlo,Consolas,monospace;
+    --cjk:&quot;PingFang SC&quot;,&quot;Hiragino Sans GB&quot;,&quot;Microsoft YaHei&quot;,sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--ok:#3FBB74;--ok-soft:#14211A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme=&quot;light&quot;]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;--ok:#256B43;--ok-soft:#E3F1E7;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme=&quot;dark&quot;]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--ok:#3FBB74;--ok-soft:#14211A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px 100px;}
+  section{margin-top:54px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  h3{font-size:15px;font-weight:700;margin:18px 0 6px;}
+  p{margin:8px 0;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:&quot;&quot;;width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:68ch;font-size:14px;}
+  .mono{font-family:var(--mono);}
+  code{font-family:var(--mono);font-size:.92em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+  header{padding:50px 0 24px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(25px,4.2vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;box-shadow:var(--shadow);}
+  .grid{display:grid;gap:12px;} .g2{grid-template-columns:1fr 1fr;}
+  @media(max-width:820px){.g2{grid-template-columns:1fr;}}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:var(--surface);}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-size:12px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);}
+  ul{margin:6px 0;padding-left:20px;} li{margin:4px 0;font-size:13.5px;color:var(--muted);}
+  li b{color:var(--ink);}
+  .callout{border-left:3px solid var(--acc);background:var(--surface);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);margin:14px 0;font-size:13.5px;color:var(--muted);}
+  .callout b{color:var(--ink);}
+  .tag{font-size:11px;font-family:var(--mono);padding:1px 7px;border-radius:var(--r-sm);border:1px solid var(--line-strong);color:var(--muted);white-space:nowrap;}
+  .tag.open{background:var(--acc-soft);color:var(--acc-ink);border-color:var(--acc);}
+
+  /* demo */
+  .studio{display:grid;grid-template-columns:minmax(280px,340px) 1fr;gap:22px;align-items:start;margin-top:18px;}
+  @media(max-width:820px){.studio{grid-template-columns:1fr;}}
+  .pk{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:14px 0 8px;display:flex;align-items:center;gap:8px;}
+  .pk::after{content:&quot;&quot;;flex:1;height:1px;background:var(--line);}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;}
+  .tab{border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);padding:7px 13px;cursor:pointer;font-size:12.5px;color:var(--muted);transition:all .12s;}
+  .tab:hover{border-color:var(--acc);color:var(--ink);}
+  .tab:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  .tab.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .tab .tc{font-family:var(--mono);font-size:10px;margin-right:5px;}
+  .tab.pending{border-style:dashed;}
+  .stage{background:var(--canvas);border:1.5px dashed var(--wire);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;align-items:center;}
+  .figures{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;}
+  .fig{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .fig .lbl{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:12px;height:12px;border-radius:var(--r-sm);display:inline-block;}
+  .capt{font-size:12.5px;color:var(--muted);text-align:center;max-width:52ch;}
+  .capt b{color:var(--ink);}
+  .statusline{font-family:var(--mono);font-size:11.5px;color:var(--faint);border:1px dashed var(--line-strong);border-radius:var(--r-sm);padding:7px 12px;margin-top:14px;}
+  .statusline b{color:var(--acc-ink);}
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+&lt;/style&gt;
+
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;header&gt;
+    &lt;div class=&quot;brand&quot;&gt;⚛ Body Park Atom · 分享模块 · 原子深钻 01&lt;/div&gt;
+    &lt;h1&gt;B2 肌肉热力图 &lt;span style=&quot;color:var(--acc-ink)&quot;&gt;Muscle Heatmap&lt;/span&gt;&lt;/h1&gt;
+    &lt;div class=&quot;meta&quot;&gt;
+      &lt;span class=&quot;mchip hot&quot;&gt;原子规格 v0.1&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;绑定态 R0 · R1 · R2&lt;/span&gt;
+      &lt;span class=&quot;mchip&quot;&gt;被引用：T1/T2 模板 · E1/E2/E5 分享体 · B6 肌肉卡&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;2026-07-17&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;margin-top:14px&quot;&gt;全模块被引用最多的原子。规格按八段工作法展开；中部为&lt;b&gt;可交互着色态演示&lt;/b&gt;——给设计师的活规格，给工程的渲染逻辑参考。&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ① fields --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;① 数据字段全集&lt;/div&gt;
+    &lt;h2&gt;吃什么数据&lt;/h2&gt;
+    &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;字段&lt;/th&gt;&lt;th&gt;类型&lt;/th&gt;&lt;th&gt;来源&lt;/th&gt;&lt;th&gt;说明&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;muscleId / muscleGroup&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;enum&lt;/td&gt;&lt;td&gt;肌肉字典&lt;/td&gt;&lt;td&gt;肌肉→肌群两级，&lt;b&gt;解剖学固定，不可妥协&lt;/b&gt;（会议：不以我们几个人的意志为转移）&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;region&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;enum&lt;/td&gt;&lt;td&gt;肌肉字典&lt;/td&gt;&lt;td&gt;分区（上肢推/拉、蹲、核心…）有自由度，overlap（背 × 核心）需字典定稿&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;role&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;primary | secondary&lt;/td&gt;&lt;td&gt;动作库映射&lt;/td&gt;&lt;td&gt;主动肌 / 协同肌（R0 用）；沿用既有底层映射（如胸肌→FB2/FB3 点亮）&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;intensityShare&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;0~1&lt;/td&gt;&lt;td&gt;本次训练容量分摊&lt;/td&gt;&lt;td&gt;R1 用：该肌群承担的容量占比 → 三档强度&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;frequency / lastTrained&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;int / date&lt;/td&gt;&lt;td&gt;周期聚合&lt;/td&gt;&lt;td&gt;R2 用：周期内练到次数；0 次 → &quot;欠练&quot;标记&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;bodyModel&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;male | female&lt;/td&gt;&lt;td&gt;用户资料&lt;/td&gt;&lt;td&gt;男女版人体模型，默认随用户资料，可切换&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ② hierarchy --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;② 信息层级&lt;/div&gt;
+    &lt;h2&gt;身体本身就是图表&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;b&gt;第一层级：着色的人体&lt;/b&gt;——唯一的信息主体，不叠数字（数字属于 A1 的职责，原子不越界）。&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;第二层级：图例&lt;/b&gt;——语义随绑定态切换（主动/协同 · 强度三档 · 覆盖/欠练），始终在人体下方。&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;第三层级（可选）：Top 肌群名&lt;/b&gt;——最多 3 个文字标签，默认关闭，长图档可开。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ③ interactive demo --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;③ 绑定态变体（可交互）&lt;/div&gt;
+    &lt;h2&gt;一套人体，三种着色逻辑&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;切换绑定态 / 人体版型，观察着色规则变化。示例数据：R0=卧推 · R1=今日推力训练 · R2=近 30 天。&lt;/p&gt;
+
+    &lt;div class=&quot;studio&quot;&gt;
+      &lt;div&gt;
+        &lt;div class=&quot;pk&quot;&gt;绑定态 Binding&lt;/div&gt;
+        &lt;div class=&quot;tabs&quot; id=&quot;modeTabs&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;pk&quot;&gt;人体版型 Body Model&lt;/div&gt;
+        &lt;div class=&quot;tabs&quot; id=&quot;sexTabs&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;pk&quot;&gt;视图 Views&lt;/div&gt;
+        &lt;div class=&quot;tabs&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;tab on&quot; style=&quot;cursor:default&quot;&gt;正 + 背（默认双视图）&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;tab pending&quot; id=&quot;sideBtn&quot;&gt;侧面 &lt;span class=&quot;tag open&quot; style=&quot;margin-left:4px&quot;&gt;待决策&lt;/span&gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;statusline&quot; id=&quot;demoStatus&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;callout&quot; style=&quot;margin-top:14px&quot; id=&quot;ruleNote&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;stage&quot;&gt;
+        &lt;div class=&quot;figures&quot;&gt;
+          &lt;div class=&quot;fig&quot;&gt;&lt;svg id=&quot;figFront&quot; width=&quot;150&quot; height=&quot;270&quot; viewBox=&quot;0 0 120 220&quot; role=&quot;img&quot; aria-label=&quot;人体正面热力图&quot;&gt;&lt;/svg&gt;&lt;span class=&quot;lbl&quot;&gt;Front&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;fig&quot;&gt;&lt;svg id=&quot;figBack&quot; width=&quot;150&quot; height=&quot;270&quot; viewBox=&quot;0 0 120 220&quot; role=&quot;img&quot; aria-label=&quot;人体背面热力图&quot;&gt;&lt;/svg&gt;&lt;span class=&quot;lbl&quot;&gt;Back&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;legend&quot; id=&quot;legend&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;capt&quot; id=&quot;caption&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ④ formats --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;④ 表现形式&lt;/div&gt;
+    &lt;h2&gt;声明的形式边界&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;✅ &lt;b&gt;图表（热力着色）&lt;/b&gt;——唯一主形式。着色只用品牌绿的透明度阶梯，不引入第二色相（红=拉伤联想，禁用）。&lt;/li&gt;
+      &lt;li&gt;🟡 可选叠加：Top 肌群&lt;b&gt;文字标签&lt;/b&gt;（长图档）；&lt;b&gt;皮肤&lt;/b&gt;黑/白两版（属模板皮肤，不属本原子）。&lt;/li&gt;
+      &lt;li&gt;🚫 不支持：照片、数字、徽章、数字人——超出词汇表声明即超纲。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ⑤⑥ --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;⑤ 空态 / 极值 × ⑥ 尺寸档&lt;/div&gt;
+    &lt;h2&gt;边界与响应&lt;/h2&gt;
+    &lt;div class=&quot;grid g2&quot; style=&quot;margin-top:14px&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;空态 / 极值&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;b&gt;无肌群数据&lt;/b&gt;（心肺课等）→ 原子整体不进组合（满格规则重排），不出现灰色人体。&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;全身全亮&lt;/b&gt;（大循环课）→ 强制按 intensityShare 分档，避免&quot;一片绿&quot;失去信息量。&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;单一肌群&lt;/b&gt;（单动作 E1）→ 切换为 zoom 变体（与 B6 肌肉卡共用该视图）。&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;R2 数据不足&lt;/b&gt;（周期内 &amp;lt;3 次训练）→ 降级为最近一次的 R1 态，图例注明。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;尺寸档表现&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;b&gt;短图 3:4&lt;/b&gt;：正+背双人并排（默认，本页所示）。&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;1:1&lt;/b&gt;：单人正面 + 图例右置；背面信息并入图例文字。&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;Story 9:16 / 长图&lt;/b&gt;：双人加大 + 可开 Top 肌群标签（第三层级）。&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;卡片（B6）&lt;/b&gt;：单块肌肉 zoom + 该肌群历史，几何与本原子共库。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ⑦⑧ --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;⑦ 理性依据 × ⑧ 感性方向&lt;/div&gt;
+    &lt;h2&gt;科学是骨架，美感只有一个高光&lt;/h2&gt;
+    &lt;div class=&quot;grid g2&quot; style=&quot;margin-top:14px&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;⑦ 理性（不可让步项）&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;肌肉/肌群两级映射以&lt;b&gt;肌肉字典&lt;/b&gt;为准，解剖学可 check；分区自由度（背/核心 overlap）在字典层定，不在 UI 层碰。&lt;/li&gt;
+          &lt;li&gt;主动/协同肌来自动作库既有映射（历史 FB2/FB3 点亮机制沿用）。&lt;/li&gt;
+          &lt;li&gt;男女版差异是&lt;b&gt;形体轮廓&lt;/b&gt;差异，肌群拓扑不变——一套着色逻辑两套几何。&lt;/li&gt;
+          &lt;li&gt;强度分档阈值（三档）需与训练容量算法对齐，防止&quot;轻碰也全亮&quot;。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;⑧ 感性（唯一高光自由度）&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;本原子的高光 = &lt;b&gt;&quot;呼吸感着色&quot;&lt;/b&gt;：训练强度最高的一个肌群允许描边发光/渐变边缘，其余肌群一律平涂——一张图一个主角，原子内部同样适用。&lt;/li&gt;
+          &lt;li&gt;黑皮肤模板下，霓虹绿热度有&quot;夜训装备&quot;质感——留给设计师的风格探索位。&lt;/li&gt;
+          &lt;li&gt;克制清单：不做 3D、不做渐变彩虹、不做粒子。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;待决策（下次拼装日）&lt;/b&gt;：① 侧面视图——历史上因布局空间搁置（非技术问题），侧面独有可见肌群约 15%（侧三角/前锯肌/腓肠肌外侧），建议 1:1 与长图档选配、短图不上；② 男女版默认跟随用户资料还是手动；③ 三档 vs 五档强度分级。&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;footer&gt;&lt;span&gt;B2 肌肉热力图 · 原子规格 v0.1 · 深钻 01/21&lt;/span&gt;&lt;span&gt;下一个：A1 总结指标&lt;/span&gt;&lt;/footer&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+(function(){
+  /* zone geometry: front &amp; back, id -&gt; rect; female variant narrows shoulders/arms, widens hips */
+  function zones(sex){
+    var f=sex===&#x27;f&#x27;;
+    var sh=f?3:0;      // shoulder inset
+    var hip=f?3:0;     // hip outset
+    return {
+      front:[
+        {id:&#x27;delts&#x27;,   r:[[26+sh,38,15-sh,14],[79,38,15-sh,14]]},
+        {id:&#x27;chest&#x27;,   r:[[44,42,15,17],[61,42,15,17]]},
+        {id:&#x27;biceps&#x27;,  r:[[23+sh,54,11,25],[86,54,11,25]]},
+        {id:&#x27;forearms&#x27;,r:[[21+sh,81,10,23],[89,81,10,23]]},
+        {id:&#x27;abs&#x27;,     r:[[48,61,24,30]]},
+        {id:&#x27;obliques&#x27;,r:[[41,63,7,25],[72,63,7,25]]},
+        {id:&#x27;quads&#x27;,   r:[[43-hip,112,15,40],[62,112,15+hip,40]]},
+        {id:&#x27;calves&#x27;,  r:[[45,164,12,28],[63,164,12,28]]}
+      ],
+      back:[
+        {id:&#x27;traps&#x27;,   r:[[46,36,28,12]]},
+        {id:&#x27;delts&#x27;,   r:[[26+sh,38,15-sh,13],[79,38,15-sh,13]]},
+        {id:&#x27;lats&#x27;,    r:[[40,50,15,26],[65,50,15,26]]},
+        {id:&#x27;triceps&#x27;, r:[[23+sh,54,11,25],[86,54,11,25]]},
+        {id:&#x27;lowback&#x27;, r:[[49,78,22,13]]},
+        {id:&#x27;glutes&#x27;,  r:[[45-hip,93,30+hip*2,16]]},
+        {id:&#x27;hams&#x27;,    r:[[43-hip,112,15,38],[62,112,15+hip,38]]},
+        {id:&#x27;calves&#x27;,  r:[[45,162,12,28],[63,162,12,28]]}
+      ]
+    };
+  }
+  /* mode datasets */
+  var MODES=[
+    {id:&#x27;R0&#x27;,n:&#x27;R0 解剖态&#x27;,ex:&#x27;示例：卧推&#x27;,
+     paint:{chest:&#x27;P&#x27;,delts:&#x27;S&#x27;,triceps:&#x27;S&#x27;},
+     legend:[[&#x27;P&#x27;,&#x27;主动肌&#x27;],[&#x27;S&#x27;,&#x27;协同肌&#x27;]],
+     capt:&#x27;&lt;b&gt;R0 内容态&lt;/b&gt;：来自动作库的主动/协同肌映射。二值两档着色，无用户数据。用于动作卡、官方内容分享。&#x27;,
+     rule:&#x27;&lt;b&gt;规则&lt;/b&gt;：role=primary → 实色；secondary → 40% 透明度。数据源：动作库映射（沿用历史点亮机制）。&#x27;},
+    {id:&#x27;R1&#x27;,n:&#x27;R1 强度态&#x27;,ex:&#x27;示例：今日推力训练&#x27;,
+     paint:{chest:3,delts:2,triceps:2,abs:1,quads:1},
+     legend:[[3,&#x27;高强度&#x27;],[2,&#x27;中&#x27;],[1,&#x27;低&#x27;]],
+     capt:&#x27;&lt;b&gt;R1 实例态&lt;/b&gt;：本次训练各肌群容量占比 → 三档强度。用于课后报告（T1/T2 模板）。&#x27;,
+     rule:&#x27;&lt;b&gt;规则&lt;/b&gt;：intensityShare 分三档 → 90% / 55% / 25% 透明度。阈值与容量算法对齐，防&quot;轻碰全亮&quot;。&#x27;},
+    {id:&#x27;R2&#x27;,n:&#x27;R2 覆盖态&#x27;,ex:&#x27;示例：近 30 天&#x27;,
+     paint:{chest:3,lats:3,delts:2,biceps:2,quads:2,glutes:1,abs:1,hams:&#x27;U&#x27;,calves:&#x27;U&#x27;},
+     legend:[[3,&#x27;常练&#x27;],[2,&#x27;适中&#x27;],[1,&#x27;较少&#x27;],[&#x27;U&#x27;,&#x27;欠练&#x27;]],
+     capt:&#x27;&lt;b&gt;R2 聚合态&lt;/b&gt;：周期内各肌群训练频次热度；0 次 → 虚线描边&quot;欠练&quot;。用于周期打卡、肌肉卡（B6）。&#x27;,
+     rule:&#x27;&lt;b&gt;规则&lt;/b&gt;：frequency 三档 + 欠练态（虚线描边，无填充）。欠练是 R2 独有信息——&quot;App 懂你缺什么&quot;。&#x27;}
+  ];
+  var state={mode:&#x27;R1&#x27;,sex:&#x27;m&#x27;};
+
+  function tierOpacity(v){return v===&#x27;P&#x27;?0.9:(v===&#x27;S&#x27;?0.4:(v===3?0.9:(v===2?0.55:0.25)));}
+
+  function outline(svg,sex){
+    var f=sex===&#x27;f&#x27;;
+    var ns=&#x27;http://www.w3.org/2000/svg&#x27;;
+    function el(t,attrs){var e=document.createElementNS(ns,t);for(var k in attrs)e.setAttribute(k,attrs[k]);svg.appendChild(e);return e;}
+    el(&#x27;circle&#x27;,{cx:60,cy:14,r:11,fill:&#x27;none&#x27;,stroke:&#x27;var(--wire)&#x27;,&#x27;stroke-width&#x27;:2});
+    el(&#x27;rect&#x27;,{x:f?42:40,y:32,width:f?36:40,height:66,rx:12,fill:&#x27;none&#x27;,stroke:&#x27;var(--wire)&#x27;,&#x27;stroke-width&#x27;:2});
+    el(&#x27;rect&#x27;,{x:f?38:40,y:96,width:f?44:40,height:16,rx:6,fill:&#x27;none&#x27;,stroke:&#x27;var(--wire)&#x27;,&#x27;stroke-width&#x27;:1.5});
+    el(&#x27;rect&#x27;,{x:22+(f?3:0),y:52,width:12,height:54,rx:6,fill:&#x27;none&#x27;,stroke:&#x27;var(--wire)&#x27;,&#x27;stroke-width&#x27;:1.5});
+    el(&#x27;rect&#x27;,{x:86,y:52,width:12,height:54,rx:6,fill:&#x27;none&#x27;,stroke:&#x27;var(--wire)&#x27;,&#x27;stroke-width&#x27;:1.5});
+    el(&#x27;rect&#x27;,{x:42,y:110,width:17,height:86,rx:8,fill:&#x27;none&#x27;,stroke:&#x27;var(--wire)&#x27;,&#x27;stroke-width&#x27;:2});
+    el(&#x27;rect&#x27;,{x:61,y:110,width:17,height:86,rx:8,fill:&#x27;none&#x27;,stroke:&#x27;var(--wire)&#x27;,&#x27;stroke-width&#x27;:2});
+  }
+  function paintFig(svg,side){
+    svg.innerHTML=&#x27;&#x27;;
+    outline(svg,state.sex);
+    var mode=MODES.filter(function(m){return m.id===state.mode;})[0];
+    var ns=&#x27;http://www.w3.org/2000/svg&#x27;;
+    zones(state.sex)[side].forEach(function(z){
+      var v=mode.paint[z.id];
+      z.r.forEach(function(r){
+        var e=document.createElementNS(ns,&#x27;rect&#x27;);
+        e.setAttribute(&#x27;x&#x27;,r[0]);e.setAttribute(&#x27;y&#x27;,r[1]);e.setAttribute(&#x27;width&#x27;,r[2]);e.setAttribute(&#x27;height&#x27;,r[3]);
+        e.setAttribute(&#x27;rx&#x27;,3);
+        if(v==null){e.setAttribute(&#x27;fill&#x27;,&#x27;var(--wire)&#x27;);e.setAttribute(&#x27;opacity&#x27;,&#x27;0.14&#x27;);}
+        else if(v===&#x27;U&#x27;){e.setAttribute(&#x27;fill&#x27;,&#x27;none&#x27;);e.setAttribute(&#x27;stroke&#x27;,&#x27;var(--acc)&#x27;);e.setAttribute(&#x27;stroke-width&#x27;,&#x27;1.8&#x27;);e.setAttribute(&#x27;stroke-dasharray&#x27;,&#x27;4 3&#x27;);}
+        else{e.setAttribute(&#x27;fill&#x27;,&#x27;var(--acc)&#x27;);e.setAttribute(&#x27;opacity&#x27;,tierOpacity(v));}
+        svg.appendChild(e);
+      });
+    });
+  }
+  function paint(){
+    paintFig(document.getElementById(&#x27;figFront&#x27;),&#x27;front&#x27;);
+    paintFig(document.getElementById(&#x27;figBack&#x27;),&#x27;back&#x27;);
+    var mode=MODES.filter(function(m){return m.id===state.mode;})[0];
+    var lg=document.getElementById(&#x27;legend&#x27;); lg.innerHTML=&#x27;&#x27;;
+    mode.legend.forEach(function(l){
+      var s=document.createElement(&#x27;span&#x27;);
+      var sw=document.createElement(&#x27;i&#x27;); sw.className=&#x27;sw&#x27;;
+      if(l[0]===&#x27;U&#x27;){sw.style.border=&#x27;1.8px dashed var(--acc)&#x27;;sw.style.background=&#x27;none&#x27;;}
+      else{sw.style.background=&#x27;var(--acc)&#x27;;sw.style.opacity=tierOpacity(l[0]);}
+      s.appendChild(sw); s.appendChild(document.createTextNode(l[1]));
+      lg.appendChild(s);
+    });
+    var un=document.createElement(&#x27;span&#x27;);
+    var usw=document.createElement(&#x27;i&#x27;);usw.className=&#x27;sw&#x27;;usw.style.background=&#x27;var(--wire)&#x27;;usw.style.opacity=&#x27;.3&#x27;;
+    un.appendChild(usw);un.appendChild(document.createTextNode(&#x27;未涉及&#x27;));lg.appendChild(un);
+    document.getElementById(&#x27;caption&#x27;).innerHTML=mode.capt;
+    document.getElementById(&#x27;ruleNote&#x27;).innerHTML=mode.rule;
+    document.getElementById(&#x27;demoStatus&#x27;).innerHTML=&#x27;当前：&lt;b&gt;&#x27;+mode.n+&#x27;&lt;/b&gt; · &#x27;+mode.ex+&#x27; · &#x27;+(state.sex===&#x27;m&#x27;?&#x27;男版&#x27;:&#x27;女版&#x27;);
+    Array.prototype.forEach.call(document.getElementById(&#x27;modeTabs&#x27;).children,function(b){b.classList.toggle(&#x27;on&#x27;,b.dataset.id===state.mode);});
+    Array.prototype.forEach.call(document.getElementById(&#x27;sexTabs&#x27;).children,function(b){b.classList.toggle(&#x27;on&#x27;,b.dataset.id===state.sex);});
+  }
+  var mt=document.getElementById(&#x27;modeTabs&#x27;);
+  MODES.forEach(function(m){
+    var b=document.createElement(&#x27;button&#x27;);b.type=&#x27;button&#x27;;b.className=&#x27;tab&#x27;;b.dataset.id=m.id;
+    b.innerHTML=&#x27;&lt;span class=&quot;tc&quot;&gt;&#x27;+m.id+&#x27;&lt;/span&gt;&#x27;+m.n.replace(m.id+&#x27; &#x27;,&#x27;&#x27;);
+    b.addEventListener(&#x27;click&#x27;,function(){state.mode=m.id;paint();});
+    mt.appendChild(b);
+  });
+  var st=document.getElementById(&#x27;sexTabs&#x27;);
+  [[&#x27;m&#x27;,&#x27;男版&#x27;],[&#x27;f&#x27;,&#x27;女版&#x27;]].forEach(function(s){
+    var b=document.createElement(&#x27;button&#x27;);b.type=&#x27;button&#x27;;b.className=&#x27;tab&#x27;;b.dataset.id=s[0];b.textContent=s[1];
+    b.addEventListener(&#x27;click&#x27;,function(){state.sex=s[0];paint();});
+    st.appendChild(b);
+  });
+  document.getElementById(&#x27;sideBtn&#x27;).addEventListener(&#x27;click&#x27;,function(){
+    alert(&#x27;侧面视图为待决策项：独有可见肌群约 15%（侧三角、前锯肌、腓肠肌外侧）。建议 1:1 与长图档选配，短图不上。下次拼装日定。&#x27;);
+  });
+  paint();
+})();
+&lt;/script&gt;
+"></iframe>
+<footer>ATOM 分享模块 · 原子库 · 单文件合集 · 内部各节交互均可用</footer>
+<script>
+function fit(f){try{var d=f.contentDocument;if(!d||!d.documentElement)return;
+  f.style.height=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0)+'px';}catch(e){}}
+document.querySelectorAll('iframe').forEach(function(f){
+  f.addEventListener('load',function(){fit(f);
+    try{new ResizeObserver(function(){fit(f);}).observe(f.contentDocument.documentElement);}catch(e){}
+    setTimeout(function(){fit(f);},600);setTimeout(function(){fit(f);},2000);});
+});
+</script>

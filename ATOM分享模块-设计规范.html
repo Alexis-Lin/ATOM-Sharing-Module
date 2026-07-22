@@ -1,0 +1,876 @@
+<title>ATOM 分享模块 · 设计规范</title>
+<style>
+  :root{--bg:#F6F7F4;--surface:#FFFFFF;--ink:#141712;--muted:#5C645A;--faint:#939C8F;
+    --line:#E4E8E1;--acc:#6FCC1B;--acc-ink:#47940B;--on-acc:#10240A;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+  @media (prefers-color-scheme:dark){:root{--bg:#0F110E;--surface:#161A15;--ink:#E9ECE6;--muted:#9AA396;
+    --faint:#707A6B;--line:#262B24;--acc:#A3E635;--acc-ink:#BEF264;--on-acc:#10240A;}}
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--acc:#6FCC1B;--acc-ink:#47940B;}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--acc:#A3E635;--acc-ink:#BEF264;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);}
+  .topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap;}
+  .topbar .brand{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;}
+  .topbar .brand em{font-style:normal;color:var(--acc-ink);}
+  .topbar nav{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;}
+  .topbar a{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-decoration:none;
+    border:1px solid var(--line);border-radius:2px;padding:4px 10px;}
+  .topbar a:hover{border-color:var(--acc);color:var(--ink);}
+  .sechead{max-width:1160px;margin:0 auto;padding:26px 20px 0;}
+  .sechead .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--acc-ink);font-weight:700;display:flex;align-items:center;gap:10px;}
+  .sechead .kicker::before{content:"";width:22px;height:2px;background:var(--acc);}
+  .subnote{max-width:1160px;margin:0 auto;padding:8px 20px 0;color:var(--faint);font-family:var(--mono);font-size:11px;}
+  iframe{display:block;width:100%;border:0;}
+  footer{max-width:1160px;margin:0 auto;padding:24px 20px 48px;color:var(--faint);font-family:var(--mono);font-size:11px;
+    border-top:1px solid var(--line);}
+</style>
+<div class="topbar"><span class="brand">📏 <em>BODY PARK ATOM</em> · 设计规范</span><nav><a href="#part1">网格标准与成图样例</a><a href="#part2">分享模板总目录</a></nav></div>
+<div class="subnote">网格标准与成图样例 + 分享模板总目录（19+4）。源文件：规范-网格标准与成图样例 · 规范-分享模板总目录 · 合集由 build-bundles.py 生成，修改请编辑源文件</div>
+<div class="sechead" id="part1"><div class="kicker">01 · 网格标准与成图样例</div></div>
+<iframe title="01 · 网格标准与成图样例" srcdoc="&lt;title&gt;规范 · 网格标准与成图样例&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --mono:ui-monospace,&quot;SF Mono&quot;,Menlo,Consolas,monospace;
+    --cjk:&quot;PingFang SC&quot;,&quot;Hiragino Sans GB&quot;,&quot;Microsoft YaHei&quot;,sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme=&quot;light&quot;]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme=&quot;dark&quot;]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 100px;}
+  section{margin-top:54px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  h3{font-size:15px;font-weight:700;margin:18px 0 6px;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:&quot;&quot;;width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:68ch;font-size:14px;margin:6px 0 0;}
+  .mono{font-family:var(--mono);}
+  code{font-family:var(--mono);font-size:.92em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+  header{padding:50px 0 24px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(25px,4.2vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:var(--surface);}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;white-space:nowrap;}
+  thead th{background:var(--surface-2);font-size:12px;border-bottom:1.5px solid var(--line-strong);}
+  td.wr{white-space:normal;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);}
+  ul{margin:6px 0;padding-left:20px;} li{margin:4px 0;font-size:13.5px;color:var(--muted);} li b{color:var(--ink);}
+  .callout{border-left:3px solid var(--acc);background:var(--surface);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);margin:14px 0;font-size:13.5px;color:var(--muted);}
+  .callout b{color:var(--ink);}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;box-shadow:var(--shadow);}
+  .grid2{display:grid;gap:12px;grid-template-columns:1fr 1fr;}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr;}}
+  .mnum{font-family:var(--mono);font-weight:700;color:var(--acc-ink);}
+
+  /* canvas demos */
+  .canvases{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-end;margin-top:20px;justify-content:center;}
+  .cv{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .cv .cl{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em;text-align:center;line-height:1.5;}
+  .frame{position:relative;background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:var(--r-sm);overflow:hidden;
+    background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 7px,color-mix(in srgb,var(--wire) 22%,transparent) 7px,color-mix(in srgb,var(--wire) 22%,transparent) 8px);}
+  .frame .margin{position:absolute;inset:0;border:12px solid color-mix(in srgb,var(--acc) 10%,transparent);pointer-events:none;}
+  .frame .cols{position:absolute;top:12px;bottom:12px;left:12px;right:12px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;pointer-events:none;}
+  .frame .cols i{background:color-mix(in srgb,var(--acc) 7%,transparent);}
+  .frame .safe{position:absolute;left:0;right:0;background:repeating-linear-gradient(45deg,transparent 0 4px,color-mix(in srgb,var(--ink) 12%,transparent) 4px 6px);pointer-events:none;}
+  .stack{position:absolute;top:12px;left:12px;right:12px;bottom:12px;display:flex;flex-direction:column;gap:8px;}
+  .atomblk{border:1.2px dashed var(--wire);border-radius:var(--r-sm);background:color-mix(in srgb,var(--surface) 82%,transparent);position:relative;display:grid;place-items:center;}
+  .atomblk .t{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.05em;}
+  .atomblk.grow{flex:1;}
+  .atomblk.hotb{border-color:var(--acc);}
+  .dim{position:absolute;font-family:var(--mono);font-size:9px;color:var(--acc-ink);background:var(--bg);padding:0 4px;border-radius:var(--r-sm);}
+
+  /* seam anatomy */
+  .anatomy{display:flex;justify-content:center;margin-top:18px;}
+  .anat{width:min(420px,100%);background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:var(--r-sm);padding:24px;position:relative;display:flex;flex-direction:column;gap:16px;}
+  .anat .ab{border:1.5px dashed var(--wire);border-radius:var(--r-sm);background:var(--surface);padding:16px;position:relative;}
+  .anat .hd{height:24px;display:flex;align-items:center;gap:8px;}
+  .anat .ph{height:8px;border-radius:var(--r-sm);background:var(--wire);opacity:.55;}
+  .anat .lab{position:absolute;font-family:var(--mono);font-size:10px;color:var(--acc-ink);background:var(--bg);padding:0 5px;border-radius:var(--r-sm);white-space:nowrap;}
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+&lt;/style&gt;
+
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;header&gt;
+    &lt;div class=&quot;brand&quot;&gt;⚛ Body Park Atom · 分享模块 · 锚 2&lt;/div&gt;
+    &lt;h1&gt;分享画布网格规范 &lt;span style=&quot;color:var(--acc-ink)&quot;&gt;Canvas Grid&lt;/span&gt;&lt;/h1&gt;
+    &lt;div class=&quot;meta&quot;&gt;
+      &lt;span class=&quot;mchip hot&quot;&gt;v0.1&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;从输出尺寸倒推&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;单位：pt（逻辑）@3x 导出 px&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;2026-07-17&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;margin-top:14px&quot;&gt;工作法三锚之二。核心决策：&lt;b&gt;统一逻辑宽度 360pt&lt;/b&gt;——原子都是全宽横条，平台比例差异被归约为&quot;高度预算&quot;问题；所有间距落在 4pt 基准网格上，纵向节奏 8pt。&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;!-- 1 sizes --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;01 / 输出尺寸（倒推起点）&lt;/div&gt;
+    &lt;h2&gt;平台档位表&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;每档共享同一逻辑宽度 360pt；导出 = 矢量重渲染（非位图缩放）。&lt;/p&gt;
+    &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;档位&lt;/th&gt;&lt;th&gt;比例&lt;/th&gt;&lt;th&gt;逻辑画布 pt&lt;/th&gt;&lt;th&gt;标准导出 px&lt;/th&gt;&lt;th&gt;平台再适配&lt;/th&gt;&lt;th&gt;内容高度预算*&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;td&gt;&lt;b&gt;短图 · 默认&lt;/b&gt;&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;3:4&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;360 × 480&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;1080 × 1440 @3x&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;小红书可重渲 1242×1656（@3.45x）&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;432 pt&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td&gt;IG Feed 方图&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;1:1&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;360 × 360&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;1080 × 1080 @3x&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;312 pt&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td&gt;IG 竖图&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;4:5&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;360 × 450&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;1080 × 1350 @3x&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;402 pt&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td&gt;Story / 状态&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;9:16&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;360 × 640&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;1080 × 1920 @3x&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;上 64 / 下 88 pt 安全区（平台 UI 遮挡）&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;440 pt&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td&gt;长图&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;1080 × N&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;360 × 不限&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;1080 宽 @3x&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;高度 &amp;gt;3600px 时分段导出&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;不限&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;font-size:12.5px;margin-top:10px&quot;&gt;* 内容高度预算 = 画布高 − 上下边距 24×2 −（Story 另减安全区）。微信/相册无强制比例，用 3:4 默认档。&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 2 grid --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;02 / 网格（三档画布同网格）&lt;/div&gt;
+    &lt;h2&gt;边距 24 · 6 列 × 42 · 列距 12 · 纵向 8pt 节奏&lt;/h2&gt;
+    &lt;div class=&quot;canvases&quot;&gt;
+      &lt;div class=&quot;cv&quot;&gt;
+        &lt;div class=&quot;frame&quot; style=&quot;width:180px;height:240px&quot;&gt;
+          &lt;div class=&quot;margin&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;cols&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+          &lt;div class=&quot;stack&quot;&gt;
+            &lt;div class=&quot;atomblk&quot; style=&quot;height:72px&quot;&gt;&lt;span class=&quot;t&quot;&gt;A1 · M 144pt&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;atomblk grow hotb&quot;&gt;&lt;span class=&quot;t&quot;&gt;B2 · L 弹性&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;atomblk&quot; style=&quot;height:28px&quot;&gt;&lt;span class=&quot;t&quot;&gt;G1 · 56pt&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;span class=&quot;cl&quot;&gt;3:4 短图 · 预算 432&lt;br&gt;= A1 144 + 缝16 + B2 200 + 缝16 + G1 56 ✓&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;cv&quot;&gt;
+        &lt;div class=&quot;frame&quot; style=&quot;width:180px;height:180px&quot;&gt;
+          &lt;div class=&quot;margin&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;cols&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+          &lt;div class=&quot;stack&quot;&gt;
+            &lt;div class=&quot;atomblk&quot; style=&quot;height:48px&quot;&gt;&lt;span class=&quot;t&quot;&gt;A1↓ 单行 96pt&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;atomblk grow hotb&quot;&gt;&lt;span class=&quot;t&quot;&gt;B2↓ 单人 128pt&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;atomblk&quot; style=&quot;height:28px&quot;&gt;&lt;span class=&quot;t&quot;&gt;G1 · 56pt&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;span class=&quot;cl&quot;&gt;1:1 · 预算 312&lt;br&gt;= 96 + 16 + 128 + 16 + 56 ✓（原子降档）&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;cv&quot;&gt;
+        &lt;div class=&quot;frame&quot; style=&quot;width:150px;height:266px&quot;&gt;
+          &lt;div class=&quot;margin&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;safe&quot; style=&quot;top:0;height:26px&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;safe&quot; style=&quot;bottom:0;height:36px&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;cols&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+          &lt;div class=&quot;stack&quot; style=&quot;top:38px;bottom:48px&quot;&gt;
+            &lt;div class=&quot;atomblk&quot; style=&quot;height:56px&quot;&gt;&lt;span class=&quot;t&quot;&gt;A1 144&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;atomblk grow hotb&quot;&gt;&lt;span class=&quot;t&quot;&gt;B2 加大 + 标签&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;atomblk&quot; style=&quot;height:20px&quot;&gt;&lt;span class=&quot;t&quot;&gt;G1 56&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;span class=&quot;cl&quot;&gt;9:16 Story · 预算 440（斜纹=安全区）&lt;br&gt;B2 吃掉富余 → 开第三层级标签&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;装箱规则（模板 = 高度预算分配）&lt;/b&gt;：固定档原子（S/M）先占位 → 弹性档原子（L）吃掉剩余 → 不足时按降档表收缩 → 仍不足则砍最低优先级原子并重排（满格规则）。每格数字必须落在 8pt 节奏上。&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 3 seam anatomy --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;03 / 原子接缝解剖&lt;/div&gt;
+    &lt;h2&gt;原子之间怎么&quot;焊&quot;&lt;/h2&gt;
+    &lt;div class=&quot;anatomy&quot;&gt;
+      &lt;div class=&quot;anat&quot;&gt;
+        &lt;span class=&quot;lab&quot; style=&quot;top:4px;left:50%;transform:translateX(-50%)&quot;&gt;画布边距 24&lt;/span&gt;
+        &lt;div class=&quot;ab&quot;&gt;
+          &lt;span class=&quot;lab&quot; style=&quot;top:-8px;right:10px&quot;&gt;原子内边距 16&lt;/span&gt;
+          &lt;div class=&quot;hd&quot;&gt;&lt;span class=&quot;ph&quot; style=&quot;width:40%&quot;&gt;&lt;/span&gt;&lt;span class=&quot;ph&quot; style=&quot;width:15%;margin-left:auto&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;span class=&quot;lab&quot; style=&quot;top:26px;right:-6px;transform:rotate(90deg);transform-origin:right&quot;&gt;头行 24&lt;/span&gt;
+          &lt;div class=&quot;ph&quot; style=&quot;width:85%;margin-top:8px&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;ph&quot; style=&quot;width:60%;margin-top:8px&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;span class=&quot;lab&quot; style=&quot;top:50%;left:50%;transform:translate(-50%,-50%)&quot;&gt;原子间缝 16&lt;/span&gt;
+        &lt;div class=&quot;ab&quot;&gt;
+          &lt;div class=&quot;hd&quot;&gt;&lt;span class=&quot;ph&quot; style=&quot;width:30%&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;ph&quot; style=&quot;width:70%;margin-top:8px&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;grid2&quot; style=&quot;margin-top:18px&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;间距只有六个数&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;span class=&quot;mnum&quot;&gt;4&lt;/span&gt; 微间距（标签与数值之间）&lt;/li&gt;
+          &lt;li&gt;&lt;span class=&quot;mnum&quot;&gt;8&lt;/span&gt; 行间 / 元素间（纵向节奏基准）&lt;/li&gt;
+          &lt;li&gt;&lt;span class=&quot;mnum&quot;&gt;12&lt;/span&gt; 列距 / 宫格间距&lt;/li&gt;
+          &lt;li&gt;&lt;span class=&quot;mnum&quot;&gt;16&lt;/span&gt; 原子内边距 / 原子间缝&lt;/li&gt;
+          &lt;li&gt;&lt;span class=&quot;mnum&quot;&gt;24&lt;/span&gt; 画布边距 / 原子头行高&lt;/li&gt;
+          &lt;li&gt;&lt;span class=&quot;mnum&quot;&gt;32&lt;/span&gt; 章节级留白（仅长图分段用）&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;出血权 Bleed ✓ 已决策 07-17&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;b&gt;仅 D 类情绪原子（D1 氛围图 / D2 视频）允许通栏出血&lt;/b&gt;——打破 24pt 边距直达画布边缘，制造情绪张力（见极简晒图案例）。&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;数据/结构/AI 类原子（A/B/C）严格守边距&lt;/b&gt;——数据的可信感来自秩序。&lt;/li&gt;
+          &lt;li&gt;G1 永远守边距；出血原子内部的文字仍落回 24pt 内容区（出血的是底，不是字）。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;原子高度三档（8 的倍数）&lt;/h3&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;b&gt;S 固定 56~88&lt;/b&gt;：G1(56) · A4(72) · A3(88) · D3(56)&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;M 固定 96~152&lt;/b&gt;：A1 全宫格 144 / 降档单行 96 · B1 三行 128 · A2(120)&lt;/li&gt;
+          &lt;li&gt;&lt;b&gt;L 弹性 ≥128&lt;/b&gt;：B2 · C1 · D1 · D2 —— 每张图&lt;b&gt;最多一个 L&lt;/b&gt;（它就是主角），吃掉剩余预算&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 4 type rows --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;04 / 行高与字阶（4pt 网格对齐）&lt;/div&gt;
+    &lt;h2&gt;分享图专用字阶&lt;/h2&gt;
+    &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;角色&lt;/th&gt;&lt;th&gt;字号/行高 pt&lt;/th&gt;&lt;th&gt;字体&lt;/th&gt;&lt;th&gt;用途&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;Num-XL&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;44 / 48&lt;/td&gt;&lt;td&gt;Mono 700&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;极简晒图的大数字（T4）——一张图最多一个&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;Num-L&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;28 / 32&lt;/td&gt;&lt;td&gt;Mono 700&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;A1 主指标、A3 对比值&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;Num-M&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;18 / 24&lt;/td&gt;&lt;td&gt;Mono 700&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;宫格次指标、B1 组次重&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;Title&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;18 / 24&lt;/td&gt;&lt;td&gt;CJK 700&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;课程名/标题（A1 头行）&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;Body&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;13 / 20&lt;/td&gt;&lt;td&gt;CJK 400&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;AI Tips 正文、鼓励文案&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;Label&lt;/td&gt;&lt;td class=&quot;mono&quot;&gt;10 / 16&lt;/td&gt;&lt;td&gt;Mono 600 · 字距 .06em&lt;/td&gt;&lt;td class=&quot;wr&quot;&gt;指标标签、图例、日期&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;ul style=&quot;margin-top:10px&quot;&gt;
+      &lt;li&gt;数字一律 &lt;code&gt;tabular-nums&lt;/code&gt;（等宽数字），宫格才对得齐。&lt;/li&gt;
+      &lt;li&gt;正文行宽不超过内容区（312pt ≈ 22 个中文字），AI Tips 超长截断到 3 行。&lt;/li&gt;
+      &lt;li&gt;字号只允许表中六档——新增档位需过拼装日评审。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 5 rules --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;05 / 落地约定&lt;/div&gt;
+    &lt;h2&gt;给设计与工程的三条硬约定&lt;/h2&gt;
+    &lt;ul style=&quot;margin-top:10px&quot;&gt;
+      &lt;li&gt;&lt;b&gt;设计稿以 360pt 逻辑宽建画板&lt;/b&gt;（Figma 画板 360 宽，导出 @3x）；原子组件即全宽 Frame，高度按 S/M/L 档位；Auto Layout 间距只用六个数。&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;工程渲染以 pt 为单位、导出前整体 ×3&lt;/b&gt;；小红书档重渲染 @3.45x，禁止位图放大。&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;比例切换 = 只改高度预算与降档选择&lt;/b&gt;，不改原子内部布局参数——这保证了&quot;切渠道无感&quot;且实现只有一套。&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;与既有文档的关系&lt;/b&gt;：本规范是 §13.2 工作法的锚 2 落地；B2 规格页（原子-B2肌肉热力图规格）的尺寸档描述从此对齐本表；PRD 04 节交互 Demo 的三档比例即本规范档位表。原子规格页此后新增&quot;高度档位&quot;字段（S/M/L + 具体 pt）。&lt;/div&gt;
+  &lt;/section&gt;
+
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;06 / 成图样例（按本规范 1:1 装箱 · 假数据）&lt;/div&gt;
+    &lt;h2&gt;规范落到图上长什么样&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;8 张组合成图（含 1 张反例），固定浅色皮肤（分享图是内容不是界面）。&lt;label style=&quot;font-family:var(--mono);font-size:12px;cursor:pointer;margin-left:8px&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;capToggle&quot; checked&gt; 显示装箱标注&lt;/label&gt;&lt;/p&gt;
+    &lt;div class=&quot;samplerow&quot;&gt;
+&lt;!-- ============ S1 · 1:1 360×360 ============ --&gt;
+&lt;div class=&quot;shot&quot; id=&quot;s1&quot; style=&quot;height:calc(var(--u)*360)&quot;&gt;
+  &lt;div class=&quot;pad&quot;&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*96);gap:calc(var(--u)*8)&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;t-title&quot;&gt;上肢推力 · 杠铃与哑铃&lt;/span&gt;&lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;07·17&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot; style=&quot;color:var(--caccink)&quot;&gt;42:18&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;训练时长&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;386&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;千卡&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;1.8t&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;总容量&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;flex:1&quot;&gt;
+      &lt;div class=&quot;figs&quot;&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*62);height:calc(var(--u)*112)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;legend&quot;&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.92&quot;&gt;&lt;/i&gt;胸 · 主&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.55&quot;&gt;&lt;/i&gt;肩/肱三&lt;/span&gt;&lt;span style=&quot;color:var(--cfnt)&quot;&gt;共 5 个动作&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom g1&quot; style=&quot;margin-top:auto&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*32);height:calc(var(--u)*32)&quot; viewBox=&quot;0 0 46 46&quot;&gt;&lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#C9CFC2&quot; stroke-width=&quot;1.5&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;#6FCC1B&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;#141712&quot;/&gt;&lt;/svg&gt;
+      &lt;div&gt;&lt;div class=&quot;brandln&quot;&gt;BODY PARK&lt;/div&gt;&lt;div class=&quot;slog&quot;&gt;扫码下载 · AI 私教在家练&lt;/div&gt;&lt;/div&gt;
+      &lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;#战报&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ============ S2 · 4:5 360×450 ============ --&gt;
+&lt;div class=&quot;shot&quot; id=&quot;s2&quot; style=&quot;height:calc(var(--u)*450)&quot;&gt;
+  &lt;div class=&quot;pad&quot;&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*144);gap:calc(var(--u)*8)&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;t-title&quot;&gt;上肢推力 · 杠铃与哑铃&lt;/span&gt;&lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;07·17 THU&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot; style=&quot;color:var(--caccink)&quot;&gt;42:18&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;训练时长&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;386&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;千卡&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;1.8t&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;总容量&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;动作&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;组&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;148&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;平均心率&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;flex:1&quot;&gt;
+      &lt;div class=&quot;figs&quot;&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*72);height:calc(var(--u)*136)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*72);height:calc(var(--u)*136)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;32&quot; y=&quot;36&quot; width=&quot;18&quot; height=&quot;10&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.3&quot;/&gt;&lt;rect x=&quot;23&quot; y=&quot;52&quot; width=&quot;8&quot; height=&quot;22&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;52&quot; width=&quot;8&quot; height=&quot;22&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;legend&quot;&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.92&quot;&gt;&lt;/i&gt;高&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.55&quot;&gt;&lt;/i&gt;中&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.3&quot;&gt;&lt;/i&gt;低&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom g1&quot; style=&quot;margin-top:auto&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*32);height:calc(var(--u)*32)&quot; viewBox=&quot;0 0 46 46&quot;&gt;&lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#C9CFC2&quot; stroke-width=&quot;1.5&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;#6FCC1B&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;#141712&quot;/&gt;&lt;/svg&gt;
+      &lt;div&gt;&lt;div class=&quot;brandln&quot;&gt;BODY PARK&lt;/div&gt;&lt;div class=&quot;slog&quot;&gt;扫码下载 · AI 私教在家练&lt;/div&gt;&lt;/div&gt;
+      &lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;#战报&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ============ S3 · 3:4 热力图主角 360×480 ============ --&gt;
+&lt;div class=&quot;shot&quot; id=&quot;s3&quot; style=&quot;height:calc(var(--u)*480)&quot;&gt;
+  &lt;div class=&quot;pad&quot;&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*96);gap:calc(var(--u)*8)&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;t-title&quot;&gt;上肢推力 · 杠铃与哑铃&lt;/span&gt;&lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;07·17 THU&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot; style=&quot;color:var(--caccink)&quot;&gt;42:18&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;训练时长&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;386&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;千卡&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;1.8t&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;总容量&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;flex:1&quot;&gt;
+      &lt;div class=&quot;figs&quot;&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*92);height:calc(var(--u)*172)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;22&quot; y=&quot;58&quot; width=&quot;7&quot; height=&quot;20&quot; rx=&quot;3.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.3&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*92);height:calc(var(--u)*172)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;32&quot; y=&quot;36&quot; width=&quot;18&quot; height=&quot;10&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.3&quot;/&gt;&lt;rect x=&quot;23&quot; y=&quot;52&quot; width=&quot;8&quot; height=&quot;22&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;52&quot; width=&quot;8&quot; height=&quot;22&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;legend&quot;&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.92&quot;&gt;&lt;/i&gt;胸 · 主&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.55&quot;&gt;&lt;/i&gt;肩/肱三&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.3&quot;&gt;&lt;/i&gt;核心&lt;/span&gt;&lt;span style=&quot;color:var(--cfnt)&quot;&gt;共 5 个动作&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom g1&quot; style=&quot;margin-top:auto&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*32);height:calc(var(--u)*32)&quot; viewBox=&quot;0 0 46 46&quot;&gt;&lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#C9CFC2&quot; stroke-width=&quot;1.5&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;#6FCC1B&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;#141712&quot;/&gt;&lt;/svg&gt;
+      &lt;div&gt;&lt;div class=&quot;brandln&quot;&gt;BODY PARK&lt;/div&gt;&lt;div class=&quot;slog&quot;&gt;扫码下载 · AI 私教在家练&lt;/div&gt;&lt;/div&gt;
+      &lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;#战报&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ============ S4 · 3:4 极简晒图 360×480 ============ --&gt;
+&lt;div class=&quot;shot&quot; id=&quot;s4&quot; style=&quot;height:calc(var(--u)*480)&quot;&gt;
+  &lt;div class=&quot;pad&quot;&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;flex:1;justify-content:flex-end;background:linear-gradient(180deg,#F2F5EE 0%,#E6EEDC 100%);margin:calc(var(--u)*-24);margin-bottom:0;padding:calc(var(--u)*24);position:relative&quot;&gt;
+      &lt;svg style=&quot;position:absolute;inset:auto 0 calc(var(--u)*88) 0;width:100%;height:calc(var(--u)*120)&quot; viewBox=&quot;0 0 360 120&quot; preserveAspectRatio=&quot;none&quot;&gt;
+        &lt;path d=&quot;M0 108 L92 34 L156 84 L228 48 L296 96 L360 60 L360 120 L0 120 Z&quot; fill=&quot;#D9E4C8&quot;/&gt;
+        &lt;path d=&quot;M0 108 L92 34 L156 84 L228 48 L296 96 L360 60&quot; fill=&quot;none&quot; stroke=&quot;#B9CB9C&quot; stroke-width=&quot;2.5&quot; stroke-linejoin=&quot;round&quot;/&gt;
+        &lt;circle cx=&quot;296&quot; cy=&quot;30&quot; r=&quot;13&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;
+      &lt;/svg&gt;
+      &lt;div style=&quot;position:relative&quot;&gt;
+        &lt;div class=&quot;t-lab&quot;&gt;今日总容量&lt;/div&gt;
+        &lt;div class=&quot;t-numXL&quot; style=&quot;color:var(--caccink)&quot;&gt;1,800&lt;span style=&quot;font-size:calc(var(--u)*18)&quot;&gt; kg&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*64);justify-content:center&quot;&gt;
+      &lt;div class=&quot;row&quot; style=&quot;justify-content:center;gap:calc(var(--u)*10)&quot;&gt;
+        &lt;span class=&quot;t-lab&quot;&gt;≈ 举起了&lt;/span&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*64);height:calc(var(--u)*25)&quot; viewBox=&quot;0 0 88 34&quot;&gt;&lt;rect x=&quot;8&quot; y=&quot;12&quot; width=&quot;72&quot; height=&quot;12&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#B8C0AC&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;rect x=&quot;24&quot; y=&quot;4&quot; width=&quot;34&quot; height=&quot;12&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#B8C0AC&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;circle cx=&quot;24&quot; cy=&quot;27&quot; r=&quot;5.5&quot; fill=&quot;none&quot; stroke=&quot;#6FCC1B&quot; stroke-width=&quot;3&quot;/&gt;&lt;circle cx=&quot;63&quot; cy=&quot;27&quot; r=&quot;5.5&quot; fill=&quot;none&quot; stroke=&quot;#6FCC1B&quot; stroke-width=&quot;3&quot;/&gt;&lt;/svg&gt;
+        &lt;span class=&quot;t-lab&quot;&gt;一辆小轿车&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom g1&quot; style=&quot;margin-top:auto&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*32);height:calc(var(--u)*32)&quot; viewBox=&quot;0 0 46 46&quot;&gt;&lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#C9CFC2&quot; stroke-width=&quot;1.5&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;#6FCC1B&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;#141712&quot;/&gt;&lt;/svg&gt;
+      &lt;div&gt;&lt;div class=&quot;brandln&quot;&gt;BODY PARK&lt;/div&gt;&lt;div class=&quot;slog&quot;&gt;扫码下载 · AI 私教在家练&lt;/div&gt;&lt;/div&gt;
+      &lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;07·17&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ============ S5 · 3:4 AI 火柴人 360×480 ============ --&gt;
+&lt;div class=&quot;shot&quot; id=&quot;s5&quot; style=&quot;height:calc(var(--u)*480)&quot;&gt;
+  &lt;div class=&quot;pad&quot;&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;flex:1;align-items:center;justify-content:center&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*170);height:calc(var(--u)*168)&quot; viewBox=&quot;0 0 120 118&quot;&gt;
+        &lt;g stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; opacity=&quot;.55&quot; stroke-linecap=&quot;round&quot;&gt;&lt;circle cx=&quot;52&quot; cy=&quot;14&quot; r=&quot;8&quot;/&gt;&lt;path d=&quot;M52 22 L52 52 M52 30 L30 42 M52 30 L74 40 M52 52 L38 84 L36 108 M52 52 L66 84 L70 108&quot;/&gt;&lt;/g&gt;
+        &lt;g stroke=&quot;#6FCC1B&quot; stroke-width=&quot;2.5&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;&gt;&lt;circle cx=&quot;60&quot; cy=&quot;14&quot; r=&quot;8&quot;/&gt;&lt;path d=&quot;M60 22 L60 52 M60 30 L36 38 M60 30 L84 34 M60 52 L44 82 L42 108 M60 52 L76 82 L82 108&quot;/&gt;&lt;/g&gt;
+        &lt;circle cx=&quot;60&quot; cy=&quot;52&quot; r=&quot;3.5&quot; fill=&quot;#6FCC1B&quot;/&gt;
+        &lt;path d=&quot;M76 82 q8 -8 2 -16&quot; stroke=&quot;#141712&quot; stroke-width=&quot;1.5&quot; fill=&quot;none&quot; stroke-dasharray=&quot;3 3&quot;/&gt;
+        &lt;text x=&quot;88&quot; y=&quot;72&quot; font-size=&quot;10&quot; fill=&quot;#141712&quot; font-family=&quot;monospace&quot;&gt;92°&lt;/text&gt;
+      &lt;/svg&gt;
+      &lt;div class=&quot;legend&quot; style=&quot;margin-top:calc(var(--u)*8)&quot;&gt;&lt;span style=&quot;color:#47940B;font-weight:700&quot;&gt;■ 我的姿态&lt;/span&gt;&lt;span style=&quot;color:var(--cfnt)&quot;&gt;■ 标准姿态&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*96)&quot;&gt;
+      &lt;div class=&quot;tips&quot;&gt;
+        &lt;div class=&quot;tr&quot;&gt;&lt;span class=&quot;scorechip&quot;&gt;87 分&lt;/span&gt;&lt;span class=&quot;t-body&quot; style=&quot;font-weight:700&quot;&gt;深蹲 · 第 3 组表现最佳&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;tr&quot;&gt;&lt;span class=&quot;ic&quot;&gt;✓&lt;/span&gt;&lt;span&gt;下蹲深度到位，髋膝同步良好&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;tr&quot;&gt;&lt;span class=&quot;ic&quot;&gt;!&lt;/span&gt;&lt;span&gt;起身时膝盖轻微内扣，注意外展发力&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom g1&quot; style=&quot;margin-top:auto&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*32);height:calc(var(--u)*32)&quot; viewBox=&quot;0 0 46 46&quot;&gt;&lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#C9CFC2&quot; stroke-width=&quot;1.5&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;#6FCC1B&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;#141712&quot;/&gt;&lt;/svg&gt;
+      &lt;div&gt;&lt;div class=&quot;brandln&quot;&gt;BODY PARK&lt;/div&gt;&lt;div class=&quot;slog&quot;&gt;AI 识别 · 每一次都被看见&lt;/div&gt;&lt;/div&gt;
+      &lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;07·17&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ============ S6 · 9:16 360×640 ============ --&gt;
+&lt;div class=&quot;shot&quot; id=&quot;s6&quot; style=&quot;height:calc(var(--u)*640)&quot;&gt;
+  &lt;div class=&quot;pad&quot; style=&quot;padding-top:calc(var(--u)*88);padding-bottom:calc(var(--u)*112)&quot;&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*144);gap:calc(var(--u)*8)&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;t-title&quot;&gt;上肢推力 · 杠铃与哑铃&lt;/span&gt;&lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;07·17&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot; style=&quot;color:var(--caccink)&quot;&gt;42:18&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;时长&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;386&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;千卡&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;1.8t&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;容量&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;动作&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;组&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;148&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;心率&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;flex:1&quot;&gt;
+      &lt;div class=&quot;figs&quot;&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*86);height:calc(var(--u)*162)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*86);height:calc(var(--u)*162)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;32&quot; y=&quot;36&quot; width=&quot;18&quot; height=&quot;10&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.3&quot;/&gt;&lt;rect x=&quot;23&quot; y=&quot;52&quot; width=&quot;8&quot; height=&quot;22&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;52&quot; width=&quot;8&quot; height=&quot;22&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;legend&quot;&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.92&quot;&gt;&lt;/i&gt;高&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.55&quot;&gt;&lt;/i&gt;中&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.3&quot;&gt;&lt;/i&gt;低&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom g1&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*32);height:calc(var(--u)*32)&quot; viewBox=&quot;0 0 46 46&quot;&gt;&lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#C9CFC2&quot; stroke-width=&quot;1.5&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;#6FCC1B&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;#141712&quot;/&gt;&lt;/svg&gt;
+      &lt;div&gt;&lt;div class=&quot;brandln&quot;&gt;BODY PARK&lt;/div&gt;&lt;div class=&quot;slog&quot;&gt;扫码下载 · AI 私教在家练&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ============ S7 · 长图 360×784 ============ --&gt;
+&lt;div class=&quot;shot&quot; id=&quot;s7&quot; style=&quot;height:calc(var(--u)*784)&quot;&gt;
+  &lt;div class=&quot;pad&quot;&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*144);gap:calc(var(--u)*8)&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;t-title&quot;&gt;上肢推力 · 杠铃与哑铃&lt;/span&gt;&lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;07·17 THU&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot; style=&quot;color:var(--caccink)&quot;&gt;42:18&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;训练时长&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;386&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;千卡&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;1.8t&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;总容量&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;动作&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;组&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numM&quot;&gt;148&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;平均心率&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*240)&quot;&gt;
+      &lt;div class=&quot;figs&quot;&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*96);height:calc(var(--u)*186)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot; stroke=&quot;#47940B&quot; stroke-width=&quot;1&quot;/&gt;&lt;rect x=&quot;22&quot; y=&quot;58&quot; width=&quot;7&quot; height=&quot;20&quot; rx=&quot;3.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.3&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*96);height:calc(var(--u)*186)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;32&quot; y=&quot;36&quot; width=&quot;18&quot; height=&quot;10&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.3&quot;/&gt;&lt;rect x=&quot;23&quot; y=&quot;52&quot; width=&quot;8&quot; height=&quot;22&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;52&quot; width=&quot;8&quot; height=&quot;22&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;legend&quot;&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.92&quot;&gt;&lt;/i&gt;高&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.55&quot;&gt;&lt;/i&gt;中&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.3&quot;&gt;&lt;/i&gt;低&lt;/span&gt;&lt;span style=&quot;color:var(--cfnt)&quot;&gt;主练：胸 · 三角肌前束&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*248)&quot;&gt;
+      &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dot&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;杠铃卧推&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;4×12 · 60kg&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dot sub&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;上斜哑铃卧推&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;3×10 · 40kg&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dot sub&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;哑铃肩推&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;3×10 · 22kg&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dot sub&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;绳索下压&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;3×15 · 25kg&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dot sub&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;侧平举&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;3×15 · 8kg&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dot sub&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;卷腹&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;3×20&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;fold&quot;&gt;PB · 杠铃卧推 60kg ↑ 上次 55kg&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom g1&quot; style=&quot;margin-top:auto&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*32);height:calc(var(--u)*32)&quot; viewBox=&quot;0 0 46 46&quot;&gt;&lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#C9CFC2&quot; stroke-width=&quot;1.5&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;#6FCC1B&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;#141712&quot;/&gt;&lt;/svg&gt;
+      &lt;div&gt;&lt;div class=&quot;brandln&quot;&gt;BODY PARK&lt;/div&gt;&lt;div class=&quot;slog&quot;&gt;扫码下载 · AI 私教在家练&lt;/div&gt;&lt;/div&gt;
+      &lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;#战报&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ============ S8 · 3:4 反例：四原子同框 ============ --&gt;
+&lt;div class=&quot;shot&quot; id=&quot;s8&quot; style=&quot;height:calc(var(--u)*480)&quot;&gt;
+  &lt;div class=&quot;pad&quot;&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*96);gap:calc(var(--u)*8)&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;t-title&quot;&gt;上肢推力 · 杠铃与哑铃&lt;/span&gt;&lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;07·17&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;tiles&quot;&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot; style=&quot;color:var(--caccink)&quot;&gt;42:18&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;训练时长&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;386&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;千卡&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;tile&quot;&gt;&lt;div class=&quot;t-numL&quot;&gt;1.8t&lt;/div&gt;&lt;div class=&quot;t-lab&quot;&gt;总容量&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*128)&quot;&gt;
+      &lt;div class=&quot;figs&quot;&gt;
+        &lt;svg style=&quot;width:calc(var(--u)*56);height:calc(var(--u)*100)&quot; viewBox=&quot;0 0 64 120&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;30&quot; rx=&quot;4.5&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.55&quot;/&gt;&lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot;/&gt;&lt;rect x=&quot;33&quot; y=&quot;29&quot; width=&quot;10&quot; height=&quot;15&quot; rx=&quot;4&quot; fill=&quot;#6FCC1B&quot; opacity=&quot;.92&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;#D8DCD2&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;legend&quot;&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.92&quot;&gt;&lt;/i&gt;高&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;sw&quot; style=&quot;opacity:.55&quot;&gt;&lt;/i&gt;中&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom&quot; style=&quot;height:calc(var(--u)*104)&quot;&gt;
+      &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dot&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;杠铃卧推&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;4×12 · 60kg&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;exrow&quot;&gt;&lt;span class=&quot;dot sub&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;哑铃肩推&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;3×10 · 22kg&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;fold&quot;&gt;+ 3 个动作&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;atom g1&quot; style=&quot;margin-top:auto&quot;&gt;
+      &lt;svg style=&quot;width:calc(var(--u)*32);height:calc(var(--u)*32)&quot; viewBox=&quot;0 0 46 46&quot;&gt;&lt;rect x=&quot;1&quot; y=&quot;1&quot; width=&quot;44&quot; height=&quot;44&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;#C9CFC2&quot; stroke-width=&quot;1.5&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;27&quot; y=&quot;7&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;7&quot; y=&quot;27&quot; width=&quot;12&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;none&quot; stroke=&quot;#141712&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;28&quot; y=&quot;28&quot; width=&quot;5&quot; height=&quot;5&quot; fill=&quot;#6FCC1B&quot;/&gt;&lt;rect x=&quot;35&quot; y=&quot;34&quot; width=&quot;4&quot; height=&quot;4&quot; fill=&quot;#141712&quot;/&gt;&lt;/svg&gt;
+      &lt;div&gt;&lt;div class=&quot;brandln&quot;&gt;BODY PARK&lt;/div&gt;&lt;div class=&quot;slog&quot;&gt;扫码下载 · AI 私教在家练&lt;/div&gt;&lt;/div&gt;
+      &lt;span class=&quot;t-lab&quot; style=&quot;margin-left:auto&quot;&gt;#战报&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+    &lt;/div&gt;
+  &lt;/section&gt;
+  &lt;footer&gt;&lt;span&gt;分享画布网格规范 v0.1 · 锚 2&lt;/span&gt;&lt;span&gt;装箱规则：固定先占位 · 弹性吃剩余 · 不足则降档&lt;/span&gt;&lt;/footer&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+:root{--u:0.58px;--cbg:#FFFFFF;--cink:#141712;--cmut:#6B7266;--cfnt:#9AA294;--cln:#ECEFE9;--cacc:#6FCC1B;--caccink:#47940B;}
+
+  
+  *{box-sizing:border-box}
+  .mono{font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,Consolas,monospace;}
+
+  .shot{width:calc(var(--u)*360);background:var(--cbg);box-shadow:0 2px 6px rgba(20,25,35,.08),0 16px 40px -18px rgba(20,25,35,.25);
+    display:flex;flex-direction:column;color:var(--cink);flex:none;overflow:hidden;}
+  .pad{padding:calc(var(--u)*24);display:flex;flex-direction:column;gap:calc(var(--u)*16);flex:1;}
+  .atom{display:flex;flex-direction:column;flex:none;}
+  .t-title{font-size:calc(var(--u)*18);line-height:calc(var(--u)*24);font-weight:700;letter-spacing:-.01em;}
+  .t-numXL{font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;font-size:calc(var(--u)*44);line-height:calc(var(--u)*48);font-weight:700;font-variant-numeric:tabular-nums;}
+  .t-numL{font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;font-size:calc(var(--u)*28);line-height:calc(var(--u)*32);font-weight:700;font-variant-numeric:tabular-nums;}
+  .t-numM{font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;font-size:calc(var(--u)*18);line-height:calc(var(--u)*24);font-weight:700;font-variant-numeric:tabular-nums;}
+  .t-body{font-size:calc(var(--u)*13);line-height:calc(var(--u)*20);}
+  .t-lab{font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;font-size:calc(var(--u)*10);line-height:calc(var(--u)*16);letter-spacing:.06em;text-transform:uppercase;color:var(--cfnt);font-weight:600;}
+  .row{display:flex;align-items:center;gap:calc(var(--u)*8);}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*12);}
+  .tile .t-lab{margin-top:calc(var(--u)*4);}
+  .exrow{display:flex;align-items:center;height:calc(var(--u)*32);border-bottom:1px solid var(--cln);}
+  .exrow:last-of-type{border-bottom:0;}
+  .exrow .nm{font-size:calc(var(--u)*13);}
+  .exrow .st{margin-left:auto;font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;font-size:calc(var(--u)*12);font-variant-numeric:tabular-nums;color:var(--cmut);}
+  .exrow .dot{width:calc(var(--u)*6);height:calc(var(--u)*6);border-radius:50%;background:var(--cacc);margin-right:calc(var(--u)*8);flex:none;}
+  .exrow .dot.sub{background:var(--cln);}
+  .fold{font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;font-size:calc(var(--u)*10);color:var(--cfnt);text-align:center;height:calc(var(--u)*24);display:grid;place-items:center;letter-spacing:.06em;}
+  .legend{display:flex;gap:calc(var(--u)*14);justify-content:center;font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;font-size:calc(var(--u)*10);color:var(--cmut);}
+  .legend span{display:inline-flex;align-items:center;gap:calc(var(--u)*5);}
+  .sw{width:calc(var(--u)*10);height:calc(var(--u)*10);border-radius:2px;background:var(--cacc);display:inline-block;}
+  .figs{display:flex;gap:calc(var(--u)*28);justify-content:center;flex:1;align-items:center;}
+  .g1{display:flex;flex-direction:row;align-items:center;gap:calc(var(--u)*12);height:calc(var(--u)*56);border-top:1px solid var(--cln);padding-top:calc(var(--u)*12);}
+  .g1 .brandln{font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;font-weight:700;font-size:calc(var(--u)*12);letter-spacing:.14em;}
+  .g1 .slog{font-size:calc(var(--u)*10);color:var(--cfnt);font-family:ui-monospace,&quot;SF Mono&quot;,Menlo,monospace;letter-spacing:.03em;}
+  .tips{display:flex;flex-direction:column;gap:calc(var(--u)*6);}
+  .tips .tr{display:flex;gap:calc(var(--u)*8);align-items:baseline;font-size:calc(var(--u)*12.5);line-height:calc(var(--u)*18);}
+  .tips .ic{font-family:ui-monospace,monospace;font-size:calc(var(--u)*11);font-weight:700;color:var(--caccink);flex:none;}
+  .scorechip{font-family:ui-monospace,monospace;font-size:calc(var(--u)*11);font-weight:700;background:var(--cacc);color:#10240A;border-radius:2px;padding:calc(var(--u)*1) calc(var(--u)*8);}
+
+.samplerow{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start;margin-top:18px;}
+&lt;/style&gt;
+&lt;script&gt;
+(function(){
+  var CAPS = {
+    s1:[&#x27;1:1 · 360×360 · IG 方图&#x27;,&#x27;312 = A1↓96 + 16 + B2单人·L + 16 + G1 56&#x27;],
+    s2:[&#x27;4:5 · 360×450 · IG 竖图&#x27;,&#x27;402 = A1 144 + 16 + B2·L 170 + 16 + G1 56&#x27;],
+    s3:[&#x27;3:4 · 360×480 · 默认档 · 热力图主角&#x27;,&#x27;432 = A1↓96 + 16 + B2·L 228 + 16 + G1 56（B1 砍位折叠）&#x27;],
+    s4:[&#x27;3:4 · 360×480 · 极简晒图&#x27;,&#x27;432 = D1·L 272(出血) + 16 + A4 72 + 16 + G1 56&#x27;],
+    s5:[&#x27;3:4 · 360×480 · AI 火柴人&#x27;,&#x27;432 = C1·L 256 + 16 + C2 88 + 16 + G1 56&#x27;],
+    s6:[&#x27;9:16 · 360×640 · Story&#x27;,&#x27;640 = 安全区64 + 内容440(A1 144+B2·L 208+G1 56) + 安全区88&#x27;],
+    s7:[&#x27;长图 · 360×784&#x27;,&#x27;784 = A1 144 + B2 240 + B1 248 + G1 56 + 缝×3 + 边距48&#x27;],
+    s8:[&#x27;3:4 · 360×480 · 反例：四原子同框&#x27;,&#x27;432 = A1↓96 + B2 128 + B1↓104 + G1 56 —— 没有主角，勿用&#x27;]
+  };
+  Object.keys(CAPS).forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var wrapper = document.createElement(&#x27;div&#x27;);
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+    wrapper.style.cssText=&#x27;display:flex;flex-direction:column;gap:8px;flex:none&#x27;;
+    var cap = document.createElement(&#x27;div&#x27;);
+    cap.className=&#x27;shotcap&#x27;;
+    cap.style.cssText=&#x27;font:11px ui-monospace,Menlo,monospace;color:var(--muted);line-height:1.6;max-width:&#x27;+el.style.width;
+    cap.innerHTML=&#x27;&lt;b style=&quot;color:var(--ink)&quot;&gt;&#x27;+CAPS[id][0]+&#x27;&lt;/b&gt;&lt;br&gt;&#x27;+CAPS[id][1];
+    wrapper.appendChild(cap);
+  });
+  document.getElementById(&#x27;capToggle&#x27;).addEventListener(&#x27;change&#x27;,function(e){
+    document.querySelectorAll(&#x27;.shotcap&#x27;).forEach(function(c){c.style.display=e.target.checked?&#x27;&#x27;:&#x27;none&#x27;;});
+  });
+})();
+&lt;/script&gt;
+"></iframe>
+<div class="sechead" id="part2"><div class="kicker">02 · 分享模板总目录</div></div>
+<iframe title="02 · 分享模板总目录" srcdoc="&lt;title&gt;分享模板总目录 · Template Catalog v1.0&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --mono:ui-monospace,&quot;SF Mono&quot;,Menlo,Consolas,monospace;
+    --cjk:&quot;PingFang SC&quot;,&quot;Hiragino Sans GB&quot;,&quot;Microsoft YaHei&quot;,sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme=&quot;light&quot;]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme=&quot;dark&quot;]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px 100px;}
+  section{margin-top:52px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:&quot;&quot;;width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:70ch;font-size:14px;margin:6px 0 0;}
+  .mono{font-family:var(--mono);}
+  header{padding:50px 0 24px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(25px,4.2vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+
+  /* grid constants strip */
+  .constants{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .const{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 14px;box-shadow:var(--shadow);font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .const b{color:var(--acc-ink);}
+
+  table{border-collapse:collapse;width:100%;font-size:12.5px;background:var(--surface);}
+  th,td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap;}
+  thead th{background:var(--surface-2);font-size:11.5px;border-bottom:1.5px solid var(--line-strong);}
+  tbody th{text-align:left;font-size:12.5px;}
+  tbody th small{display:block;font-family:var(--mono);font-size:10px;color:var(--faint);font-weight:500;}
+  td.def{color:var(--acc-ink);font-weight:700;}
+  td.sup{color:var(--muted);}
+  td.na{color:var(--line-strong);}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);}
+  .sec-status{font-family:var(--mono);font-size:10.5px;font-weight:700;border-radius:var(--r-sm);padding:2px 8px;vertical-align:middle;margin-left:8px;}
+  .st-p0{background:var(--acc);color:var(--on-acc);} .st-p1{background:var(--acc-soft);color:var(--acc-ink);border:1px solid var(--acc);}
+  .st-p2{background:var(--surface-2);color:var(--muted);border:1px solid var(--line-strong);} .st-h{border:1px dashed var(--line-strong);color:var(--faint);background:none;}
+
+  /* template cards */
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:16px;}
+  .tcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:13px 14px;display:flex;flex-direction:column;gap:9px;}
+  .tcard.moat{border-color:var(--acc);}
+  .thead2{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .tid{font-family:var(--mono);font-size:11px;font-weight:700;background:var(--ink);color:var(--bg);padding:2px 7px;border-radius:var(--r-sm);}
+  .tcard.moat .tid{background:var(--acc);color:var(--on-acc);}
+  .tname{font-weight:700;font-size:13.5px;flex:1;}
+  .tcell{font-family:var(--mono);font-size:10px;color:var(--faint);}
+  .stackbox{display:flex;gap:10px;align-items:flex-start;}
+  .ministack{width:78px;flex:none;background:var(--canvas);border:1.2px solid var(--line-strong);border-radius:var(--r-sm);padding:4px;display:flex;flex-direction:column;gap:3px;}
+  .mblk{border:1px dashed var(--wire);border-radius:var(--r-sm);display:grid;place-items:center;background:var(--surface);
+    font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.02em;min-height:10px;}
+  .mblk.L{border-color:var(--acc);color:var(--acc-ink);font-weight:700;}
+  .mblk.bleed{background:var(--acc-soft);border-style:solid;}
+  .ledger{flex:1;font-family:var(--mono);font-size:10.5px;color:var(--muted);line-height:1.7;}
+  .ledger b{color:var(--acc-ink);}
+  .ratios{display:flex;flex-wrap:wrap;gap:5px;}
+  .rc{font-family:var(--mono);font-size:9.5px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:1px 6px;color:var(--muted);}
+  .rc.def{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .tnote{font-size:11px;color:var(--faint);font-family:var(--mono);line-height:1.55;}
+  .callout{border-left:3px solid var(--acc);background:var(--surface);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);margin:16px 0 0;font-size:13.5px;color:var(--muted);}
+  .callout b{color:var(--ink);}
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+&lt;/style&gt;
+
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;header&gt;
+    &lt;div class=&quot;brand&quot;&gt;⚛ Body Park Atom · 分享模块 · 模板注册表&lt;/div&gt;
+    &lt;h1&gt;分享模板总目录 &lt;span style=&quot;color:var(--acc-ink)&quot;&gt;Template Catalog&lt;/span&gt;&lt;/h1&gt;
+    &lt;div class=&quot;meta&quot;&gt;
+      &lt;span class=&quot;mchip hot&quot;&gt;v1.0 穷举版&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;19 现役 + 4 预留&lt;/span&gt;
+      &lt;span class=&quot;mchip&quot;&gt;手机端优先 · 默认档 = 拇指滑到就能发&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;2026-07-17&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;margin-top:14px&quot;&gt;全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的&lt;b&gt;网格标准&lt;/b&gt;（默认比例档）；切其他比例只换高度预算与降档，规则见 规范-网格标准与成图样例。此目录的数据结构 = 工程模板注册表 JSON 的雏形。&lt;/p&gt;
+    &lt;div class=&quot;constants&quot;&gt;
+      &lt;div class=&quot;const&quot;&gt;逻辑宽 &lt;b&gt;360pt&lt;/b&gt; · 导出 @3x&lt;/div&gt;
+      &lt;div class=&quot;const&quot;&gt;边距 &lt;b&gt;24&lt;/b&gt; · 原子缝 &lt;b&gt;16&lt;/b&gt; · 纵向 &lt;b&gt;8pt&lt;/b&gt; 节奏&lt;/div&gt;
+      &lt;div class=&quot;const&quot;&gt;高度档 &lt;b&gt;S&lt;/b&gt; 56-88 / &lt;b&gt;M&lt;/b&gt; 96-152 / &lt;b&gt;L&lt;/b&gt; 弹性·每图一个&lt;/div&gt;
+      &lt;div class=&quot;const&quot;&gt;出血权仅 &lt;b&gt;D 类&lt;/b&gt; · G1 图片必带&lt;/div&gt;
+      &lt;div class=&quot;const&quot;&gt;预算 3:4 &lt;b&gt;432&lt;/b&gt; / 1:1 &lt;b&gt;312&lt;/b&gt; / 4:5 &lt;b&gt;402&lt;/b&gt; / 9:16 &lt;b&gt;440&lt;/b&gt; / 长图 &lt;b&gt;∞&lt;/b&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;01 / 总览矩阵&lt;/div&gt;
+    &lt;h2&gt;模板 × 比例 可用性&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;● 默认档（手机端一键出图用它）· ○ 支持 · — 不提供。&lt;/p&gt;
+    &lt;div class=&quot;scroll&quot; style=&quot;margin-top:14px&quot;&gt;&lt;table id=&quot;matrix&quot;&gt;&lt;/table&gt;&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;div id=&quot;groups&quot;&gt;&lt;/div&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;给设计的读法&lt;/b&gt;：一个模板 = 一张 Figma 画板（360pt 宽 × 默认档高度），内部按账本放原子 Frame。同一原子在不同模板中是&lt;b&gt;同一个组件的实例&lt;/b&gt;（变体=绑定态×尺寸档）——先做完 21 个原子组件，17 个模板就是拼装工作。&lt;br&gt;&lt;b&gt;给工程的读法&lt;/b&gt;：本页每张卡 ≈ &lt;span class=&quot;mono&quot;&gt;{id, cell, layout, atoms:[{code,h}], ratios}&lt;/span&gt; 一条注册表记录；新模板=加记录，不加代码。&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;footer&gt;&lt;span&gt;分享模板总目录 v1.1 · 19+4&lt;/span&gt;&lt;span&gt;新场景 = 配置，不是开发&lt;/span&gt;&lt;/footer&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+(function(){
+  var RATIOS=[&#x27;3:4&#x27;,&#x27;1:1&#x27;,&#x27;4:5&#x27;,&#x27;9:16&#x27;,&#x27;长图&#x27;];
+  // stack: [code, heightPt, flags] flags: L=flex protagonist, B=bleed
+  var GROUPS=[
+    {name:&#x27;E2·R1 课后报告&#x27;,status:&#x27;P0&#x27;,note:&#x27;Phase 2 上线 · 深钻中&#x27;,
+     tpls:[
+      {id:&#x27;T1&#x27;,name:&#x27;战报短图&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;,&#x27;4:5&#x27;,&#x27;9:16&#x27;],moat:false,
+       stack:[[&#x27;A1↓&#x27;,96],[&#x27;B2·L&#x27;,228,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;默认模板；1:1 时 B2 降单人 128、A1 保单行&#x27;},
+      {id:&#x27;T2&#x27;,name:&#x27;完整长图&#x27;,def:&#x27;长图&#x27;,ratios:[&#x27;长图&#x27;],moat:false,
+       stack:[[&#x27;A1&#x27;,144],[&#x27;B2&#x27;,240],[&#x27;B1&#x27;,248],[&#x27;G1&#x27;,56]],budget:784,
+       note:&#x27;有点有面完整战报；B1 超 12 动作分段折叠&#x27;},
+      {id:&#x27;T3&#x27;,name:&#x27;AI 特色版&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;9:16&#x27;],moat:true,
+       stack:[[&#x27;C1·L&#x27;,256,&#x27;L&#x27;],[&#x27;C2&#x27;,88],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;火柴人主角；仅当本次有 AI 识别数据时出现&#x27;},
+      {id:&#x27;T4&#x27;,name:&#x27;极简晒图&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;,&#x27;9:16&#x27;],moat:false,
+       stack:[[&#x27;D1·L&#x27;,272,&#x27;LB&#x27;],[&#x27;A4&#x27;,72],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;D1 通栏出血 + 一个大数字；情绪价值路线&#x27;}
+     ]},
+    {name:&#x27;E0·R2 周期打卡&#x27;,status:&#x27;P1&#x27;,note:&#x27;Phase 3&#x27;,
+     tpls:[
+      {id:&#x27;T5&#x27;,name:&#x27;周打卡短图&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;,&#x27;9:16&#x27;],moat:false,
+       stack:[[&#x27;A2&#x27;,120],[&#x27;B2覆盖·L&#x27;,224,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;B2 用 R2 覆盖态着色（常练/欠练）&#x27;},
+      {id:&#x27;T6&#x27;,name:&#x27;周期长图&#x27;,def:&#x27;长图&#x27;,ratios:[&#x27;长图&#x27;],moat:false,
+       stack:[[&#x27;A2&#x27;,120],[&#x27;A3&#x27;,88],[&#x27;B2覆盖&#x27;,200],[&#x27;B1 TopN&#x27;,136],[&#x27;G1&#x27;,56]],budget:712,
+       note:&#x27;月/年总结；B1 收敛为高频动作 Top N&#x27;},
+      {id:&#x27;T7&#x27;,name:&#x27;里程碑数字版&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:false,
+       stack:[[&#x27;D1·L&#x27;,272,&#x27;LB&#x27;],[&#x27;A4&#x27;,72],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;与 T4 同构，数据换 streak/累计（连续 30 天）&#x27;}
+     ]},
+    {name:&#x27;E1·R1/R2 单动作&#x27;,status:&#x27;P1&#x27;,note:&#x27;Phase 3&#x27;,
+     tpls:[
+      {id:&#x27;T8&#x27;,name:&#x27;动作卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:false,
+       stack:[[&#x27;B3&#x27;,180],[&#x27;B2解剖·L&#x27;,164,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;类武将卡；B2 解剖态（主动/协同肌）&#x27;},
+      {id:&#x27;T9&#x27;,name:&#x27;动作历史长图&#x27;,def:&#x27;长图&#x27;,ratios:[&#x27;长图&#x27;],moat:false,
+       stack:[[&#x27;B3&#x27;,180],[&#x27;A3&#x27;,88],[&#x27;B1 历史&#x27;,200],[&#x27;G1&#x27;,56]],budget:620,
+       note:&#x27;历史记录 + PB 曲线&#x27;},
+      {id:&#x27;T10&#x27;,name:&#x27;火柴人动作版&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;9:16&#x27;],moat:true,
+       stack:[[&#x27;C1·L&#x27;,256,&#x27;L&#x27;],[&#x27;C2&#x27;,88],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;与 T3 同构，作用域=单动作&#x27;}
+     ]},
+    {name:&#x27;E0·R3 成就（占位）&#x27;,status:&#x27;P1&#x27;,note:&#x27;依赖成就体系补全&#x27;,
+     tpls:[
+      {id:&#x27;T11&#x27;,name:&#x27;成就徽章卡&#x27;,def:&#x27;1:1&#x27;,ratios:[&#x27;1:1&#x27;,&#x27;3:4&#x27;,&#x27;9:16&#x27;],moat:true,
+       stack:[[&#x27;C4·L&#x27;,152,&#x27;L&#x27;],[&#x27;A4&#x27;,72],[&#x27;G1&#x27;,56]],budget:312,
+       note:&#x27;徽章天然方形，默认 1:1&#x27;},
+      {id:&#x27;T12&#x27;,name:&#x27;体适能雷达卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:true,
+       stack:[[&#x27;C3·L&#x27;,248,&#x27;L&#x27;],[&#x27;A2&#x27;,96],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;游戏化雷达；&quot;每练一次涨一点&quot;&#x27;}
+     ]},
+    {name:&#x27;R0 内容卡 + 关系实体&#x27;,status:&#x27;P2&#x27;,note:&#x27;Phase 3/4 · 链公域 H5&#x27;,
+     tpls:[
+      {id:&#x27;T13&#x27;,name:&#x27;课程推荐卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:false,
+       stack:[[&#x27;B4·L&#x27;,360,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,note:&#x27;E2·R0；封面+简介，扫码落课程库&#x27;},
+      {id:&#x27;T14&#x27;,name:&#x27;教练卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:false,
+       stack:[[&#x27;B5·L&#x27;,360,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,note:&#x27;E4·R0/R2；有跟练史叠关系行&#x27;},
+      {id:&#x27;T15&#x27;,name:&#x27;肌肉关系卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:true,
+       stack:[[&#x27;B6&#x27;,200],[&#x27;B2 zoom·L&#x27;,144,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,note:&#x27;E5·R2；&quot;我×肱二头肌的历史&quot;&#x27;},
+      {id:&#x27;T16&#x27;,name:&#x27;器械关系卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:true,
+       stack:[[&#x27;B7·L&#x27;,360,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,note:&#x27;E6·R2；&quot;我最爱的哑铃&quot;&#x27;},
+      {id:&#x27;T17&#x27;,name:&#x27;模式平衡卡&#x27;,def:&#x27;1:1&#x27;,ratios:[&#x27;1:1&#x27;,&#x27;3:4&#x27;],moat:true,
+       stack:[[&#x27;B8·L&#x27;,240,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:312,note:&#x27;E7·R2；PPS 六边形 + 推拉比&#x27;}
+     ]},
+    {name:&#x27;A5 排行榜 · 跨实体（课榜/好友榜/挑战榜）&#x27;,status:&#x27;P1&#x27;,note:&#x27;首个&quot;我 vs 他人&quot;社交对比组；E3 挑战上线后 R3 榜自动激活；他人信息默认脱敏&#x27;,
+     tpls:[
+      {id:&#x27;T18&#x27;,name:&#x27;榜单卡&#x27;,def:&#x27;1:1&#x27;,ratios:[&#x27;1:1&#x27;,&#x27;3:4&#x27;],moat:false,
+       stack:[[&#x27;A5·L&#x27;,240,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:312,
+       note:&#x27;相邻名次列表+我行高亮；&lt;10 人只显百分位&#x27;},
+      {id:&#x27;T19&#x27;,name:&#x27;名次高光短图&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;9:16&#x27;],moat:false,
+       stack:[[&#x27;A5·L&#x27;,248,&#x27;L&#x27;],[&#x27;A1↓&#x27;,96],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;TOP 12% 大数字当主角 + 本次数据；名次靠后自动切百分位表达&#x27;}
+     ]},
+    {name:&#x27;健康域预留 🔮&#x27;,status:&#x27;H&#x27;,note:&#x27;随数据域上线自动激活&#x27;,
+     tpls:[
+      {id:&#x27;TH1&#x27;,name:&#x27;体重趋势卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:false,
+       stack:[[&#x27;H1·L&#x27;,360,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,note:&#x27;E8·R2；默认只显变化量（谨慎级隐私）&#x27;},
+      {id:&#x27;TH2&#x27;,name:&#x27;睡眠卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:false,
+       stack:[[&#x27;H4·L&#x27;,360,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:432,note:&#x27;E11·R1/R2；结构图+时长&#x27;},
+      {id:&#x27;TH3&#x27;,name:&#x27;跑步路线卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;9:16&#x27;],moat:false,
+       stack:[[&#x27;H5·L&#x27;,272,&#x27;L&#x27;],[&#x27;H7&#x27;,88],[&#x27;G1&#x27;,56]],budget:432,note:&#x27;E10·R1；路线注意起终点脱敏&#x27;},
+      {id:&#x27;TH4&#x27;,name:&#x27;饮食打卡卡&#x27;,def:&#x27;1:1&#x27;,ratios:[&#x27;1:1&#x27;,&#x27;3:4&#x27;],moat:false,
+       stack:[[&#x27;H3·L&#x27;,168,&#x27;LB&#x27;],[&#x27;H2&#x27;,72],[&#x27;G1&#x27;,56]],budget:312,note:&#x27;E9·R1；照片出血 + 营养摘要&#x27;}
+     ]}
+  ];
+
+  /* master matrix */
+  var mt=document.getElementById(&#x27;matrix&#x27;);
+  var thead=&#x27;&lt;thead&gt;&lt;tr&gt;&lt;th style=&quot;text-align:left&quot;&gt;模板&lt;/th&gt;&#x27;+RATIOS.map(function(r){return &#x27;&lt;th&gt;&#x27;+r+&#x27;&lt;/th&gt;&#x27;;}).join(&#x27;&#x27;)+&#x27;&lt;th&gt;状态&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&#x27;;
+  var rows=&#x27;&#x27;;
+  GROUPS.forEach(function(g){
+    g.tpls.forEach(function(t){
+      rows+=&#x27;&lt;tr&gt;&lt;th&gt;&#x27;+t.id+&#x27; &#x27;+t.name+&#x27;&lt;small&gt;&#x27;+g.name+&#x27;&lt;/small&gt;&lt;/th&gt;&#x27;;
+      RATIOS.forEach(function(r){
+        if(t.def===r) rows+=&#x27;&lt;td class=&quot;def&quot;&gt;●&lt;/td&gt;&#x27;;
+        else if(t.ratios.indexOf(r)&gt;=0) rows+=&#x27;&lt;td class=&quot;sup&quot;&gt;○&lt;/td&gt;&#x27;;
+        else rows+=&#x27;&lt;td class=&quot;na&quot;&gt;—&lt;/td&gt;&#x27;;
+      });
+      var sc={&#x27;P0&#x27;:&#x27;st-p0&#x27;,&#x27;P1&#x27;:&#x27;st-p1&#x27;,&#x27;P2&#x27;:&#x27;st-p2&#x27;,&#x27;H&#x27;:&#x27;st-h&#x27;}[g.status];
+      rows+=&#x27;&lt;td&gt;&lt;span class=&quot;sec-status &#x27;+sc+&#x27;&quot;&gt;&#x27;+(g.status===&#x27;H&#x27;?&#x27;预留&#x27;:g.status)+&#x27;&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&#x27;;
+    });
+  });
+  mt.innerHTML=thead+&#x27;&lt;tbody&gt;&#x27;+rows+&#x27;&lt;/tbody&gt;&#x27;;
+
+  /* group sections */
+  var wrap=document.getElementById(&#x27;groups&#x27;);
+  var secIdx=2;
+  GROUPS.forEach(function(g){
+    var sec=document.createElement(&#x27;section&#x27;);
+    var sc={&#x27;P0&#x27;:&#x27;st-p0&#x27;,&#x27;P1&#x27;:&#x27;st-p1&#x27;,&#x27;P2&#x27;:&#x27;st-p2&#x27;,&#x27;H&#x27;:&#x27;st-h&#x27;}[g.status];
+    sec.innerHTML=&#x27;&lt;div class=&quot;eyebrow&quot;&gt;0&#x27;+secIdx+&#x27; / &#x27;+g.name+&#x27;&lt;/div&gt;&#x27;+
+      &#x27;&lt;h2&gt;&#x27;+g.name.split(&#x27; &#x27;)[0]+&#x27; 模板组 &lt;span class=&quot;sec-status &#x27;+sc+&#x27;&quot;&gt;&#x27;+(g.status===&#x27;H&#x27;?&#x27;预留&#x27;:g.status)+&#x27;&lt;/span&gt;&lt;/h2&gt;&#x27;+
+      &#x27;&lt;p class=&quot;lede&quot;&gt;&#x27;+g.note+&#x27;&lt;/p&gt;&lt;div class=&quot;tgrid&quot;&gt;&lt;/div&gt;&#x27;;
+    var grid=sec.querySelector(&#x27;.tgrid&#x27;);
+    g.tpls.forEach(function(t){
+      var card=document.createElement(&#x27;div&#x27;);
+      card.className=&#x27;tcard&#x27;+(t.moat?&#x27; moat&#x27;:&#x27;&#x27;);
+      var scale=0.32;
+      var stackHtml=t.stack.map(function(s){
+        var cls=&#x27;mblk&#x27;+((s[2]||&#x27;&#x27;).indexOf(&#x27;L&#x27;)&gt;=0?&#x27; L&#x27;:&#x27;&#x27;)+((s[2]||&#x27;&#x27;).indexOf(&#x27;B&#x27;)&gt;=0?&#x27; bleed&#x27;:&#x27;&#x27;);
+        return &#x27;&lt;div class=&quot;&#x27;+cls+&#x27;&quot; style=&quot;height:&#x27;+Math.max(10,Math.round(s[1]*scale))+&#x27;px&quot;&gt;&#x27;+s[0]+&#x27;&lt;/div&gt;&#x27;;
+      }).join(&#x27;&#x27;);
+      var ledger=t.stack.map(function(s){return s[0]+&#x27; &lt;b&gt;&#x27;+s[1]+&#x27;&lt;/b&gt;&#x27;;}).join(&#x27; + 缝16 + &#x27;);
+      var ratioHtml=[t.def].concat(t.ratios.filter(function(r){return r!==t.def;}))
+        .map(function(r,i){return &#x27;&lt;span class=&quot;rc&#x27;+(i===0?&#x27; def&#x27;:&#x27;&#x27;)+&#x27;&quot;&gt;&#x27;+r+(i===0?&#x27; 默认&#x27;:&#x27;&#x27;)+&#x27;&lt;/span&gt;&#x27;;}).join(&#x27;&#x27;);
+      card.innerHTML=&#x27;&lt;div class=&quot;thead2&quot;&gt;&lt;span class=&quot;tid&quot;&gt;&#x27;+t.id+&#x27;&lt;/span&gt;&lt;span class=&quot;tname&quot;&gt;&#x27;+t.name+&#x27;&lt;/span&gt;&lt;span class=&quot;tcell&quot;&gt;&#x27;+(t.def===&#x27;长图&#x27;?&#x27;不限高&#x27;:&#x27;预算 &#x27;+t.budget)+&#x27;&lt;/span&gt;&lt;/div&gt;&#x27;+
+        &#x27;&lt;div class=&quot;stackbox&quot;&gt;&lt;div class=&quot;ministack&quot;&gt;&#x27;+stackHtml+&#x27;&lt;/div&gt;&#x27;+
+        &#x27;&lt;div class=&quot;ledger&quot;&gt;&#x27;+ledger+&#x27;&lt;br&gt;&lt;span style=&quot;color:var(--faint)&quot;&gt;&#x27;+(t.def===&#x27;长图&#x27;?&#x27;总高 &#x27;+t.budget+&#x27;pt（内容驱动）&#x27;:&#x27;= &#x27;+t.budget+&#x27;pt ✓&#x27;)+&#x27;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&#x27;+
+        &#x27;&lt;div class=&quot;ratios&quot;&gt;&#x27;+ratioHtml+&#x27;&lt;/div&gt;&#x27;+
+        &#x27;&lt;div class=&quot;tnote&quot;&gt;&#x27;+t.note+&#x27;&lt;/div&gt;&#x27;;
+      grid.appendChild(card);
+    });
+    wrap.appendChild(sec);
+    secIdx++;
+  });
+})();
+&lt;/script&gt;
+"></iframe>
+<footer>ATOM 分享模块 · 设计规范 · 单文件合集 · 内部各节交互均可用</footer>
+<script>
+function fit(f){try{var d=f.contentDocument;if(!d||!d.documentElement)return;
+  f.style.height=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0)+'px';}catch(e){}}
+document.querySelectorAll('iframe').forEach(function(f){
+  f.addEventListener('load',function(){fit(f);
+    try{new ResizeObserver(function(){fit(f);}).observe(f.contentDocument.documentElement);}catch(e){}
+    setTimeout(function(){fit(f);},600);setTimeout(function(){fit(f);},2000);});
+});
+</script>

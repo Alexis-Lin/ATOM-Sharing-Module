@@ -1,0 +1,1048 @@
+<title>ATOM 分享模块 · 产品与架构</title>
+<style>
+  :root{--bg:#F6F7F4;--surface:#FFFFFF;--ink:#141712;--muted:#5C645A;--faint:#939C8F;
+    --line:#E4E8E1;--acc:#6FCC1B;--acc-ink:#47940B;--on-acc:#10240A;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+  @media (prefers-color-scheme:dark){:root{--bg:#0F110E;--surface:#161A15;--ink:#E9ECE6;--muted:#9AA396;
+    --faint:#707A6B;--line:#262B24;--acc:#A3E635;--acc-ink:#BEF264;--on-acc:#10240A;}}
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--acc:#6FCC1B;--acc-ink:#47940B;}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--acc:#A3E635;--acc-ink:#BEF264;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);}
+  .topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap;}
+  .topbar .brand{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;}
+  .topbar .brand em{font-style:normal;color:var(--acc-ink);}
+  .topbar nav{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;}
+  .topbar a{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-decoration:none;
+    border:1px solid var(--line);border-radius:2px;padding:4px 10px;}
+  .topbar a:hover{border-color:var(--acc);color:var(--ink);}
+  .sechead{max-width:1160px;margin:0 auto;padding:26px 20px 0;}
+  .sechead .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--acc-ink);font-weight:700;display:flex;align-items:center;gap:10px;}
+  .sechead .kicker::before{content:"";width:22px;height:2px;background:var(--acc);}
+  .subnote{max-width:1160px;margin:0 auto;padding:8px 20px 0;color:var(--faint);font-family:var(--mono);font-size:11px;}
+  iframe{display:block;width:100%;border:0;}
+  footer{max-width:1160px;margin:0 auto;padding:24px 20px 48px;color:var(--faint);font-family:var(--mono);font-size:11px;
+    border-top:1px solid var(--line);}
+</style>
+<div class="topbar"><span class="brand">⚛ <em>BODY PARK ATOM</em> · 产品与架构</span><nav><a href="#part1">架构设计框架</a><a href="#part2">PRD 与交互设计（P0）</a></nav></div>
+<div class="subnote">架构设计框架（评审视觉版） + P0 PRD 与交互 Demo。源文件：架构-ATOM分享模块设计框架 · PRD-ATOM分享模块与交互设计 · 合集由 build-bundles.py 生成，修改请编辑源文件</div>
+<div class="sechead" id="part1"><div class="kicker">01 · 架构设计框架</div></div>
+<iframe title="01 · 架构设计框架" srcdoc="&lt;title&gt;Body Park Atom · 分享模块设计框架&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#8B948A;
+    --line:#E4E8E1; --line-strong:#D2D8CF;
+    --heat:#6FCC1B; --heat-soft:#ECF8DC; --heat-ink:#47940B;
+    --ok:#256B43; --ok-soft:#E3F1E7;
+    --warn:#6E7769; --warn-soft:#EFF1EC;
+    --miss:#7B8478; --miss-soft:#EFF1EC;
+    --mono:ui-monospace,&quot;SF Mono&quot;,&quot;JetBrains Mono&quot;,Menlo,Consolas,monospace;
+    --cjk:&quot;PingFang SC&quot;,&quot;Hiragino Sans GB&quot;,&quot;Microsoft YaHei&quot;,&quot;Source Han Sans SC&quot;,sans-serif;
+    --radius:5px; --radius-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0F110E; --surface:#161A15; --surface-2:#1A1F19;
+      --ink:#E9ECE6; --muted:#9AA396; --faint:#707A6B;
+      --line:#262B24; --line-strong:#353D33;
+      --heat:#A3E635; --heat-soft:#1F2A10; --heat-ink:#BEF264;
+      --ok:#3FBB74; --ok-soft:#14211A;
+      --warn:#99A492; --warn-soft:#22271E;
+      --miss:#8B948A; --miss-soft:#21261F;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme=&quot;light&quot;]{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#8B948A;
+    --line:#E4E8E1; --line-strong:#D2D8CF;
+    --heat:#6FCC1B; --heat-soft:#ECF8DC; --heat-ink:#47940B;
+    --ok:#256B43; --ok-soft:#E3F1E7; --warn:#6E7769; --warn-soft:#EFF1EC;
+    --miss:#7B8478; --miss-soft:#EFF1EC;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  :root[data-theme=&quot;dark&quot;]{
+    --bg:#0F110E; --surface:#161A15; --surface-2:#1A1F19;
+    --ink:#E9ECE6; --muted:#9AA396; --faint:#707A6B;
+    --line:#262B24; --line-strong:#353D33;
+    --heat:#A3E635; --heat-soft:#1F2A10; --heat-ink:#BEF264;
+    --ok:#3FBB74; --ok-soft:#14211A; --warn:#99A492; --warn-soft:#22271E;
+    --miss:#8B948A; --miss-soft:#21261F;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);
+    line-height:1.6;-webkit-font-smoothing:antialiased;font-size:15px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px;}
+  section{margin-top:64px;}
+  h2{font-size:22px;font-weight:700;letter-spacing:-.01em;margin:0 0 4px;text-wrap:balance;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--heat-ink);font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:&quot;&quot;;width:22px;height:2px;background:var(--heat);border-radius:2px;}
+  .lede{color:var(--muted);max-width:64ch;margin:8px 0 0;}
+  code,.mono{font-family:var(--mono);}
+
+  /* ---------- header ---------- */
+  header{padding:60px 0 8px;border-bottom:1px solid var(--line);}
+  .brandline{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--faint);display:flex;align-items:center;gap:12px;}
+  .atom-badge{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;
+    border:1.5px solid var(--heat);color:var(--heat);font-size:14px;position:relative;flex:none;}
+  h1{font-size:clamp(30px,5vw,46px);line-height:1.08;font-weight:800;letter-spacing:-.025em;
+    margin:22px 0 0;text-wrap:balance;max-width:16ch;}
+  h1 em{font-style:normal;color:var(--heat-ink);}
+  .sub{color:var(--muted);font-size:17px;margin:18px 0 26px;max-width:56ch;}
+  .stars{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px;}
+  .star{display:inline-flex;align-items:baseline;gap:8px;background:var(--surface);border:1px solid var(--line);
+    border-radius:2px;padding:8px 16px 8px 14px;box-shadow:var(--shadow);}
+  .star b{font-size:15px;font-weight:700;}
+  .star span{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
+  .star::before{content:&quot;&quot;;width:7px;height:7px;border-radius:50%;background:var(--heat);align-self:center;}
+  .meta{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.04em;
+    display:flex;flex-wrap:wrap;gap:6px 18px;padding-bottom:18px;}
+
+  /* ---------- layer stack ---------- */
+  .stack{display:flex;flex-direction:column;gap:0;position:relative;}
+  .layer{display:grid;grid-template-columns:56px 1fr;gap:20px;position:relative;padding:14px 0;}
+  .layer .rail{position:relative;display:flex;justify-content:center;}
+  .node{width:44px;height:44px;border-radius:5px;display:grid;place-items:center;flex:none;z-index:2;
+    background:var(--surface);border:1.5px solid var(--line-strong);font-family:var(--mono);
+    font-weight:700;font-size:16px;color:var(--ink);box-shadow:var(--shadow);}
+  .layer:not(:last-child) .rail::after{content:&quot;&quot;;position:absolute;top:44px;bottom:-14px;left:50%;
+    width:2px;transform:translateX(-50%);background:linear-gradient(var(--line-strong),var(--line));z-index:1;}
+  .lcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 20px;box-shadow:var(--shadow);border-left:3px solid var(--heat);}
+  .lcard .ltop{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .lcode{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--heat-ink);}
+  .lname{font-size:16px;font-weight:700;}
+  .lq{color:var(--faint);font-size:13px;font-family:var(--mono);}
+  .ldesc{color:var(--muted);font-size:13.5px;margin-top:5px;}
+  .heat-rail .node{border-color:var(--heat);color:var(--heat);background:var(--heat-soft);}
+  .layer:nth-child(1) .lcard{border-left-color:#6FCC1B}
+  .layer:nth-child(2) .lcard{border-left-color:#6FCC1B}
+  .layer:nth-child(3) .lcard{border-left-color:#8FCE30}
+  .layer:nth-child(4) .lcard{border-left-color:#AFD649}
+  .layer:nth-child(5) .lcard{border-left-color:#C9DC66}
+
+  /* ---------- generic grids/cards ---------- */
+  .grid{display:grid;gap:14px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr;} .layer{grid-template-columns:44px 1fr;gap:14px;}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;box-shadow:var(--shadow);}
+
+  /* subjects */
+  .subj{display:flex;flex-direction:column;gap:8px;}
+  .subj .st{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .subj h3{margin:0;font-size:15.5px;font-weight:700;}
+  .subj p{margin:0;color:var(--muted);font-size:13px;}
+  .pri{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:2px;flex:none;}
+  .p0{background:var(--heat);color:#10240A;} .p1{background:var(--heat-soft);color:var(--heat-ink);border:1px solid var(--heat);}
+  .p2{background:var(--miss-soft);color:var(--miss);border:1px solid var(--line);}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+  .tag{font-size:11.5px;font-family:var(--mono);letter-spacing:.02em;padding:2px 8px;border-radius:2px;border:1px solid var(--line);color:var(--muted);}
+  .tag.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent;}
+  .tag.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent;}
+  .tag.miss{background:var(--miss-soft);color:var(--miss);border-color:transparent;}
+
+  /* atom catalog */
+  .atomgroup{margin-bottom:18px;}
+  .atomgroup &gt; h3{font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 12px;display:flex;align-items:center;gap:10px;}
+  .atomgroup &gt; h3::after{content:&quot;&quot;;flex:1;height:1px;background:var(--line);}
+  .atoms{display:flex;flex-wrap:wrap;gap:10px;}
+  .atom{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:10px 14px;box-shadow:var(--shadow);min-width:150px;flex:1 1 180px;max-width:260px;}
+  .atom .an{font-weight:700;font-size:14px;display:flex;align-items:center;gap:7px;}
+  .atom .ad{color:var(--faint);font-size:12px;margin-top:3px;line-height:1.45;}
+  .atom.diff{border-color:var(--heat);background:linear-gradient(180deg,var(--heat-soft),var(--surface) 60%);}
+  .atom.diff .an::after{content:&quot;独有&quot;;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+    background:var(--heat);color:#10240A;padding:1px 6px;border-radius:2px;margin-left:auto;font-weight:700;}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+
+  /* matrix */
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:13px;background:var(--surface);}
+  th,td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap;}
+  thead th{position:sticky;top:0;background:var(--surface-2);font-size:12px;font-weight:700;color:var(--ink);
+    border-bottom:1.5px solid var(--line-strong);}
+  tbody th{text-align:left;font-weight:600;color:var(--ink);background:var(--surface-2);
+    position:sticky;left:0;z-index:1;border-right:1px solid var(--line);min-width:130px;}
+  td .full{color:var(--heat-ink);font-size:15px;font-weight:700;}
+  td .opt{color:var(--muted);font-size:15px;}
+  td .na{color:var(--faint);opacity:.5;}
+  tbody tr:hover td,tbody tr:hover th{background:var(--heat-soft);}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:12.5px;color:var(--muted);font-family:var(--mono);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+
+  /* roadmap */
+  .road{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  @media(max-width:760px){.road{grid-template-columns:1fr;}}
+  .phase{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  .phase::before{content:&quot;&quot;;position:absolute;inset:0 auto 0 0;width:4px;}
+  .phase.a::before{background:var(--heat)} .phase.b::before{background:#8FCE30}
+  .phase.c::before{background:#AFD649} .phase.d::before{background:#C9DC66}
+  .phase .pn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;}
+  .phase h3{margin:6px 0 8px;font-size:15px;}
+  .phase ul{margin:0;padding-left:16px;color:var(--muted);font-size:12.5px;line-height:1.55;}
+
+  /* open questions */
+  .oq{counter-reset:q;display:flex;flex-direction:column;gap:10px;}
+  .oq .q{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px 16px;box-shadow:var(--shadow);}
+  .oq .q::before{counter-increment:q;content:&quot;0&quot; counter(q);font-family:var(--mono);font-weight:700;
+    color:var(--heat-ink);font-size:14px;padding-top:1px;}
+  .oq .q b{font-weight:700;} .oq .q p{margin:2px 0 0;color:var(--muted);font-size:13px;}
+
+  /* entity × relation matrix */
+  .exr{border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow-x:auto;background:var(--surface);}
+  .exr table{min-width:720px;}
+  .exr thead th:first-child{text-align:left;}
+  .exr tbody td{white-space:normal;font-size:12.5px;color:var(--muted);text-align:left;vertical-align:top;line-height:1.5;min-width:140px;}
+  .exr tbody td b{color:var(--ink);display:block;font-size:13px;}
+  .cellcode{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em;display:block;margin-bottom:2px;}
+  .exr td.hot{background:var(--heat-soft);border-left:2px solid var(--heat);}
+  .exr td.hot b{color:var(--heat-ink);}
+  .exr td.void{opacity:.45;}
+  .rhead{font-family:var(--mono);font-size:11px;letter-spacing:.06em;}
+  .rhead small{display:block;font-family:var(--cjk);font-size:11.5px;color:var(--muted);letter-spacing:0;font-weight:500;}
+  .contrast{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;}
+  @media(max-width:760px){.contrast{grid-template-columns:1fr;}}
+  .cbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:15px 18px;box-shadow:var(--shadow);}
+  .cbox .ct{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+  .cbox h3{margin:5px 0 3px;font-size:15.5px;}
+  .cbox .say{color:var(--heat-ink);font-size:13px;font-weight:600;margin:0 0 6px;}
+  .cbox p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55;}
+  .cbox.inst{border-color:var(--heat);}
+  /* polymorph strip */
+  .poly{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+  .poly table{min-width:640px;}
+  .poly tbody td{white-space:normal;font-size:12.5px;color:var(--muted);text-align:left;line-height:1.5;}
+  .poly tbody th{font-size:13px;}
+
+  /* source→subject binding */
+  .bind{display:flex;flex-direction:column;gap:9px;}
+  .brow{display:grid;grid-template-columns:1fr 30px 150px 1fr;gap:12px;align-items:center;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:11px 16px;box-shadow:var(--shadow);font-size:13.5px;}
+  @media(max-width:760px){.brow{grid-template-columns:1fr;gap:4px;} .brow .arrow{display:none;}}
+  .brow .src{color:var(--muted);}
+  .brow .src b{color:var(--ink);font-weight:700;display:block;font-size:14px;}
+  .brow .arrow{color:var(--heat);font-family:var(--mono);font-weight:700;text-align:center;}
+  .brow .subject{font-weight:700;font-size:14px;}
+  .brow .atoms-hint{color:var(--faint);font-size:12px;font-family:var(--mono);letter-spacing:.02em;}
+  .decided{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;
+    font-weight:700;letter-spacing:.08em;background:var(--ok-soft);color:var(--ok);
+    padding:3px 10px;border-radius:2px;vertical-align:middle;}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
+  @media(max-width:760px){.tiers{grid-template-columns:1fr;}}
+  .tier{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:15px 17px;box-shadow:var(--shadow);}
+  .tier .tl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--heat-ink);}
+  .tier h3{margin:5px 0 4px;font-size:15px;}
+  .tier p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55;}
+  .tier .cost{margin-top:9px;font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .q.done{opacity:.62;} .q.done b{text-decoration:line-through;text-decoration-color:var(--heat);text-decoration-thickness:1.5px;}
+
+  footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--faint);
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+&lt;/style&gt;
+
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;header&gt;
+    &lt;div class=&quot;brandline&quot;&gt;&lt;span class=&quot;atom-badge&quot;&gt;⚛&lt;/span&gt; Body Park Atom · 用户分享模块&lt;/div&gt;
+    &lt;h1&gt;一套分享模块，&lt;em&gt;覆盖全 App 全场景&lt;/em&gt;&lt;/h1&gt;
+    &lt;p class=&quot;sub&quot;&gt;排列组合是无穷的，但底层的原子模块是有限的。把分享拆成五个可独立替换的层，代码只维护一套——不同入口只是调用不同的内容原子、模板与载体。&lt;/p&gt;
+    &lt;div class=&quot;stars&quot;&gt;
+      &lt;div class=&quot;star&quot;&gt;&lt;b&gt;流量&lt;/b&gt;&lt;span&gt;Traffic&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;star&quot;&gt;&lt;b&gt;传播&lt;/b&gt;&lt;span&gt;Spread&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;star&quot;&gt;&lt;b&gt;留存&lt;/b&gt;&lt;span&gt;Retention&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;meta&quot;&gt;&lt;span&gt;v0.1 · 低保真框架阶段&lt;/span&gt;&lt;span&gt;来源：2026-07-16 架构讨论会议&lt;/span&gt;&lt;span&gt;下周对齐：模块清单 + 大面样式&lt;/span&gt;&lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;核心抽象 / The Model&lt;/div&gt;
+    &lt;h2&gt;五层解耦模型&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;每一层正交、可独立替换。“存图 / 甩链接 / 扫码”只是第 ④⑤ 层的不同选择，不改变前三层；新增分享场景只需在 ①② 层配置映射。&lt;/p&gt;
+    &lt;div class=&quot;stack&quot; style=&quot;margin-top:26px&quot;&gt;
+      &lt;div class=&quot;layer heat-rail&quot;&gt;
+        &lt;div class=&quot;rail&quot;&gt;&lt;div class=&quot;node&quot;&gt;1&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;lcard&quot;&gt;&lt;div class=&quot;ltop&quot;&gt;&lt;span class=&quot;lcode&quot;&gt;Subject 分享主体&lt;/span&gt;&lt;span class=&quot;lq&quot;&gt;我在分享“什么”？&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;ldesc&quot;&gt;&lt;b&gt;分享源决定主体&lt;/b&gt;——从哪里发起就分享什么，用户无需选择：某次训练 · 某周打卡 · 某个动作 · 某个成就 · 高光火柴人 · 官方内容 · 数据导出。&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;layer heat-rail&quot;&gt;
+        &lt;div class=&quot;rail&quot;&gt;&lt;div class=&quot;node&quot;&gt;2&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;lcard&quot;&gt;&lt;div class=&quot;ltop&quot;&gt;&lt;span class=&quot;lcode&quot;&gt;Atom 内容原子&lt;/span&gt;&lt;span class=&quot;lq&quot;&gt;用哪些“积木”表达？&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;ldesc&quot;&gt;有限的可复用积木：总结数据 · 动作列表 · 肌肉热力图 · 周期统计 · 火柴人 · 雷达图 · 氛围图……&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;layer&quot;&gt;
+        &lt;div class=&quot;rail&quot;&gt;&lt;div class=&quot;node&quot;&gt;3&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;lcard&quot;&gt;&lt;div class=&quot;ltop&quot;&gt;&lt;span class=&quot;lcode&quot;&gt;Assembly 组装模板&lt;/span&gt;&lt;span class=&quot;lq&quot;&gt;积木怎么“排”？&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;ldesc&quot;&gt;自由度三级：&lt;b&gt;L1 默认模板&lt;/b&gt;（零配置）→ &lt;b&gt;L2 精选模板 2~4 个&lt;/b&gt;（横滑切换）→ &lt;b&gt;L3 高阶自由勾选&lt;/b&gt;（“自定义”入口）。版式：短图 · 长图 · 卡片。UI 个性化集中在此层。&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;layer&quot;&gt;
+        &lt;div class=&quot;rail&quot;&gt;&lt;div class=&quot;node&quot;&gt;4&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;lcard&quot;&gt;&lt;div class=&quot;ltop&quot;&gt;&lt;span class=&quot;lcode&quot;&gt;Carrier 载体格式&lt;/span&gt;&lt;span class=&quot;lq&quot;&gt;以什么“形式”输出？&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;ldesc&quot;&gt;图片（直发）· 链接 H5（可交互、自带引流）· 二维码（扫码跳转）。格式决定平台适配尺寸。&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;layer&quot;&gt;
+        &lt;div class=&quot;rail&quot;&gt;&lt;div class=&quot;node&quot;&gt;5&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;lcard&quot;&gt;&lt;div class=&quot;ltop&quot;&gt;&lt;span class=&quot;lcode&quot;&gt;Path 分发链路&lt;/span&gt;&lt;span class=&quot;lq&quot;&gt;怎么“送达”对方？&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;ldesc&quot;&gt;A→B 送达 · 平台无感适配尺寸（小红书/IG/微信/Story）· 二维码水印 · 公域 H5 跳转下载。&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;第 ① 层模型 / What Can Be Shared&lt;/div&gt;
+    &lt;h2&gt;分享体 = 内容实体 × 用户关系态 &lt;span class=&quot;decided&quot;&gt;✓ 已决策 07-16&lt;/span&gt;&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;同样是“分享一节课”，其实是两个不同的分享体——课程本身（内容），和“这节课被我练过之后”（实例）。任何官方内容都有机会叠加“用户 × 内容”的关系。&lt;/p&gt;
+    &lt;div class=&quot;contrast&quot;&gt;
+      &lt;div class=&quot;cbox&quot;&gt;&lt;div class=&quot;ct&quot; style=&quot;color:var(--faint)&quot;&gt;R0 · 内容态&lt;/div&gt;&lt;h3&gt;分享课程内容&lt;/h3&gt;
+        &lt;p class=&quot;say&quot;&gt;“这节课很好，推荐给你”&lt;/p&gt;&lt;p&gt;展示课程的模板与内容（官方数据）。动力弱，但链公域 H5，&lt;b&gt;引流价值最高&lt;/b&gt;。&lt;/p&gt;&lt;/div&gt;
+      &lt;div class=&quot;cbox inst&quot;&gt;&lt;div class=&quot;ct&quot; style=&quot;color:var(--heat-ink)&quot;&gt;R1 · 实例态&lt;/div&gt;&lt;h3&gt;分享训练结果&lt;/h3&gt;
+        &lt;p class=&quot;say&quot;&gt;“这节课被我练成了这样”&lt;/p&gt;&lt;p&gt;做了几个动作、卡路里、次数与容量（用户 × 内容数据）。&lt;b&gt;分享动力最强&lt;/b&gt;。&lt;/p&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;exr&quot; style=&quot;margin-top:22px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;
+          &lt;th&gt;实体 ＼ 关系态&lt;/th&gt;
+          &lt;th class=&quot;rhead&quot;&gt;R0&lt;small&gt;内容态 · “这个好”&lt;/small&gt;&lt;/th&gt;
+          &lt;th class=&quot;rhead&quot;&gt;R1&lt;small&gt;实例态 · “我练成这样”&lt;/small&gt;&lt;/th&gt;
+          &lt;th class=&quot;rhead&quot;&gt;R2&lt;small&gt;聚合态 · “我在成长”&lt;/small&gt;&lt;/th&gt;
+          &lt;th class=&quot;rhead&quot;&gt;R3&lt;small&gt;衍生态 · “我达成了”&lt;/small&gt;&lt;/th&gt;
+        &lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;th&gt;E1 动作&lt;/th&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E1·R0&lt;/span&gt;&lt;b&gt;动作卡&lt;/b&gt;类武将卡，链公域动作库&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E1·R1&lt;/span&gt;&lt;b&gt;单动作结果&lt;/b&gt;次数/重量/火柴人/AI 点评&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E1·R2&lt;/span&gt;&lt;b&gt;动作历史&lt;/b&gt;历史记录、PB 曲线&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E1·R3&lt;/span&gt;&lt;b&gt;动作徽章&lt;/b&gt;达成/评分&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E2 课程&lt;/th&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E2·R0&lt;/span&gt;&lt;b&gt;课程卡&lt;/b&gt;链公域课程库&lt;/td&gt;
+            &lt;td class=&quot;hot&quot;&gt;&lt;span class=&quot;cellcode&quot;&gt;E2·R1 · P0&lt;/span&gt;&lt;b&gt;课后报告&lt;/b&gt;总结+热力图+动作列表&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E2·R2&lt;/span&gt;&lt;b&gt;N 刷趋势&lt;/b&gt;该课成绩变化&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E2·R3&lt;/span&gt;&lt;b&gt;课程评级&lt;/b&gt;A/B/S/SS&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E3 计划/挑战&lt;/th&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E3·R0&lt;/span&gt;&lt;b&gt;计划简介卡&lt;/b&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E3·R1&lt;/span&gt;&lt;b&gt;某次挑战完成&lt;/b&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E3·R2&lt;/span&gt;&lt;b&gt;计划进度&lt;/b&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E3·R3&lt;/span&gt;&lt;b&gt;挑战勋章&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E4 教练/老师&lt;/th&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E4·R0&lt;/span&gt;&lt;b&gt;教练介绍卡&lt;/b&gt;链公域教练主页；未来含 AI 教练&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E4·R1&lt;/span&gt;&lt;b&gt;跟练单次记录&lt;/b&gt;标注教练的一节课&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E4·R2&lt;/span&gt;&lt;b&gt;我 × 教练的关系&lt;/b&gt;累计跟练 N 节 / 时长 / 进步&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E4·R3&lt;/span&gt;&lt;b&gt;师徒里程碑&lt;/b&gt;如跟练 100 节徽章&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E5 肌肉/部位&lt;/th&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E5·R0&lt;/span&gt;&lt;b&gt;肌肉科普卡&lt;/b&gt;解剖 · 相关动作 · 链肌肉字典&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E5·R1&lt;/span&gt;&lt;b&gt;本次练到强度&lt;/b&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E5·R2&lt;/span&gt;&lt;b&gt;我 × 肌肉的历史&lt;/b&gt;肱二头肌：N 动作 / N 次 / 总容量&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E5·R3&lt;/span&gt;&lt;b&gt;部位专精徽章&lt;/b&gt;如“背部大师”&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E6 器械&lt;/th&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E6·R0&lt;/span&gt;&lt;b&gt;器械介绍卡&lt;/b&gt;用法 · 适配动作&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E6·R1&lt;/span&gt;&lt;b&gt;本次用它练的记录&lt;/b&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E6·R2&lt;/span&gt;&lt;b&gt;我 × 器械的关系&lt;/b&gt;最爱的哑铃：用过 N 次 · 练过啥&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E6·R3&lt;/span&gt;&lt;b&gt;器械里程碑&lt;/b&gt;如“杠铃 10 吨俱乐部”&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E7 动作模式&lt;/th&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E7·R0&lt;/span&gt;&lt;b&gt;模式科普卡&lt;/b&gt;上肢推/拉 · 蹲 · 髋铰链 · 定义+代表动作&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E7·R1&lt;/span&gt;&lt;b&gt;本次模式分布&lt;/b&gt;“今天全是推”&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E7·R2&lt;/span&gt;&lt;b&gt;我的模式平衡&lt;/b&gt;推拉比 · 容量占比 · 欠练模式&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E7·R3&lt;/span&gt;&lt;b&gt;均衡评级&lt;/b&gt;PPS 六边形徽章&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E0 全局（我）&lt;/th&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E0·R0 · 未来&lt;/span&gt;&lt;b&gt;个人主页&lt;/b&gt;名片 · 照片/视频集 · 成就墙&lt;/td&gt;
+            &lt;td&gt;&lt;span class=&quot;cellcode&quot;&gt;E0·R1&lt;/span&gt;&lt;b&gt;单次自由训练&lt;/b&gt;&lt;/td&gt;
+            &lt;td class=&quot;hot&quot;&gt;&lt;span class=&quot;cellcode&quot;&gt;E0·R2 · P1&lt;/span&gt;&lt;b&gt;周期打卡&lt;/b&gt;周/月/年 · streak&lt;/td&gt;
+            &lt;td class=&quot;hot&quot;&gt;&lt;span class=&quot;cellcode&quot;&gt;E0·R3 · P1&lt;/span&gt;&lt;b&gt;成就&lt;/b&gt;雷达/勋章墙/PB 集&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;legend&quot;&gt;
+      &lt;span&gt;动力梯度：R1 &amp;gt; R3 ≈ R2 &amp;gt; R0（实例最有动力；内容态动力弱、引流价值最高）&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;font-size:13px;margin-top:12px&quot;&gt;高光影像/火柴人动态 = 依附任意 R1 实例的&lt;b&gt;媒体资产&lt;/b&gt;，可切出单独分享；数据导出（给 Agent）= 任意格子换 Markdown/CSV 载体输出，属第④层 Pro 变体。&lt;br&gt;&lt;b&gt;实体轴是开放的，且分两类&lt;/b&gt;：对象实体（E1~E4，具体的东西/人）与分类实体（E5~E7：肌肉·器械·模式，给动作打标签的维度）。分类实体的 R2 天然是“平衡/覆盖”类叙事（推拉比、肌群热度、器械偏好）——原子化产品的独有优势，别家拿不出“我和这只哑铃的关系”。E7 也是 PPS 六边形、体适能雷达的数据地基。&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;扩展预留 / Health Hub Reserve 🔮&lt;/div&gt;
+    &lt;h2&gt;健康域扩展：大一统健康数据中心视角&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;假设未来 Body Park 是统一的健康运动数据中心（对标 Apple Health 14 大类 / Health Connect 6 大类）。检验结论：&lt;b&gt;架构不需要改&lt;/b&gt;——新域接入 = 矩阵加实体行 + 原子目录加 H 系原子；关系态、表现形式、载体、链路全部复用。&lt;/p&gt;
+
+    &lt;div class=&quot;scroll&quot; style=&quot;margin-top:20px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th style=&quot;text-align:left&quot;&gt;Body Park 域&lt;/th&gt;&lt;th&gt;Apple Health&lt;/th&gt;&lt;th&gt;Health Connect&lt;/th&gt;&lt;th&gt;分享价值&lt;/th&gt;&lt;th&gt;隐私默认&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;th&gt;活动 / 运动&lt;/th&gt;&lt;td&gt;Activity · Workouts · Mobility&lt;/td&gt;&lt;td&gt;Activity&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag ok&quot;&gt;✓ 可分享&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;身体测量&lt;/th&gt;&lt;td&gt;Body Measurements&lt;/td&gt;&lt;td&gt;Body measurements&lt;/td&gt;&lt;td&gt;高（趋势叙事）&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag warn&quot;&gt;⚠ 默认只显趋势&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;营养 / 饮食&lt;/th&gt;&lt;td&gt;Nutrition&lt;/td&gt;&lt;td&gt;Nutrition&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag ok&quot;&gt;✓ 可分享&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;睡眠&lt;/th&gt;&lt;td&gt;Sleep&lt;/td&gt;&lt;td&gt;Sleep&lt;/td&gt;&lt;td&gt;高&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag ok&quot;&gt;✓ 可分享&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;心肺 / 生命体征&lt;/th&gt;&lt;td&gt;Heart · Vitals · Respiratory&lt;/td&gt;&lt;td&gt;Vitals&lt;/td&gt;&lt;td&gt;中（VO2max 有炫耀价值）&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag warn&quot;&gt;⚠ 谨慎&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;心理 / 正念&lt;/th&gt;&lt;td&gt;Mental Wellbeing&lt;/td&gt;&lt;td&gt;Wellness&lt;/td&gt;&lt;td&gt;低~中&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag warn&quot;&gt;⚠ 谨慎&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;周期&lt;/th&gt;&lt;td&gt;Cycle Tracking&lt;/td&gt;&lt;td&gt;Cycle tracking&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag miss&quot;&gt;🚫 禁止分享&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;医疗类&lt;/th&gt;&lt;td&gt;Medications · Symptoms · Hearing…&lt;/td&gt;&lt;td&gt;（部分入 Vitals）&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag miss&quot;&gt;🚫 禁止分享&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;exr&quot; style=&quot;margin-top:16px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;预留实体 ＼ 关系态&lt;/th&gt;&lt;th class=&quot;rhead&quot;&gt;R0&lt;/th&gt;&lt;th class=&quot;rhead&quot;&gt;R1&lt;/th&gt;&lt;th class=&quot;rhead&quot;&gt;R2&lt;/th&gt;&lt;th class=&quot;rhead&quot;&gt;R3&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;th&gt;E8 身体指标&lt;/th&gt;&lt;td&gt;指标科普卡&lt;/td&gt;&lt;td&gt;单次称重（弱）&lt;/td&gt;&lt;td class=&quot;hot&quot;&gt;&lt;b&gt;体重/体脂趋势&lt;/b&gt;变化量优先&lt;/td&gt;&lt;td&gt;减重里程碑&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E9 饮食/膳食&lt;/th&gt;&lt;td&gt;食物/食谱卡&lt;/td&gt;&lt;td class=&quot;hot&quot;&gt;&lt;b&gt;一餐打卡&lt;/b&gt;照片+宏量&lt;/td&gt;&lt;td&gt;营养周报 · 热量收支&lt;/td&gt;&lt;td&gt;连续打卡徽章&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E10 运动会话&lt;/th&gt;&lt;td&gt;运动方式科普卡&lt;/td&gt;&lt;td class=&quot;hot&quot;&gt;&lt;b&gt;单次跑步&lt;/b&gt;路线+配速+心率&lt;/td&gt;&lt;td&gt;月跑量 · 配速趋势&lt;/td&gt;&lt;td&gt;“百公里俱乐部”&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;E11 睡眠&lt;/th&gt;&lt;td&gt;睡眠科普卡&lt;/td&gt;&lt;td class=&quot;hot&quot;&gt;&lt;b&gt;昨晚睡眠&lt;/b&gt;结构图+时长&lt;/td&gt;&lt;td&gt;睡眠周报 · 规律性&lt;/td&gt;&lt;td&gt;早睡/规律徽章&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;legend&quot;&gt;
+      &lt;span&gt;三档隐私分级：✓ 默认可分享 · ⚠ 谨慎（默认藏绝对值，主动勾选才外显）· 🚫 禁止（数据中心收录，分享端永不出现）&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;font-size:13px;margin-top:12px&quot;&gt;预留原子 H1~H7：体重趋势图 · 营养摘要环 · 饮食打卡卡 · 睡眠结构图 · 运动路线卡 · 活动环/步数 · 心肺摘要。协同效应：大一统数据中心让 &lt;b&gt;Pro 数据导出（给 Agent）&lt;/b&gt;叙事更完整——我们成为聚合方而非被聚合方。&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;第 ② 层规则 / Atom Polymorphism ★&lt;/div&gt;
+    &lt;h2&gt;原子的多态性：一个模板，多种数据绑定&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;同一原子在 R0~R3 下版式复用、只换数据绑定——这就是“针对共性模块设计模板”的落点：设计师按原子出模板（标注适配绑定态 + 空状态规则），不是按页面出图；开发侧组件 = &lt;code&gt;template + bindingMode + data&lt;/code&gt;。&lt;/p&gt;
+    &lt;div class=&quot;poly&quot; style=&quot;margin-top:20px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th style=&quot;text-align:left&quot;&gt;原子&lt;/th&gt;&lt;th class=&quot;rhead&quot;&gt;R0 内容态&lt;/th&gt;&lt;th class=&quot;rhead&quot;&gt;R1 实例态&lt;/th&gt;&lt;th class=&quot;rhead&quot;&gt;R2 聚合态&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;th&gt;肌肉热力图&lt;/th&gt;&lt;td&gt;解剖态：主动肌 / 协同肌&lt;/td&gt;&lt;td&gt;本次练到的肌群 × 强度&lt;/td&gt;&lt;td&gt;周期肌群覆盖热度（常练/欠练）&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;总结性指标&lt;/th&gt;&lt;td&gt;官方参数：时长 / 动作数 / 难度&lt;/td&gt;&lt;td&gt;标题 · 日期 · 课程名 · 动作数 · 卡路里 · 容量&lt;/td&gt;&lt;td&gt;累计次数 / 总时长 / 活跃天 / streak&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;动作列表&lt;/th&gt;&lt;td&gt;官方动作编排&lt;/td&gt;&lt;td&gt;我实际完成的组 / 次 / 重&lt;/td&gt;&lt;td&gt;高频动作 Top N&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;历史对比&lt;/th&gt;&lt;td class=&quot;void&quot;&gt;—&lt;/td&gt;&lt;td&gt;本次 vs 上次 / vs PB&lt;/td&gt;&lt;td&gt;趋势曲线&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;第 ① 层规则 / Source → Subject&lt;/div&gt;
+    &lt;h2&gt;分享源决定主体 &lt;span class=&quot;decided&quot;&gt;✓ 已决策 07-16&lt;/span&gt;&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;从哪里发起分享，就分享什么——主体由发起位置隐式决定，用户永远不需要先“选择我要分享什么”。&lt;/p&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;font-size:13px;margin-top:8px&quot;&gt;当分享源同时命中两个关系态（动作详情页里既有官方内容又有我的历史），默认取用户数据态，提供轻量切换。&lt;/p&gt;
+    &lt;div class=&quot;bind&quot; style=&quot;margin-top:16px&quot;&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;动作库 · 动作详情页&lt;/b&gt;(a)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E1·R0 动作卡&lt;br&gt;&lt;span class=&quot;atoms-hint&quot;&gt;有历史可切 E1·R2&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;动作卡 + 热力图(解剖态)&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;某节课页面&lt;/b&gt;(b)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E2·R0 课程卡&lt;br&gt;&lt;span class=&quot;atoms-hint&quot;&gt;练过可切 E2·R1/R2&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;课程卡&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;课后报告 / 训练记录&lt;/b&gt;(c)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E2·R1 课后报告&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;总结数据 + 热力图 + 动作列表&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;影像记录 / 高光火柴人动态&lt;/b&gt;(d)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;R1 附属媒体资产&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;AI 火柴人 + 高光视频&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;周期统计页（周/月/年）&lt;/b&gt;(e)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E0·R2 周期打卡&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;周期统计 + 历史对比&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;成就 / PB / 雷达页&lt;/b&gt;(f)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E0·R3 成就&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;成就标识 / 雷达图&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;已训练动作 · 历史记录页&lt;/b&gt;(g)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E1·R2 动作历史&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;历史曲线 + PB&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;教练主页 / 课程页教练区&lt;/b&gt;(h)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E4·R0 教练卡&lt;br&gt;&lt;span class=&quot;atoms-hint&quot;&gt;有跟练史可切 E4·R2&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;教练卡 + 师徒关系数据&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;个人主页（未来）&lt;/b&gt;(i)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E0·R0 个人主页&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;名片 + 成就墙 + 照片/视频集&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;肌肉字典 / 肌群详情页&lt;/b&gt;(j)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E5·R0 肌肉卡&lt;br&gt;&lt;span class=&quot;atoms-hint&quot;&gt;有训练史可切 E5·R2&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;肌肉卡 + 热力图(解剖态) + 历史&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;器械详情页&lt;/b&gt;(k)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E6·R0 器械卡&lt;br&gt;&lt;span class=&quot;atoms-hint&quot;&gt;用过可切 E6·R2&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;器械卡 + 使用历史&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;brow&quot;&gt;&lt;div class=&quot;src&quot;&gt;&lt;b&gt;模式统计 / 体适能报告视图&lt;/b&gt;(l)&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;&lt;div class=&quot;subject&quot;&gt;E7·R2 模式平衡&lt;/div&gt;&lt;div class=&quot;atoms-hint&quot;&gt;模式卡（PPS 六边形 / 推拉比）&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;font-size:13px;margin-top:14px&quot;&gt;注：火柴人既是“课后报告”里的可选&lt;b&gt;原子&lt;/b&gt;，也因入口 (d) 可作为媒体资产单独分享——同一积木，两种调用，正是原子化架构的意义。&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;第 ③ 层规则 / Freedom Tiers&lt;/div&gt;
+    &lt;h2&gt;主体内自由度三级 &lt;span class=&quot;decided&quot;&gt;✓ 已决策 07-16&lt;/span&gt;&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;主体内的组合“一定程度自由，但尽量保持简单”——渐进式披露：普通用户零决策，高阶用户有出口。模板 = 预设的原子勾选状态 + 版式，L2 与 L3 底层同构，代码只有一套。&lt;/p&gt;
+    &lt;div class=&quot;tiers&quot;&gt;
+      &lt;div class=&quot;tier&quot;&gt;&lt;div class=&quot;tl&quot;&gt;L1 · Default&lt;/div&gt;&lt;h3&gt;默认模板&lt;/h3&gt;&lt;p&gt;发起分享即出图，替用户做好强意见决策。&lt;/p&gt;&lt;div class=&quot;cost&quot;&gt;决策成本 · 0 步&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;tier&quot;&gt;&lt;div class=&quot;tl&quot;&gt;L2 · Curated&lt;/div&gt;&lt;h3&gt;精选模板 2~4 个&lt;/h3&gt;&lt;p&gt;每主体预设几个常见原子组合 + 版式，横滑切换。&lt;/p&gt;&lt;div class=&quot;cost&quot;&gt;决策成本 · 1 步&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;tier&quot;&gt;&lt;div class=&quot;tl&quot;&gt;L3 · Custom&lt;/div&gt;&lt;h3&gt;高阶自由勾选&lt;/h3&gt;&lt;p&gt;菜单式勾选原子，入口收敛在模板列表末位“自定义”。&lt;/p&gt;&lt;div class=&quot;cost&quot;&gt;决策成本 · N 步 · 自愿进入&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;第 ③ 层词汇 / Format Vocabulary&lt;/div&gt;
+    &lt;h2&gt;表现形式词汇表&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;原子渲染时可用的表现形式是有限词汇，与数据绑定正交：形式决定“长什么样”，绑定决定“装什么数据”。模板 = 原子组合 × 每个原子选定的形式。&lt;/p&gt;
+    &lt;div class=&quot;atoms&quot; style=&quot;margin-top:18px&quot;&gt;
+      &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;数字 Number&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;大数字 · 宫格指标 · 计数 —— A1 A2&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;图表 Chart&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;趋势线 · 对比条 · 雷达 · 热力着色 —— A3 C3 B2&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--miss)&quot;&gt;&lt;/span&gt;照片 Photo&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;氛围图 · 自拍 · 封面 —— D1 B3 B4&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--miss)&quot;&gt;&lt;/span&gt;视频 Video&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;高光片段 · 动态回放 —— D2&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--warn)&quot;&gt;&lt;/span&gt;徽章 Badge&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;勋章 · 评级字母 · 里程碑 —— C4&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--warn)&quot;&gt;&lt;/span&gt;可视化指标 Visual Metric&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;进度环 · 六边形 PPS · 打卡点阵 —— C4 A2&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;atom diff&quot;&gt;&lt;div class=&quot;an&quot;&gt;数字人 Digital Human&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;火柴人姿态 · 未来 3D avatar / 数字分身 —— C1&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;第 ① 层 / Priority&lt;/div&gt;
+    &lt;h2&gt;分享体优先级&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;R1 实例态动力最强（每次都不同、最像健身房打卡）；R0 内容态动力最弱但引流价值最高。→ 先做课后报告，再补其余。&lt;/p&gt;
+    &lt;div class=&quot;grid g2&quot; style=&quot;margin-top:22px&quot;&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;课后报告 &lt;span class=&quot;atoms-hint mono&quot;&gt;E2·R1&lt;/span&gt;&lt;/h3&gt;&lt;span class=&quot;pri p0&quot;&gt;P0&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;练完一节课 / 一次 workout 的结果&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag ok&quot;&gt;✓ 已有（较简陋）&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;高意愿&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;周期打卡 &lt;span class=&quot;atoms-hint mono&quot;&gt;E0·R2&lt;/span&gt;&lt;/h3&gt;&lt;span class=&quot;pri p1&quot;&gt;P1&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;7 天 / 本月 / 今年累计的统计概览&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag miss&quot;&gt;缺&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;高意愿&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;单动作结果与历史 &lt;span class=&quot;atoms-hint mono&quot;&gt;E1·R1/R2&lt;/span&gt;&lt;/h3&gt;&lt;span class=&quot;pri p1&quot;&gt;P1&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;某动作本次表现 + 历史记录 / PB&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag miss&quot;&gt;缺&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;中意愿&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;成就 / 里程碑 &lt;span class=&quot;atoms-hint mono&quot;&gt;E0·R3&lt;/span&gt;&lt;/h3&gt;&lt;span class=&quot;pri p1&quot;&gt;P1&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;PB · 勋章 · 评级 · 体适能雷达升级&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag miss&quot;&gt;缺 · 依赖功能补全&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;高意愿&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;R1 附属媒体（高光/火柴人）&lt;/h3&gt;&lt;span class=&quot;pri p2&quot;&gt;P2&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;自拍氛围图 · 高光动作视频&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag warn&quot;&gt;部分&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;中意愿&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;官方内容卡 &lt;span class=&quot;atoms-hint mono&quot;&gt;E1/E2·R0&lt;/span&gt;&lt;/h3&gt;&lt;span class=&quot;pri p2&quot;&gt;P2&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;动作卡 / 课程卡，落公域 H5&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag miss&quot;&gt;缺&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;低意愿 · 高引流&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;教练卡 / 师徒关系 &lt;span class=&quot;atoms-hint mono&quot;&gt;E4·R0/R2&lt;/span&gt;&lt;/h3&gt;&lt;span class=&quot;pri p2&quot;&gt;P2&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;教练介绍 + 我跟练 N 节 / 时长（&quot;分享老师国内肯定会有&quot;）&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag miss&quot;&gt;缺&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;中意愿 · 关系叙事&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;个人主页 &lt;span class=&quot;atoms-hint mono&quot;&gt;E0·R0&lt;/span&gt;&lt;/h3&gt;&lt;span class=&quot;pri p2&quot;&gt;未来&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;名片 · 照片/视频集 · 成就墙（依赖社区/主页功能）&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag miss&quot;&gt;缺 · 占位&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;中意愿&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card subj&quot;&gt;&lt;div class=&quot;st&quot;&gt;&lt;h3&gt;肌肉 / 器械 / 模式关系 &lt;span class=&quot;atoms-hint mono&quot;&gt;E5/E6/E7·R2&lt;/span&gt;&lt;/h3&gt;&lt;span class=&quot;pri p2&quot;&gt;P2&lt;/span&gt;&lt;/div&gt;
+        &lt;p&gt;肱二头肌练过 N 动作 · 最爱的哑铃用过 N 次 · 推拉比（原子化独有）&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag miss&quot;&gt;缺（数据部分已有/可算）&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;中意愿 · 专业向 · 独有&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;第 ② 层 / Atom Catalog ★&lt;/div&gt;
+    &lt;h2&gt;内容原子目录&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;分享内容的有限积木。会议已验证 5 个高意愿通用原子 + 3 个自有差异化原子；每个原子自带所需数据字段与空状态策略（不再出现一堆 0 / — / 空）。&lt;/p&gt;
+
+    &lt;div style=&quot;margin-top:22px&quot;&gt;
+      &lt;div class=&quot;atomgroup&quot;&gt;&lt;h3&gt;数据类 · Data&lt;/h3&gt;&lt;div class=&quot;atoms&quot;&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;训练总结指标&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;时长 / 容量 / 卡路里 / 心率 / 组次&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;周期统计&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;周·月·年累计次数 / 时长 / 天数 / 连续&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--warn)&quot;&gt;&lt;/span&gt;历史对比&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;vs 上次 / vs PB / 本月第几次（现场可算）&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--warn)&quot;&gt;&lt;/span&gt;排行榜&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;我 vs 他人：课榜 / 好友榜 / 挑战榜（R1/R2/R3）；他人默认脱敏&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--warn)&quot;&gt;&lt;/span&gt;数据具象化类比&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;1800kg = 一辆车 · 卡路里 = 几个汉堡&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;&lt;/div&gt;
+
+      &lt;div class=&quot;atomgroup&quot;&gt;&lt;h3&gt;结构类 · Structure&lt;/h3&gt;&lt;div class=&quot;atoms&quot;&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;动作列表 Log&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;力量训练动作明细：组 / 次 / 重量 / RPE&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;肌肉热力图&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;练到的肌群着色 · 主/次肌 · 正/侧视图&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--warn)&quot;&gt;&lt;/span&gt;动作卡&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;动作“名片”（类武将卡），链公域动作库&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--miss)&quot;&gt;&lt;/span&gt;课程卡&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;官方课程简介卡，链公域课程库&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--warn)&quot;&gt;&lt;/span&gt;教练卡&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;教练/老师名片；R2 叠加我×教练关系（跟练 N 节/时长）&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom diff&quot;&gt;&lt;div class=&quot;an&quot;&gt;肌肉卡&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;肌群名片：解剖科普 + 我的历史（N 动作/N 次/总容量）&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom diff&quot;&gt;&lt;div class=&quot;an&quot;&gt;器械卡&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;器械名片：用法 + 我的关系（用过 N 次、练过啥）&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom diff&quot;&gt;&lt;div class=&quot;an&quot;&gt;模式卡&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;动作模式名片：定义 + 我的平衡（推拉比、容量占比）&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;&lt;/div&gt;
+
+      &lt;div class=&quot;atomgroup&quot;&gt;&lt;h3&gt;差异化 / AI 类 · Moat ★&lt;/h3&gt;&lt;div class=&quot;atoms&quot;&gt;
+        &lt;div class=&quot;atom diff&quot;&gt;&lt;div class=&quot;an&quot;&gt;AI 识别火柴人&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;动作姿态识别形态——视觉上最独特&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom diff&quot;&gt;&lt;div class=&quot;an&quot;&gt;动作分析结论 / Tips&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;AI 对动作的点评与建议&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom diff&quot;&gt;&lt;div class=&quot;an&quot;&gt;体适能雷达图&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;六维评估，“每练一次涨一点”&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--warn)&quot;&gt;&lt;/span&gt;外化成就标识&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;评级 / 勋章 / 进度环 / 六边形 PPS&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;&lt;/div&gt;
+
+      &lt;div class=&quot;atomgroup&quot;&gt;&lt;h3&gt;情绪 &amp; 引流类 · Emotion &amp; Growth&lt;/h3&gt;&lt;div class=&quot;atoms&quot;&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--miss)&quot;&gt;&lt;/span&gt;氛围图 / 自拍&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;用户上传，无则系统配图兜底&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--miss)&quot;&gt;&lt;/span&gt;鼓励文案 / Quote&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;按数据情境从文案库选（PB / streak / 首练）；标题·日期已内含于 A1&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;二维码 / 水印&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;图底品牌二维码，扫码跳公域 H5&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;atom&quot;&gt;&lt;div class=&quot;an&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:var(--heat)&quot;&gt;&lt;/span&gt;App 下载入口&lt;/div&gt;&lt;div class=&quot;ad&quot;&gt;H5 页内“打开 / 下载 App”，转化核心&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;第 ①×② 层 / Mapping&lt;/div&gt;
+    &lt;h2&gt;主体 × 原子 映射矩阵&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;每个主体 = 一套默认组合（强意见）+ 一批可选原子（菜单式勾选）。“单次训练”默认三件套 = 总结数据 + 肌肉热力图 + 动作列表，再叠加独有的火柴人 / AI 结论。&lt;/p&gt;
+    &lt;div class=&quot;scroll&quot; style=&quot;margin-top:20px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th style=&quot;text-align:left&quot;&gt;原子 ＼ 分享体&lt;/th&gt;&lt;th&gt;课后报告&lt;br&gt;&lt;span class=&quot;cellcode&quot;&gt;E2·R1&lt;/span&gt;&lt;/th&gt;&lt;th&gt;周期打卡&lt;br&gt;&lt;span class=&quot;cellcode&quot;&gt;E0·R2&lt;/span&gt;&lt;/th&gt;&lt;th&gt;单动作&lt;br&gt;&lt;span class=&quot;cellcode&quot;&gt;E1·R1/R2&lt;/span&gt;&lt;/th&gt;&lt;th&gt;成就&lt;br&gt;&lt;span class=&quot;cellcode&quot;&gt;E0·R3&lt;/span&gt;&lt;/th&gt;&lt;th&gt;官方课程&lt;br&gt;&lt;span class=&quot;cellcode&quot;&gt;E2·R0&lt;/span&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;th&gt;训练总结指标&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;周期统计&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;历史对比&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;数据具象化类比&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;动作列表 Log&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;肌肉热力图&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;动作卡&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;课程卡&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;AI 火柴人&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;动作分析 Tips&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;体适能雷达&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;外化成就标识&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;氛围图 / 自拍&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;鼓励文案 / Quote&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;二维码 / 水印&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;legend&quot;&gt;&lt;span&gt;&lt;span class=&quot;full&quot;&gt;●&lt;/span&gt; 默认展示&lt;/span&gt;&lt;span&gt;&lt;span class=&quot;opt&quot;&gt;○&lt;/span&gt; 可选（菜单勾选）&lt;/span&gt;&lt;span&gt;&lt;span class=&quot;na&quot;&gt;—&lt;/span&gt; 不适用&lt;/span&gt;&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;落地路线 / Rollout&lt;/div&gt;
+    &lt;h2&gt;四阶段推进&lt;/h2&gt;
+    &lt;div class=&quot;road&quot; style=&quot;margin-top:22px&quot;&gt;
+      &lt;div class=&quot;phase a&quot;&gt;&lt;div class=&quot;pn&quot;&gt;Phase 1&lt;/div&gt;&lt;h3&gt;框架输出&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;梳理原子模块清单&lt;/li&gt;&lt;li&gt;明确模块边界与场景&lt;/li&gt;&lt;li&gt;低保真，暂不涉 UI 细节&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+      &lt;div class=&quot;phase b&quot;&gt;&lt;div class=&quot;pn&quot;&gt;Phase 2&lt;/div&gt;&lt;h3&gt;核心上线&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;优先训练结果类分享&lt;/li&gt;&lt;li&gt;快速验证反馈与传播&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+      &lt;div class=&quot;phase c&quot;&gt;&lt;div class=&quot;pn&quot;&gt;Phase 3&lt;/div&gt;&lt;h3&gt;场景补全&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;单动作 / 周期 / 官方课程&lt;/li&gt;&lt;li&gt;覆盖全用户场景&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+      &lt;div class=&quot;phase d&quot;&gt;&lt;div class=&quot;pn&quot;&gt;Phase 4&lt;/div&gt;&lt;h3&gt;配套完善&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;公域 H5 页面&lt;/li&gt;&lt;li&gt;多平台适配 + 二维码引流&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;待决策 / Open Questions&lt;/div&gt;
+    &lt;h2&gt;下周对齐&lt;/h2&gt;
+    &lt;div class=&quot;oq&quot; style=&quot;margin-top:20px&quot;&gt;
+      &lt;div class=&quot;q done&quot;&gt;&lt;div&gt;&lt;b&gt;自由组合 vs 强意见默认的边界&lt;/b&gt;&lt;p&gt;✓ 已决策：分享源决定主体；主体内自由度三级（默认模板 → 精选模板 → 高阶自由勾选）。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;q&quot;&gt;&lt;div&gt;&lt;b&gt;单动作分享的信息颗粒度&lt;/b&gt;&lt;p&gt;动作详情页很多模块——可收敛为：该主体的 L2 精选模板各含哪些原子。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;q&quot;&gt;&lt;div&gt;&lt;b&gt;肌肉热力图的深度&lt;/b&gt;&lt;p&gt;是否恢复侧面视图？是否做交互式 + 男女版？（历史因布局搁置，非技术问题）&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;q&quot;&gt;&lt;div&gt;&lt;b&gt;外化指标的依赖&lt;/b&gt;&lt;p&gt;评级 / 雷达 / 环需先补齐功能，分享才能自动纳入——先占位。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;q&quot;&gt;&lt;div&gt;&lt;b&gt;上线优先级与节奏&lt;/b&gt;&lt;p&gt;单次训练 &amp;gt; 单动作 / 周期 / 官方课程——下周确认具体节奏。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;q&quot;&gt;&lt;div&gt;&lt;b&gt;面向 Agent 导出的形态&lt;/b&gt;&lt;p&gt;归入 Pro；格式（Markdown / CSV / JSON）与字段范围待定。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;footer&gt;&lt;span&gt;Body Park Atom · 用户分享模块设计框架 v0.1&lt;/span&gt;&lt;span&gt;框架别歪了 · 风格越往后越自由&lt;/span&gt;&lt;/footer&gt;
+&lt;/div&gt;
+"></iframe>
+<div class="sechead" id="part2"><div class="kicker">02 · PRD 与交互设计（P0）</div></div>
+<iframe title="02 · PRD 与交互设计（P0）" srcdoc="&lt;title&gt;Body Park Atom · 分享模块 PRD v0.9&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --ok:#256B43; --ok-soft:#E3F1E7;
+    --mono:ui-monospace,&quot;SF Mono&quot;,Menlo,Consolas,monospace;
+    --cjk:&quot;PingFang SC&quot;,&quot;Hiragino Sans GB&quot;,&quot;Microsoft YaHei&quot;,sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--ok:#3FBB74;--ok-soft:#14211A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme=&quot;light&quot;]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;--ok:#256B43;--ok-soft:#E3F1E7;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme=&quot;dark&quot;]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--ok:#3FBB74;--ok-soft:#14211A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 100px;}
+  section{margin-top:58px;}
+  h2{font-size:21px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  h3{font-size:15.5px;font-weight:700;margin:22px 0 8px;}
+  p{margin:8px 0;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:&quot;&quot;;width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:68ch;font-size:14px;}
+  .mono{font-family:var(--mono);}
+  code{font-family:var(--mono);font-size:.92em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+  header{padding:52px 0 24px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(26px,4.5vw,40px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);}
+  .grid{display:grid;gap:12px;} .g2{grid-template-columns:1fr 1fr;} .g3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:820px){.g2,.g3{grid-template-columns:1fr;}}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:var(--surface);}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-size:12px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);}
+  .tag{font-size:11px;font-family:var(--mono);padding:1px 7px;border-radius:var(--r-sm);border:1px solid var(--line-strong);color:var(--muted);white-space:nowrap;}
+  .tag.p0{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .tag.must{background:var(--acc-soft);color:var(--acc-ink);border-color:var(--acc);}
+  ul{margin:6px 0;padding-left:20px;} li{margin:4px 0;}
+  .callout{border-left:3px solid var(--acc);background:var(--surface);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);margin:14px 0;font-size:13.5px;color:var(--muted);}
+  .callout b{color:var(--ink);}
+
+  /* ===== interactive logic map ===== */
+  .srcchips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 20px;}
+  .srcchip{font-family:var(--cjk);font-size:12.5px;border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);
+    padding:6px 12px;cursor:pointer;color:var(--muted);transition:all .12s;}
+  .srcchip:hover{border-color:var(--acc);color:var(--ink);}
+  .srcchip:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  .srcchip.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1fr;gap:0;align-items:stretch;}
+  @media(max-width:820px){.flow{grid-template-columns:1fr;} .flow .farrow{transform:rotate(90deg);margin:2px auto;}}
+  .fnode{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:5px;}
+  .fnode .fk{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+  .fnode .fv{font-weight:700;font-size:14.5px;}
+  .fnode .fd{color:var(--muted);font-size:12.5px;line-height:1.5;}
+  .fnode.hot{border-color:var(--acc);border-left:3px solid var(--acc);}
+  .farrow{display:grid;place-items:center;color:var(--acc-ink);font-family:var(--mono);font-weight:700;font-size:16px;}
+  .prinote{margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--faint);}
+
+  /* ===== interactive wireframe ===== */
+  .studio{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:22px;align-items:start;margin-top:20px;}
+  @media(max-width:820px){.studio{grid-template-columns:1fr;}}
+  .panel{display:flex;flex-direction:column;gap:16px;}
+  .pgroup .pk{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .pgroup .pk::after{content:&quot;&quot;;flex:1;height:1px;background:var(--line);}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;}
+  .tab{border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);padding:7px 13px;cursor:pointer;font-size:12.5px;color:var(--muted);transition:all .12s;}
+  .tab:hover{border-color:var(--acc);color:var(--ink);}
+  .tab:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  .tab.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .tab .tc{font-family:var(--mono);font-size:10px;margin-right:5px;}
+  .achk{display:flex;flex-wrap:wrap;gap:7px;}
+  .achip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);
+    padding:5px 10px;cursor:pointer;font-size:12px;color:var(--muted);transition:all .12s;user-select:none;}
+  .achip .ac{font-family:var(--mono);font-size:10px;font-weight:700;}
+  .achip:hover{border-color:var(--acc);}
+  .achip:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  .achip.on{background:var(--acc-soft);color:var(--acc-ink);border-color:var(--acc);}
+  .achip.on::before{content:&quot;✓&quot;;font-size:10px;font-weight:700;}
+  .achip.lock{opacity:.66;cursor:not-allowed;}
+  .achip.lock::after{content:&quot;必带&quot;;font-family:var(--mono);font-size:9px;background:var(--ink);color:var(--bg);padding:0 5px;border-radius:var(--r-sm);}
+  .statusline{font-family:var(--mono);font-size:11.5px;color:var(--faint);border:1px dashed var(--line-strong);border-radius:var(--r-sm);padding:7px 12px;}
+  .statusline b{color:var(--acc-ink);}
+
+  .stage{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .phone{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:8px;
+    box-shadow:var(--shadow);width:min(320px,100%);transition:aspect-ratio .2s;overflow:hidden;}
+  .phone.ratio-34{aspect-ratio:3/4.35;} .phone.ratio-11{aspect-ratio:1/1.22;} .phone.ratio-916{aspect-ratio:9/17;} .phone.ratio-long{aspect-ratio:auto;}
+  .blk{border:1.5px dashed var(--wire);border-radius:var(--r-sm);padding:8px 10px;position:relative;display:flex;flex-direction:column;gap:6px;justify-content:center;background:var(--surface);flex:none;}
+  .blk.grow{flex:1;min-height:56px;}
+  .blk .bc{position:absolute;top:-8px;right:8px;font-family:var(--mono);font-size:9px;font-weight:700;background:var(--ink);color:var(--bg);border-radius:var(--r-sm);padding:0 5px;z-index:1;}
+  .blk.moat{border-color:var(--acc);} .blk.moat .bc{background:var(--acc);color:var(--on-acc);}
+  .row{display:flex;align-items:center;gap:8px;}
+  .ph{height:7px;border-radius:var(--r-sm);background:var(--wire);opacity:.55;}
+  .ph.s{width:36%}.ph.m{width:60%}.ph.l{width:84%}
+  .num{font-family:var(--mono);font-weight:700;}
+  .lbl{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;}
+  .mini3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+  .mt{background:var(--surface-2);border-radius:var(--r-sm);padding:5px 6px;display:flex;flex-direction:column;gap:2px;}
+  .mt .num{font-size:11px;} .mt .ph{height:4px;}
+  .bar{height:9px;border-radius:var(--r-sm);background:var(--wire);opacity:.5;}
+  .bar.hot{background:var(--acc);opacity:1;}
+  .chipk{font-family:var(--mono);font-size:9px;font-weight:700;background:var(--acc);color:var(--on-acc);border-radius:var(--r-sm);padding:1px 6px;}
+  .empty-hint{color:var(--faint);font-family:var(--mono);font-size:11px;text-align:center;padding:20px 0;}
+  .canvaswrap{width:100%;display:flex;justify-content:center;}
+
+  /* static screen strip */
+  .screens{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
+  @media(max-width:820px){.screens{grid-template-columns:1fr;}}
+  .screen{display:flex;flex-direction:column;gap:10px;}
+  .schead{display:flex;align-items:baseline;gap:8px;}
+  .scnum{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--acc-ink);}
+  .schead b{font-size:14px;}
+  .scframe{background:var(--canvas);border:1.5px solid var(--line-strong);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:7px;aspect-ratio:9/16;}
+  .scnote{font-size:11.5px;color:var(--faint);font-family:var(--mono);line-height:1.55;}
+  .btncapsule{background:var(--acc);color:var(--on-acc);border-radius:100px;text-align:center;font-size:11.5px;font-weight:700;padding:7px;letter-spacing:.04em;}
+  .navbar{display:flex;gap:6px;align-items:center;}
+  .navbar .ph{height:6px;}
+  .shsheet{margin-top:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px;display:flex;gap:8px;justify-content:space-around;}
+  .shsheet .ic{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--wire);}
+  footer{margin-top:76px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+&lt;/style&gt;
+
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;header&gt;
+    &lt;div class=&quot;brand&quot;&gt;⚛ Body Park Atom · 用户分享模块&lt;/div&gt;
+    &lt;h1&gt;阶段性 PRD：原子化分享 &lt;span style=&quot;color:var(--acc-ink)&quot;&gt;Phase 2 · 课后报告&lt;/span&gt;&lt;/h1&gt;
+    &lt;div class=&quot;meta&quot;&gt;
+      &lt;span class=&quot;mchip hot&quot;&gt;v0.9 评审稿&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;2026-07-17&lt;/span&gt;
+      &lt;span class=&quot;mchip&quot;&gt;范围：P0 · E2·R1 课后报告&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;受众：PM / 设计 / 工程&lt;/span&gt;
+      &lt;span class=&quot;mchip&quot;&gt;状态：待下周评审确认&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;margin-top:16px&quot;&gt;配套文档：&lt;span class=&quot;mono&quot;&gt;README.md&lt;/span&gt;（架构总纲/事实源）· &lt;span class=&quot;mono&quot;&gt;规范-网格标准与成图样例&lt;/span&gt;（网格规范）· &lt;span class=&quot;mono&quot;&gt;规范-分享模板总目录&lt;/span&gt;（模板穷举 17+4，每模板账本即网格标准）· &lt;span class=&quot;mono&quot;&gt;原子-低保真线框总板&lt;/span&gt;（原子线框）· &lt;span class=&quot;mono&quot;&gt;samples&lt;/span&gt;(成图样例集)。本 PRD 只锁定第一个可上线切片，规格细节以上述文件为准、此处不复述。&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ========== 1 PRD ========== --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;01 / 背景与目标&lt;/div&gt;
+    &lt;h2&gt;为什么做、做到什么程度算成&lt;/h2&gt;
+    &lt;div class=&quot;grid g2&quot; style=&quot;margin-top:16px&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;背景&lt;/h3&gt;
+        &lt;ul style=&quot;font-size:13.5px;color:var(--muted)&quot;&gt;
+          &lt;li&gt;现状课后分享&quot;0000 很难看&quot;，用户想分享只能截图（截图是兜底，说明需求真实存在）。&lt;/li&gt;
+          &lt;li&gt;竞品（练就/乐测/Ladder 等）已验证：总结数据 + 肌肉热力图 + 动作列表三件套是高意愿分享内容。&lt;/li&gt;
+          &lt;li&gt;我们有竞品拿不出的差异化：AI 火柴人、动作分析、体适能雷达。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;目标（北极星：流量 · 传播 · 留存）&lt;/h3&gt;
+        &lt;ul style=&quot;font-size:13.5px;color:var(--muted)&quot;&gt;
+          &lt;li&gt;练完一节课的用户，&lt;b style=&quot;color:var(--ink)&quot;&gt;3 次点击内&lt;/b&gt;产出一张拿得出手的战报图。&lt;/li&gt;
+          &lt;li&gt;上线 2 周：分享发起率、完成率基线建立；扫码/链接回流路径打通（Phase 4 完整化）。&lt;/li&gt;
+          &lt;li&gt;工程侧沉淀 ShareKit：&lt;b style=&quot;color:var(--ink)&quot;&gt;全 App 唯一分享模块&lt;/b&gt;，后续新场景=配置不是开发。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;非目标（本期不做）&lt;/b&gt;：公域 H5 与链接/二维码载体（Phase 4）· 单动作/周期/教练/官方内容分享（Phase 3）· 成就体系与雷达外化（依赖功能补全，占位）· Agent 数据导出（Pro，另立项）。&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;02 / 功能需求&lt;/div&gt;
+    &lt;h2&gt;需求清单（P0 切片）&lt;/h2&gt;
+    &lt;div class=&quot;scroll&quot; style=&quot;margin-top:16px&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;需求&lt;/th&gt;&lt;th&gt;说明 / 验收要点&lt;/th&gt;&lt;th&gt;优先级&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;FR-1&lt;/td&gt;&lt;td&gt;&lt;b&gt;分享入口&lt;/b&gt;&lt;/td&gt;&lt;td&gt;课后报告页 / 训练记录详情页常驻分享按钮；分享体由入口隐式绑定（E2·R1），用户无需选择&quot;分享什么&quot;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag p0&quot;&gt;P0&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;FR-2&lt;/td&gt;&lt;td&gt;&lt;b&gt;模板选择（L1/L2）&lt;/b&gt;&lt;/td&gt;&lt;td&gt;进入即渲染 T1 默认模板（零配置可直接发）；横滑切换 T1~T4（定义见 规范-分享模板总目录）；末位入口&quot;自定义&quot;&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag p0&quot;&gt;P0&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;FR-3&lt;/td&gt;&lt;td&gt;&lt;b&gt;自定义勾选（L3）&lt;/b&gt;&lt;/td&gt;&lt;td&gt;菜单式勾选原子，勾选即显示、取消即隐藏并重排；G1 水印必带不可取消&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag p0&quot;&gt;P0&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;FR-4&lt;/td&gt;&lt;td&gt;&lt;b&gt;满格规则&lt;/b&gt;&lt;/td&gt;&lt;td&gt;任一原子无数据：自动隐藏 + 版面重排，禁止出现 0/—/空宫格；A1 宫格按可用字段 3/4/6 档降级&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag must&quot;&gt;必须&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;FR-5&lt;/td&gt;&lt;td&gt;&lt;b&gt;平台尺寸适配&lt;/b&gt;&lt;/td&gt;&lt;td&gt;短图默认 3:4；选择渠道自动切：小红书 3:4 / IG 1:1 / Story 9:16；长图不限高、宽度统一&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag p0&quot;&gt;P0&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;FR-6&lt;/td&gt;&lt;td&gt;&lt;b&gt;导出与分发&lt;/b&gt;&lt;/td&gt;&lt;td&gt;生成图片→系统分享面板 / 保存相册；图底 G1 品牌水印+二维码（本期二维码落 App 下载页）&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag p0&quot;&gt;P0&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;FR-7&lt;/td&gt;&lt;td&gt;&lt;b&gt;氛围图兜底&lt;/b&gt;&lt;/td&gt;&lt;td&gt;D1 支持用户上传；未上传时从系统配图池自动配图，不出现空位&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag p0&quot;&gt;P0&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td class=&quot;mono&quot;&gt;FR-8&lt;/td&gt;&lt;td&gt;&lt;b&gt;埋点&lt;/b&gt;&lt;/td&gt;&lt;td&gt;share_initiated / template_switched / atom_toggled / share_completed(渠道) / qr_scanned&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;tag must&quot;&gt;必须&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;h3&gt;边界 Case（进验收）&lt;/h3&gt;
+    &lt;ul style=&quot;font-size:13.5px;color:var(--muted)&quot;&gt;
+      &lt;li&gt;无心率设备 → A1 心率宫格不出现，宫格降档；无 AI 识别 → T3 模板不出现在模板列表。&lt;/li&gt;
+      &lt;li&gt;动作列表 &amp;gt; 12 条 → 短图折叠为&quot;+N 个动作&quot;，长图完整展示。&lt;/li&gt;
+      &lt;li&gt;无历史数据（首练）→ A3 整体隐藏；自由训练无课程名 → A1 标题降级为&quot;力量训练 · 日期&quot;。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ========== 2 interactive logic ========== --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;03 / 逻辑图（可交互）&lt;/div&gt;
+    &lt;h2&gt;分享链路：源 → 分享体 → 模板 → 载体&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;核心规则「&lt;b&gt;分享源决定分享体&lt;/b&gt;」。点击任意分享源，查看它绑定的矩阵格子、默认原子组合与载体。灰色为后续阶段范围。&lt;/p&gt;
+    &lt;div class=&quot;srcchips&quot; id=&quot;srcChips&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;flow&quot;&gt;
+      &lt;div class=&quot;fnode hot&quot;&gt;&lt;span class=&quot;fk&quot;&gt;① 分享源 Source&lt;/span&gt;&lt;span class=&quot;fv&quot; id=&quot;fSrc&quot;&gt;课后报告 / 训练记录&lt;/span&gt;&lt;span class=&quot;fd&quot; id=&quot;fSrcD&quot;&gt;用户练完一节课，在报告页点分享&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;farrow&quot;&gt;→&lt;/div&gt;
+      &lt;div class=&quot;fnode hot&quot;&gt;&lt;span class=&quot;fk&quot;&gt;② 分享体 Subject&lt;/span&gt;&lt;span class=&quot;fv mono&quot; id=&quot;fCell&quot;&gt;E2·R1 课后报告&lt;/span&gt;&lt;span class=&quot;fd&quot; id=&quot;fCellD&quot;&gt;实例态：这节课被我练成了这样&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;farrow&quot;&gt;→&lt;/div&gt;
+      &lt;div class=&quot;fnode&quot;&gt;&lt;span class=&quot;fk&quot;&gt;③ 默认原子 → 模板&lt;/span&gt;&lt;span class=&quot;fv mono&quot; id=&quot;fAtoms&quot;&gt;A1 + B2 + B1 + G1&lt;/span&gt;&lt;span class=&quot;fd&quot; id=&quot;fAtomsD&quot;&gt;L1 默认 T1；L2 横滑 T1~T4；L3 自定义勾选&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;farrow&quot;&gt;→&lt;/div&gt;
+      &lt;div class=&quot;fnode&quot;&gt;&lt;span class=&quot;fk&quot;&gt;④ 载体 Carrier&lt;/span&gt;&lt;span class=&quot;fv&quot; id=&quot;fCar&quot;&gt;图片（+水印二维码）&lt;/span&gt;&lt;span class=&quot;fd&quot; id=&quot;fCarD&quot;&gt;平台尺寸自动适配；H5/QR 属 Phase 4&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;prinote&quot; id=&quot;fPri&quot;&gt;优先级：P0 · 本期范围 ✓&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ========== 3 interactive wireframe ========== --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;04 / 线框图（可交互 · 分享编辑器）&lt;/div&gt;
+    &lt;h2&gt;试玩产品逻辑：切模板 · 勾原子 · 换尺寸&lt;/h2&gt;
+    &lt;p class=&quot;lede&quot;&gt;这是 FR-2 / FR-3 / FR-4 / FR-5 的活规格：左侧是编辑器控件（即 App 内交互），右侧手机画布实时重排。给设计师的规则都写在控件旁。&lt;/p&gt;
+
+    &lt;div class=&quot;studio&quot;&gt;
+      &lt;div class=&quot;panel&quot;&gt;
+        &lt;div class=&quot;pgroup&quot;&gt;
+          &lt;div class=&quot;pk&quot;&gt;模板 L1/L2 · 横滑切换（FR-2）&lt;/div&gt;
+          &lt;div class=&quot;tabs&quot; id=&quot;tplTabs&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;pgroup&quot;&gt;
+          &lt;div class=&quot;pk&quot;&gt;原子勾选 L3（FR-3 · 勾=显示 / 去勾=隐藏重排）&lt;/div&gt;
+          &lt;div class=&quot;achk&quot; id=&quot;atomChips&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;pgroup&quot;&gt;
+          &lt;div class=&quot;pk&quot;&gt;渠道尺寸（FR-5 · 用户无感自动切）&lt;/div&gt;
+          &lt;div class=&quot;tabs&quot; id=&quot;sizeTabs&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;statusline&quot; id=&quot;status&quot;&gt;当前：&lt;b&gt;T1 战报短图&lt;/b&gt; · 3:4 · 3 个原子&lt;/div&gt;
+        &lt;div class=&quot;callout&quot; style=&quot;margin:0&quot;&gt;&lt;b&gt;设计规则&lt;/b&gt;：G1 必带不可取消；用户改动勾选后模板态变为「自定义」；T3 仅当本次训练有 AI 识别数据时出现；切尺寸只改画布裁切与排版密度，不改内容。&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;stage&quot;&gt;
+        &lt;div class=&quot;canvaswrap&quot;&gt;&lt;div class=&quot;phone ratio-34&quot; id=&quot;canvas&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;scnote&quot; id=&quot;canvasNote&quot;&gt;画布 = 最终分享图（非 App 界面）；虚线块 = 原子模块，角标为原子编码&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ========== 4 screens ========== --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;05 / 页面流线框（三屏）&lt;/div&gt;
+    &lt;h2&gt;入口 → 编辑器 → 分发&lt;/h2&gt;
+    &lt;div class=&quot;screens&quot;&gt;
+      &lt;div class=&quot;screen&quot;&gt;
+        &lt;div class=&quot;schead&quot;&gt;&lt;span class=&quot;scnum&quot;&gt;S1&lt;/span&gt;&lt;b&gt;课后报告页（入口）&lt;/b&gt;&lt;/div&gt;
+        &lt;div class=&quot;scframe&quot;&gt;
+          &lt;div class=&quot;navbar&quot;&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;div style=&quot;flex:1&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ph&quot; style=&quot;width:18px&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot;&gt;07·17&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;mini3&quot;&gt;&lt;div class=&quot;mt&quot;&gt;&lt;span class=&quot;num&quot;&gt;42:18&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;mt&quot;&gt;&lt;span class=&quot;num&quot;&gt;386&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;mt&quot;&gt;&lt;span class=&quot;num&quot;&gt;1.8t&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;blk grow&quot;&gt;&lt;div class=&quot;ph l&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ph l&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;btncapsule&quot;&gt;分享战报&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;scnote&quot;&gt;FR-1：常驻按钮；点击即带上下文（sessionId）进入编辑器 —— 分享体已被入口决定，无&quot;选择分享什么&quot;步骤&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;screen&quot;&gt;
+        &lt;div class=&quot;schead&quot;&gt;&lt;span class=&quot;scnum&quot;&gt;S2&lt;/span&gt;&lt;b&gt;分享编辑器&lt;/b&gt;&lt;/div&gt;
+        &lt;div class=&quot;scframe&quot;&gt;
+          &lt;div class=&quot;navbar&quot;&gt;&lt;div class=&quot;ph&quot; style=&quot;width:14px&quot;&gt;&lt;/div&gt;&lt;div style=&quot;flex:1&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot;&gt;分享&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;blk grow&quot; style=&quot;border-style:solid&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;text-align:center&quot;&gt;画布预览（上方 04 节可交互）&lt;/span&gt;&lt;div class=&quot;ph l&quot; style=&quot;margin:0 auto&quot;&gt;&lt;/div&gt;&lt;div class=&quot;ph m&quot; style=&quot;margin:0 auto&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;row&quot; style=&quot;justify-content:center;gap:5px&quot;&gt;&lt;span class=&quot;chipk&quot;&gt;T1&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;T2 · T3 · T4 · 自定义&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;shsheet&quot;&gt;&lt;span class=&quot;ic&quot;&gt;&lt;/span&gt;&lt;span class=&quot;ic&quot;&gt;&lt;/span&gt;&lt;span class=&quot;ic&quot;&gt;&lt;/span&gt;&lt;span class=&quot;ic&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;scnote&quot;&gt;FR-2/3/5：进入即 T1 可发（零决策）；底部渠道栏点击=选尺寸+调起分发；&quot;自定义&quot;展开原子勾选抽屉&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;screen&quot;&gt;
+        &lt;div class=&quot;schead&quot;&gt;&lt;span class=&quot;scnum&quot;&gt;S3&lt;/span&gt;&lt;b&gt;分发（系统面板）&lt;/b&gt;&lt;/div&gt;
+        &lt;div class=&quot;scframe&quot;&gt;
+          &lt;div class=&quot;blk grow&quot; style=&quot;border-style:solid;opacity:.6&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;text-align:center&quot;&gt;生成图 · 底部含 G1 水印+QR&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;blk&quot;&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;保存相册&lt;/span&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;微信 · 小红书 · IG…&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;btncapsule&quot; style=&quot;opacity:.85&quot;&gt;已分享 ✓&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;scnote&quot;&gt;FR-6/8：导出即埋 share_completed(渠道)；扫码落 App 下载页（Phase 4 换公域 H5 报告页）&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ========== 5 metrics &amp; plan ========== --&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;06 / 数据与节奏&lt;/div&gt;
+    &lt;h2&gt;怎么衡量、怎么排期&lt;/h2&gt;
+    &lt;div class=&quot;grid g2&quot; style=&quot;margin-top:16px&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;埋点与指标&lt;/h3&gt;
+        &lt;ul style=&quot;font-size:13.5px;color:var(--muted)&quot;&gt;
+          &lt;li&gt;&lt;b style=&quot;color:var(--ink)&quot;&gt;发起率&lt;/b&gt;：share_initiated / 课后报告曝光&lt;/li&gt;
+          &lt;li&gt;&lt;b style=&quot;color:var(--ink)&quot;&gt;完成率&lt;/b&gt;：share_completed / share_initiated（分渠道）&lt;/li&gt;
+          &lt;li&gt;模板分布与 atom_toggled：验证 L2 预设是否命中真实偏好，反哺模板调整（模板即配置，可服务端改）&lt;/li&gt;
+          &lt;li&gt;qr_scanned → 安装归因：为 Phase 4 公域 H5 建基线&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;h3 style=&quot;margin-top:0&quot;&gt;里程碑（对应工程 M1~M2）&lt;/h3&gt;
+        &lt;ul style=&quot;font-size:13.5px;color:var(--muted)&quot;&gt;
+          &lt;li&gt;&lt;b style=&quot;color:var(--ink)&quot;&gt;W1&lt;/b&gt;：设计按原子出规格（先 B2/A1/B1/G1）；工程搭 ShareKit 四层骨架&lt;/li&gt;
+          &lt;li&gt;&lt;b style=&quot;color:var(--ink)&quot;&gt;W2~3&lt;/b&gt;：T1 端到端跑通（L1 一键出图）→ 内测&lt;/li&gt;
+          &lt;li&gt;&lt;b style=&quot;color:var(--ink)&quot;&gt;W4&lt;/b&gt;：T2~T4 + L3 勾选 + 渠道尺寸 → 灰度上线&lt;/li&gt;
+          &lt;li&gt;Phase 3/4（单动作、周期、公域 H5）按数据表现排期&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;待评审确认&lt;/b&gt;：① 肌肉热力图是否含侧面视图/男女版（影响 B2 规格）② T2~T4 的原子预设是否如本 PRD ③ 双态分享源（动作页等）默认取用户数据态的规则 ④ 二维码本期落下载页的临时方案。&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;footer&gt;&lt;span&gt;Body Park Atom · 分享模块 PRD v0.9 · 附交互 Demo&lt;/span&gt;&lt;span&gt;框架别歪了 · 风格越往后越自由&lt;/span&gt;&lt;/footer&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+(function(){
+  /* ---------- data ---------- */
+  var SOURCES=[
+    {k:&#x27;c&#x27;,n:&#x27;课后报告/训练记录&#x27;,cell:&#x27;E2·R1 课后报告&#x27;,cd:&#x27;实例态：这节课被我练成了这样&#x27;,atoms:&#x27;A1 + B2 + B1 + G1&#x27;,ad:&#x27;L1 默认 T1；L2 横滑 T1~T4；L3 自定义&#x27;,car:&#x27;图片（+水印二维码）&#x27;,cad:&#x27;平台尺寸自动适配&#x27;,pri:&#x27;P0 · 本期范围 ✓&#x27;,hot:true,d:&#x27;用户练完一节课，在报告页点分享&#x27;},
+    {k:&#x27;e&#x27;,n:&#x27;周期统计页&#x27;,cell:&#x27;E0·R2 周期打卡&#x27;,cd:&#x27;聚合态：我在坚持、我在成长&#x27;,atoms:&#x27;A2 + A3 + D1 + G1&#x27;,ad:&#x27;周/月/年三档模板&#x27;,car:&#x27;图片&#x27;,cad:&#x27;同一载体层复用&#x27;,pri:&#x27;P1 · Phase 3&#x27;,d:&#x27;周报/月报视图内点分享&#x27;},
+    {k:&#x27;a&#x27;,n:&#x27;动作详情页&#x27;,cell:&#x27;E1·R0 动作卡（有历史切 E1·R2）&#x27;,cd:&#x27;双态源：默认取用户数据态，轻量切换&#x27;,atoms:&#x27;B3 + B2(解剖态) + G1&#x27;,ad:&#x27;有训练史叠加历史曲线&#x27;,car:&#x27;图片 / H5(链公域动作库)&#x27;,cad:&#x27;H5 属 Phase 4&#x27;,pri:&#x27;P1~P2 · Phase 3&#x27;,d:&#x27;动作库中某动作页点分享&#x27;},
+    {k:&#x27;f&#x27;,n:&#x27;成就 / PB / 雷达页&#x27;,cell:&#x27;E0·R3 成就&#x27;,cd:&#x27;衍生态：我达成了&#x27;,atoms:&#x27;C4 + C3 + A4 + G1&#x27;,ad:&#x27;依赖成就体系补全，先占位&#x27;,car:&#x27;图片&#x27;,cad:&#x27;&#x27;,pri:&#x27;P1 占位&#x27;,d:&#x27;达成 PB / 获得徽章时&#x27;},
+    {k:&#x27;d&#x27;,n:&#x27;影像 / 火柴人动态&#x27;,cell:&#x27;R1 附属媒体资产&#x27;,cd:&#x27;依附实例的媒体切片&#x27;,atoms:&#x27;C1 + D2 + G1&#x27;,ad:&#x27;火柴人是独有差异化&#x27;,car:&#x27;图片 / 视频&#x27;,cad:&#x27;视频导出后续评估&#x27;,pri:&#x27;P2&#x27;,d:&#x27;高光影像页点分享&#x27;},
+    {k:&#x27;b&#x27;,n:&#x27;某节课页面&#x27;,cell:&#x27;E2·R0 课程卡（练过切 R1/R2）&#x27;,cd:&#x27;内容态：&quot;这节课很好推荐给你&quot;&#x27;,atoms:&#x27;B4 + G1&#x27;,ad:&#x27;引流价值最高&#x27;,car:&#x27;H5(链公域课程库)&#x27;,cad:&#x27;Phase 4&#x27;,pri:&#x27;P2 · Phase 4&#x27;,d:&#x27;课程详情页点分享&#x27;},
+    {k:&#x27;h&#x27;,n:&#x27;教练主页&#x27;,cell:&#x27;E4·R0 教练卡（跟练史切 E4·R2)&#x27;,cd:&#x27;人也是实体；师徒关系叙事&#x27;,atoms:&#x27;B5 + G1&#x27;,ad:&#x27;R2 叠加跟练 N 节/时长&#x27;,car:&#x27;图片 / H5&#x27;,cad:&#x27;Phase 4&#x27;,pri:&#x27;P2&#x27;,d:&#x27;教练/老师页点分享&#x27;},
+    {k:&#x27;j&#x27;,n:&#x27;肌肉字典页&#x27;,cell:&#x27;E5·R0/R2 肌肉卡&#x27;,cd:&#x27;分类实体：&quot;我×肱二头肌的历史&quot;&#x27;,atoms:&#x27;B6 + B2 + G1&#x27;,ad:&#x27;数据已有，视图缺&#x27;,car:&#x27;图片&#x27;,cad:&#x27;&#x27;,pri:&#x27;P2&#x27;,d:&#x27;肌群详情页点分享&#x27;},
+    {k:&#x27;k&#x27;,n:&#x27;器械详情页&#x27;,cell:&#x27;E6·R0/R2 器械卡&#x27;,cd:&#x27;&quot;我最爱的哑铃&quot;叙事&#x27;,atoms:&#x27;B7 + G1&#x27;,ad:&#x27;依赖器械维度打点&#x27;,car:&#x27;图片&#x27;,cad:&#x27;&#x27;,pri:&#x27;P2&#x27;,d:&#x27;器械页点分享&#x27;},
+    {k:&#x27;l&#x27;,n:&#x27;模式统计视图&#x27;,cell:&#x27;E7·R2 模式平衡&#x27;,cd:&#x27;专业向：推拉比、欠练模式&#x27;,atoms:&#x27;B8 + G1&#x27;,ad:&#x27;PPS 六边形/雷达的数据地基&#x27;,car:&#x27;图片&#x27;,cad:&#x27;&#x27;,pri:&#x27;P2&#x27;,d:&#x27;体适能/模式报告内点分享&#x27;},
+    {k:&#x27;H&#x27;,n:&#x27;健康域（体重/饮食/跑步/睡眠）&#x27;,cell:&#x27;E8~E11 · 预留&#x27;,cd:&#x27;大一统健康数据中心假设&#x27;,atoms:&#x27;H1~H7（预留原子）&#x27;,ad:&#x27;三档隐私分级约束&#x27;,car:&#x27;图片&#x27;,cad:&#x27;随数据域上线&#x27;,pri:&#x27;P3 · 预留&#x27;,d:&#x27;未来健康域各视图&#x27;}
+  ];
+  var srcWrap=document.getElementById(&#x27;srcChips&#x27;);
+  function setSrc(s,btn){
+    document.getElementById(&#x27;fSrc&#x27;).textContent=s.n;
+    document.getElementById(&#x27;fSrcD&#x27;).textContent=s.d;
+    document.getElementById(&#x27;fCell&#x27;).textContent=s.cell;
+    document.getElementById(&#x27;fCellD&#x27;).textContent=s.cd;
+    document.getElementById(&#x27;fAtoms&#x27;).textContent=s.atoms;
+    document.getElementById(&#x27;fAtomsD&#x27;).textContent=s.ad;
+    document.getElementById(&#x27;fCar&#x27;).textContent=s.car;
+    document.getElementById(&#x27;fCarD&#x27;).textContent=s.cad||&#x27;—&#x27;;
+    document.getElementById(&#x27;fPri&#x27;).textContent=&#x27;优先级：&#x27;+s.pri;
+    Array.prototype.forEach.call(srcWrap.children,function(c){c.classList.remove(&#x27;on&#x27;);});
+    btn.classList.add(&#x27;on&#x27;);
+  }
+  SOURCES.forEach(function(s,i){
+    var b=document.createElement(&#x27;button&#x27;);
+    b.className=&#x27;srcchip&#x27;+(i===0?&#x27; on&#x27;:&#x27;&#x27;); b.type=&#x27;button&#x27;; b.textContent=s.n;
+    b.addEventListener(&#x27;click&#x27;,function(){setSrc(s,b);});
+    srcWrap.appendChild(b);
+  });
+
+  /* ---------- wireframe studio ---------- */
+  var ATOMS={
+    A1:{n:&#x27;总结指标&#x27;},B2:{n:&#x27;肌肉热力图&#x27;},B1:{n:&#x27;动作列表&#x27;},A3:{n:&#x27;历史对比&#x27;},
+    C1:{n:&#x27;AI 火柴人&#x27;,moat:true},C2:{n:&#x27;AI Tips&#x27;,moat:true},D1:{n:&#x27;氛围图&#x27;},A4:{n:&#x27;具象类比&#x27;},G1:{n:&#x27;水印/QR&#x27;,lock:true}
+  };
+  var ORDER=[&#x27;D1&#x27;,&#x27;C1&#x27;,&#x27;C2&#x27;,&#x27;A1&#x27;,&#x27;B2&#x27;,&#x27;B1&#x27;,&#x27;A3&#x27;,&#x27;A4&#x27;,&#x27;G1&#x27;];
+  var TPLS=[
+    {id:&#x27;T1&#x27;,n:&#x27;战报短图&#x27;,set:[&#x27;A1&#x27;,&#x27;B2&#x27;,&#x27;G1&#x27;],long:false},
+    {id:&#x27;T2&#x27;,n:&#x27;完整长图&#x27;,set:[&#x27;A1&#x27;,&#x27;B2&#x27;,&#x27;B1&#x27;,&#x27;A3&#x27;,&#x27;G1&#x27;],long:true},
+    {id:&#x27;T3&#x27;,n:&#x27;AI 特色版&#x27;,set:[&#x27;C1&#x27;,&#x27;C2&#x27;,&#x27;A1&#x27;,&#x27;G1&#x27;],long:false},
+    {id:&#x27;T4&#x27;,n:&#x27;极简晒图&#x27;,set:[&#x27;D1&#x27;,&#x27;A4&#x27;,&#x27;G1&#x27;],long:false}
+  ];
+  var SIZES=[{id:&#x27;34&#x27;,n:&#x27;小红书 3:4&#x27;,cls:&#x27;ratio-34&#x27;},{id:&#x27;11&#x27;,n:&#x27;IG 1:1&#x27;,cls:&#x27;ratio-11&#x27;},{id:&#x27;916&#x27;,n:&#x27;Story 9:16&#x27;,cls:&#x27;ratio-916&#x27;}];
+  var state={tpl:&#x27;T1&#x27;,on:{},size:&#x27;34&#x27;,custom:false};
+  TPLS[0].set.forEach(function(a){state.on[a]=true;});
+
+  function rend(code){
+    var d=document.createElement(&#x27;div&#x27;);
+    d.className=&#x27;blk&#x27;+(ATOMS[code].moat?&#x27; moat&#x27;:&#x27;&#x27;);
+    d.innerHTML=&#x27;&lt;span class=&quot;bc&quot;&gt;&#x27;+code+&#x27;&lt;/span&gt;&#x27;;
+    function add(h){var e=document.createElement(&#x27;div&#x27;);e.innerHTML=h;while(e.firstChild)d.appendChild(e.firstChild);}
+    if(code===&#x27;A1&#x27;) add(&#x27;&lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot;&gt;07·17&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;mini3&quot;&gt;&lt;div class=&quot;mt&quot;&gt;&lt;span class=&quot;num&quot;&gt;42:18&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;mt&quot;&gt;&lt;span class=&quot;num&quot;&gt;386&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;mt&quot;&gt;&lt;span class=&quot;num&quot;&gt;1.8t&lt;/span&gt;&lt;div class=&quot;ph&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&#x27;);
+    if(code===&#x27;B2&#x27;){d.classList.add(&#x27;grow&#x27;);add(&#x27;&lt;svg width=&quot;40&quot; height=&quot;74&quot; viewBox=&quot;0 0 64 120&quot; style=&quot;margin:0 auto&quot;&gt;&lt;circle cx=&quot;32&quot; cy=&quot;12&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;18&quot; y=&quot;26&quot; width=&quot;28&quot; height=&quot;40&quot; rx=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;6&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;var(--acc)&quot; opacity=&quot;.85&quot;/&gt;&lt;rect x=&quot;49&quot; y=&quot;28&quot; width=&quot;9&quot; height=&quot;34&quot; rx=&quot;4.5&quot; fill=&quot;var(--acc)&quot; opacity=&quot;.85&quot;/&gt;&lt;rect x=&quot;21&quot; y=&quot;29&quot; width=&quot;22&quot; height=&quot;14&quot; rx=&quot;5&quot; fill=&quot;var(--acc)&quot; opacity=&quot;.4&quot;/&gt;&lt;rect x=&quot;20&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;rect x=&quot;34&quot; y=&quot;70&quot; width=&quot;10&quot; height=&quot;42&quot; rx=&quot;5&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot;/&gt;&lt;/svg&gt;&#x27;);}
+    if(code===&#x27;B1&#x27;) add(&#x27;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;◻&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;4×12&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;◻&lt;/span&gt;&lt;div class=&quot;ph s&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;3×10&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin:0 auto&quot;&gt;+9 个动作&lt;/span&gt;&lt;/div&gt;&#x27;);
+    if(code===&#x27;A3&#x27;) add(&#x27;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:24px&quot;&gt;上次&lt;/span&gt;&lt;div class=&quot;bar&quot; style=&quot;width:46%&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot; style=&quot;width:24px&quot;&gt;本次&lt;/span&gt;&lt;div class=&quot;bar hot&quot; style=&quot;width:68%&quot;&gt;&lt;/div&gt;&lt;span class=&quot;chipk&quot;&gt;PB&lt;/span&gt;&lt;/div&gt;&#x27;);
+    if(code===&#x27;C1&#x27;){d.classList.add(&#x27;grow&#x27;);add(&#x27;&lt;svg width=&quot;66&quot; height=&quot;66&quot; viewBox=&quot;0 0 120 118&quot; style=&quot;margin:0 auto&quot;&gt;&lt;g stroke=&quot;var(--wire)&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; opacity=&quot;.4&quot; stroke-linecap=&quot;round&quot;&gt;&lt;circle cx=&quot;52&quot; cy=&quot;14&quot; r=&quot;8&quot;/&gt;&lt;path d=&quot;M52 22 L52 52 M52 30 L30 42 M52 30 L74 40 M52 52 L38 84 L36 108 M52 52 L66 84 L70 108&quot;/&gt;&lt;/g&gt;&lt;g stroke=&quot;var(--acc)&quot; stroke-width=&quot;2.5&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;&gt;&lt;circle cx=&quot;60&quot; cy=&quot;14&quot; r=&quot;8&quot;/&gt;&lt;path d=&quot;M60 22 L60 52 M60 30 L36 38 M60 30 L84 34 M60 52 L44 82 L42 108 M60 52 L76 82 L82 108&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;&#x27;);}
+    if(code===&#x27;C2&#x27;) add(&#x27;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;chipk&quot; style=&quot;background:var(--ok);color:#fff&quot;&gt;87&lt;/span&gt;&lt;div class=&quot;ph l&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;✓&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;/div&gt;&#x27;);
+    if(code===&#x27;D1&#x27;){d.classList.add(&#x27;grow&#x27;);add(&#x27;&lt;svg width=&quot;100%&quot; height=&quot;46&quot; viewBox=&quot;0 0 150 46&quot; preserveAspectRatio=&quot;none&quot;&gt;&lt;path d=&quot;M8 40 L50 14 L80 34 L106 20 L144 42&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;div class=&quot;row&quot; style=&quot;align-items:baseline&quot;&gt;&lt;span class=&quot;num&quot; style=&quot;font-size:22px;color:var(--acc-ink)&quot;&gt;1.8&lt;span style=&quot;font-size:11px&quot;&gt;t&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;lbl&quot;&gt;总容量&lt;/span&gt;&lt;/div&gt;&#x27;);}
+    if(code===&#x27;A4&#x27;) add(&#x27;&lt;div class=&quot;row&quot; style=&quot;justify-content:center;gap:8px&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;≈&lt;/span&gt;&lt;svg width=&quot;50&quot; height=&quot;19&quot; viewBox=&quot;0 0 88 34&quot;&gt;&lt;rect x=&quot;8&quot; y=&quot;12&quot; width=&quot;72&quot; height=&quot;12&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;rect x=&quot;24&quot; y=&quot;4&quot; width=&quot;34&quot; height=&quot;12&quot; rx=&quot;2&quot; fill=&quot;none&quot; stroke=&quot;var(--wire)&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;circle cx=&quot;24&quot; cy=&quot;27&quot; r=&quot;5.5&quot; fill=&quot;none&quot; stroke=&quot;var(--acc)&quot; stroke-width=&quot;3&quot;/&gt;&lt;circle cx=&quot;63&quot; cy=&quot;27&quot; r=&quot;5.5&quot; fill=&quot;none&quot; stroke=&quot;var(--acc)&quot; stroke-width=&quot;3&quot;/&gt;&lt;/svg&gt;&lt;span class=&quot;lbl&quot;&gt;一辆车&lt;/span&gt;&lt;/div&gt;&#x27;);
+    if(code===&#x27;G1&#x27;) add(&#x27;&lt;div class=&quot;row&quot;&gt;&lt;span style=&quot;width:16px;height:16px;border:1.5px solid var(--ink);border-radius:var(--r-sm);flex:none&quot;&gt;&lt;/span&gt;&lt;div class=&quot;ph m&quot;&gt;&lt;/div&gt;&lt;span class=&quot;lbl&quot; style=&quot;margin-left:auto&quot;&gt;BODY PARK&lt;/span&gt;&lt;/div&gt;&#x27;);
+    return d;
+  }
+
+  var canvas=document.getElementById(&#x27;canvas&#x27;), tplWrap=document.getElementById(&#x27;tplTabs&#x27;),
+      atomWrap=document.getElementById(&#x27;atomChips&#x27;), sizeWrap=document.getElementById(&#x27;sizeTabs&#x27;),
+      status=document.getElementById(&#x27;status&#x27;);
+
+  function paint(){
+    canvas.innerHTML=&#x27;&#x27;;
+    var tpl=TPLS.filter(function(t){return t.id===state.tpl;})[0];
+    var isLong=tpl&amp;&amp;tpl.long;
+    canvas.className=&#x27;phone &#x27;+(isLong?&#x27;ratio-long&#x27;:({34:&#x27;ratio-34&#x27;,11:&#x27;ratio-11&#x27;,916:&#x27;ratio-916&#x27;})[state.size]);
+    var shown=ORDER.filter(function(c){return state.on[c];});
+    if(!shown.length){var e=document.createElement(&#x27;div&#x27;);e.className=&#x27;empty-hint&#x27;;e.textContent=&#x27;（空 —— 至少保留一个内容原子）&#x27;;canvas.appendChild(e);}
+    shown.forEach(function(c){canvas.appendChild(rend(c));});
+    Array.prototype.forEach.call(tplWrap.children,function(b){b.classList.toggle(&#x27;on&#x27;,!state.custom&amp;&amp;b.dataset.id===state.tpl);});
+    Array.prototype.forEach.call(atomWrap.children,function(b){b.classList.toggle(&#x27;on&#x27;,!!state.on[b.dataset.code]);});
+    Array.prototype.forEach.call(sizeWrap.children,function(b){b.classList.toggle(&#x27;on&#x27;,b.dataset.id===state.size);});
+    var n=shown.length, tname=state.custom?&#x27;自定义&#x27;:(tpl?tpl.id+&#x27; &#x27;+tpl.n:&#x27;&#x27;);
+    var sname=(SIZES.filter(function(s){return s.id===state.size;})[0]||{}).n||&#x27;&#x27;;
+    status.innerHTML=&#x27;当前：&lt;b&gt;&#x27;+tname+&#x27;&lt;/b&gt; · &#x27;+(isLong?&#x27;长图（不限高）&#x27;:sname)+&#x27; · &#x27;+n+&#x27; 个原子&#x27;;
+  }
+  TPLS.forEach(function(t){
+    var b=document.createElement(&#x27;button&#x27;);b.type=&#x27;button&#x27;;b.className=&#x27;tab&#x27;;b.dataset.id=t.id;
+    b.innerHTML=&#x27;&lt;span class=&quot;tc&quot;&gt;&#x27;+t.id+&#x27;&lt;/span&gt;&#x27;+t.n;
+    b.addEventListener(&#x27;click&#x27;,function(){
+      state.tpl=t.id;state.custom=false;state.on={};t.set.forEach(function(a){state.on[a]=true;});paint();
+    });
+    tplWrap.appendChild(b);
+  });
+  ORDER.forEach(function(c){
+    var b=document.createElement(&#x27;button&#x27;);b.type=&#x27;button&#x27;;
+    b.className=&#x27;achip&#x27;+(ATOMS[c].lock?&#x27; lock&#x27;:&#x27;&#x27;);b.dataset.code=c;
+    b.innerHTML=&#x27;&lt;span class=&quot;ac&quot;&gt;&#x27;+c+&#x27;&lt;/span&gt;&#x27;+ATOMS[c].n;
+    b.addEventListener(&#x27;click&#x27;,function(){
+      if(ATOMS[c].lock)return;
+      state.on[c]=!state.on[c];state.custom=true;paint();
+    });
+    atomWrap.appendChild(b);
+  });
+  SIZES.forEach(function(s){
+    var b=document.createElement(&#x27;button&#x27;);b.type=&#x27;button&#x27;;b.className=&#x27;tab&#x27;;b.dataset.id=s.id;b.textContent=s.n;
+    b.addEventListener(&#x27;click&#x27;,function(){state.size=s.id;paint();});
+    sizeWrap.appendChild(b);
+  });
+  paint();
+})();
+&lt;/script&gt;
+"></iframe>
+<footer>ATOM 分享模块 · 产品与架构 · 单文件合集 · 内部各节交互均可用</footer>
+<script>
+function fit(f){try{var d=f.contentDocument;if(!d||!d.documentElement)return;
+  f.style.height=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0)+'px';}catch(e){}}
+document.querySelectorAll('iframe').forEach(function(f){
+  f.addEventListener('load',function(){fit(f);
+    try{new ResizeObserver(function(){fit(f);}).observe(f.contentDocument.documentElement);}catch(e){}
+    setTimeout(function(){fit(f);},600);setTimeout(function(){fit(f);},2000);});
+});
+</script>
