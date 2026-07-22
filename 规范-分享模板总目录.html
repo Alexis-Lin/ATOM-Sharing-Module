@@ -90,7 +90,7 @@
     <div class="brand">⚛ Body Park Atom · 分享模块 · 模板注册表</div>
     <h1>分享模板总目录 <span style="color:var(--acc-ink)">Template Catalog</span></h1>
     <div class="meta">
-      <span class="mchip hot">v1.0 穷举版</span><span class="mchip">17 现役 + 4 预留</span>
+      <span class="mchip hot">v1.0 穷举版</span><span class="mchip">19 现役 + 4 预留</span>
       <span class="mchip">手机端优先 · 默认档 = 拇指滑到就能发</span><span class="mchip">2026-07-17</span>
     </div>
     <p class="lede" style="margin-top:14px">全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的<b>网格标准</b>（默认比例档）；切其他比例只换高度预算与降档，规则见 规范-网格标准与成图样例。此目录的数据结构 = 工程模板注册表 JSON 的雏形。</p>
@@ -116,7 +116,7 @@
     <div class="callout"><b>给设计的读法</b>：一个模板 = 一张 Figma 画板（360pt 宽 × 默认档高度），内部按账本放原子 Frame。同一原子在不同模板中是<b>同一个组件的实例</b>（变体=绑定态×尺寸档）——先做完 21 个原子组件，17 个模板就是拼装工作。<br><b>给工程的读法</b>：本页每张卡 ≈ <span class="mono">{id, cell, layout, atoms:[{code,h}], ratios}</span> 一条注册表记录；新模板=加记录，不加代码。</div>
   </section>
 
-  <footer><span>分享模板总目录 v1.0 · 17+4</span><span>新场景 = 配置，不是开发</span></footer>
+  <footer><span>分享模板总目录 v1.1 · 19+4</span><span>新场景 = 配置，不是开发</span></footer>
 </div>
 
 <script>
@@ -184,6 +184,15 @@
        stack:[['B7·L',360,'L'],['G1',56]],budget:432,note:'E6·R2；"我最爱的哑铃"'},
       {id:'T17',name:'模式平衡卡',def:'1:1',ratios:['1:1','3:4'],moat:true,
        stack:[['B8·L',240,'L'],['G1',56]],budget:312,note:'E7·R2；PPS 六边形 + 推拉比'}
+     ]},
+    {name:'A5 排行榜 · 跨实体（课榜/好友榜/挑战榜）',status:'P1',note:'首个"我 vs 他人"社交对比组；E3 挑战上线后 R3 榜自动激活；他人信息默认脱敏',
+     tpls:[
+      {id:'T18',name:'榜单卡',def:'1:1',ratios:['1:1','3:4'],moat:false,
+       stack:[['A5·L',240,'L'],['G1',56]],budget:312,
+       note:'相邻名次列表+我行高亮；<10 人只显百分位'},
+      {id:'T19',name:'名次高光短图',def:'3:4',ratios:['3:4','9:16'],moat:false,
+       stack:[['A5·L',248,'L'],['A1↓',96],['G1',56]],budget:432,
+       note:'TOP 12% 大数字当主角 + 本次数据；名次靠后自动切百分位表达'}
      ]},
     {name:'健康域预留 🔮',status:'H',note:'随数据域上线自动激活',
      tpls:[
