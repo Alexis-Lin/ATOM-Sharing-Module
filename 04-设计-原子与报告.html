@@ -1,4 +1,4 @@
-<title>ATOM 分享模块 · 原子库</title>
+<title>设计 · 原子与报告</title>
 <style>
   :root{--bg:#F6F7F4;--surface:#FFFFFF;--ink:#141712;--muted:#5C645A;--faint:#939C8F;
     --line:#E4E8E1;--acc:#6FCC1B;--acc-ink:#47940B;--on-acc:#10240A;
@@ -11,26 +11,31 @@
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);}
   .topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
-    display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap;}
-  .topbar .brand{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;}
-  .topbar .brand em{font-style:normal;color:var(--acc-ink);}
-  .topbar nav{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;}
+    display:flex;align-items:center;gap:12px;padding:9px 20px;flex-wrap:wrap;}
+  .topbar .bd{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;}
+  .topbar .bd em{font-style:normal;color:var(--acc-ink);}
+  .topbar .who{font-family:var(--mono);font-size:10.5px;color:var(--on-acc);background:var(--acc);
+    border-radius:2px;padding:2px 8px;font-weight:700;}
+  .topbar nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;}
   .topbar a{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-decoration:none;
     border:1px solid var(--line);border-radius:2px;padding:4px 10px;}
   .topbar a:hover{border-color:var(--acc);color:var(--ink);}
+  .subnote{max-width:1160px;margin:0 auto;padding:14px 20px 0;color:var(--muted);font-size:13.5px;line-height:1.65;}
+  .srcnote{max-width:1160px;margin:0 auto;padding:6px 20px 0;color:var(--faint);font-family:var(--mono);font-size:11px;}
   .sechead{max-width:1160px;margin:0 auto;padding:26px 20px 0;}
   .sechead .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--acc-ink);font-weight:700;display:flex;align-items:center;gap:10px;}
   .sechead .kicker::before{content:"";width:22px;height:2px;background:var(--acc);}
-  .subnote{max-width:1160px;margin:0 auto;padding:8px 20px 0;color:var(--faint);font-family:var(--mono);font-size:11px;}
   iframe{display:block;width:100%;border:0;}
-  footer{max-width:1160px;margin:0 auto;padding:24px 20px 48px;color:var(--faint);font-family:var(--mono);font-size:11px;
-    border-top:1px solid var(--line);}
+  footer{max-width:1160px;margin:0 auto;padding:22px 20px 48px;border-top:1px solid var(--line);
+    color:var(--faint);font-family:var(--mono);font-size:11px;line-height:1.9;}
+  footer b{color:var(--muted);}
 </style>
-<div class="topbar"><span class="brand">📐 <em>BODY PARK ATOM</em> · 原子库</span><nav><a href="#part1">低保真线框总板（24+7 原子）</a><a href="#part2">原子规格 · B2 肌肉热力图</a><a href="#part3">深钻 · 课后报告与洞察设计 ★</a></nav></div>
-<div class="subnote">全原子低保真线框总板 + 原子规格 + 报告与洞察深钻。源文件：原子-低保真线框总板 · 原子-*规格 · 深钻-* · 合集由 build-bundles.py 生成，修改请编辑源文件</div>
-<div class="sechead" id="part1"><div class="kicker">01 · 低保真线框总板（24+7 原子）</div></div>
-<iframe title="01 · 低保真线框总板（24+7 原子）" srcdoc="&lt;title&gt;Body Park Atom · 分享模块低保真原型板&lt;/title&gt;
+<div class="topbar"><span class="bd">📐 <em>BODY PARK ATOM</em> · 原子与报告</span><span class="who">设计</span><nav><a href="#part1">原子低保真线框总板</a><a href="#part2">原子规格 · B2 肌肉热力图</a><a href="#part3">深钻 · 课后报告与洞察设计 ★</a></nav></div>
+<div class="subnote">24+7 个原子的低保真线框 · 单原子深钻规格 · 课后报告与洞察引擎的设计讨论稿。</div>
+<div class="srcnote">源文件：sources/原子-低保真线框总板.html · sources/原子-B2肌肉热力图规格.html · sources/深钻-课后报告与洞察设计.html · 本文件由 build.py 生成，修改请编辑 sources/ 后重新构建</div>
+<div class="sechead" id="part1"><div class="kicker">01 · 原子低保真线框总板</div></div>
+<iframe title="原子低保真线框总板" srcdoc="&lt;title&gt;Body Park Atom · 分享模块低保真原型板&lt;/title&gt;
 &lt;style&gt;
   :root{
     --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
@@ -714,7 +719,7 @@
 &lt;/div&gt;
 "></iframe>
 <div class="sechead" id="part2"><div class="kicker">02 · 原子规格 · B2 肌肉热力图</div></div>
-<iframe title="02 · 原子规格 · B2 肌肉热力图" srcdoc="&lt;title&gt;B2 肌肉热力图 · 原子规格 v0.1&lt;/title&gt;
+<iframe title="原子规格 · B2 肌肉热力图" srcdoc="&lt;title&gt;B2 肌肉热力图 · 原子规格 v0.1&lt;/title&gt;
 &lt;style&gt;
   :root{
     --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
@@ -1063,7 +1068,7 @@
 &lt;/script&gt;
 "></iframe>
 <div class="sechead" id="part3"><div class="kicker">03 · 深钻 · 课后报告与洞察设计 ★</div></div>
-<iframe title="03 · 深钻 · 课后报告与洞察设计 ★" srcdoc="&lt;title&gt;课后报告与洞察设计 · 深钻讨论稿&lt;/title&gt;
+<iframe title="深钻 · 课后报告与洞察设计 ★" srcdoc="&lt;title&gt;课后报告与洞察设计 · 深钻讨论稿&lt;/title&gt;
 &lt;style&gt;
   :root{
     --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
@@ -1467,7 +1472,7 @@
 })();
 &lt;/script&gt;
 "></iframe>
-<footer>ATOM 分享模块 · 原子库 · 单文件合集 · 内部各节交互均可用</footer>
+<footer><b>阅读顺序</b> — 01 总览（从这读起）· 02 PRD（P0 需求）· 03 规范（网格与模板）· 04 设计（原子与报告）· README.md（架构总纲 · 事实源）</footer>
 <script>
 function fit(f){try{var d=f.contentDocument;if(!d||!d.documentElement)return;
   f.style.height=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0)+'px';}catch(e){}}

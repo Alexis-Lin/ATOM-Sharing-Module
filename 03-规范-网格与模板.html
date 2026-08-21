@@ -1,4 +1,4 @@
-<title>ATOM 分享模块 · 设计规范</title>
+<title>规范 · 网格与模板</title>
 <style>
   :root{--bg:#F6F7F4;--surface:#FFFFFF;--ink:#141712;--muted:#5C645A;--faint:#939C8F;
     --line:#E4E8E1;--acc:#6FCC1B;--acc-ink:#47940B;--on-acc:#10240A;
@@ -11,26 +11,31 @@
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);}
   .topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
-    display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap;}
-  .topbar .brand{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;}
-  .topbar .brand em{font-style:normal;color:var(--acc-ink);}
-  .topbar nav{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;}
+    display:flex;align-items:center;gap:12px;padding:9px 20px;flex-wrap:wrap;}
+  .topbar .bd{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;}
+  .topbar .bd em{font-style:normal;color:var(--acc-ink);}
+  .topbar .who{font-family:var(--mono);font-size:10.5px;color:var(--on-acc);background:var(--acc);
+    border-radius:2px;padding:2px 8px;font-weight:700;}
+  .topbar nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;}
   .topbar a{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-decoration:none;
     border:1px solid var(--line);border-radius:2px;padding:4px 10px;}
   .topbar a:hover{border-color:var(--acc);color:var(--ink);}
+  .subnote{max-width:1160px;margin:0 auto;padding:14px 20px 0;color:var(--muted);font-size:13.5px;line-height:1.65;}
+  .srcnote{max-width:1160px;margin:0 auto;padding:6px 20px 0;color:var(--faint);font-family:var(--mono);font-size:11px;}
   .sechead{max-width:1160px;margin:0 auto;padding:26px 20px 0;}
   .sechead .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--acc-ink);font-weight:700;display:flex;align-items:center;gap:10px;}
   .sechead .kicker::before{content:"";width:22px;height:2px;background:var(--acc);}
-  .subnote{max-width:1160px;margin:0 auto;padding:8px 20px 0;color:var(--faint);font-family:var(--mono);font-size:11px;}
   iframe{display:block;width:100%;border:0;}
-  footer{max-width:1160px;margin:0 auto;padding:24px 20px 48px;color:var(--faint);font-family:var(--mono);font-size:11px;
-    border-top:1px solid var(--line);}
+  footer{max-width:1160px;margin:0 auto;padding:22px 20px 48px;border-top:1px solid var(--line);
+    color:var(--faint);font-family:var(--mono);font-size:11px;line-height:1.9;}
+  footer b{color:var(--muted);}
 </style>
-<div class="topbar"><span class="brand">📏 <em>BODY PARK ATOM</em> · 设计规范</span><nav><a href="#part1">网格标准与成图样例</a><a href="#part2">分享模板总目录</a></nav></div>
-<div class="subnote">网格标准与成图样例 + 分享模板总目录（23+4）。源文件：规范-网格标准与成图样例 · 规范-分享模板总目录 · 合集由 build-bundles.py 生成，修改请编辑源文件</div>
+<div class="topbar"><span class="bd">📏 <em>BODY PARK ATOM</em> · 网格与模板</span><span class="who">设计 · 工程</span><nav><a href="#part1">网格标准与成图样例</a><a href="#part2">分享模板总目录</a></nav></div>
+<div class="subnote">画布网格标准（尺寸/预算/间距/字阶/出血权）+ 8 张成图样例 + 23+4 个模板的原子账本。</div>
+<div class="srcnote">源文件：sources/规范-网格标准与成图样例.html · sources/规范-分享模板总目录.html · 本文件由 build.py 生成，修改请编辑 sources/ 后重新构建</div>
 <div class="sechead" id="part1"><div class="kicker">01 · 网格标准与成图样例</div></div>
-<iframe title="01 · 网格标准与成图样例" srcdoc="&lt;title&gt;规范 · 网格标准与成图样例&lt;/title&gt;
+<iframe title="网格标准与成图样例" srcdoc="&lt;title&gt;规范 · 网格标准与成图样例&lt;/title&gt;
 &lt;style&gt;
   :root{
     --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
@@ -603,7 +608,7 @@
 &lt;/script&gt;
 "></iframe>
 <div class="sechead" id="part2"><div class="kicker">02 · 分享模板总目录</div></div>
-<iframe title="02 · 分享模板总目录" srcdoc="&lt;title&gt;分享模板总目录 · Template Catalog v1.0&lt;/title&gt;
+<iframe title="分享模板总目录" srcdoc="&lt;title&gt;分享模板总目录 · Template Catalog v1.0&lt;/title&gt;
 &lt;style&gt;
   :root{
     --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
@@ -698,7 +703,7 @@
       &lt;span class=&quot;mchip hot&quot;&gt;v1.0 穷举版&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;23 现役 + 4 预留&lt;/span&gt;
       &lt;span class=&quot;mchip&quot;&gt;手机端优先 · 默认档 = 拇指滑到就能发&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;2026-07-17&lt;/span&gt;
     &lt;/div&gt;
-    &lt;p class=&quot;lede&quot; style=&quot;margin-top:14px&quot;&gt;全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的&lt;b&gt;网格标准&lt;/b&gt;（默认比例档）；切其他比例只换高度预算与降档，规则见 规范-网格标准与成图样例。此目录的数据结构 = 工程模板注册表 JSON 的雏形。&lt;/p&gt;
+    &lt;p class=&quot;lede&quot; style=&quot;margin-top:14px&quot;&gt;全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的&lt;b&gt;网格标准&lt;/b&gt;（默认比例档）；切其他比例只换高度预算与降档，规则见 03-规范-网格与模板。此目录的数据结构 = 工程模板注册表 JSON 的雏形。&lt;/p&gt;
     &lt;div class=&quot;constants&quot;&gt;
       &lt;div class=&quot;const&quot;&gt;逻辑宽 &lt;b&gt;360pt&lt;/b&gt; · 导出 @3x&lt;/div&gt;
       &lt;div class=&quot;const&quot;&gt;边距 &lt;b&gt;24&lt;/b&gt; · 原子缝 &lt;b&gt;16&lt;/b&gt; · 纵向 &lt;b&gt;8pt&lt;/b&gt; 节奏&lt;/div&gt;
@@ -879,7 +884,7 @@
 })();
 &lt;/script&gt;
 "></iframe>
-<footer>ATOM 分享模块 · 设计规范 · 单文件合集 · 内部各节交互均可用</footer>
+<footer><b>阅读顺序</b> — 01 总览（从这读起）· 02 PRD（P0 需求）· 03 规范（网格与模板）· 04 设计（原子与报告）· README.md（架构总纲 · 事实源）</footer>
 <script>
 function fit(f){try{var d=f.contentDocument;if(!d||!d.documentElement)return;
   f.style.height=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0)+'px';}catch(e){}}
