@@ -1,0 +1,403 @@
+<title>课后报告与洞察设计 · 深钻讨论稿</title>
+<style>
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --warn:#C77D12; --warn-soft:#FBF0DC;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--warn:#D9A441;--warn-soft:#2A2210;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;--warn:#C77D12;--warn-soft:#FBF0DC;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--warn:#D9A441;--warn-soft:#2A2210;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.68;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 110px;}
+  section{margin-top:60px;scroll-margin-top:20px;}
+  h2{font-size:22px;font-weight:800;margin:0 0 6px;letter-spacing:-.015em;text-wrap:balance;}
+  h3{font-size:15.5px;font-weight:700;margin:24px 0 8px;}
+  p{margin:9px 0;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:70ch;font-size:14.5px;}
+  .mono{font-family:var(--mono);}
+  code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+  header{padding:54px 0 26px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(27px,4.6vw,42px);font-weight:800;letter-spacing:-.025em;margin:15px 0 0;line-height:1.12;text-wrap:balance;max-width:20ch;}
+  h1 em{font-style:normal;color:var(--acc-ink);}
+  .sub{color:var(--muted);font-size:16px;margin:15px 0 0;max-width:60ch;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);}
+  .grid{display:grid;gap:13px;} .g2{grid-template-columns:1fr 1fr;} .g3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:860px){.g2,.g3{grid-template-columns:1fr;}}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:var(--surface);}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-size:12px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);}
+  ul{margin:8px 0;padding-left:20px;} li{margin:5px 0;color:var(--muted);font-size:14px;} li b{color:var(--ink);}
+  .callout{border-left:3px solid var(--acc);background:var(--surface);border-radius:var(--r);padding:13px 17px;box-shadow:var(--shadow);margin:16px 0;font-size:13.5px;color:var(--muted);}
+  .callout b{color:var(--ink);}
+  .callout.q{border-left-color:var(--warn);}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;}
+  .tab{border:1px solid var(--line-strong);background:var(--surface);border-radius:var(--r-sm);padding:7px 13px;cursor:pointer;font-size:12.5px;color:var(--muted);font-family:var(--cjk);transition:all .12s;}
+  .tab:hover{border-color:var(--acc);color:var(--ink);}
+  .tab:focus-visible{outline:2px solid var(--acc);outline-offset:2px;}
+  .tab.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .tab .tc{font-family:var(--mono);font-size:10px;margin-right:5px;opacity:.85;}
+
+  /* L1/L2/L3 ladder */
+  .ladder{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
+  .rung{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:stretch;}
+  .rung .lv{display:grid;place-items:center;font-family:var(--mono);font-weight:800;font-size:15px;border-radius:var(--r);
+    border:1.5px solid var(--line-strong);color:var(--faint);background:var(--surface);}
+  .rung .bd{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 17px;box-shadow:var(--shadow);}
+  .rung .bd .t{font-weight:700;font-size:14.5px;}
+  .rung .bd .ex{font-size:13.5px;color:var(--muted);margin-top:4px;font-style:italic;}
+  .rung .bd .who{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:6px;}
+  .rung.top .lv{border-color:var(--acc);background:var(--acc);color:var(--on-acc);}
+  .rung.top .bd{border-color:var(--acc);border-left:3px solid var(--acc);}
+  .rung.top .bd .who{color:var(--acc-ink);font-weight:700;}
+
+  /* insight demo */
+  .insdemo{margin-top:18px;}
+  .insstage{margin-top:14px;display:grid;grid-template-columns:minmax(300px,360px) 1fr;gap:22px;align-items:start;}
+  @media(max-width:860px){.insstage{grid-template-columns:1fr;}}
+  .inscard{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:var(--r);
+    padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:11px;}
+  .inscard .badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--acc-ink);}
+  .inscard .badge i{width:6px;height:6px;border-radius:50%;background:var(--acc);}
+  .inscard .head{font-size:17px;font-weight:700;line-height:1.45;letter-spacing:-.01em;}
+  .inscard .ev{font-size:12.5px;color:var(--muted);font-family:var(--mono);line-height:1.6;
+    border-top:1px dashed var(--line-strong);padding-top:9px;}
+  .inscard .viz{background:var(--canvas);border-radius:var(--r-sm);padding:12px;display:grid;place-items:center;min-height:82px;}
+  .inscard.neg{border-left-color:var(--warn);}
+  .inscard.neg .badge{color:var(--warn);} .inscard.neg .badge i{background:var(--warn);}
+  .insmeta{display:flex;flex-direction:column;gap:12px;}
+  .mrow{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:baseline;font-size:13.5px;}
+  .mrow .mk{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);}
+  .mrow .mv{color:var(--muted);} .mrow .mv b{color:var(--ink);}
+  .score{display:flex;align-items:center;gap:10px;}
+  .scorebar{flex:1;height:8px;background:var(--surface-2);border-radius:var(--r-sm);overflow:hidden;max-width:200px;}
+  .scorebar i{display:block;height:100%;background:var(--acc);}
+  .score .sv{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--acc-ink);}
+  .tmpl{background:var(--canvas);border:1px dashed var(--line-strong);border-radius:var(--r-sm);padding:10px 13px;
+    font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.65;}
+  .tmpl b{color:var(--acc-ink);}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">Body Park Atom · 分享模块 · 深钻讨论稿 02</div>
+    <h1>课后报告与洞察设计 <em>Reports &amp; Insights</em></h1>
+    <p class="sub">分享的动机不是"我有数据"，而是"这数据说明了什么"。这份文档把报告拆成四个粒度、把洞察拆成六种类型，并提出几条待讨论的产品决策。</p>
+    <div class="meta">
+      <span class="mchip hot">v0.1 讨论稿</span><span class="mchip">四粒度报告</span><span class="mchip">六类洞察</span>
+      <span class="mchip">新增原子 A6 · A7</span><span class="mchip">2026-07-18</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow">01 / 判断</div>
+    <h2>数据人人有，洞察才是 wow</h2>
+    <p class="lede">竞品都能给你时长、卡路里、容量。这些是<b>陈述</b>——回答"我做了什么"。用户不会为一堆数字点分享，但会为一个让他惊讶或自豪的<b>判断</b>点分享。报告的设计重心，应该从"把数据摆整齐"转向"把判断说出来"。</p>
+
+    <h3>洞察的三个层次</h3>
+    <div class="ladder">
+      <div class="rung"><div class="lv">L1</div><div class="bd"><div class="t">陈述 Statement — 数据本身</div>
+        <div class="ex">"你练了 42 分钟，消耗 386 千卡，总容量 1,800kg。"</div>
+        <div class="who">所有 App 都能做到 · 零分享动机</div></div></div>
+      <div class="rung"><div class="lv">L2</div><div class="bd"><div class="t">比较 Comparison — 有参照系</div>
+        <div class="ex">"比上次多举了 12%，超过 88% 的同课学员。"</div>
+        <div class="who">多数 App 能做到 · 有一定分享动机</div></div></div>
+      <div class="rung top"><div class="lv">L3</div><div class="bd"><div class="t">判断 Judgment — 有因果、有建议 ★</div>
+        <div class="ex">"你的卧推进步来自组数 +2 而非重量提升——说明耐力先上来了，下次可以试着加到 65kg。"</div>
+        <div class="who">我们的差异化 · 这才是 wow · 值得被分享和讨论</div></div></div>
+    </div>
+    <div class="callout"><b>为什么我们能做 L3 而竞品不能</b>：① AI 姿态识别给了<b>动作质量</b>维度（别人只有重量次数）；② 肌肉/器械/模式三个分类实体让数据可以被<b>多维拆解</b>（推拉比、肌群覆盖、容量归因）；③ 结构化的历史让<b>趋势与归因</b>可算。这三件事是 L3 洞察的地基，恰好都是我们已有或正在补的能力。</div>
+  </section>
+
+  <section>
+    <div class="eyebrow">02 / 报告的四个粒度</div>
+    <h2>"课后报告"不是一个东西，是一族</h2>
+    <p class="lede">同样叫报告，动作级、课程级、计划级、周期级的内容侧重完全不同——粒度越小越偏"即时质量反馈"，粒度越大越偏"成长与归因"。<b>点标签看每个粒度的报告结构。</b></p>
+    <div class="tabs" id="scopeTabs" style="margin-top:16px"></div>
+    <div id="scopeView"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">03 / 洞察引擎 · 六类洞察</div>
+    <h2>洞察不是文案，是可枚举的规则</h2>
+    <p class="lede">把"AI 给点评"变成可实现的东西，关键是把洞察<b>类型化</b>——每类有固定的计算逻辑、数据依赖和文案模板。<b>点类型看真实例子、生成逻辑与分享价值评分。</b></p>
+    <div class="tabs" id="insTabs" style="margin-top:16px"></div>
+    <div class="insstage">
+      <div id="insCard"></div>
+      <div class="insmeta" id="insMeta"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">04 / 关键决策提案</div>
+    <h2>双面报告：App 里是教练，分享出去是战报</h2>
+    <p class="lede">洞察不能不加筛选地进入分享图。<b>分享价值 = 意外性 × 正面性 × 可炫耀性</b>——负面洞察（"你三周没练背了"）对用户自己极有价值，但绝不会被分享。所以同一份报告应该有两种呈现。<b>点切换看差异。</b></p>
+    <div class="tabs" id="dualTabs" style="margin-top:16px"></div>
+    <div id="dualView"></div>
+    <div class="callout"><b>与"一张图一个主角"同源</b>：洞察也必须<b>被选出来</b>而不是全堆上去。App 内可以列 6 条，分享图<b>最多 1~3 条</b>，按分享价值分排序取前 N。堆满 8 条洞察 = 没有洞察。</div>
+  </section>
+
+  <section>
+    <div class="eyebrow">05 / 冷启动</div>
+    <h2>第一次训练，洞察引擎也不能哑火</h2>
+    <p class="lede">新用户没有历史，对比/归因/预测类洞察全部失效。必须提前设计降级路径——好消息是我们有两个<b>不依赖历史</b>的 wow 来源。</p>
+    <div class="scroll" style="margin-top:16px">
+      <table>
+        <thead><tr><th>用户阶段</th><th>可用洞察类型</th><th>报告主打</th><th>风险</th></tr></thead>
+        <tbody>
+          <tr><td><b>第 1 次</b></td><td>⑥ 具象型 + L1 陈述</td><td><b>AI 火柴人点评 + 具象类比</b>——不依赖任何历史</td><td>若无 AI 识别数据则报告很单薄 → 需兜底文案</td></tr>
+          <tr><td>第 2~4 次</td><td>+ ① 对比型</td><td>"比上次更好"的即时正反馈</td><td>样本少时对比噪音大，需最小差异阈值</td></tr>
+          <tr><td>第 5~9 次</td><td>+ ② 发现型 + ③ 归因型</td><td>开始"懂你"：模式分布、进步归因</td><td>发现型可能揭示负面（欠练）→ 走教练版</td></tr>
+          <tr><td>第 10 次起</td><td>全部六类</td><td>完整教练体验：预测、里程碑、异常</td><td>洞察过载 → 必须按分享价值分截断</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><b>结构性优势</b>：火柴人 AI 点评（C1/C2）和具象类比（A4）<b>第一次训练就能给出 wow</b>——竞品的首份报告只能给"你练了 30 分钟"。首份报告的体验差距，可能是新用户留存的关键分水岭，建议在 Phase 2 就把"首份报告特殊照顾"做进去。</div>
+  </section>
+
+  <section>
+    <div class="eyebrow">06 / 待讨论</div>
+    <h2>下次会议要拍板的几件事</h2>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card"><h3 style="margin-top:0">① 洞察由谁生成？</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0">规则引擎（模板拼装，可控、快、免费）vs LLM 生成（自然、多样、有成本与不可控风险）。<b>建议：规则引擎算结论 + LLM 只负责措辞</b>，兼顾准确与自然。</p></div>
+      <div class="card"><h3 style="margin-top:0">② 洞察密度</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0">App 内报告列几条？分享图带几条？<b>建议：App 内 3~6 条分组呈现，分享图默认 1 条（做主角）、长图最多 3 条。</b></p></div>
+      <div class="card"><h3 style="margin-top:0">③ 负面洞察怎么说</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0">"你三周没练背"是有用的，但语气会劝退。<b>建议：负面必须配行动建议</b>，且永不进分享版；措辞用"机会"而非"缺陷"。</p></div>
+      <div class="card"><h3 style="margin-top:0">④ 报告的 App 内形态</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0">目前 App 内课后页较简陋。报告页是否要重做成"洞察优先"的结构（洞察在上、数据在下）？这会影响分享入口的位置。</p></div>
+      <div class="card"><h3 style="margin-top:0">⑤ 计划级报告依赖</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0">计划功能是否在 roadmap 内？计划级报告的成长叙事最强（起点 vs 终点），但依赖计划体系存在。</p></div>
+      <div class="card"><h3 style="margin-top:0">⑥ 洞察的准确性底线</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0">预测型（"4 周后破 70kg"）说错了会伤信任。<b>建议：置信度低于阈值不出，措辞留余地</b>（"按当前节奏"而非"你将会"）。</p></div>
+    </div>
+    <div class="callout q"><b>我的一句话观点</b>：报告页应该从"数据陈列"重构为"<b>一条主洞察 + 支撑数据</b>"的结构——用户打开报告先看到一句让他 wow 的判断，再往下才是数据明细。这个结构变了，分享率的天花板才会变。</div>
+  </section>
+
+  <footer style="margin-top:76px;padding-top:22px;border-top:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <span>课后报告与洞察设计 · 深钻讨论稿 v0.1</span><span>数据回答"我做了什么"，洞察回答"这意味着什么"</span>
+  </footer>
+</div>
+
+<style>
+  .stack2{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+  .srow2{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--r);padding:11px 15px;box-shadow:var(--shadow);}
+  @media(max-width:760px){.srow2{grid-template-columns:1fr;gap:4px;}}
+  .srow2 .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);}
+  .srow2 .k b{display:block;font-family:var(--cjk);font-size:14px;color:var(--ink);letter-spacing:0;text-transform:none;}
+  .srow2 .v{color:var(--muted);font-size:13.5px;}
+  .srow2 .v b{color:var(--ink);}
+  .srow2.hot{border-left:3px solid var(--acc);}
+  .atomrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+  .ab{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:2px 8px;color:var(--muted);}
+  .ab.hot{background:var(--acc-soft);color:var(--acc-ink);border-color:var(--acc);font-weight:700;}
+  .dualwrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+  @media(max-width:860px){.dualwrap{grid-template-columns:1fr;}}
+  .dualcol{background:var(--canvas);border:1px dashed var(--line-strong);border-radius:var(--r);padding:16px;}
+  .dualcol h4{margin:0 0 4px;font-size:14px;}
+  .dualcol .role{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:12px;}
+  .ins-mini{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:var(--r-sm);
+    padding:9px 12px;margin-bottom:8px;font-size:13px;line-height:1.55;}
+  .ins-mini .ty{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--acc-ink);font-weight:700;}
+  .ins-mini.neg{border-left-color:var(--warn);} .ins-mini.neg .ty{color:var(--warn);}
+  .ins-mini.drop{opacity:.4;text-decoration:line-through;text-decoration-color:var(--warn);}
+  .dropnote{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:10px;line-height:1.6;}
+</style>
+
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i);};
+  function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+
+  /* ---------- 02 report scopes ---------- */
+  var SCOPES=[
+    {n:'动作级报告',cell:'E1·R1',when:'单动作完成 / 查看动作历史',focus:'动作质量与即时反馈',
+     atoms:[['C1 火柴人',1],['C2 AI 点评',1],['A6 洞察卡',1],['A3 对比',0],['A1 指标',0],['G1 水印',1]],
+     ins:'以 ①对比型 + ③归因型为主：「这组比上组稳定 15%」「深度到位但起身内扣」',
+     pri:'P1',note:'最依赖 AI 识别——竞品完全做不了，是最能体现差异化的报告粒度。'},
+    {n:'课程级报告 ★',cell:'E2·R1',when:'练完一节课（P0）',focus:'全局总结与本次表现',
+     atoms:[['A1 指标',1],['B2 热力图',1],['B1 动作列表',1],['A6 洞察卡',1],['A3 对比',0],['A5 排行榜',0],['G1 水印',1]],
+     ins:'六类都可能触发，按分享价值分取前 1~3 条',
+     pri:'P0',note:'首批上线的报告粒度。目前 App 内形态较简陋，建议随分享一起重构为"洞察优先"。'},
+    {n:'计划级报告',cell:'E3·R2',when:'完成 4/8 周计划',focus:'阶段性成长（起点 vs 终点）',
+     atoms:[['A7 阶段对比',1],['A6 洞察卡',1],['C3 体适能雷达',1],['A2 坚持度',1],['B2 覆盖热度',0],['G1 水印',1]],
+     ins:'以 ③归因型 + ⑤异常型为主：「8 周里你的推类容量涨了 34%，主要来自频次而非强度」',
+     pri:'P1',note:'成长叙事最强的粒度——"我坚持了 8 周并且变强了"是最有分享冲动的故事。依赖计划体系。'},
+    {n:'周期级报告',cell:'E0·R2',when:'周 / 月 / 年结束',focus:'时间维度累计与习惯',
+     atoms:[['A2 周期统计',1],['A6 洞察卡',1],['B2 覆盖热度',1],['A3 趋势',0],['A4 类比',0],['G1 水印',1]],
+     ins:'以 ⑤异常型 + ②发现型为主：「本月是你今年训练最多的一个月」',
+     pri:'P1',note:'年度报告（Spotify Wrapped 式）是传播峰值场景，值得单独立项做重设计。'}
+  ];
+  var st=$('scopeTabs'), sv=$('scopeView');
+  function showScope(i){
+    var s=SCOPES[i];
+    sv.innerHTML='<div class="stack2">'+
+      '<div class="srow2 hot"><div class="k">分享体<b>'+s.cell+'</b></div><div class="v">触发时机：<b>'+s.when+'</b> · 优先级 <b>'+s.pri+'</b></div></div>'+
+      '<div class="srow2"><div class="k">内容侧重<b>'+s.focus+'</b></div><div class="v">默认原子组合：<div class="atomrow">'+
+        s.atoms.map(function(a){return '<span class="ab'+(a[1]?' hot':'')+'">'+a[0]+'</span>';}).join('')+
+        '</div><span style="font-family:var(--mono);font-size:11px;color:var(--faint)">绿色=默认带 · 灰色=可选</span></div></div>'+
+      '<div class="srow2"><div class="k">洞察类型倾向</div><div class="v">'+s.ins+'</div></div>'+
+      '<div class="srow2"><div class="k">备注</div><div class="v">'+s.note+'</div></div></div>';
+    Array.prototype.forEach.call(st.children,function(b,j){b.classList.toggle('on',j===i);});
+  }
+  SCOPES.forEach(function(s,i){
+    var b=el('button','tab');b.type='button';b.textContent=s.n;
+    b.addEventListener('click',function(){showScope(i);});st.appendChild(b);
+  });
+  showScope(1);
+
+  /* ---------- 03 insight types ---------- */
+  function viz(kind){
+    var A='#6FCC1B', E='#47940B', G='var(--wire)';
+    if(kind==='cmp') return '<svg width="210" height="62" viewBox="0 0 210 62">'+
+      '<text x="0" y="16" font-size="9" fill="#9AA294" font-family="monospace">上次</text><rect x="34" y="7" width="98" height="12" rx="2" fill="'+G+'" opacity=".5"/><text x="140" y="17" font-size="10" fill="#9AA294" font-family="monospace">1,610kg</text>'+
+      '<text x="0" y="44" font-size="9" fill="#9AA294" font-family="monospace">本次</text><rect x="34" y="35" width="126" height="12" rx="2" fill="'+A+'"/><text x="168" y="45" font-size="10" fill="'+E+'" font-family="monospace" font-weight="700">1,800</text>'+
+      '<text x="34" y="60" font-size="9" fill="'+E+'" font-family="monospace">+11.8%</text></svg>';
+    if(kind==='dis') return '<svg width="210" height="62" viewBox="0 0 210 62">'+
+      '<rect x="0" y="12" width="152" height="16" rx="2" fill="'+A+'"/><rect x="154" y="12" width="30" height="16" rx="2" fill="'+A+'" opacity=".45"/><rect x="186" y="12" width="14" height="16" rx="2" fill="'+G+'" opacity=".5"/>'+
+      '<text x="0" y="44" font-size="9.5" fill="'+E+'" font-family="monospace" font-weight="700">推 78%</text>'+
+      '<text x="60" y="44" font-size="9.5" fill="#9AA294" font-family="monospace">拉 15%</text>'+
+      '<text x="120" y="44" font-size="9.5" fill="#9AA294" font-family="monospace">腿 7%</text>'+
+      '<text x="0" y="58" font-size="9" fill="#9AA294" font-family="monospace">近 30 天容量分布</text></svg>';
+    if(kind==='attr') return '<svg width="210" height="62" viewBox="0 0 210 62">'+
+      '<rect x="0" y="26" width="46" height="14" rx="2" fill="'+G+'" opacity=".5"/><text x="0" y="20" font-size="8.5" fill="#9AA294" font-family="monospace">重量 0%</text>'+
+      '<rect x="54" y="16" width="46" height="24" rx="2" fill="'+A+'"/><text x="54" y="10" font-size="8.5" fill="'+E+'" font-family="monospace" font-weight="700">组数 +2</text>'+
+      '<rect x="108" y="26" width="46" height="14" rx="2" fill="'+G+'" opacity=".5"/><text x="108" y="20" font-size="8.5" fill="#9AA294" font-family="monospace">次数 0%</text>'+
+      '<path d="M162 33 L176 33" stroke="#9AA294" stroke-width="1.5" stroke-dasharray="2 2"/>'+
+      '<text x="162" y="20" font-size="8.5" fill="'+E+'" font-family="monospace" font-weight="700">= +12%</text>'+
+      '<text x="0" y="58" font-size="9" fill="#9AA294" font-family="monospace">容量增长归因分解</text></svg>';
+    if(kind==='proj') return '<svg width="210" height="62" viewBox="0 0 210 62">'+
+      '<path d="M4 46 L44 42 L84 34 L124 28" fill="none" stroke="'+A+'" stroke-width="2.5" stroke-linecap="round"/>'+
+      '<path d="M124 28 L166 18 L204 10" fill="none" stroke="'+A+'" stroke-width="2" stroke-dasharray="4 4" opacity=".7"/>'+
+      '<circle cx="124" cy="28" r="3.5" fill="'+A+'"/><circle cx="204" cy="10" r="4" fill="none" stroke="'+E+'" stroke-width="2"/>'+
+      '<text x="96" y="46" font-size="9" fill="#9AA294" font-family="monospace">现在 60kg</text>'+
+      '<text x="150" y="58" font-size="9" fill="'+E+'" font-family="monospace" font-weight="700">4 周后 70kg?</text></svg>';
+    if(kind==='ano') return '<svg width="210" height="62" viewBox="0 0 210 62">'+
+      '<line x1="0" y1="52" x2="210" y2="52" stroke="'+G+'" stroke-width="1" opacity=".6"/>'+
+      [12,30,22,38,26,44,20,34].map(function(h,i){return '<rect x="'+(i*20+4)+'" y="'+(52-h)+'" width="12" height="'+h+'" rx="2" fill="'+G+'" opacity=".45"/>';}).join('')+
+      '<rect x="168" y="4" width="12" height="48" rx="2" fill="'+A+'"/>'+
+      '<text x="150" y="62" font-size="9" fill="'+E+'" font-family="monospace" font-weight="700">今年最强</text></svg>';
+    return '<svg width="210" height="62" viewBox="0 0 210 62">'+
+      '<text x="0" y="26" font-size="20" fill="'+E+'" font-family="monospace" font-weight="700">1,800kg</text>'+
+      '<text x="104" y="26" font-size="13" fill="#9AA294" font-family="monospace">≈</text>'+
+      '<g transform="translate(126,8)"><rect x="4" y="10" width="60" height="10" rx="2" fill="none" stroke="'+G+'" stroke-width="2"/><rect x="18" y="3" width="28" height="10" rx="2" fill="none" stroke="'+G+'" stroke-width="2"/><circle cx="18" cy="23" r="4.5" fill="none" stroke="'+A+'" stroke-width="2.5"/><circle cx="50" cy="23" r="4.5" fill="none" stroke="'+A+'" stroke-width="2.5"/></g>'+
+      '<text x="0" y="52" font-size="9.5" fill="#9AA294" font-family="monospace">一辆家用轿车的重量</text></svg>';
+  }
+  var INS=[
+    {id:'cmp',t:'① 对比型',badge:'Comparison',head:'这次比上次多举了 190kg，涨幅 11.8%',
+     ev:'本次总容量 1,800kg · 上次 1,610kg · 数据来源：同课程最近两次记录',
+     logic:'取同分享体最近两次记录，计算主指标差值与百分比；差值绝对值需 ≥5% 才触发（避免噪音）。',
+     dep:'≥2 次同类记录',cold:'第 2 次可用',score:72,sent:'positive',
+     tmpl:'这次比上次{多/少}举了 <b>{delta}</b>，{涨/降}幅 <b>{pct}</b>'},
+    {id:'dis',t:'② 发现型',badge:'Discovery',head:'你近 30 天有 78% 的容量集中在推类动作',
+     ev:'推 78% · 拉 15% · 腿 7% · 数据来源：E7 动作模式聚合（近 30 天）',
+     logic:'对分类实体（模式/肌群/器械）做容量占比聚合，取最高占比项；占比 >60% 或 <10% 触发（失衡才有信息量）。',
+     dep:'维度聚合 · ≥5 次记录',cold:'第 5 次起',score:88,sent:'neutral',
+     tmpl:'你{近 N 天}有 <b>{pct}</b> 的{容量/时间}集中在<b>{维度值}</b>'},
+    {id:'attr',t:'③ 归因型',badge:'Attribution',head:'卧推的进步来自组数 +2，重量其实没变',
+     ev:'容量 = 重量 × 次数 × 组数；本次重量持平 60kg、次数持平 12、组数 2→4',
+     logic:'把主指标拆成乘法因子，比较各因子的变化贡献度，取贡献最大者作为归因结论；可附行动建议。',
+     dep:'多变量分解 · ≥3 次记录',cold:'第 5 次起',score:94,sent:'positive',
+     tmpl:'{指标}的{进步/下降}来自 <b>{主因子}</b>，{次因子}其实{没变/略降}'},
+    {id:'proj',t:'④ 预测型',badge:'Projection',head:'按当前节奏，约 4 周后你的卧推可以摸到 70kg',
+     ev:'近 6 次线性趋势 +2.1kg/周 · 置信度 0.78 · 仅在置信度 >0.7 时展示',
+     logic:'对时序数据做线性拟合并外推到下一个整数里程碑；置信度低于阈值不出；措辞必须留余地（"按当前节奏"而非"你将会"）。',
+     dep:'趋势拟合 · ≥4 个数据点',cold:'第 8 次起',score:85,sent:'positive',
+     tmpl:'按当前节奏，约 <b>{周数}</b> 后你的{指标}可以摸到 <b>{目标值}</b>'},
+    {id:'ano',t:'⑤ 异常型',badge:'Anomaly',head:'这是你今年最强的一次训练',
+     ev:'总容量 1,800kg，超过今年全部 47 次训练 · 数据来源：全量排序',
+     logic:'对全量历史做排序，命中 Top1 / 首次 / 连续里程碑等特殊位置时触发；这类洞察分享价值最高但触发稀疏。',
+     dep:'全量排序',cold:'第 10 次起',score:96,sent:'positive',
+     tmpl:'这是你<b>{时间范围}</b>{最强/第一次}的一次{训练/动作}'},
+    {id:'ana',t:'⑥ 具象型',badge:'Analogy',head:'今天你举起的重量，相当于一辆家用轿车',
+     ev:'总容量 1,800kg ≈ 家用轿车整备质量 · 素材库映射',
+     logic:'把抽象数字映射到类比素材库（车/汉堡/楼层/大象），选取最接近的一档；唯一不依赖历史的洞察类型。',
+     dep:'类比素材库',cold:'**第 1 次即可用**',score:80,sent:'positive',
+     tmpl:'今天你{举起/消耗}的{指标}，相当于 <b>{类比物}</b>'}
+  ];
+  var it=$('insTabs'), ic=$('insCard'), im=$('insMeta');
+  function showIns(i){
+    var d=INS[i];
+    ic.innerHTML='<div class="inscard'+(d.sent==='negative'?' neg':'')+'">'+
+      '<div class="badge"><i></i>'+d.t+' · '+d.badge+'</div>'+
+      '<div class="head">'+d.head+'</div>'+
+      '<div class="viz">'+viz(d.id)+'</div>'+
+      '<div class="ev">'+d.ev+'</div></div>'+
+      '<div style="font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:8px;text-align:center">↑ A6 洞察卡片原子的渲染形态</div>';
+    im.innerHTML=
+      '<div class="mrow"><span class="mk">生成逻辑</span><span class="mv">'+d.logic+'</span></div>'+
+      '<div class="mrow"><span class="mk">文案模板</span><span class="mv"><div class="tmpl">'+d.tmpl+'</div></span></div>'+
+      '<div class="mrow"><span class="mk">数据依赖</span><span class="mv"><b>'+d.dep+'</b></span></div>'+
+      '<div class="mrow"><span class="mk">冷启动</span><span class="mv">'+d.cold+'</span></div>'+
+      '<div class="mrow"><span class="mk">情感倾向</span><span class="mv">'+(d.sent==='positive'?'正面 · 可进分享版':'中性 · 视措辞决定')+'</span></div>'+
+      '<div class="mrow"><span class="mk">分享价值分</span><span class="mv"><div class="score"><div class="scorebar"><i style="width:'+d.score+'%"></i></div><span class="sv">'+d.score+'</span></div>'+
+      '<span style="font-family:var(--mono);font-size:11px;color:var(--faint)">意外性 × 正面性 × 可炫耀性</span></span></div>';
+    Array.prototype.forEach.call(it.children,function(b,j){b.classList.toggle('on',j===i);});
+  }
+  INS.forEach(function(d,i){
+    var b=el('button','tab');b.type='button';b.textContent=d.t;
+    b.addEventListener('click',function(){showIns(i);});it.appendChild(b);
+  });
+  showIns(2);
+
+  /* ---------- 04 dual report ---------- */
+  var ALLINS=[
+    {ty:'⑤ 异常型 · 96',tx:'这是你今年最强的一次训练',keep:true},
+    {ty:'③ 归因型 · 94',tx:'卧推进步来自组数 +2，重量其实没变——下次可以试着加到 65kg',keep:true},
+    {ty:'① 对比型 · 72',tx:'这次比上次多举了 190kg，涨幅 11.8%',keep:true},
+    {ty:'⑥ 具象型 · 80',tx:'今天举起的重量相当于一辆家用轿车',keep:true},
+    {ty:'② 发现型 · 88',tx:'你近 30 天有 78% 的容量集中在推类——拉类偏少',keep:false,neg:true},
+    {ty:'② 发现型 · 60',tx:'背部已连续 3 周未训练，建议下次安排一次划船',keep:false,neg:true}
+  ];
+  var dt=$('dualTabs'), dv=$('dualView');
+  function showDual(mode){
+    var coach='<div class="dualcol"><h4>App 内报告 · 教练版</h4><div class="role">角色：该说的都说 · 6 条完整洞察 · 含负面与建议</div>'+
+      ALLINS.map(function(x){return '<div class="ins-mini'+(x.neg?' neg':'')+'"><div class="ty">'+x.ty+'</div>'+x.tx+'</div>';}).join('')+
+      '<div class="dropnote">负面洞察对用户自己最有价值——它是"教练"的职责。措辞用"机会"而非"缺陷"，且必须配行动建议。</div></div>';
+    var share='<div class="dualcol"><h4>分享出去 · 战报版</h4><div class="role">角色：只带能炫的 · 按分享价值分取前 '+(mode==='short'?'1':'3')+' 条</div>'+
+      ALLINS.map(function(x,i){
+        var shown = x.keep && (mode==='short' ? i===0 : i<3);
+        return '<div class="ins-mini'+(x.neg?' neg':'')+(shown?'':' drop')+'"><div class="ty">'+x.ty+'</div>'+x.tx+'</div>';
+      }).join('')+
+      '<div class="dropnote">'+(mode==='short'
+        ? '短图只带 1 条——它就是主角，与"一张图一个主角"的网格规则一致。'
+        : '长图最多 3 条，按分享价值分降序。负面洞察永不进入分享版。')+'</div></div>';
+    dv.innerHTML='<div class="dualwrap">'+coach+share+'</div>';
+    Array.prototype.forEach.call(dt.children,function(b){b.classList.toggle('on',b.dataset.m===mode);});
+  }
+  [['short','分享短图（带 1 条）'],['long','分享长图（带 3 条）']].forEach(function(m){
+    var b=el('button','tab');b.type='button';b.dataset.m=m[0];b.textContent=m[1];
+    b.addEventListener('click',function(){showDual(m[0]);});dt.appendChild(b);
+  });
+  showDual('short');
+})();
+</script>

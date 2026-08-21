@@ -28,7 +28,7 @@
     border-top:1px solid var(--line);}
 </style>
 <div class="topbar"><span class="brand">📏 <em>BODY PARK ATOM</em> · 设计规范</span><nav><a href="#part1">网格标准与成图样例</a><a href="#part2">分享模板总目录</a></nav></div>
-<div class="subnote">网格标准与成图样例 + 分享模板总目录（19+4）。源文件：规范-网格标准与成图样例 · 规范-分享模板总目录 · 合集由 build-bundles.py 生成，修改请编辑源文件</div>
+<div class="subnote">网格标准与成图样例 + 分享模板总目录（23+4）。源文件：规范-网格标准与成图样例 · 规范-分享模板总目录 · 合集由 build-bundles.py 生成，修改请编辑源文件</div>
 <div class="sechead" id="part1"><div class="kicker">01 · 网格标准与成图样例</div></div>
 <iframe title="01 · 网格标准与成图样例" srcdoc="&lt;title&gt;规范 · 网格标准与成图样例&lt;/title&gt;
 &lt;style&gt;
@@ -695,7 +695,7 @@
     &lt;div class=&quot;brand&quot;&gt;⚛ Body Park Atom · 分享模块 · 模板注册表&lt;/div&gt;
     &lt;h1&gt;分享模板总目录 &lt;span style=&quot;color:var(--acc-ink)&quot;&gt;Template Catalog&lt;/span&gt;&lt;/h1&gt;
     &lt;div class=&quot;meta&quot;&gt;
-      &lt;span class=&quot;mchip hot&quot;&gt;v1.0 穷举版&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;19 现役 + 4 预留&lt;/span&gt;
+      &lt;span class=&quot;mchip hot&quot;&gt;v1.0 穷举版&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;23 现役 + 4 预留&lt;/span&gt;
       &lt;span class=&quot;mchip&quot;&gt;手机端优先 · 默认档 = 拇指滑到就能发&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;2026-07-17&lt;/span&gt;
     &lt;/div&gt;
     &lt;p class=&quot;lede&quot; style=&quot;margin-top:14px&quot;&gt;全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的&lt;b&gt;网格标准&lt;/b&gt;（默认比例档）；切其他比例只换高度预算与降档，规则见 规范-网格标准与成图样例。此目录的数据结构 = 工程模板注册表 JSON 的雏形。&lt;/p&gt;
@@ -721,7 +721,7 @@
     &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;给设计的读法&lt;/b&gt;：一个模板 = 一张 Figma 画板（360pt 宽 × 默认档高度），内部按账本放原子 Frame。同一原子在不同模板中是&lt;b&gt;同一个组件的实例&lt;/b&gt;（变体=绑定态×尺寸档）——先做完 21 个原子组件，17 个模板就是拼装工作。&lt;br&gt;&lt;b&gt;给工程的读法&lt;/b&gt;：本页每张卡 ≈ &lt;span class=&quot;mono&quot;&gt;{id, cell, layout, atoms:[{code,h}], ratios}&lt;/span&gt; 一条注册表记录；新模板=加记录，不加代码。&lt;/div&gt;
   &lt;/section&gt;
 
-  &lt;footer&gt;&lt;span&gt;分享模板总目录 v1.1 · 19+4&lt;/span&gt;&lt;span&gt;新场景 = 配置，不是开发&lt;/span&gt;&lt;/footer&gt;
+  &lt;footer&gt;&lt;span&gt;分享模板总目录 v1.2 · 23+4&lt;/span&gt;&lt;span&gt;新场景 = 配置，不是开发&lt;/span&gt;&lt;/footer&gt;
 &lt;/div&gt;
 
 &lt;script&gt;
@@ -798,6 +798,21 @@
       {id:&#x27;T19&#x27;,name:&#x27;名次高光短图&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;9:16&#x27;],moat:false,
        stack:[[&#x27;A5·L&#x27;,248,&#x27;L&#x27;],[&#x27;A1↓&#x27;,96],[&#x27;G1&#x27;,56]],budget:432,
        note:&#x27;TOP 12% 大数字当主角 + 本次数据；名次靠后自动切百分位表达&#x27;}
+     ]},
+    {name:&#x27;报告与洞察 · 跨粒度 ★&#x27;,status:&#x27;P0&#x27;,note:&#x27;报告不是一个格子而是一族：动作级/课程级/计划级/周期级。洞察卡 A6 是共同的 wow 载体——数据回答&quot;我做了什么&quot;，洞察回答&quot;这意味着什么&quot;&#x27;,
+     tpls:[
+      {id:&#x27;T20&#x27;,name:&#x27;动作报告&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;9:16&#x27;],moat:true,
+       stack:[[&#x27;C1 火柴人·L&#x27;,216,&#x27;L&#x27;],[&#x27;C2 AI 点评&#x27;,80],[&#x27;A6 洞察卡&#x27;,80],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;E1·R1 动作级：最依赖 AI 识别，竞品完全做不了&#x27;},
+      {id:&#x27;T21&#x27;,name:&#x27;洞察卡片&#x27;,def:&#x27;1:1&#x27;,ratios:[&#x27;1:1&#x27;,&#x27;3:4&#x27;],moat:true,
+       stack:[[&#x27;A6·L 单条主洞察&#x27;,240,&#x27;L&#x27;],[&#x27;G1&#x27;,56]],budget:312,
+       note:&#x27;一条洞察当主角——最易传播的形态；按分享价值分选 Top1&#x27;},
+      {id:&#x27;T22&#x27;,name:&#x27;计划完成报告&#x27;,def:&#x27;长图&#x27;,ratios:[&#x27;长图&#x27;],moat:true,
+       stack:[[&#x27;A7 阶段对比&#x27;,200],[&#x27;C3 体适能雷达&#x27;,192],[&#x27;A6 洞察卡&#x27;,88],[&#x27;A2 坚持度&#x27;,104],[&#x27;G1&#x27;,56]],budget:704,
+       note:&#x27;E3·R2 计划级：成长叙事最强（8 周起点 vs 终点）；依赖计划体系&#x27;},
+      {id:&#x27;T23&#x27;,name:&#x27;年度报告&#x27;,def:&#x27;长图&#x27;,ratios:[&#x27;长图&#x27;],moat:false,
+       stack:[[&#x27;A2 年度统计&#x27;,144],[&#x27;A6 洞察卡 ×3&#x27;,248],[&#x27;B2 覆盖热度&#x27;,200],[&#x27;A4 类比&#x27;,72],[&#x27;G1&#x27;,56]],budget:768,
+       note:&#x27;E0·R2 周期级年度档：Spotify Wrapped 式传播峰值，建议单独立项&#x27;}
      ]},
     {name:&#x27;健康域预留 🔮&#x27;,status:&#x27;H&#x27;,note:&#x27;随数据域上线自动激活&#x27;,
      tpls:[

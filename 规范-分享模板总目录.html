@@ -90,7 +90,7 @@
     <div class="brand">⚛ Body Park Atom · 分享模块 · 模板注册表</div>
     <h1>分享模板总目录 <span style="color:var(--acc-ink)">Template Catalog</span></h1>
     <div class="meta">
-      <span class="mchip hot">v1.0 穷举版</span><span class="mchip">19 现役 + 4 预留</span>
+      <span class="mchip hot">v1.0 穷举版</span><span class="mchip">23 现役 + 4 预留</span>
       <span class="mchip">手机端优先 · 默认档 = 拇指滑到就能发</span><span class="mchip">2026-07-17</span>
     </div>
     <p class="lede" style="margin-top:14px">全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的<b>网格标准</b>（默认比例档）；切其他比例只换高度预算与降档，规则见 规范-网格标准与成图样例。此目录的数据结构 = 工程模板注册表 JSON 的雏形。</p>
@@ -116,7 +116,7 @@
     <div class="callout"><b>给设计的读法</b>：一个模板 = 一张 Figma 画板（360pt 宽 × 默认档高度），内部按账本放原子 Frame。同一原子在不同模板中是<b>同一个组件的实例</b>（变体=绑定态×尺寸档）——先做完 21 个原子组件，17 个模板就是拼装工作。<br><b>给工程的读法</b>：本页每张卡 ≈ <span class="mono">{id, cell, layout, atoms:[{code,h}], ratios}</span> 一条注册表记录；新模板=加记录，不加代码。</div>
   </section>
 
-  <footer><span>分享模板总目录 v1.1 · 19+4</span><span>新场景 = 配置，不是开发</span></footer>
+  <footer><span>分享模板总目录 v1.2 · 23+4</span><span>新场景 = 配置，不是开发</span></footer>
 </div>
 
 <script>
@@ -193,6 +193,21 @@
       {id:'T19',name:'名次高光短图',def:'3:4',ratios:['3:4','9:16'],moat:false,
        stack:[['A5·L',248,'L'],['A1↓',96],['G1',56]],budget:432,
        note:'TOP 12% 大数字当主角 + 本次数据；名次靠后自动切百分位表达'}
+     ]},
+    {name:'报告与洞察 · 跨粒度 ★',status:'P0',note:'报告不是一个格子而是一族：动作级/课程级/计划级/周期级。洞察卡 A6 是共同的 wow 载体——数据回答"我做了什么"，洞察回答"这意味着什么"',
+     tpls:[
+      {id:'T20',name:'动作报告',def:'3:4',ratios:['3:4','9:16'],moat:true,
+       stack:[['C1 火柴人·L',216,'L'],['C2 AI 点评',80],['A6 洞察卡',80],['G1',56]],budget:432,
+       note:'E1·R1 动作级：最依赖 AI 识别，竞品完全做不了'},
+      {id:'T21',name:'洞察卡片',def:'1:1',ratios:['1:1','3:4'],moat:true,
+       stack:[['A6·L 单条主洞察',240,'L'],['G1',56]],budget:312,
+       note:'一条洞察当主角——最易传播的形态；按分享价值分选 Top1'},
+      {id:'T22',name:'计划完成报告',def:'长图',ratios:['长图'],moat:true,
+       stack:[['A7 阶段对比',200],['C3 体适能雷达',192],['A6 洞察卡',88],['A2 坚持度',104],['G1',56]],budget:704,
+       note:'E3·R2 计划级：成长叙事最强（8 周起点 vs 终点）；依赖计划体系'},
+      {id:'T23',name:'年度报告',def:'长图',ratios:['长图'],moat:false,
+       stack:[['A2 年度统计',144],['A6 洞察卡 ×3',248],['B2 覆盖热度',200],['A4 类比',72],['G1',56]],budget:768,
+       note:'E0·R2 周期级年度档：Spotify Wrapped 式传播峰值，建议单独立项'}
      ]},
     {name:'健康域预留 🔮',status:'H',note:'随数据域上线自动激活',
      tpls:[
