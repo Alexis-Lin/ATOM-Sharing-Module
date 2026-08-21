@@ -700,7 +700,7 @@
     &lt;div class=&quot;brand&quot;&gt;⚛ Body Park Atom · 分享模块 · 模板注册表&lt;/div&gt;
     &lt;h1&gt;分享模板总目录 &lt;span style=&quot;color:var(--acc-ink)&quot;&gt;Template Catalog&lt;/span&gt;&lt;/h1&gt;
     &lt;div class=&quot;meta&quot;&gt;
-      &lt;span class=&quot;mchip hot&quot;&gt;v1.0 穷举版&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;23 现役 + 4 预留&lt;/span&gt;
+      &lt;span class=&quot;mchip hot&quot;&gt;v1.0 穷举版&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;27 现役 + 4 预留&lt;/span&gt;
       &lt;span class=&quot;mchip&quot;&gt;手机端优先 · 默认档 = 拇指滑到就能发&lt;/span&gt;&lt;span class=&quot;mchip&quot;&gt;2026-07-17&lt;/span&gt;
     &lt;/div&gt;
     &lt;p class=&quot;lede&quot; style=&quot;margin-top:14px&quot;&gt;全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的&lt;b&gt;网格标准&lt;/b&gt;（默认比例档）；切其他比例只换高度预算与降档，规则见 03-规范-网格与模板。此目录的数据结构 = 工程模板注册表 JSON 的雏形。&lt;/p&gt;
@@ -726,7 +726,7 @@
     &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;给设计的读法&lt;/b&gt;：一个模板 = 一张 Figma 画板（360pt 宽 × 默认档高度），内部按账本放原子 Frame。同一原子在不同模板中是&lt;b&gt;同一个组件的实例&lt;/b&gt;（变体=绑定态×尺寸档）——先做完 21 个原子组件，17 个模板就是拼装工作。&lt;br&gt;&lt;b&gt;给工程的读法&lt;/b&gt;：本页每张卡 ≈ &lt;span class=&quot;mono&quot;&gt;{id, cell, layout, atoms:[{code,h}], ratios}&lt;/span&gt; 一条注册表记录；新模板=加记录，不加代码。&lt;/div&gt;
   &lt;/section&gt;
 
-  &lt;footer&gt;&lt;span&gt;分享模板总目录 v1.2 · 23+4&lt;/span&gt;&lt;span&gt;新场景 = 配置，不是开发&lt;/span&gt;&lt;/footer&gt;
+  &lt;footer&gt;&lt;span&gt;分享模板总目录 v1.3 · 27+4&lt;/span&gt;&lt;span&gt;新场景 = 配置，不是开发&lt;/span&gt;&lt;/footer&gt;
 &lt;/div&gt;
 
 &lt;script&gt;
@@ -818,6 +818,21 @@
       {id:&#x27;T23&#x27;,name:&#x27;年度报告&#x27;,def:&#x27;长图&#x27;,ratios:[&#x27;长图&#x27;],moat:false,
        stack:[[&#x27;A2 年度统计&#x27;,144],[&#x27;A6 洞察卡 ×3&#x27;,248],[&#x27;B2 覆盖热度&#x27;,200],[&#x27;A4 类比&#x27;,72],[&#x27;G1&#x27;,56]],budget:768,
        note:&#x27;E0·R2 周期级年度档：Spotify Wrapped 式传播峰值，建议单独立项&#x27;}
+     ]},
+    {name:&#x27;M 类媒体资产 · 影像分享 ★&#x27;,status:&#x27;P1&#x27;,note:&#x27;捕获类内容，主要出口是视频载体（竖版 9:16 / 5~15s）。M4 漫画风格化建议单独立项——最强传播形态&#x27;,
+     tpls:[
+      {id:&#x27;T24&#x27;,name:&#x27;高光视频&#x27;,def:&#x27;9:16&#x27;,ratios:[&#x27;9:16&#x27;],moat:true,
+       stack:[[&#x27;M2 高光片段·L&#x27;,560,&#x27;LB&#x27;],[&#x27;数据角标&#x27;,56],[&#x27;品牌帧&#x27;,56]],budget:640,
+       note:&#x27;AI 自动选材 5~15s；前 3 秒给峰值；必须无声可看&#x27;},
+      {id:&#x27;T25&#x27;,name:&#x27;漫画影像卡 ★&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;,&#x27;9:16&#x27;],moat:true,
+       stack:[[&#x27;M4 风格化影像·L&#x27;,376,&#x27;LB&#x27;],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;风格模板：漫画/赛博/复古海报/水墨；可叠轻量数据角标&#x27;},
+      {id:&#x27;T26&#x27;,name:&#x27;高光照片卡&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:false,
+       stack:[[&#x27;M3 峰值帧·L&#x27;,304,&#x27;LB&#x27;],[&#x27;A1↓ 单行&#x27;,72],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;抽帧静图 + 一行关键数据；出血权（M 属媒体类，比照 D 类）&#x27;},
+      {id:&#x27;T27&#x27;,name:&#x27;前后对比&#x27;,def:&#x27;3:4&#x27;,ratios:[&#x27;3:4&#x27;,&#x27;1:1&#x27;],moat:false,
+       stack:[[&#x27;M6 前后影像·L&#x27;,272,&#x27;L&#x27;],[&#x27;A7 阶段对比&#x27;,88],[&#x27;G1&#x27;,56]],budget:432,
+       note:&#x27;影像对比 + 数据对比配对；计划级成长叙事&#x27;}
      ]},
     {name:&#x27;健康域预留 🔮&#x27;,status:&#x27;H&#x27;,note:&#x27;随数据域上线自动激活&#x27;,
      tpls:[

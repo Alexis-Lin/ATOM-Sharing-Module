@@ -147,9 +147,9 @@
     <div class="stats">
       <div class="stat"><b>12</b><span>可分享实体</span></div>
       <div class="stat"><b>4</b><span>用户关系态</span></div>
-      <div class="stat"><b>22+7</b><span>内容原子</span></div>
+      <div class="stat"><b>29+7</b><span>内容原子</span></div>
       <div class="stat"><b>19+4</b><span>成图模板</span></div>
-      <div class="stat"><b>4</b><span>载体族</span></div>
+      <div class="stat"><b>5</b><span>载体族</span></div>
       <div class="stat"><b>6</b><span>洞察类型</span></div>
       <div class="stat"><b>12</b><span>分享入口</span></div>
     </div>
@@ -202,13 +202,14 @@
     </div>
 
     <h3 id="carriers">分享形式：四大载体族 🆕</h3>
-    <p class="lede">过去讨论集中在图片。但在 AI native 时代，分享的接收方<b>不一定是人</b>——也可能是用户自己的 AI agent。同一份训练数据，应该能以四种形式出去。<b>点标签切换载体，看同一次训练的四种形态。</b></p>
+    <p class="lede">过去讨论集中在图片。但分享的接收方<b>不一定是人</b>（也可能是 AI agent），内容也<b>不只是渲染出来的图</b>（还有摄像头捕获的影像）。同一次训练应该能以五种形式出去。<b>点标签切换载体。</b></p>
 
-    <div class="grid g4" style="margin-top:16px">
+    <div class="grid g3" style="margin-top:16px">
       <div class="card"><div class="cf">① 图像 Image</div><p class="cd">面向<b>人 · 社交</b>。零门槛、全平台适配，即时晒图的绝对主力。</p></div>
-      <div class="card"><div class="cf">② 交互 H5</div><p class="cd">面向<b>人 · 深度</b>。可下钻、可播放、可更新，自带 App 引流入口。</p></div>
-      <div class="card" style="border-color:var(--acc)"><div class="cf" style="color:var(--acc-ink)">③ 数据 Data 🆕</div><p class="cd">面向 <b>AI / Agent</b>。Markdown / CSV / JSON，机器可解析，喂给用户自己的 agent。</p></div>
-      <div class="card" style="border-color:var(--acc)"><div class="cf" style="color:var(--acc-ink)">④ 文档 PDF 🆕</div><p class="cd">面向<b>人 · 专业</b>。打印级图表报告，给教练、医生或自己存档。</p></div>
+      <div class="card" style="border-color:var(--acc)"><div class="cf" style="color:var(--acc-ink)">② 视频 Video 🆕</div><p class="cd">面向<b>人 · 社交</b>。平台原生内容、算法权重最高，M 类媒体资产的主要出口。</p></div>
+      <div class="card"><div class="cf">③ 交互 H5</div><p class="cd">面向<b>人 · 深度</b>。可下钻、可播放、可更新，自带 App 引流入口。</p></div>
+      <div class="card" style="border-color:var(--acc)"><div class="cf" style="color:var(--acc-ink)">④ 数据 Data 🆕</div><p class="cd">面向 <b>AI / Agent</b>。Markdown / CSV / JSON，机器可解析，喂给用户自己的 agent。</p></div>
+      <div class="card" style="border-color:var(--acc)"><div class="cf" style="color:var(--acc-ink)">⑤ 文档 PDF 🆕</div><p class="cd">面向<b>人 · 专业</b>。打印级图表报告，给教练、医生或自己存档。</p></div>
     </div>
 
     <div class="carrierdemo">
@@ -383,7 +384,7 @@
     <p class="lede">样式分三层看：<b>原子</b>（最小积木，22 个现役 + 7 个健康域预留）→ <b>模板</b>（原子的预设组合，19+4）→ <b>成图</b>（模板套上真实数据后的输出）。</p>
 
     <h3>1 · 内容原子目录</h3>
-    <p class="lede">每个原子只设计一次，通过"数据绑定"复用到不同场景——比如肌肉热力图，同一套版式可以表达"这个动作练哪"（解剖态）、"我这次练了哪"（强度态）、"我这个月常练哪"（覆盖态）。</p>
+    <p class="lede">A~G 类是我们<b>渲染</b>出来的，M 类是摄像头<b>捕获</b>+AI 处理的。每个原子只设计一次，通过"数据绑定"复用到不同场景——比如肌肉热力图，同一套版式可以表达"这个动作练哪"（解剖态）、"我这次练了哪"（强度态）、"我这个月常练哪"（覆盖态）。</p>
     <div id="atomGroups"></div>
 
     <h3>2 · 模板总目录</h3>
@@ -625,15 +626,39 @@
 
   var CARRIERS=[
     {id:'img',label:'① 图像 PNG',note:'<b>面向人 · 社交</b>。默认 3:4，切渠道自动适配小红书 / IG / Story 尺寸；底部二维码是兜底引流。零门槛、传播效率最高，是 P0 首批唯一载体。'},
-    {id:'h5',label:'② 交互 H5',note:'<b>面向人 · 深度</b>。图片装不下的信息在这里可下钻：点动作看详情与视频、看完整肌群数据。无需下载 App 即可查看（公域页），页内固定"打开/下载 App"入口——这是引流转化的主战场。'},
-    {id:'data',label:'③ 数据 Data 🆕',note:'<b>面向 AI / Agent</b>。三种格式覆盖不同接入方式：Markdown 粘进对话即可、CSV 进表格分析、JSON 给程序化接入。这是我们从"数据孤岛"变成用户健康数据中枢一环的关键，作为 Pro 高阶功能。'},
-    {id:'pdf',label:'④ 文档 PDF 🆕',note:'<b>面向人 · 专业</b>。打印级排版的训练报告，像医院体检报告一样正式——给私教、给医生、给自己存档。专业用户看到会觉得"这个产品很硬"。周期报告（月/年）价值最高。'}
+    {id:'video',label:'② 视频 Video 🆕',note:'<b>面向人 · 社交</b>。M 类媒体资产（高光片段/姿态叠加/前后对比）的主要出口：竖版 9:16、5~15 秒、前 3 秒直接给峰值、必须无声可看。<b>我们的优势是自动选材</b>——因为在做姿态识别，天然知道哪一秒最精彩，竞品只能让用户手动剪。'},
+    {id:'h5',label:'③ 交互 H5',note:'<b>面向人 · 深度</b>。图片装不下的信息在这里可下钻：点动作看详情与视频、看完整肌群数据。无需下载 App 即可查看（公域页），页内固定"打开/下载 App"入口——这是引流转化的主战场。'},
+    {id:'data',label:'④ 数据 Data 🆕',note:'<b>面向 AI / Agent</b>。三种格式覆盖不同接入方式：Markdown 粘进对话即可、CSV 进表格分析、JSON 给程序化接入。这是我们从"数据孤岛"变成用户健康数据中枢一环的关键，作为 Pro 高阶功能。'},
+    {id:'pdf',label:'⑤ 文档 PDF 🆕',note:'<b>面向人 · 专业</b>。打印级排版的训练报告，像医院体检报告一样正式——给私教、给医生、给自己存档。专业用户看到会觉得"这个产品很硬"。周期报告（月/年）价值最高。'}
   ];
   var ctabs=$('carTabs'), cview=$('carView'), cnote=$('carNote');
 
   function renderCarrier(id){
     cview.innerHTML='';
     if(id==='img'){ cview.appendChild(shotCard('T1')); }
+    if(id==='video'){
+      var v=el('div','h5'); v.style.width='268px';
+      v.innerHTML='<div class="bar"><span>▶</span><span class="u">highlight_8f2c91.mp4 · 9:16 · 12s</span></div>'+
+        '<div style="position:relative;background:#EFF2EC;aspect-ratio:9/16;display:flex;flex-direction:column;gap:10px;padding:14px">'+
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start">'+
+        '<span style="font-family:var(--mono);font-size:10px;background:#141712;color:#E9ECE6;padding:3px 8px;border-radius:2px">0:03 / 0:12</span>'+
+        '<span style="font-family:var(--mono);font-size:10px;background:#6FCC1B;color:#10240A;padding:3px 8px;border-radius:2px;font-weight:700">AI 选中 · 最大重量组</span></div>'+
+        '<div style="display:grid;place-items:center;flex:1">'+
+        '<svg width="128" height="174" viewBox="0 0 50 68"><ellipse cx="25" cy="34" rx="18" ry="30" fill="#B8C0B4" opacity=".2"/>'+
+        '<circle cx="25" cy="10" r="6" fill="none" stroke="#6FCC1B" stroke-width="2.5"/>'+
+        '<path d="M25 16 L25 36 M25 21 L12 27 M25 21 L38 27 M25 36 L18 64 M25 36 L32 64" stroke="#6FCC1B" stroke-width="2.5" fill="none" stroke-linecap="round"/>'+
+        '<circle cx="25" cy="36" r="3" fill="#6FCC1B"/></svg></div>'+
+        '<div><div style="font-family:var(--mono);font-size:26px;font-weight:700;color:#141712;line-height:1">60<span style="font-size:13px"> kg</span> <span style="font-size:11px;background:#6FCC1B;color:#10240A;padding:1px 7px;border-radius:2px;vertical-align:middle">PB</span></div>'+
+        '<div style="font-family:var(--mono);font-size:10px;color:#6B7266;margin-top:3px">杠铃卧推 · 第 4 组</div>'+
+        '<div style="display:flex;gap:2px;margin-top:10px">'+
+        [0,1,2,3,4,5,6,7].map(function(i){return '<span style="flex:1;height:'+(i===3?'12':'5')+'px;background:'+(i===3?'#6FCC1B':'#C8CFC3')+';border-radius:1px;align-self:end"></span>';}).join('')+
+        '</div><div style="font-family:var(--mono);font-size:9px;color:#9AA294;margin-top:5px">↑ AI 从 42 分钟录制里选出的 12 秒</div></div></div>'+
+        '<div style="background:#141712;color:#E9ECE6;display:flex;align-items:center;gap:8px;padding:8px 12px">'+
+        '<span style="width:16px;height:16px;border:1.5px solid #E9ECE6;border-radius:2px;flex:none"></span>'+
+        '<span style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;font-weight:700">BODY PARK</span>'+
+        '<span style="font-family:var(--mono);font-size:9px;opacity:.6;margin-left:auto">收尾品牌帧 1~2s</span></div>';
+      cview.appendChild(v);
+    }
     if(id==='h5'){
       var h=el('div','h5');
       h.innerHTML='<div class="bar"><span>●●●</span><span class="u">bodypark.app/s/8f2c91</span><span>↻</span></div>'+
@@ -749,6 +774,7 @@
     {g:'C · AI 差异化 Moat ★ 竞品拿不出',moat:true,items:[['C1','AI 识别火柴人','姿态叠影 + 关节角'],['C2','AI 分析结论','评分 + 改进建议'],['C3','体适能雷达','六维 · 每练一次涨一点'],['C4','外化成就标识','评级/勋章/进度环']]},
     {g:'D · 情绪类 Emotion',items:[['D1','氛围图 / 自拍','可通栏出血'],['D2','高光视频','依附实例的媒体'],['D3','鼓励文案','按情境从文案库选']]},
     {g:'G · 引流类 Growth',items:[['G1','二维码 / 水印','图片载体必带'],['G2','App 下载入口','H5 载体必带']]},
+    {g:'M · 媒体资产 Media ★ 捕获类',moat:true,items:[['M1','原始训练视频','完整录制 · M2~M5 的原料'],['M2','高光视频片段','AI 自动选材 5~15s'],['M3','高光照片','AI 抽帧峰值静帧'],['M4','漫画/风格化影像','最强传播形态 ★'],['M5','姿态叠加影像','骨架叠真人 · 独有'],['M6','前后对比影像','计划级成长叙事']]},
     {g:'H · 健康域预留 🔮',items:[['H1','体重/体脂趋势','默认只显变化量'],['H2','营养摘要','热量环 + 宏量'],['H3','饮食打卡卡','照片 + 数字'],['H4','睡眠结构图','阶段柱 + 时长'],['H5','运动路线卡','GPS 轨迹 + 配速'],['H6','活动环 / 步数',''],['H7','心肺摘要','静息 HR / HRV / VO2max']]}
   ];
   $('atomGroups').innerHTML=AGROUPS.map(function(G){

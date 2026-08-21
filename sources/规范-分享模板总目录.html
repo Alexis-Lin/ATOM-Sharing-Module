@@ -90,7 +90,7 @@
     <div class="brand">⚛ Body Park Atom · 分享模块 · 模板注册表</div>
     <h1>分享模板总目录 <span style="color:var(--acc-ink)">Template Catalog</span></h1>
     <div class="meta">
-      <span class="mchip hot">v1.0 穷举版</span><span class="mchip">23 现役 + 4 预留</span>
+      <span class="mchip hot">v1.0 穷举版</span><span class="mchip">27 现役 + 4 预留</span>
       <span class="mchip">手机端优先 · 默认档 = 拇指滑到就能发</span><span class="mchip">2026-07-17</span>
     </div>
     <p class="lede" style="margin-top:14px">全部需要设计的模板 = 本页。每个模板卡右侧的账本即该模板的<b>网格标准</b>（默认比例档）；切其他比例只换高度预算与降档，规则见 03-规范-网格与模板。此目录的数据结构 = 工程模板注册表 JSON 的雏形。</p>
@@ -116,7 +116,7 @@
     <div class="callout"><b>给设计的读法</b>：一个模板 = 一张 Figma 画板（360pt 宽 × 默认档高度），内部按账本放原子 Frame。同一原子在不同模板中是<b>同一个组件的实例</b>（变体=绑定态×尺寸档）——先做完 21 个原子组件，17 个模板就是拼装工作。<br><b>给工程的读法</b>：本页每张卡 ≈ <span class="mono">{id, cell, layout, atoms:[{code,h}], ratios}</span> 一条注册表记录；新模板=加记录，不加代码。</div>
   </section>
 
-  <footer><span>分享模板总目录 v1.2 · 23+4</span><span>新场景 = 配置，不是开发</span></footer>
+  <footer><span>分享模板总目录 v1.3 · 27+4</span><span>新场景 = 配置，不是开发</span></footer>
 </div>
 
 <script>
@@ -208,6 +208,21 @@
       {id:'T23',name:'年度报告',def:'长图',ratios:['长图'],moat:false,
        stack:[['A2 年度统计',144],['A6 洞察卡 ×3',248],['B2 覆盖热度',200],['A4 类比',72],['G1',56]],budget:768,
        note:'E0·R2 周期级年度档：Spotify Wrapped 式传播峰值，建议单独立项'}
+     ]},
+    {name:'M 类媒体资产 · 影像分享 ★',status:'P1',note:'捕获类内容，主要出口是视频载体（竖版 9:16 / 5~15s）。M4 漫画风格化建议单独立项——最强传播形态',
+     tpls:[
+      {id:'T24',name:'高光视频',def:'9:16',ratios:['9:16'],moat:true,
+       stack:[['M2 高光片段·L',560,'LB'],['数据角标',56],['品牌帧',56]],budget:640,
+       note:'AI 自动选材 5~15s；前 3 秒给峰值；必须无声可看'},
+      {id:'T25',name:'漫画影像卡 ★',def:'3:4',ratios:['3:4','1:1','9:16'],moat:true,
+       stack:[['M4 风格化影像·L',376,'LB'],['G1',56]],budget:432,
+       note:'风格模板：漫画/赛博/复古海报/水墨；可叠轻量数据角标'},
+      {id:'T26',name:'高光照片卡',def:'3:4',ratios:['3:4','1:1'],moat:false,
+       stack:[['M3 峰值帧·L',304,'LB'],['A1↓ 单行',72],['G1',56]],budget:432,
+       note:'抽帧静图 + 一行关键数据；出血权（M 属媒体类，比照 D 类）'},
+      {id:'T27',name:'前后对比',def:'3:4',ratios:['3:4','1:1'],moat:false,
+       stack:[['M6 前后影像·L',272,'L'],['A7 阶段对比',88],['G1',56]],budget:432,
+       note:'影像对比 + 数据对比配对；计划级成长叙事'}
      ]},
     {name:'健康域预留 🔮',status:'H',note:'随数据域上线自动激活',
      tpls:[
