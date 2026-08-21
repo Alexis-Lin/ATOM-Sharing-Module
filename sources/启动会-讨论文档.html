@@ -125,6 +125,29 @@
   .tab.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
   .panel{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);
     border-radius:var(--r);padding:16px 20px;box-shadow:var(--shadow);}
+
+  /* ---------- 打印 / PDF 导出：全部页面平铺，每页一张 ---------- */
+  @media print{
+    :root{--bg:#FFFFFF;--surface:#FFFFFF;--surface-2:#F2F4EF;--canvas:#FAFBF8;
+      --ink:#141712;--muted:#4E564C;--faint:#8A927F;--line:#E0E4DB;--line-strong:#C4CBBC;--wire:#B8C0B4;
+      --acc:#6FCC1B;--acc-soft:#EDF8DE;--acc-ink:#3E8309;--on-acc:#10240A;--warn:#B06E0C;--warn-soft:#FBF0DC;
+      --shadow:none;}
+    html,body{height:auto;overflow:visible;background:#fff;}
+    .deck{height:auto;}
+    .slide{position:relative;inset:auto;opacity:1!important;visibility:visible!important;transform:none!important;
+      page-break-after:always;break-after:page;overflow:hidden;padding:26px 36px;min-height:0;height:810px;}
+    .slide .lede{font-size:14.5px;margin-top:7px;}
+    .slide table{font-size:12.5px;} .slide th,.slide td{padding:6px 10px;}
+    .slide .grid{gap:10px;margin-top:12px;} .slide .card{padding:12px 14px;}
+    .slide li{margin:4px 0;font-size:13.5px;} .slide .panel{padding:12px 16px;margin-top:10px;}
+    .slide h3{font-size:15px;}
+    .slide:last-child{page-break-after:auto;break-after:auto;}
+    .navbar,.idx,.hint{display:none!important;}
+    .card,.panel,.stat,.ag,.scroll{box-shadow:none;}
+    h1{font-size:40px;} h2{font-size:27px;}
+    .tab{background:#fff;} .tab.on{background:var(--acc);}
+    a{color:var(--acc-ink);}
+  }
 </style>
 
 <div class="deck" id="deck">
