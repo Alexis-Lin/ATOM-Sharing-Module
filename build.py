@@ -12,6 +12,15 @@ SRC = pathlib.Path('sources')
 
 DOCS = [
     {
+        'out': '00-启动会-讨论文档.html',
+        'title': '启动会 · 分享模块讨论',
+        'emoji': '🎤',
+        'who': '会议演示',
+        'sub': '幻灯片式讨论文档：13 页，← → 翻页、M 开目录，内嵌可点 demo。已决策与待拍板分开标注。',
+        'parts': [('启动会讨论文档', '启动会-讨论文档.html')],
+        'raw': True,   # 幻灯片需要整屏，不套 iframe 外壳，源文件直接复制
+    },
+    {
         'out': '01-总览-分享体系.html',
         'title': '总览 · ATOM 分享体系',
         'emoji': '🎯',
@@ -102,6 +111,11 @@ document.querySelectorAll('iframe').forEach(function(f){{
 '''
 
 for d in DOCS:
+    if d.get('raw'):
+        body = (SRC / d['parts'][0][1]).read_text(encoding='utf-8')
+        pathlib.Path(d['out']).write_text(body, encoding='utf-8')
+        print('built %-30s %4d KB  ← raw（整屏幻灯片，不套外壳）' % (d['out'], len(body) // 1024))
+        continue
     multi = len(d['parts']) > 1
     nav, sections, srcs = [], [], []
     for i, (label, fname) in enumerate(d['parts']):
