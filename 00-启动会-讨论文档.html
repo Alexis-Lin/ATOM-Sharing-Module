@@ -126,6 +126,94 @@
   .panel{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);
     border-radius:var(--r);padding:16px 20px;box-shadow:var(--shadow);}
 
+  /* ---------- 实物示例：分享图固定皮肤 ---------- */
+  .exwrap{--u:0.72px;--cbg:#FFFFFF;--cink:#141712;--cmut:#6B7266;--cfnt:#9AA294;--cln:#ECEFE9;--cacc:#6FCC1B;--caccink:#47940B;}
+  .shots{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;justify-content:center;margin-top:16px;}
+  .sitem{display:flex;flex-direction:column;gap:7px;}
+  .scap{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.55;max-width:calc(var(--u)*360);}
+  .scap b{color:var(--ink);} .scap .bad{color:var(--warn);}
+  .shot{width:calc(var(--u)*360);background:var(--cbg);border:1px solid var(--line);color:var(--cink);
+    display:flex;flex-direction:column;flex:none;overflow:hidden;box-shadow:0 2px 6px rgba(20,25,35,.08),0 14px 32px -18px rgba(20,25,35,.25);}
+  .pad{padding:calc(var(--u)*22);display:flex;flex-direction:column;gap:calc(var(--u)*15);flex:1;}
+  .atom{display:flex;flex-direction:column;flex:none;}
+  .t-title{font-size:calc(var(--u)*17);line-height:calc(var(--u)*23);font-weight:700;letter-spacing:-.01em;}
+  .t-numL{font-family:var(--mono);font-size:calc(var(--u)*26);line-height:calc(var(--u)*30);font-weight:700;font-variant-numeric:tabular-nums;}
+  .t-numM{font-family:var(--mono);font-size:calc(var(--u)*17);line-height:calc(var(--u)*22);font-weight:700;font-variant-numeric:tabular-nums;}
+  .t-lab{font-family:var(--mono);font-size:calc(var(--u)*9.5);line-height:calc(var(--u)*15);letter-spacing:.06em;text-transform:uppercase;color:var(--cfnt);font-weight:600;}
+  .srow{display:flex;align-items:center;gap:calc(var(--u)*8);}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*11);}
+  .exrow{display:flex;align-items:center;height:calc(var(--u)*30);border-bottom:1px solid var(--cln);}
+  .exrow:last-of-type{border-bottom:0;}
+  .exrow .nm{font-size:calc(var(--u)*12.5);}
+  .exrow .st{margin-left:auto;font-family:var(--mono);font-size:calc(var(--u)*11.5);font-variant-numeric:tabular-nums;color:var(--cmut);}
+  .exrow .dot{width:calc(var(--u)*6);height:calc(var(--u)*6);border-radius:50%;background:var(--cacc);margin-right:calc(var(--u)*8);flex:none;}
+  .exrow .dot.sub{background:var(--cln);}
+  .clegend{display:flex;gap:calc(var(--u)*13);justify-content:center;font-family:var(--mono);font-size:calc(var(--u)*9.5);color:var(--cmut);}
+  .clegend span{display:inline-flex;align-items:center;gap:calc(var(--u)*5);}
+  .sw{width:calc(var(--u)*10);height:calc(var(--u)*10);border-radius:2px;background:var(--cacc);display:inline-block;}
+  .figs{display:flex;gap:calc(var(--u)*24);justify-content:center;flex:1;align-items:center;}
+  .g1bar{display:flex;flex-direction:row;align-items:center;gap:calc(var(--u)*11);height:calc(var(--u)*52);border-top:1px solid var(--cln);padding-top:calc(var(--u)*11);}
+  .g1bar .bl{font-family:var(--mono);font-weight:700;font-size:calc(var(--u)*11.5);letter-spacing:.14em;}
+  .g1bar .sl{font-size:calc(var(--u)*9.5);color:var(--cfnt);font-family:var(--mono);}
+
+  /* 原子线框条 */
+  .atomstrip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:14px;}
+  @media(max-width:1100px){.atomstrip{grid-template-columns:repeat(3,1fr);}}
+  .aw{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:9px 10px;box-shadow:var(--shadow);}
+  .aw.moat{border-color:var(--acc);}
+  .aw .ac{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--acc-ink);}
+  .aw .an{font-size:12.5px;font-weight:700;margin-bottom:6px;}
+  .awf{background:var(--canvas);border:1.2px dashed var(--wire);border-radius:var(--r-sm);padding:8px;min-height:86px;
+    display:flex;flex-direction:column;gap:5px;justify-content:center;}
+  .ph{height:6px;border-radius:2px;background:var(--wire);opacity:.55;}
+  .ph.s{width:38%}.ph.m{width:62%}.ph.l{width:85%}
+  .wrow{display:flex;align-items:center;gap:5px;}
+  .wnum{font-family:var(--mono);font-weight:700;font-size:11px;}
+  .wlab{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.05em;text-transform:uppercase;}
+  .wbar{height:7px;border-radius:2px;background:var(--wire);opacity:.5;}
+  .wbar.hot{background:var(--acc);opacity:1;}
+  .wchip{font-family:var(--mono);font-size:8px;font-weight:700;background:var(--acc);color:var(--on-acc);border-radius:2px;padding:1px 5px;}
+
+  /* 载体舞台 */
+  .carstage{margin-top:14px;background:var(--canvas);border:1px dashed var(--line-strong);border-radius:var(--r);
+    padding:16px;display:flex;justify-content:center;align-items:flex-start;min-height:330px;}
+  .h5m{width:216px;background:#fff;color:#141712;border-radius:var(--r);overflow:hidden;box-shadow:0 2px 6px rgba(20,25,35,.1);display:flex;flex-direction:column;}
+  .h5m .bar{background:#141712;color:#E9ECE6;font-family:var(--mono);font-size:8.5px;padding:5px 9px;display:flex;gap:6px;}
+  .h5m .bd{padding:12px;display:flex;flex-direction:column;gap:9px;}
+  .h5m .acc{background:#6FCC1B;color:#10240A;border-radius:100px;text-align:center;font-size:11px;font-weight:700;padding:7px;}
+  .h5r{display:flex;align-items:center;gap:7px;padding:6px 8px;border:1px solid #ECEFE9;border-radius:2px;font-size:11px;}
+  .h5r .cv{margin-left:auto;color:#9AA294;font-family:var(--mono);}
+  pre.dx{margin:0;background:#141712;color:#E9ECE6;border-radius:var(--r);padding:13px 15px;overflow:auto;max-height:300px;
+    font-family:var(--mono);font-size:10.5px;line-height:1.6;width:min(560px,100%);}
+  pre.dx .k{color:#BEF264;} pre.dx .c{color:#7B8478;} pre.dx .s{color:#A9C7E8;}
+  .pdfm{width:min(430px,100%);background:#fff;color:#141712;padding:20px 22px;font-size:10px;
+    box-shadow:0 2px 6px rgba(20,25,35,.1);display:flex;flex-direction:column;gap:11px;}
+  .pdfm .ph2{display:flex;align-items:flex-start;border-bottom:2px solid #141712;padding-bottom:7px;}
+  .pdfm .ph2 .t{font-size:14px;font-weight:800;}
+  .pdfm .ph2 .m{margin-left:auto;text-align:right;font-family:var(--mono);font-size:8px;color:#6B7266;line-height:1.5;}
+  .pdfm h4{margin:0 0 5px;font-size:9px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#47940B;}
+  .pdfm .kp{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+  .pdfm .kp div{border:1px solid #ECEFE9;padding:6px 7px;}
+  .pdfm .kp b{display:block;font-family:var(--mono);font-size:13px;}
+  .pdfm .kp span{font-family:var(--mono);font-size:7.5px;color:#6B7266;text-transform:uppercase;}
+  .pdfm table{width:100%;border-collapse:collapse;font-size:9px;background:none;}
+  .pdfm th,.pdfm td{border:0;border-bottom:1px solid #ECEFE9;padding:4px 3px;color:#141712;}
+  .pdfm thead th{background:none;font-family:var(--mono);font-size:7.5px;color:#6B7266;text-transform:uppercase;}
+  .pdfm td.n{text-align:right;font-family:var(--mono);}
+  .vidm{width:190px;background:#fff;box-shadow:0 2px 6px rgba(20,25,35,.1);display:flex;flex-direction:column;}
+  .vidm .top{background:#141712;color:#E9ECE6;font-family:var(--mono);font-size:8.5px;padding:5px 8px;}
+  .vidm .stage2{background:#EFF2EC;aspect-ratio:9/16;display:flex;flex-direction:column;gap:6px;padding:10px;}
+
+  /* 洞察卡实物 */
+  .inscard{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:var(--r);
+    padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:9px;width:min(420px,100%);}
+  .inscard .bdg{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-ink);}
+  .inscard .hd{font-size:16px;font-weight:700;line-height:1.4;letter-spacing:-.01em;}
+  .inscard .viz{background:var(--canvas);border-radius:var(--r-sm);padding:10px;display:grid;place-items:center;min-height:74px;}
+  .inscard .ev{font-size:11px;color:var(--muted);font-family:var(--mono);line-height:1.55;border-top:1px dashed var(--line-strong);padding-top:8px;}
+  .insrow{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:20px;align-items:start;margin-top:14px;}
+  @media(max-width:900px){.insrow{grid-template-columns:1fr;}}
+
   /* ---------- 打印 / PDF 导出：全部页面平铺，每页一张 ---------- */
   @media print{
     :root{--bg:#FFFFFF;--surface:#FFFFFF;--surface-2:#F2F4EF;--canvas:#FAFBF8;
@@ -233,7 +321,7 @@
     </div>
     <h3 style="margin-top:22px">六类可枚举的洞察 <span class="mono" style="font-size:12px;color:var(--faint);font-weight:400">点看例子</span></h3>
     <div class="tabs" id="insTabs" style="margin-top:10px"></div>
-    <div class="panel" id="insPanel"></div>
+    <div class="insrow"><div id="insCard"></div><div id="insMeta"></div></div>
     <div class="card warn" style="margin-top:14px"><h3>关键提案 · 双面报告 <span class="tag open">待拍板</span></h3>
       <p style="margin:0;color:var(--muted)">分享价值 = 意外性 × 正面性 × 可炫耀性。负面洞察（"你三周没练背"）对用户自己极有价值但绝不会被分享。建议：<b>App 内是"教练"</b>（六类全说含负面与建议），<b>分享出去是"战报"</b>（只带正面，短图 1 条、长图最多 3 条）。</p></div>
   </div>
@@ -285,6 +373,8 @@
       <div class="card"><h3 class="mono" style="font-size:13px;color:var(--muted)">D 情绪 · 2 / G 引流 · 2</h3><p style="margin:0;font-size:13.5px;color:var(--muted)">氛围图 · 文案 / 二维码水印 · App 下载入口</p></div>
       <div class="card"><h3 class="mono" style="font-size:13px;color:var(--faint)">H 健康域预留 · 7 🔮</h3><p style="margin:0;font-size:13.5px;color:var(--muted)">体重趋势 · 营养 · 饮食打卡 · 睡眠 · 跑步路线 · 活动环 · 心肺</p></div>
     </div>
+    <h3 style="margin-top:18px">积木长什么样 <span class="mono" style="font-size:12px;color:var(--faint);font-weight:400">低保真线框 · 完整 29 个见 04 设计文档</span></h3>
+    <div class="atomstrip" id="atomStrip"></div>
   </div>
 </section>
 
@@ -294,17 +384,40 @@
     <div class="snum">07 · 怎么出去</div>
     <h2>五大载体族：不只给人看，也给 AI 看</h2>
     <p class="lede">同一份分享体数据，可以用五种形式输出。载体与前三层（分享体/原子/模板）<b>完全解耦</b>——换载体不换内容。<b>点标签切换看形态。</b></p>
-    <div class="tabs" id="carTabs" style="margin-top:18px"></div>
-    <div class="panel" id="carPanel"></div>
+    <div class="tabs" id="carTabs" style="margin-top:16px"></div>
+    <div class="panel" id="carPanel" style="margin-top:12px"></div>
+    <div class="carstage exwrap" id="carStage"></div>
     <div class="card" style="margin-top:14px"><h3>适配规律</h3>
       <p style="margin:0;color:var(--muted)">越是<b>聚合、长期</b>的数据（周期打卡、健康域），数据导出与 PDF 价值越高；越是<b>单次、情绪化</b>的内容，图像与视频载体越强。<b>M 类媒体资产的主要出口是视频载体。</b></p></div>
   </div>
 </section>
 
-<!-- ============ 08 长什么样 ============ -->
+<!-- ============ 08 成图样例 ============ -->
+<section class="slide exwrap">
+  <div class="inner">
+    <div class="snum">08 · 成图样例</div>
+    <h2>同一次训练，四个模板拼出来的样子</h2>
+    <p class="lede">假数据、按网格规范 1:1 渲染。<b>同一批原子、同一套网格</b>，只是组合与版式不同——这就是"配置不是开发"的视觉证明。</p>
+    <div class="shots" id="sampleShots"></div>
+  </div>
+</section>
+
+<!-- ============ 09 反例 ============ -->
+<section class="slide exwrap">
+  <div class="inner">
+    <div class="snum">09 · 一条规则的价值</div>
+    <h2>为什么"每张图最多一个主角"</h2>
+    <p class="lede">同样的四个原子，装进同一个 3:4 画布，数学上都装得下——但左边没有主角。这条规则不是审美洁癖，是短图的生存法则。</p>
+    <div class="shots" id="contrastShots" style="margin-top:20px"></div>
+    <div class="card acc" style="margin-top:16px"><h3>推论</h3>
+      <p style="margin:0;color:var(--muted)">四件套组合的正确归宿是<b>长图</b>；短图必须砍位让一个原子当主角。装箱规则把这件事代码化了：<b>固定档先占位 → 弹性档吃剩余 → 不足降档 → 再不足砍位重排</b>，所以用户永远不会看到挤成一团或留着空值的图。</p></div>
+  </div>
+</section>
+
+<!-- ============ 10 长什么样 ============ -->
 <section class="slide">
   <div class="inner">
-    <div class="snum">08 · 长什么样</div>
+    <div class="snum">10 · 长什么样</div>
     <h2>模板与网格：保证拼起来不散架</h2>
     <p class="lede">模板 = 预设的原子组合 + 版式 + 默认比例，共 <b>27 现役 + 4 预留</b>。这份目录同时是设计的工作清单和工程的注册表——新模板 = 加一条 JSON 记录，不加代码。</p>
     <div class="grid g2" style="margin-top:16px">
@@ -327,10 +440,10 @@
   </div>
 </section>
 
-<!-- ============ 09 怎么落地 ============ -->
+<!-- ============ 11 怎么落地 ============ -->
 <section class="slide">
   <div class="inner">
-    <div class="snum">09 · 怎么落地</div>
+    <div class="snum">11 · 怎么落地</div>
     <h2>ShareKit：新场景 = 配置，不是开发</h2>
     <div class="grid g2" style="margin-top:16px">
       <div class="card acc"><h3>工程 · 四层管线</h3>
@@ -360,10 +473,10 @@
   </div>
 </section>
 
-<!-- ============ 10 已决策 ============ -->
+<!-- ============ 12 已决策 ============ -->
 <section class="slide">
   <div class="inner">
-    <div class="snum">10 · 已决策清单</div>
+    <div class="snum">12 · 已决策清单</div>
     <h2>这些不用再讨论了 <span class="tag done">✓</span></h2>
     <p class="lede">前期讨论已经收敛的结论，今天只需知会，不需要重新展开。</p>
     <div class="scroll" style="margin-top:16px">
@@ -386,10 +499,10 @@
   </div>
 </section>
 
-<!-- ============ 11 今天要拍板 ============ -->
+<!-- ============ 13 今天要拍板 ============ -->
 <section class="slide">
   <div class="inner">
-    <div class="snum">11 · 今天要拍板</div>
+    <div class="snum">13 · 今天要拍板</div>
     <h2>六个问题，按归属分组 <span class="tag open">待决策</span></h2>
     <div class="grid g3" style="margin-top:16px">
       <div class="card warn"><h3>① P0 范围确认 <span class="mono" style="font-size:11px;color:var(--faint)">产品</span></h3>
@@ -410,10 +523,10 @@
   </div>
 </section>
 
-<!-- ============ 12 下一步 ============ -->
+<!-- ============ 14 下一步 ============ -->
 <section class="slide">
   <div class="inner">
-    <div class="snum">12 · 下一步</div>
+    <div class="snum">14 · 下一步</div>
     <h2>会后分工与节奏</h2>
     <div class="grid g3" style="margin-top:16px">
       <div class="card"><h3>产品</h3><ul style="margin:0">
@@ -449,7 +562,7 @@
   <span class="hint">← → 翻页 · M 目录</span>
   <button class="nbtn" id="btnIdx" type="button">目录</button>
   <button class="nbtn" id="btnPrev" type="button">←</button>
-  <span class="counter" id="counter">1 / 13</span>
+  <span class="counter" id="counter">1 / 15</span>
   <button class="nbtn" id="btnNext" type="button">→</button>
 </div>
 
@@ -466,10 +579,12 @@
     ['为什么做','现状、竞品验证、我们的独有'],
     ['核心思路','原子化 + 五层解耦模型'],
     ['分享什么','分享体 = 实体 × 关系态'],
-    ['真正的 wow ★','洞察引擎：数据 vs 判断'],
+    ['真正的 wow ★','洞察引擎（含洞察卡实物）'],
     ['报告粒度','动作 / 课程 / 计划 / 周期'],
-    ['拿什么拼','29+7 原子与两种物质'],
-    ['怎么出去','五大载体族'],
+    ['拿什么拼','29+7 原子（含线框实物）'],
+    ['怎么出去','五大载体族（含实物）'],
+    ['成图样例 ★','四个模板拼出来的真实样子'],
+    ['一条规则的价值','为什么每张图最多一个主角'],
     ['长什么样','模板与网格标准'],
     ['怎么落地','ShareKit 四层 + 四阶段'],
     ['已决策清单','十条不用再讨论的结论'],
@@ -581,26 +696,42 @@
   mt.addEventListener('click',function(e){var b=e.target.closest('button[data-r]');if(b)showCell(+b.dataset.r,+b.dataset.c);});
   showCell(1,1);
 
+
+  /* ---------- 04 洞察卡实物 ---------- */
+  function insViz(kind){
+    var A='#6FCC1B',E='#47940B',G='#B8C0B4';
+    if(kind==='cmp')return '<svg width="230" height="56" viewBox="0 0 230 56"><text x="0" y="15" font-size="9" fill="#9AA294" font-family="monospace">上次</text><rect x="34" y="6" width="104" height="12" rx="2" fill="'+G+'" opacity=".5"/><text x="146" y="16" font-size="10" fill="#9AA294" font-family="monospace">1,610kg</text><text x="0" y="41" font-size="9" fill="#9AA294" font-family="monospace">本次</text><rect x="34" y="32" width="132" height="12" rx="2" fill="'+A+'"/><text x="174" y="42" font-size="10" fill="'+E+'" font-family="monospace" font-weight="700">1,800</text><text x="34" y="55" font-size="9" fill="'+E+'" font-family="monospace">+11.8%</text></svg>';
+    if(kind==='dis')return '<svg width="230" height="56" viewBox="0 0 230 56"><rect x="0" y="10" width="168" height="16" rx="2" fill="'+A+'"/><rect x="170" y="10" width="34" height="16" rx="2" fill="'+A+'" opacity=".45"/><rect x="206" y="10" width="16" height="16" rx="2" fill="'+G+'" opacity=".5"/><text x="0" y="42" font-size="9.5" fill="'+E+'" font-family="monospace" font-weight="700">推 78%</text><text x="64" y="42" font-size="9.5" fill="#9AA294" font-family="monospace">拉 15%</text><text x="128" y="42" font-size="9.5" fill="#9AA294" font-family="monospace">腿 7%</text><text x="0" y="54" font-size="8.5" fill="#9AA294" font-family="monospace">近 30 天容量分布</text></svg>';
+    if(kind==='attr')return '<svg width="230" height="56" viewBox="0 0 230 56"><rect x="0" y="24" width="50" height="14" rx="2" fill="'+G+'" opacity=".5"/><text x="0" y="18" font-size="8.5" fill="#9AA294" font-family="monospace">重量 0%</text><rect x="58" y="14" width="50" height="24" rx="2" fill="'+A+'"/><text x="58" y="8" font-size="8.5" fill="'+E+'" font-family="monospace" font-weight="700">组数 +2</text><rect x="116" y="24" width="50" height="14" rx="2" fill="'+G+'" opacity=".5"/><text x="116" y="18" font-size="8.5" fill="#9AA294" font-family="monospace">次数 0%</text><path d="M174 31 L188 31" stroke="#9AA294" stroke-width="1.5" stroke-dasharray="2 2"/><text x="174" y="18" font-size="8.5" fill="'+E+'" font-family="monospace" font-weight="700">= +12%</text><text x="0" y="54" font-size="8.5" fill="#9AA294" font-family="monospace">容量增长归因分解</text></svg>';
+    if(kind==='proj')return '<svg width="230" height="56" viewBox="0 0 230 56"><path d="M4 42 L48 38 L92 30 L136 24" fill="none" stroke="'+A+'" stroke-width="2.5" stroke-linecap="round"/><path d="M136 24 L182 15 L224 8" fill="none" stroke="'+A+'" stroke-width="2" stroke-dasharray="4 4" opacity=".7"/><circle cx="136" cy="24" r="3.5" fill="'+A+'"/><circle cx="224" cy="8" r="4" fill="none" stroke="'+E+'" stroke-width="2"/><text x="100" y="42" font-size="9" fill="#9AA294" font-family="monospace">现在 60kg</text><text x="158" y="54" font-size="9" fill="'+E+'" font-family="monospace" font-weight="700">4 周后 70kg?</text></svg>';
+    if(kind==='ano')return '<svg width="230" height="56" viewBox="0 0 230 56"><line x1="0" y1="46" x2="230" y2="46" stroke="'+G+'" stroke-width="1" opacity=".6"/>'+[12,28,20,34,24,40,18,30].map(function(h,i){return '<rect x="'+(i*22+4)+'" y="'+(46-h)+'" width="13" height="'+h+'" rx="2" fill="'+G+'" opacity=".45"/>';}).join('')+'<rect x="184" y="4" width="13" height="42" rx="2" fill="'+A+'"/><text x="160" y="55" font-size="9" fill="'+E+'" font-family="monospace" font-weight="700">今年最强</text></svg>';
+    return '<svg width="230" height="56" viewBox="0 0 230 56"><text x="0" y="24" font-size="19" fill="'+E+'" font-family="monospace" font-weight="700">1,800kg</text><text x="106" y="24" font-size="13" fill="#9AA294" font-family="monospace">≈</text><g transform="translate(128,6)"><rect x="4" y="10" width="60" height="10" rx="2" fill="none" stroke="'+G+'" stroke-width="2"/><rect x="18" y="3" width="28" height="10" rx="2" fill="none" stroke="'+G+'" stroke-width="2"/><circle cx="18" cy="23" r="4.5" fill="none" stroke="'+A+'" stroke-width="2.5"/><circle cx="50" cy="23" r="4.5" fill="none" stroke="'+A+'" stroke-width="2.5"/></g><text x="0" y="50" font-size="9" fill="#9AA294" font-family="monospace">一辆家用轿车的重量</text></svg>';
+  }
   /* ---------- 04 insights ---------- */
   var INS=[
-    ['① 对比型','这次比上次多举了 190kg，涨幅 11.8%','与参照系比（上次 / PB / 同课人）','≥2 次记录 · 第 2 次可用',72],
-    ['② 发现型','你近 30 天有 78% 的容量集中在推类动作','揭示用户自己不知道的模式（模式/肌群/器械分布）','维度聚合 · 第 5 次起',88],
-    ['③ 归因型','卧推的进步来自组数 +2，重量其实没变','拆解为什么变好：容量 = 重量 × 次数 × 组数','多变量分解 · 第 5 次起',94],
-    ['④ 预测型','按当前节奏，约 4 周后卧推可以摸到 70kg','趋势拟合外推；置信度低于阈值不出，措辞留余地','≥4 个数据点 · 第 8 次起',85],
-    ['⑤ 异常型','这是你今年最强的一次训练','全量排序中的极值 / 首次 / 连续里程碑','全量排序 · 第 10 次起',96],
-    ['⑥ 具象型','今天举起的重量，相当于一辆家用轿车','抽象数字 → 类比素材库','<b>第 1 次就能用</b>（不依赖历史）',80]
+    ['① 对比型','这次比上次多举了 190kg，涨幅 11.8%','与参照系比（上次 / PB / 同课人）','≥2 次记录 · 第 2 次可用',72,'cmp','本次总容量 1,800kg · 上次 1,610kg · 同课程最近两次记录'],
+    ['② 发现型','你近 30 天有 78% 的容量集中在推类动作','揭示用户自己不知道的模式（模式/肌群/器械分布）','维度聚合 · 第 5 次起',88,'dis','推 78% · 拉 15% · 腿 7% · 来源：动作模式聚合（近 30 天）'],
+    ['③ 归因型','卧推的进步来自组数 +2，重量其实没变','拆解为什么变好：容量 = 重量 × 次数 × 组数','多变量分解 · 第 5 次起',94,'attr','重量持平 60kg · 次数持平 12 · 组数 2→4 · 可附行动建议'],
+    ['④ 预测型','按当前节奏，约 4 周后卧推可以摸到 70kg','趋势拟合外推；置信度低于阈值不出，措辞留余地','≥4 个数据点 · 第 8 次起',85,'proj','近 6 次线性趋势 +2.1kg/周 · 置信度 0.78（阈值 0.7）'],
+    ['⑤ 异常型','这是你今年最强的一次训练','全量排序中的极值 / 首次 / 连续里程碑','全量排序 · 第 10 次起',96,'ano','1,800kg 超过今年全部 47 次训练 · 全量排序'],
+    ['⑥ 具象型','今天举起的重量，相当于一辆家用轿车','抽象数字 → 类比素材库','<b>第 1 次就能用</b>（不依赖历史）',80,'ana','1,800kg ≈ 家用轿车整备质量 · 素材库映射']
   ];
-  var it=$('insTabs'), ip=$('insPanel');
+  var it=$('insTabs'), ic=$('insCard'), im=$('insMeta');
   function showIns(i){
     var d=INS[i];
-    ip.innerHTML='<div style="font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--acc-ink);font-weight:700">'+d[0]+' INSIGHT</div>'+
-      '<div style="font-size:clamp(18px,2vw,23px);font-weight:700;line-height:1.4;margin:10px 0 12px;letter-spacing:-.015em">'+d[1]+'</div>'+
-      '<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;border-top:1px dashed var(--line-strong);padding-top:11px">'+
-      '<span style="font-size:13.5px;color:var(--muted)">'+d[2]+'</span>'+
-      '<span class="mono" style="font-size:12px;color:var(--faint)">'+d[3]+'</span>'+
-      '<span style="margin-left:auto;display:flex;align-items:center;gap:9px"><span class="mono" style="font-size:11px;color:var(--faint)">分享价值</span>'+
-      '<span style="display:block;width:100px;height:8px;background:var(--surface-2);border-radius:2px;overflow:hidden"><i style="display:block;height:100%;width:'+d[4]+'%;background:var(--acc)"></i></span>'+
-      '<b class="mono" style="font-size:14px;color:var(--acc-ink)">'+d[4]+'</b></span></div>';
+    ic.innerHTML='<div class="inscard"><div class="bdg">'+d[0]+' INSIGHT</div>'+
+      '<div class="hd">'+d[1]+'</div><div class="viz">'+insViz(d[5])+'</div>'+
+      '<div class="ev">'+d[6]+'</div></div>'+
+      '<div class="mono" style="font-size:11px;color:var(--faint);text-align:center;margin-top:7px">↑ A6 洞察卡片原子的实际渲染形态</div>';
+    im.innerHTML='<div style="display:flex;flex-direction:column;gap:12px">'+
+      '<div><div class="mono" style="font-size:11px;color:var(--faint);letter-spacing:.06em">生成逻辑</div><div style="font-size:14.5px;color:var(--muted);margin-top:3px">'+d[2]+'</div></div>'+
+      '<div><div class="mono" style="font-size:11px;color:var(--faint);letter-spacing:.06em">数据依赖 / 冷启动</div><div style="font-size:14.5px;color:var(--muted);margin-top:3px">'+d[3]+'</div></div>'+
+      '<div><div class="mono" style="font-size:11px;color:var(--faint);letter-spacing:.06em">分享价值分</div>'+
+      '<div style="display:flex;align-items:center;gap:10px;margin-top:5px"><span style="display:block;width:130px;height:9px;background:var(--surface-2);border-radius:2px;overflow:hidden"><i style="display:block;height:100%;width:'+d[4]+'%;background:var(--acc)"></i></span>'+
+      '<b class="mono" style="font-size:15px;color:var(--acc-ink)">'+d[4]+'</b>'+
+      '<span class="mono" style="font-size:11px;color:var(--faint)">意外性 × 正面性 × 可炫耀性</span></div></div>'+
+      '<div class="card" style="padding:11px 13px"><div class="mono" style="font-size:11px;color:var(--acc-ink);font-weight:700">六类洞察全部可枚举</div>'+
+      '<div style="font-size:13px;color:var(--muted);margin-top:4px">每类有固定的计算逻辑、数据依赖与文案模板——所以"AI 给点评"是可实现的工程，不是玄学。</div></div></div>';
     Array.prototype.forEach.call(it.children,function(b,j){b.classList.toggle('on',j===i);});
   }
   INS.forEach(function(d,i){
@@ -609,7 +740,167 @@
   });
   showIns(2);
 
+
+  /* ================= 实物渲染 ================= */
+  function bodySvg(w,h,mode){
+    var A='#6FCC1B',E='#47940B',G='#D8DCD2';
+    var front='<circle cx="32" cy="12" r="9" fill="none" stroke="'+G+'" stroke-width="2"/>'+
+      '<rect x="18" y="26" width="28" height="40" rx="9" fill="none" stroke="'+G+'" stroke-width="2"/>'+
+      '<rect x="6" y="28" width="9" height="30" rx="4.5" fill="'+A+'" opacity=".55"/>'+
+      '<rect x="49" y="28" width="9" height="30" rx="4.5" fill="'+A+'" opacity=".55"/>'+
+      '<rect x="21" y="29" width="10" height="15" rx="4" fill="'+A+'" opacity=".92" stroke="'+E+'" stroke-width="1"/>'+
+      '<rect x="33" y="29" width="10" height="15" rx="4" fill="'+A+'" opacity=".92" stroke="'+E+'" stroke-width="1"/>'+
+      '<rect x="22" y="58" width="7" height="20" rx="3.5" fill="'+A+'" opacity=".3"/>'+
+      '<rect x="20" y="70" width="10" height="42" rx="5" fill="none" stroke="'+G+'" stroke-width="2"/>'+
+      '<rect x="34" y="70" width="10" height="42" rx="5" fill="none" stroke="'+G+'" stroke-width="2"/>';
+    var back='<circle cx="32" cy="12" r="9" fill="none" stroke="'+G+'" stroke-width="2"/>'+
+      '<rect x="18" y="26" width="28" height="40" rx="9" fill="none" stroke="'+G+'" stroke-width="2"/>'+
+      '<rect x="23" y="36" width="18" height="10" rx="4" fill="'+A+'" opacity=".3"/>'+
+      '<rect x="23" y="52" width="8" height="22" rx="4" fill="'+A+'" opacity=".55"/>'+
+      '<rect x="33" y="52" width="8" height="22" rx="4" fill="'+A+'" opacity=".55"/>'+
+      '<rect x="20" y="70" width="10" height="42" rx="5" fill="none" stroke="'+G+'" stroke-width="2"/>'+
+      '<rect x="34" y="70" width="10" height="42" rx="5" fill="none" stroke="'+G+'" stroke-width="2"/>';
+    return '<svg style="width:'+w+';height:'+h+'" viewBox="0 0 64 120">'+(mode==='back'?back:front)+'</svg>';
+  }
+  function qr(sz){return '<svg style="width:'+sz+';height:'+sz+'" viewBox="0 0 46 46"><rect x="1" y="1" width="44" height="44" rx="2" fill="none" stroke="#C9CFC2" stroke-width="1.5"/><rect x="7" y="7" width="12" height="12" rx="1" fill="none" stroke="#141712" stroke-width="2"/><rect x="27" y="7" width="12" height="12" rx="1" fill="none" stroke="#141712" stroke-width="2"/><rect x="7" y="27" width="12" height="12" rx="1" fill="none" stroke="#141712" stroke-width="2"/><rect x="28" y="28" width="5" height="5" fill="#6FCC1B"/><rect x="35" y="34" width="4" height="4" fill="#141712"/></svg>';}
+  function stick(w){return '<svg style="width:'+w+';height:'+w+'" viewBox="0 0 120 118">'+
+    '<g stroke="#D8DCD2" stroke-width="2" fill="none" opacity=".55" stroke-linecap="round"><circle cx="52" cy="14" r="8"/><path d="M52 22 L52 52 M52 30 L30 42 M52 30 L74 40 M52 52 L38 84 L36 108 M52 52 L66 84 L70 108"/></g>'+
+    '<g stroke="#6FCC1B" stroke-width="2.5" fill="none" stroke-linecap="round"><circle cx="60" cy="14" r="8"/><path d="M60 22 L60 52 M60 30 L36 38 M60 30 L84 34 M60 52 L44 82 L42 108 M60 52 L76 82 L82 108"/></g>'+
+    '<circle cx="60" cy="52" r="3.5" fill="#6FCC1B"/><path d="M76 82 q8 -8 2 -16" stroke="#141712" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>'+
+    '<text x="88" y="72" font-size="10" fill="#141712" font-family="monospace">92°</text></svg>';}
+  var A1H='<div class="atom" style="gap:calc(var(--u)*8)"><div class="srow"><span class="t-title">上肢推力 · 杠铃与哑铃</span><span class="t-lab" style="margin-left:auto">07·17</span></div>'+
+    '<div class="tiles"><div><div class="t-numL" style="color:var(--caccink)">42:18</div><div class="t-lab">时长</div></div>'+
+    '<div><div class="t-numL">386</div><div class="t-lab">千卡</div></div><div><div class="t-numL">1.8t</div><div class="t-lab">总容量</div></div></div></div>';
+  var G1H='<div class="atom g1bar" style="margin-top:auto">'+qr('calc(var(--u)*30)')+
+    '<div><div class="bl">BODY PARK</div><div class="sl">扫码下载 · AI 私教在家练</div></div><span class="t-lab" style="margin-left:auto">#战报</span></div>';
+
+  function card(h,inner){var d=el('div','shot');d.style.height='calc(var(--u)*'+h+')';d.innerHTML='<div class="pad">'+inner+'</div>';return d;}
+  function T1(){return card(440,A1H+
+    '<div class="atom" style="flex:1"><div class="figs">'+bodySvg('calc(var(--u)*80)','calc(var(--u)*152)','front')+bodySvg('calc(var(--u)*80)','calc(var(--u)*152)','back')+'</div>'+
+    '<div class="clegend"><span><i class="sw" style="opacity:.92"></i>胸·主</span><span><i class="sw" style="opacity:.55"></i>肩/肱三</span><span style="color:var(--cfnt)">共 5 个动作</span></div></div>'+G1H);}
+  function T2(){return card(690,A1H.replace('</div></div>','</div><div class="tiles" style="margin-top:calc(var(--u)*8)"><div><div class="t-numM">5</div><div class="t-lab">动作</div></div><div><div class="t-numM">16</div><div class="t-lab">组</div></div><div><div class="t-numM">148</div><div class="t-lab">心率</div></div></div></div>')+
+    '<div class="atom" style="height:calc(var(--u)*190)"><div class="figs">'+bodySvg('calc(var(--u)*78)','calc(var(--u)*148)','front')+bodySvg('calc(var(--u)*78)','calc(var(--u)*148)','back')+'</div>'+
+    '<div class="clegend"><span><i class="sw" style="opacity:.92"></i>高</span><span><i class="sw" style="opacity:.55"></i>中</span><span style="color:var(--cfnt)">主练：胸·三角肌前束</span></div></div>'+
+    '<div class="atom">'+
+    ['杠铃卧推|4×12 · 60kg|1','上斜哑铃卧推|3×10 · 40kg|0','哑铃肩推|3×10 · 22kg|0','绳索下压|3×15 · 25kg|0','侧平举|3×15 · 8kg|0'].map(function(r){
+      var p=r.split('|');return '<div class="exrow"><span class="dot'+(p[2]==='1'?'':' sub')+'"></span><span class="nm">'+p[0]+'</span><span class="st">'+p[1]+'</span></div>';}).join('')+
+    '<div style="font-family:var(--mono);font-size:calc(var(--u)*9.5);color:var(--cfnt);text-align:center;padding-top:calc(var(--u)*8)">PB · 杠铃卧推 60kg ↑ 上次 55kg</div></div>'+G1H);}
+  function T3(){return card(440,
+    '<div class="atom" style="flex:1;align-items:center;justify-content:center">'+stick('calc(var(--u)*150)')+
+    '<div class="clegend" style="margin-top:calc(var(--u)*8)"><span style="color:#47940B;font-weight:700">■ 我的姿态</span><span style="color:var(--cfnt)">■ 标准姿态</span></div></div>'+
+    '<div class="atom" style="gap:calc(var(--u)*6)"><div class="srow"><span style="font-family:var(--mono);font-size:calc(var(--u)*11);font-weight:700;background:#6FCC1B;color:#10240A;border-radius:2px;padding:1px 8px">87 分</span>'+
+    '<span style="font-size:calc(var(--u)*12.5);font-weight:700">深蹲 · 第 3 组表现最佳</span></div>'+
+    '<div style="font-size:calc(var(--u)*12);color:var(--cmut);line-height:1.6">✓ 下蹲深度到位，髋膝同步良好<br>! 起身时膝盖轻微内扣</div></div>'+G1H);}
+  function T4(){return card(440,
+    '<div class="atom" style="flex:1;justify-content:flex-end;background:linear-gradient(180deg,#F2F5EE,#E6EEDC);margin:calc(var(--u)*-22);margin-bottom:0;padding:calc(var(--u)*22);position:relative">'+
+    '<svg style="position:absolute;inset:auto 0 calc(var(--u)*74) 0;width:100%;height:calc(var(--u)*104)" viewBox="0 0 360 120" preserveAspectRatio="none">'+
+    '<path d="M0 108 L92 34 L156 84 L228 48 L296 96 L360 60 L360 120 L0 120 Z" fill="#D9E4C8"/>'+
+    '<path d="M0 108 L92 34 L156 84 L228 48 L296 96 L360 60" fill="none" stroke="#B9CB9C" stroke-width="2.5"/>'+
+    '<circle cx="296" cy="30" r="13" fill="#6FCC1B" opacity=".55"/></svg>'+
+    '<div style="position:relative"><div class="t-lab">今日总容量</div>'+
+    '<div style="font-family:var(--mono);font-size:calc(var(--u)*40);line-height:calc(var(--u)*44);font-weight:700;color:#47940B">1,800<span style="font-size:calc(var(--u)*16)"> kg</span></div></div></div>'+
+    '<div class="atom" style="height:calc(var(--u)*56);justify-content:center"><div class="srow" style="justify-content:center;gap:calc(var(--u)*10)">'+
+    '<span class="t-lab">≈ 举起了</span><svg style="width:calc(var(--u)*58);height:calc(var(--u)*23)" viewBox="0 0 88 34"><rect x="8" y="12" width="72" height="12" rx="2" fill="none" stroke="#B8C0AC" stroke-width="2.5"/><rect x="24" y="4" width="34" height="12" rx="2" fill="none" stroke="#B8C0AC" stroke-width="2.5"/><circle cx="24" cy="27" r="5.5" fill="none" stroke="#6FCC1B" stroke-width="3"/><circle cx="63" cy="27" r="5.5" fill="none" stroke="#6FCC1B" stroke-width="3"/></svg>'+
+    '<span class="t-lab">一辆小轿车</span></div></div>'+G1H);}
+  function BAD(){return card(440,A1H+
+    '<div class="atom" style="height:calc(var(--u)*118)"><div class="figs">'+bodySvg('calc(var(--u)*52)','calc(var(--u)*98)','front')+'</div>'+
+    '<div class="clegend"><span><i class="sw" style="opacity:.92"></i>高</span><span><i class="sw" style="opacity:.55"></i>中</span></div></div>'+
+    '<div class="atom" style="height:calc(var(--u)*96)">'+
+    '<div class="exrow"><span class="dot"></span><span class="nm">杠铃卧推</span><span class="st">4×12</span></div>'+
+    '<div class="exrow"><span class="dot sub"></span><span class="nm">哑铃肩推</span><span class="st">3×10</span></div>'+
+    '<div style="font-family:var(--mono);font-size:calc(var(--u)*9.5);color:var(--cfnt);text-align:center">+ 3 个动作</div></div>'+G1H);}
+
+  var SS=$('sampleShots');
+  if(SS){[[T1,'<b>T1 战报短图</b> · 3:4 · L1 默认<br>A1 + B2 主角 + G1 —— 进入即出图，一键可发'],
+          [T3,'<b>T3 AI 特色版</b> ★ · 3:4<br>火柴人当主角 + AI 点评 —— 竞品拿不出的一张'],
+          [T4,'<b>T4 极简晒图</b> · 3:4<br>氛围图通栏出血 + 一个大数字 + 类比 —— 情绪价值'],
+          [T2,'<b>T2 完整长图</b> · 不限高<br>四件套满配 + PB 角标 —— 有点有面的完整战报']
+    ].forEach(function(x){
+      var w=el('div','sitem'); w.appendChild(x[0]()); w.appendChild(el('div','scap',x[1])); SS.appendChild(w);
+    });}
+  var CS=$('contrastShots');
+  if(CS){[[BAD,'<span class="bad">✕ 反例</span> 四原子硬塞进短图<br>432 = A1↓96 + B2 128 + B1↓104 + G1 56<br><b>装得下，但热力图被压扁、没有主角</b>'],
+          [T1,'<span style="color:var(--acc-ink)">✓ 正解</span> B2 拿到弹性位吃满<br>432 = A1↓96 + <b>B2·L 228</b> + G1 56（B1 砍位折叠）<br><b>一眼有主角</b>']
+    ].forEach(function(x){
+      var w=el('div','sitem'); w.appendChild(x[0]()); w.appendChild(el('div','scap',x[1])); CS.appendChild(w);
+    });}
+
+
+  /* ---------- 06 原子线框条 ---------- */
+  var AWS=[
+    ['A1','总结指标',0,'<div class="wrow"><div class="ph m"></div><span class="wlab" style="margin-left:auto">07·17</span></div>'+
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">'+
+      ['42:18','386','1.8t'].map(function(n,i){return '<div style="background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:4px 5px"><div class="wnum" style="'+(i===0?'color:var(--acc-ink)':'')+'">'+n+'</div><div class="ph" style="height:3px;width:70%"></div></div>';}).join('')+'</div>'],
+    ['B2','肌肉热力图',0,'<div style="display:flex;gap:10px;justify-content:center">'+bodySvg('30px','56px','front')+bodySvg('30px','56px','back')+'</div>'],
+    ['C1','AI 火柴人',1,'<div style="display:grid;place-items:center">'+stick('62px')+'</div>'],
+    ['A6','洞察卡片',1,'<div class="wlab" style="color:var(--acc-ink);font-weight:700">③ 归因型</div><div class="ph l"></div><div class="ph m"></div>'+
+      '<div class="wrow" style="margin-top:2px"><div class="wbar" style="width:20%"></div><div class="wbar hot" style="width:28%;height:11px"></div><div class="wbar" style="width:20%"></div><span class="wlab" style="color:var(--acc-ink);margin-left:auto">+12%</span></div>'],
+    ['A5','排行榜',0,'<div class="wrow"><span class="wchip">TOP 12%</span><span class="wlab">共 1,284 人</span></div>'+
+      '<div class="wrow" style="font-size:9px"><span class="wlab" style="width:14px">14</span><div class="ph s"></div><span class="wlab" style="margin-left:auto">2.1t</span></div>'+
+      '<div class="wrow" style="background:var(--acc-soft);border:1px solid var(--acc);border-radius:2px;padding:2px 4px"><span class="wlab" style="width:14px;color:var(--acc-ink);font-weight:700">15</span><span class="wnum" style="font-size:10px">我</span><span class="wlab" style="margin-left:auto;color:var(--acc-ink)">1.8t</span></div>'],
+    ['M4','漫画影像',1,'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">'+
+      '<div style="background:var(--surface-2);border-radius:2px;height:56px;display:grid;place-items:center"><svg width="20" height="34" viewBox="0 0 30 46"><circle cx="15" cy="8" r="6" fill="none" stroke="var(--wire)" stroke-width="2"/><path d="M15 14 L15 30 M15 18 L6 24 M15 18 L24 24 M15 30 L9 44 M15 30 L21 44" stroke="var(--wire)" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div>'+
+      '<div style="background:var(--acc-soft);border:1px solid var(--acc);border-radius:2px;height:56px;display:grid;place-items:center"><svg width="20" height="34" viewBox="0 0 30 46"><circle cx="15" cy="8" r="6" fill="none" stroke="var(--acc-ink)" stroke-width="3"/><path d="M15 14 L15 30 M15 18 L6 24 M15 18 L24 24 M15 30 L9 44 M15 30 L21 44" stroke="var(--acc-ink)" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div></div>']
+  ];
+  var AS=$('atomStrip');
+  if(AS){AWS.forEach(function(a){
+    AS.appendChild(el('div','aw'+(a[2]?' moat':''),'<div class="ac">'+a[0]+(a[2]?' ★':'')+'</div><div class="an">'+a[1]+'</div><div class="awf">'+a[3]+'</div>'));
+  });}
+
+  /* ---------- 07 载体实物 ---------- */
+  var MD='<span class="c">---</span>\n<span class="k">source</span>: BodyPark Atom\n<span class="k">type</span>: workout_session\n<span class="k">date</span>: 2026-07-17T19:04:00+08:00\n<span class="k">schema</span>: v1\n<span class="c">---</span>\n\n<span class="k"># 上肢推力 · 杠铃与哑铃</span>\n\n| 指标 | 数值 |\n|---|---|\n| 训练时长 | 42:18 |\n| 总容量 | 1,800 kg |\n| 消耗 | 386 kcal |\n| 平均心率 | 148 bpm |\n\n<span class="k">## 动作明细</span>\n\n| 动作 | 组×次 | 重量 | 容量 |\n|---|---|---|---|\n| 杠铃卧推 | 4×12 | 60 kg | 2,880 kg |\n| 上斜哑铃卧推 | 3×10 | 40 kg | 1,200 kg |\n| 哑铃肩推 | 3×10 | 22 kg | 660 kg |\n\n<span class="k">## 个人纪录</span>\n\n- 杠铃卧推 60 kg — <span class="s">新 PB</span>（上次 55kg，+9.1%）\n\n<span class="k">## AI 动作分析</span>\n\n- 评分 87 / 100\n- ✓ 下蹲深度到位，髋膝同步良好\n- ! 起身时膝盖轻微内扣';
+
+  function carStageRender(id){
+    var st=$('carStage'); if(!st) return; st.innerHTML='';
+    if(id==='img'){ st.appendChild(T1()); }
+    if(id==='video'){
+      var v=el('div','vidm');
+      v.innerHTML='<div class="top">▶ highlight.mp4 · 9:16 · 12s</div>'+
+        '<div class="stage2"><div style="display:flex;justify-content:space-between"><span style="font-family:var(--mono);font-size:8px;background:#141712;color:#E9ECE6;padding:2px 6px;border-radius:2px">0:03/0:12</span>'+
+        '<span style="font-family:var(--mono);font-size:8px;background:#6FCC1B;color:#10240A;padding:2px 6px;border-radius:2px;font-weight:700">AI 选中</span></div>'+
+        '<div style="display:grid;place-items:center;flex:1">'+
+        '<svg width="82" height="112" viewBox="0 0 50 68"><ellipse cx="25" cy="34" rx="18" ry="30" fill="#B8C0B4" opacity=".2"/><circle cx="25" cy="10" r="6" fill="none" stroke="#6FCC1B" stroke-width="2.5"/><path d="M25 16 L25 36 M25 21 L12 27 M25 21 L38 27 M25 36 L18 64 M25 36 L32 64" stroke="#6FCC1B" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="25" cy="36" r="3" fill="#6FCC1B"/></svg></div>'+
+        '<div><div style="font-family:var(--mono);font-size:19px;font-weight:700;color:#141712;line-height:1">60<span style="font-size:10px"> kg</span> <span style="font-size:9px;background:#6FCC1B;color:#10240A;padding:1px 5px;border-radius:2px">PB</span></div>'+
+        '<div style="font-family:var(--mono);font-size:8px;color:#6B7266;margin-top:2px">杠铃卧推 · 第 4 组</div>'+
+        '<div style="display:flex;gap:2px;margin-top:7px">'+[0,1,2,3,4,5,6,7].map(function(i){return '<span style="flex:1;height:'+(i===3?'10':'4')+'px;background:'+(i===3?'#6FCC1B':'#C8CFC3')+';align-self:end"></span>';}).join('')+'</div>'+
+        '<div style="font-family:var(--mono);font-size:7.5px;color:#9AA294;margin-top:4px">AI 从 42 分钟里选出的 12 秒</div></div></div>'+
+        '<div style="background:#141712;color:#E9ECE6;display:flex;align-items:center;gap:6px;padding:6px 9px"><span style="width:12px;height:12px;border:1.5px solid #E9ECE6;border-radius:2px"></span><span style="font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;font-weight:700">BODY PARK</span></div>';
+      st.appendChild(v);
+    }
+    if(id==='h5'){
+      var h=el('div','h5m');
+      h.innerHTML='<div class="bar"><span>●●●</span><span style="opacity:.6">bodypark.app/s/8f2c91</span></div>'+
+        '<div class="bd"><div><div style="font-size:13px;font-weight:700">上肢推力 · 杠铃与哑铃</div><div style="font-family:var(--mono);font-size:9px;color:#9AA294;margin-top:2px">Alex · 07-17 · 42:18</div></div>'+
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">'+
+        [['1.8t','总容量','#47940B'],['386','千卡',''],['148','心率','']].map(function(x){
+          return '<div><div style="font-family:var(--mono);font-size:15px;font-weight:700;'+(x[2]?'color:'+x[2]:'')+'">'+x[0]+'</div><div style="font-family:var(--mono);font-size:7.5px;color:#9AA294">'+x[1]+'</div></div>';}).join('')+'</div>'+
+        '<div style="display:flex;justify-content:center">'+bodySvg('44px','82px','front')+'</div>'+
+        '<div class="h5r"><span>杠铃卧推</span><span class="cv">4×12 ›</span></div>'+
+        '<div class="h5r"><span>哑铃肩推</span><span class="cv">3×10 ›</span></div>'+
+        '<div style="font-family:var(--mono);font-size:8px;color:#9AA294;text-align:center">点动作行可展开 AI 洞察</div>'+
+        '<div class="acc">打开 App 查看完整报告</div></div>';
+      st.appendChild(h);
+    }
+    if(id==='data'){ var pre=el('pre','dx'); pre.innerHTML=MD; st.appendChild(pre); }
+    if(id==='pdf'){
+      var p=el('div','pdfm');
+      p.innerHTML='<div class="ph2"><div><div class="t">训练报告 Training Report</div><div style="font-family:var(--mono);font-size:8px;color:#6B7266;margin-top:2px">上肢推力 · 杠铃与哑铃</div></div>'+
+        '<div class="m">BODY PARK ATOM<br>Alex Lin · ID 8f2c91<br>2026-07-17 19:04</div></div>'+
+        '<div class="kp">'+[['42:18','时长'],['1,800','容量 KG'],['386','千卡'],['148','心率']].map(function(x){return '<div><b>'+x[0]+'</b><span>'+x[1]+'</span></div>';}).join('')+'</div>'+
+        '<div><h4>训练强度分布</h4><svg viewBox="0 0 400 62" style="width:100%;height:62px"><line x1="0" y1="50" x2="400" y2="50" stroke="#ECEFE9"/>'+
+        [[10,40],[68,22],[126,16],[184,28],[242,10],[300,7]].map(function(b,i){return '<rect x="'+b[0]+'" y="'+(50-b[1])+'" width="44" height="'+b[1]+'" fill="#6FCC1B" opacity="'+(i===0?'.85':'.55')+'"/>';}).join('')+
+        ['卧推','上斜','肩推','下压','侧举','卷腹'].map(function(t,i){return '<text x="'+(i*58+32)+'" y="61" font-size="7.5" text-anchor="middle" fill="#9AA294" font-family="monospace">'+t+'</text>';}).join('')+'</svg></div>'+
+        '<div><h4>动作明细</h4><table><thead><tr><th>动作</th><th>组×次</th><th style="text-align:right">重量</th><th style="text-align:right">容量</th></tr></thead><tbody>'+
+        [['杠铃卧推 <span style="font-family:monospace;font-size:7px;color:#47940B">PB</span>','4×12','60 kg','2,880'],['上斜哑铃卧推','3×10','40 kg','1,200'],['哑铃肩推','3×10','22 kg','660'],['绳索下压','3×15','25 kg','1,125']].map(function(r){
+          return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n">'+r[2]+'</td><td class="n">'+r[3]+'</td></tr>';}).join('')+'</tbody></table></div>'+
+        '<div style="display:flex;gap:16px"><div style="flex:1"><h4>肌群参与</h4><div style="font-size:9px;line-height:1.8">胸大肌<b style="float:right;font-family:monospace">62%</b><br>三角肌前束<b style="float:right;font-family:monospace">21%</b><br>肱三头肌<b style="float:right;font-family:monospace">17%</b></div></div>'+
+        '<div style="flex:1"><h4>AI 动作分析</h4><div style="font-size:9px;line-height:1.7">评分 <b>87 / 100</b><br>✓ 深度到位，髋膝同步良好<br>! 起身时膝盖轻微内扣</div></div></div>'+
+        '<div style="border-top:1px solid #ECEFE9;padding-top:6px;font-family:monospace;font-size:7px;color:#9AA294;display:flex"><span>Generated by BODY PARK ATOM · schema v1</span><span style="margin-left:auto">1 / 1</span></div>';
+      st.appendChild(p);
+    }
+  }
   /* ---------- 07 carriers ---------- */
+  var CARIDS=['img','video','h5','data','pdf'];
   var CARS=[
     ['① 图像 PNG','人 · 社交','默认 3:4，切渠道自动适配小红书 / IG / Story 尺寸；底部二维码兜底引流。零门槛、传播效率最高，<b>P0 首批唯一载体</b>。','已验证 · P0'],
     ['② 视频 MP4 🆕','人 · 社交','竖版 9:16 / 5~15s / 前 3 秒给峰值 / 必须无声可看 / 收尾品牌帧。<b>M 类媒体资产的主要出口，平台算法权重最高。</b>我们的优势是自动选材——姿态识别天然知道哪一秒最精彩。','Phase 3'],
@@ -625,6 +916,7 @@
       '<span class="mono" style="font-size:12px;color:var(--acc-ink);font-weight:700">面向 '+c[1]+'</span>'+
       '<span class="tag ghost" style="margin-left:auto">'+c[3]+'</span></div>'+
       '<div style="font-size:15.5px;color:var(--muted);margin-top:10px;line-height:1.65">'+c[2]+'</div>';
+    carStageRender(CARIDS[i]);
     Array.prototype.forEach.call(ct.children,function(b,j){b.classList.toggle('on',j===i);});
   }
   CARS.forEach(function(c,i){
