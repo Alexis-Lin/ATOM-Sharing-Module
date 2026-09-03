@@ -1,0 +1,539 @@
+<title>邀请页交互 Demo · Referral Page v0.1</title>
+<style>
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --warn:#C2410C; --warn-soft:#FFF1E7;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--warn:#FB923C;--warn-soft:#2A1508;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--warn:#FB923C;--warn-soft:#2A1508;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px 90px;}
+  header{padding:46px 0 22px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.02em;margin:12px 0 0;text-wrap:balance;}
+  .lede{color:var(--muted);max-width:72ch;font-size:14px;margin:8px 0 0;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  h2{font-size:19px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--acc);}
+  section{margin-top:48px;}
+  code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+
+  /* ===== stage: phone + controls ===== */
+  .stage{display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:start;margin-top:22px;}
+  @media (max-width:760px){.stage{grid-template-columns:1fr;}}
+  .phone{width:320px;height:660px;border:9px solid #141712;border-radius:30px;background:#F6F7F4;position:relative;overflow:hidden;box-shadow:var(--shadow);
+    font-family:var(--cjk);color:#141712;flex:0 0 auto;}
+  .phone *{box-sizing:border-box;}
+  .sb{height:26px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;font-family:var(--mono);font-size:10px;color:#141712;background:#F6F7F4;}
+  .scr{position:absolute;left:0;right:0;top:26px;bottom:0;overflow-y:auto;overflow-x:hidden;background:#F6F7F4;display:none;scrollbar-width:none;}
+  .scr::-webkit-scrollbar{display:none;}
+  .scr.on{display:block;}
+  .nav{display:flex;align-items:center;gap:10px;padding:8px 14px 10px;font-weight:700;font-size:15px;background:#F6F7F4;position:sticky;top:0;z-index:2;}
+  .nav .bk{width:26px;height:26px;border-radius:999px;border:1px solid #C8CFC3;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;cursor:pointer;background:#fff;}
+  .nav .sp{flex:1;}
+  .nav .rt{font-size:11.5px;color:#47940B;font-weight:600;cursor:pointer;}
+  .p{padding:0 14px;}
+  .card{background:#fff;border:1px solid #E4E8E1;border-radius:5px;padding:13px 14px;margin-bottom:10px;}
+  .card.acc{background:#ECF8DC;border-color:#6FCC1B;}
+  .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#939C8F;}
+  .lbl.g{color:#47940B;}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;border:1px solid transparent;user-select:none;}
+  .btn.pri{background:#6FCC1B;color:#10240A;}
+  .btn.sec{background:#fff;color:#47940B;border-color:#6FCC1B;font-weight:700;font-size:12.5px;padding:9px;}
+  .btn:active{transform:translateY(1px);}
+  .row{display:flex;gap:8px;}
+  .row>*{flex:1;}
+
+  /* home stub */
+  .me{display:flex;align-items:center;gap:12px;padding:6px 0 14px;}
+  .av{width:46px;height:46px;border-radius:999px;background:#ECF8DC;border:1px solid #6FCC1B;display:flex;align-items:center;justify-content:center;font-weight:800;color:#10240A;}
+  .me .n{font-weight:800;font-size:16px;line-height:1.2;}
+  .me .s{font-family:var(--mono);font-size:10px;color:#939C8F;margin-top:3px;}
+  .banner{display:flex;align-items:center;gap:12px;background:#141712;color:#fff;border-radius:5px;padding:13px 14px;cursor:pointer;margin-bottom:10px;position:relative;overflow:hidden;}
+  .banner .t{font-weight:800;font-size:14px;}
+  .banner .d{font-size:11px;color:#B9C1B5;margin-top:2px;}
+  .banner .go{margin-left:auto;font-family:var(--mono);font-size:11px;background:#6FCC1B;color:#10240A;font-weight:800;padding:5px 10px;border-radius:999px;white-space:nowrap;}
+  .banner .dot{position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:999px;background:#6FCC1B;opacity:.18;}
+  .list .it{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #EFF2EC;font-size:13.5px;}
+  .list .it:last-child{border-bottom:0;}
+  .list .it span{color:#939C8F;font-family:var(--mono);font-size:11px;}
+  .list .it.dim{color:#939C8F;}
+  .tabs{position:absolute;left:0;right:0;bottom:0;height:52px;background:#fff;border-top:1px solid #E4E8E1;display:flex;font-family:var(--mono);font-size:10px;color:#939C8F;}
+  .tabs div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+  .tabs div i{width:16px;height:16px;border:1.5px solid currentColor;border-radius:2px;display:block;}
+  .tabs .on{color:#141712;font-weight:700;}
+
+  /* referral hero */
+  .hero{background:#141712;color:#fff;border-radius:5px;padding:16px 15px 14px;margin-bottom:10px;position:relative;overflow:hidden;}
+  .hero .dot{position:absolute;right:-40px;top:-40px;width:130px;height:130px;border-radius:999px;background:#6FCC1B;opacity:.16;}
+  .hero .h{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.25;}
+  .hero .h em{font-style:normal;color:#A3E635;}
+  .hero .sub{font-size:11.5px;color:#B9C1B5;margin-top:5px;}
+  .codebox{display:flex;align-items:center;justify-content:space-between;margin-top:12px;border:1px dashed #6FCC1B;border-radius:2px;padding:8px 11px;background:rgba(111,204,27,.08);cursor:pointer;}
+  .codebox .k{font-family:var(--mono);font-size:9px;color:#B9C1B5;letter-spacing:.1em;}
+  .codebox .v{font-family:var(--mono);font-size:16px;font-weight:800;letter-spacing:.1em;color:#A3E635;}
+  .codebox .cp{font-family:var(--mono);font-size:10px;color:#fff;border:1px solid #3E463A;border-radius:999px;padding:3px 9px;}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+  .st{background:#fff;border:1px solid #E4E8E1;border-radius:5px;padding:11px 10px;cursor:pointer;}
+  .st .n{font-family:var(--mono);font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;transition:color .2s;}
+  .st .n.bump{color:#47940B;}
+  .st .l{font-size:10.5px;color:#5C645A;margin-top:5px;}
+  .st .u{font-family:var(--mono);font-size:9px;color:#939C8F;}
+  .st.hot{background:#ECF8DC;border-color:#6FCC1B;}
+  .st.hot .n{color:#10240A;}
+  .prog{margin-top:2px;}
+  .prog .t{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:6px;}
+  .prog .t b{font-weight:700;}
+  .prog .t span{font-family:var(--mono);font-size:10px;color:#939C8F;}
+  .bar{height:6px;background:#EFF2EC;border-radius:2px;overflow:hidden;position:relative;}
+  .bar i{display:block;height:100%;background:#6FCC1B;width:0;transition:width .5s;}
+  .bar .tk{position:absolute;top:-2px;width:1px;height:10px;background:#C8CFC3;}
+  .ladder{display:flex;justify-content:space-between;margin-top:6px;font-family:var(--mono);font-size:9px;color:#939C8F;}
+  .ladder b{color:#47940B;}
+
+  /* how-to steps */
+  .steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:6px;}
+  .step{text-align:center;}
+  .step .ic{width:40px;height:40px;margin:0 auto 6px;border-radius:5px;background:#ECF8DC;border:1px solid #6FCC1B;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:800;color:#10240A;}
+  .step .t{font-size:11.5px;font-weight:700;line-height:1.3;}
+  .step .d{font-size:10px;color:#5C645A;line-height:1.4;margin-top:2px;}
+  .steps .ar{color:#C8CFC3;font-family:var(--mono);padding-top:12px;}
+
+  /* feed */
+  .feed .f{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #EFF2EC;font-size:12.5px;}
+  .feed .f:last-child{border-bottom:0;}
+  .feed .f .a{width:28px;height:28px;border-radius:999px;background:#EFF2EC;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#5C645A;flex:0 0 auto;}
+  .feed .f .tx{flex:1;line-height:1.3;}
+  .feed .f .tx small{display:block;font-family:var(--mono);font-size:9.5px;color:#939C8F;margin-top:1px;}
+  .feed .f .rw{font-family:var(--mono);font-size:11px;font-weight:800;color:#47940B;white-space:nowrap;}
+  .feed .f .rw.dim{color:#939C8F;font-weight:500;}
+  .feed .f.new{background:#ECF8DC;margin:0 -14px;padding:9px 14px;}
+  .pill{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;background:#ECF8DC;color:#47940B;border:1px solid #6FCC1B;}
+  .pill.gray{background:#EFF2EC;color:#5C645A;border-color:#C8CFC3;}
+  .pill.wait{background:#FFF1E7;color:#C2410C;border-color:#C2410C;}
+
+  /* rewards screen */
+  .rw-big{background:#ECF8DC;border:1px solid #6FCC1B;border-radius:5px;padding:14px;margin-bottom:10px;}
+  .rw-big .n{font-family:var(--mono);font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1;color:#10240A;}
+  .rw-big .n small{font-size:13px;font-weight:700;margin-left:3px;}
+  .rw-big .l{font-size:11px;color:#47940B;margin-top:5px;}
+  .rule{font-size:12px;color:#5C645A;line-height:1.55;}
+  .rule b{color:#141712;}
+  .rule p{margin:0 0 6px;}
+
+  /* share sheet */
+  .veil{position:absolute;inset:0;background:rgba(20,23,18,.45);display:none;z-index:5;}
+  .veil.on{display:block;}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:14px 14px 0 0;padding:12px 14px 18px;transform:translateY(100%);transition:transform .25s;z-index:6;}
+  .sheet.on{transform:translateY(0);}
+  .sheet .hd{width:36px;height:4px;border-radius:2px;background:#C8CFC3;margin:0 auto 12px;}
+  .sheet h4{margin:0 0 3px;font-size:15px;font-weight:800;}
+  .sheet .sd{font-size:11px;color:#5C645A;margin-bottom:12px;}
+  .forms{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .form{border:1px solid #E4E8E1;border-radius:5px;padding:10px;cursor:pointer;}
+  .form.on{border-color:#6FCC1B;background:#ECF8DC;}
+  .form .t{font-weight:800;font-size:13px;}
+  .form .d{font-size:10px;color:#5C645A;margin-top:2px;line-height:1.4;}
+  .form .pv{margin-top:8px;height:64px;border:1px dashed #C8CFC3;border-radius:2px;background:#fff;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px;}
+  .form .pv .qr{width:40px;height:40px;flex:0 0 auto;}
+  .form .pv .lk{font-family:var(--mono);font-size:9.5px;color:#141712;word-break:break-all;line-height:1.3;}
+  .chans{display:flex;gap:8px;margin-top:12px;}
+  .chan{flex:1;text-align:center;font-size:10px;color:#5C645A;cursor:pointer;}
+  .chan i{display:block;width:40px;height:40px;margin:0 auto 4px;border-radius:999px;background:#EFF2EC;border:1px solid #E4E8E1;}
+  .chan:hover i{border-color:#6FCC1B;background:#ECF8DC;}
+
+  /* toast + push */
+  .toast{position:absolute;left:50%;bottom:70px;transform:translateX(-50%) translateY(10px);background:#141712;color:#fff;font-size:12px;padding:8px 14px;border-radius:999px;opacity:0;transition:.2s;z-index:9;white-space:nowrap;pointer-events:none;}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+  .push{position:absolute;left:10px;right:10px;top:-80px;background:#fff;border:1px solid #E4E8E1;border-radius:10px;padding:10px 12px;box-shadow:0 8px 24px -10px rgba(0,0,0,.35);transition:top .3s;z-index:8;display:flex;gap:10px;align-items:center;cursor:pointer;}
+  .push.on{top:34px;}
+  .push .ic{width:30px;height:30px;border-radius:7px;background:#6FCC1B;flex:0 0 auto;}
+  .push .t{font-size:12px;font-weight:800;}
+  .push .d{font-size:11px;color:#5C645A;}
+  .push .tm{margin-left:auto;font-family:var(--mono);font-size:9px;color:#939C8F;align-self:flex-start;}
+
+  /* controls panel */
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;}
+  .panel h3{margin:0 0 4px;font-size:14px;font-weight:700;}
+  .panel .d{font-size:12.5px;color:var(--muted);margin-bottom:12px;}
+  .cbtns{display:flex;flex-wrap:wrap;gap:8px;}
+  .cb{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 13px;cursor:pointer;transition:.14s;}
+  .cb:hover{border-color:var(--acc);color:var(--acc-ink);}
+  .cb.pri{background:var(--acc);border-color:var(--acc);color:var(--on-acc);font-weight:700;}
+  .cb.warn{border-color:var(--warn);color:var(--warn);}
+  .log{margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;max-height:150px;overflow-y:auto;border-top:1px solid var(--line);padding-top:8px;}
+  .log b{color:var(--acc-ink);}
+  .map{margin-top:16px;}
+  .map .mrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+  .map .nd{font-size:12px;border:1px solid var(--line);background:var(--canvas);border-radius:var(--r);padding:6px 10px;}
+  .map .nd.hi{border-color:var(--acc);background:var(--acc-soft);font-weight:700;}
+  .map .nd small{display:block;font-family:var(--mono);font-size:9.5px;color:var(--faint);}
+  .map .aw{color:var(--line-strong);font-family:var(--mono);}
+
+  /* spec tables */
+  table{border-collapse:collapse;width:100%;font-size:12.8px;background:var(--surface);}
+  th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-size:11.5px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:14px;}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px;}
+  .vc{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);}
+  .vc h4{margin:0 0 6px;font-size:14px;}
+  .vc p,.vc li{font-size:13px;color:var(--muted);margin:0;line-height:1.6;}
+  .vc ul{margin:0;padding-left:17px;}
+  .vc b{color:var(--ink);}
+  .note{margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--acc-soft);border-left:2px solid var(--acc);padding:9px 13px;border-radius:0 var(--r-sm) var(--r-sm) 0;}
+  .note b{color:var(--acc-ink);}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="brand">Body Park Atom · Sharing Module</div>
+  <h1>邀请页交互 Demo</h1>
+  <p class="lede">粗糙但可点的低保真 Demo。一个页面回答三件事：<b>怎么做</b>、<b>一键分享</b>、<b>我的数据与权益</b>。归因口径简化为"通过分享带来的订单数"，右侧可以模拟好友的动作，看数字和权益怎么动。</p>
+  <div class="meta">
+    <span class="mchip hot">v0.1 · 2026-09-03</span>
+    <span class="mchip">手机端 · 一屏三事</span>
+    <span class="mchip">形式：图片 + 链接</span>
+    <span class="mchip">归因：订单数 · 简化口径</span>
+  </div>
+</header>
+
+<section>
+  <div class="eyebrow">01 · 可点 Demo</div>
+  <h2>点手机，或用右侧按钮模拟好友动作</h2>
+  <div class="stage">
+    <!-- ================= PHONE ================= -->
+    <div class="phone" id="phone">
+      <div class="sb"><span>9:41</span><span>●●● ▲ ▮</span></div>
+
+      <!-- push notification -->
+      <div class="push" id="push" onclick="go('referral');hidePush()">
+        <div class="ic"></div>
+        <div><div class="t" id="pushT">好友通过你的邀请下单了</div><div class="d" id="pushD">+30 天会员已到账 · 查看</div></div>
+        <div class="tm">现在</div>
+      </div>
+
+      <!-- SCREEN: home -->
+      <div class="scr on" id="s-home">
+        <div class="nav">我的<div class="sp"></div></div>
+        <div class="p">
+          <div class="me"><div class="av">A</div><div><div class="n">Alex</div><div class="s">142 SESSIONS · 68.4 万 KG · ATOM #A2-0417</div></div></div>
+          <div class="banner" onclick="go('referral')">
+            <div class="dot"></div>
+            <div><div class="t">邀请好友买 Atom</div><div class="d">好友立减 ¥500 · 你得 30 天会员</div></div>
+            <div class="go">去邀请</div>
+          </div>
+          <div class="card list">
+            <div class="it">训练记录<span>142</span></div>
+            <div class="it">我的报告<span>›</span></div>
+            <div class="it">会员 · 剩 74 天<span>›</span></div>
+            <div class="it">我的设备<span>Atom</span></div>
+            <div class="it dim">设置<span>›</span></div>
+          </div>
+        </div>
+        <div class="tabs"><div><i></i>训练</div><div><i></i>课程</div><div><i></i>数据</div><div class="on"><i></i>我的</div></div>
+      </div>
+
+      <!-- SCREEN: referral -->
+      <div class="scr" id="s-referral">
+        <div class="nav"><div class="bk" onclick="go('home')">‹</div>邀请好友<div class="sp"></div><div class="rt" onclick="go('rules')">规则</div></div>
+        <div class="p">
+          <div class="hero">
+            <div class="dot"></div>
+            <div class="h">好友买 Atom <em>立减 ¥500</em><br>你得 <em>30 天会员</em></div>
+            <div class="sub">每成功邀请 1 位，权益自动到账。邀满 3 位再送配件券。</div>
+            <div class="codebox" onclick="toast('邀请码已复制')">
+              <div><div class="k">我的邀请码</div><div class="v">ALEX-7K2A</div></div>
+              <div class="cp">复制</div>
+            </div>
+          </div>
+
+          <div class="btn pri" onclick="openSheet()">一键分享给朋友</div>
+          <div class="row" style="margin:8px 0 12px">
+            <div class="btn sec" onclick="openSheet('img')">保存邀请图</div>
+            <div class="btn sec" onclick="toast('链接已复制 · bp.fit/i/7K2A')">复制链接</div>
+          </div>
+
+          <div class="lbl" style="margin-bottom:6px">我的数据与权益</div>
+          <div class="stats">
+            <div class="st" onclick="go('detail')"><div class="n" id="nClick">12</div><div class="l">点击了链接</div><div class="u">CLICKS</div></div>
+            <div class="st" onclick="go('detail')"><div class="n" id="nBuy">2</div><div class="l">好友已购买</div><div class="u">ORDERS</div></div>
+            <div class="st hot" onclick="go('rewards')"><div class="n" id="nRw">60</div><div class="l">会员天数到账</div><div class="u">DAYS</div></div>
+          </div>
+          <div class="card">
+            <div class="prog">
+              <div class="t"><b id="progT">再邀 1 位，解锁配件券</b><span id="progN">2 / 3</span></div>
+              <div class="bar"><i id="progBar"></i><span class="tk" style="left:33.3%"></span><span class="tk" style="left:66.6%"></span></div>
+              <div class="ladder"><span><b>1 位</b> 30 天会员 ✓</span><span>3 位 配件券 ¥199</span><span>5 位 限定套装</span></div>
+            </div>
+          </div>
+
+          <div class="lbl" style="margin:4px 0 6px">怎么做</div>
+          <div class="card">
+            <div class="steps">
+              <div class="step"><div class="ic">1</div><div class="t">发给朋友</div><div class="d">图片或链接，都带你的码</div></div>
+              <div class="ar">›</div>
+              <div class="step"><div class="ic">2</div><div class="t">朋友下单</div><div class="d">落地页自动带优惠，或结算填码</div></div>
+              <div class="ar">›</div>
+              <div class="step"><div class="ic">3</div><div class="t">你得权益</div><div class="d">朋友激活设备后自动到账</div></div>
+            </div>
+          </div>
+
+          <div class="lbl" style="margin:4px 0 6px">最近动态</div>
+          <div class="card feed" id="feed">
+            <div class="f"><div class="a">L</div><div class="tx">Lin** 购买并激活了 Atom<small>09-01 · 通过邀请图</small></div><div class="rw">+30 天</div></div>
+            <div class="f"><div class="a">W</div><div class="tx">Wang** 已下单，等待激活<small>08-30 · 通过链接</small></div><div class="rw dim">待到账</div></div>
+            <div class="f"><div class="a">?</div><div class="tx">3 位好友点击了链接<small>08-28 ~ 08-30</small></div><div class="rw dim">—</div></div>
+          </div>
+          <div style="height:20px"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN: detail -->
+      <div class="scr" id="s-detail">
+        <div class="nav"><div class="bk" onclick="go('referral')">‹</div>邀请明细<div class="sp"></div></div>
+        <div class="p">
+          <div class="stats">
+            <div class="st"><div class="n" id="dClick">12</div><div class="l">点击</div></div>
+            <div class="st"><div class="n" id="dBuy">2</div><div class="l">下单</div></div>
+            <div class="st"><div class="n" id="dAct">1</div><div class="l">已激活</div></div>
+          </div>
+          <div class="lbl" style="margin-bottom:6px">按人</div>
+          <div class="card feed" id="people">
+            <div class="f"><div class="a">L</div><div class="tx">Lin**<small>点击 → 下单 → 激活</small></div><span class="pill">已到账</span></div>
+            <div class="f"><div class="a">W</div><div class="tx">Wang**<small>点击 → 下单</small></div><span class="pill wait">待激活</span></div>
+            <div class="f"><div class="a">?</div><div class="tx">未注册访客 × 10<small>仅点击</small></div><span class="pill gray">—</span></div>
+          </div>
+          <div class="lbl" style="margin:4px 0 6px">按来源</div>
+          <div class="card feed">
+            <div class="f"><div class="tx">邀请图（微信 / 朋友圈）</div><div class="rw dim" style="color:#141712">8 点击 · 1 单</div></div>
+            <div class="f"><div class="tx">链接（复制 / iMessage）</div><div class="rw dim" style="color:#141712">3 点击 · 1 单</div></div>
+            <div class="f"><div class="tx">训练分享图上的二维码</div><div class="rw dim" style="color:#141712">1 点击 · 0 单</div></div>
+          </div>
+          <div class="note" style="font-size:11px;margin-top:6px;background:#ECF8DC;border-color:#6FCC1B;color:#5C645A">好友昵称做脱敏；只有下单后才出现在"按人"里，纯点击只计数。</div>
+        </div>
+      </div>
+
+      <!-- SCREEN: rewards -->
+      <div class="scr" id="s-rewards">
+        <div class="nav"><div class="bk" onclick="go('referral')">‹</div>我的权益<div class="sp"></div></div>
+        <div class="p">
+          <div class="rw-big"><div class="n" id="rwBig">60<small>天</small></div><div class="l">会员已到账 · 当前会员到期 2026-11-16</div></div>
+          <div class="lbl" style="margin-bottom:6px">已获得</div>
+          <div class="card feed" id="rwList">
+            <div class="f"><div class="tx">30 天会员<small>09-01 · Lin** 激活</small></div><span class="pill">已到账</span></div>
+            <div class="f"><div class="tx">30 天会员<small>08-12 · Chen** 激活</small></div><span class="pill">已到账</span></div>
+            <div class="f"><div class="tx">30 天会员<small>Wang** 下单，等待激活</small></div><span class="pill wait">待到账</span></div>
+          </div>
+          <div class="lbl" style="margin:4px 0 6px">下一档</div>
+          <div class="card">
+            <div class="prog">
+              <div class="t"><b>配件券 ¥199</b><span id="progN2">2 / 3</span></div>
+              <div class="bar"><i id="progBar2"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN: rules -->
+      <div class="scr" id="s-rules">
+        <div class="nav"><div class="bk" onclick="go('referral')">‹</div>活动规则<div class="sp"></div></div>
+        <div class="p">
+          <div class="card rule">
+            <p><b>怎么算成功邀请？</b>好友通过你的邀请图或链接下单 Atom，并完成设备激活。</p>
+            <p><b>忘了带码怎么办？</b>好友在激活设备时可以填写你的邀请码 <code style="background:#EFF2EC">ALEX-7K2A</code>，同样算数。</p>
+            <p><b>权益什么时候到账？</b>好友确认收货并激活后自动到账，一般 1 天内。</p>
+            <p><b>有上限吗？</b>会员天数不设上限；配件券与套装每人各限 1 次。</p>
+            <p><b>退货了呢？</b>对应权益会被收回。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- share sheet -->
+      <div class="veil" id="veil" onclick="closeSheet()"></div>
+      <div class="sheet" id="sheet">
+        <div class="hd"></div>
+        <h4>分享给朋友</h4>
+        <div class="sd">两种形式都带你的邀请码，朋友怎么转发都算你的。</div>
+        <div class="forms">
+          <div class="form on" id="f-img" onclick="pick('img')">
+            <div class="t">邀请图</div><div class="d">带二维码 · 适合微信 / 朋友圈</div>
+            <div class="pv"><svg class="qr" viewBox="0 0 21 21" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/><g fill="#141712" id="qrg"></g></svg><div style="font-size:9px;line-height:1.3"><b>好友立减 ¥500</b><br><span style="font-family:var(--mono);color:#47940B">ALEX-7K2A</span></div></div>
+          </div>
+          <div class="form" id="f-link" onclick="pick('link')">
+            <div class="t">链接</div><div class="d">H5 落地页 · 适合 iMessage / 群</div>
+            <div class="pv"><div class="lk">bp.fit/i/7K2A<br><span style="color:#939C8F">Alex 邀请你 · 好友立减 ¥500</span></div></div>
+          </div>
+        </div>
+        <div class="chans">
+          <div class="chan" onclick="share('微信')"><i></i>微信</div>
+          <div class="chan" onclick="share('朋友圈')"><i></i>朋友圈</div>
+          <div class="chan" onclick="share('iMessage')"><i></i>iMessage</div>
+          <div class="chan" onclick="share('保存')"><i></i>保存</div>
+          <div class="chan" onclick="share('更多')"><i></i>更多</div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <!-- ================= CONTROLS ================= -->
+    <div>
+      <div class="panel">
+        <h3>模拟好友的动作</h3>
+        <div class="d">这些事件真实发生在服务端；这里按一下，看邀请人这一端会看到什么。</div>
+        <div class="cbtns">
+          <button class="cb" onclick="evClick()">好友点击了链接</button>
+          <button class="cb pri" onclick="evBuy()">好友下单了</button>
+          <button class="cb" onclick="evActivate()">好友激活了设备</button>
+          <button class="cb warn" onclick="evRefund()">好友退货了</button>
+          <button class="cb" onclick="reset()">重置</button>
+        </div>
+        <div class="log" id="log"><span style="color:var(--faint)">事件日志会出现在这里</span></div>
+      </div>
+
+      <div class="panel map" style="margin-top:14px">
+        <h3>页面结构</h3>
+        <div class="d">一个主页面 + 三个二级页；分享面板是覆盖层不是页面。</div>
+        <div class="mrow"><div class="nd">"我的" 页 banner<small>入口 ①</small></div><span class="aw">/</span><div class="nd">课后报告底部<small>入口 ②</small></div><span class="aw">/</span><div class="nd">推送通知<small>入口 ③</small></div></div>
+        <div class="mrow"><span class="aw">↓</span></div>
+        <div class="mrow"><div class="nd hi">邀请页<small>hero · 一键分享 · 数据 · 怎么做 · 动态</small></div></div>
+        <div class="mrow"><span class="aw">↓</span><div class="nd">分享面板<small>覆盖层：图片 / 链接 × 渠道</small></div><div class="nd">邀请明细<small>按人 · 按来源</small></div><div class="nd">我的权益<small>已得 · 下一档</small></div><div class="nd">规则<small>五问五答</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">02 · 简化后的口径</div>
+  <h2>业务只看一个数，用户看三个数</h2>
+  <div class="cols">
+    <div class="vc">
+      <h4>业务侧：通过分享带来的订单数</h4>
+      <p>不追求逐单归因到人也能算清楚。凡是<b>订单带 token</b>（自有商城）或<b>激活时填了码</b>的，都算"分享带来的订单"。两条来源相加就是这个数，不需要联盟链接、不需要安装归因 SDK。</p>
+    </div>
+    <div class="vc">
+      <h4>用户侧：点击 · 购买 · 权益</h4>
+      <ul>
+        <li><b>点击</b>：落地页按 token 计数，几乎零成本，但它是用户最先看到变化的数字——<b>动机的第一反馈</b>。</li>
+        <li><b>购买</b>：同上面业务口径，按 token 拆到人。</li>
+        <li><b>权益</b>：会员天数 + 下一档进度。<b>"再邀 1 位解锁 ×"</b> 这一行是页面上最有推力的一句话。</li>
+      </ul>
+    </div>
+    <div class="vc">
+      <h4>三个状态，别混</h4>
+      <ul>
+        <li><code>下单</code> → 数字动、权益标"待到账"</li>
+        <li><code>激活</code> → 权益到账、推送通知</li>
+        <li><code>退货</code> → 权益收回、动态里留痕</li>
+      </ul>
+      <p style="margin-top:6px">用户看到"待到账"会去催朋友激活——把补录压力交给有动机的一方。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">03 · 页面要素清单</div>
+  <h2>给设计的任务书</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:120px">区块</th><th style="width:250px">内容</th><th>交互</th><th style="width:70px">优先级</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hero</b></td><td>利益点两句话（好友得什么 / 我得什么）+ 我的邀请码</td><td>点码复制。码永远可见，是链路断了时的最后一根绳</td><td>P0</td></tr>
+        <tr><td><b>一键分享</b></td><td>主按钮 + 两个次按钮（保存图 / 复制链接）</td><td>拉起分享面板：图片 / 链接 二选一 × 渠道；默认选图片（国内）或链接（海外），由 Profile 决定</td><td>P0</td></tr>
+        <tr><td><b>数据</b></td><td>点击 / 购买 / 权益 三格</td><td>点击进明细页；数字变化时有一次高亮</td><td>P0</td></tr>
+        <tr><td><b>下一档进度</b></td><td>"再邀 N 位解锁 ×" + 进度条 + 三档阶梯</td><td>随购买数实时更新</td><td>P0</td></tr>
+        <tr><td><b>怎么做</b></td><td>三步：发给朋友 → 朋友下单 → 你得权益</td><td>静态，可折叠</td><td>P0</td></tr>
+        <tr><td><b>最近动态</b></td><td>脱敏昵称 + 事件 + 来源 + 权益状态</td><td>新事件置顶高亮</td><td>P1</td></tr>
+        <tr><td><b>邀请明细</b></td><td>按人（漏斗态）/ 按来源（图 vs 链接 vs 训练图二维码）</td><td>只读</td><td>P1</td></tr>
+        <tr><td><b>我的权益</b></td><td>总天数 + 已得列表 + 下一档</td><td>只读</td><td>P1</td></tr>
+        <tr><td><b>规则</b></td><td>五问五答</td><td>只读</td><td>P0（法务要看）</td></tr>
+        <tr><td><b>推送</b></td><td>好友下单 / 激活 / 权益到账</td><td>点击直达邀请页</td><td>P1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>P0 只做邀请页 + 分享面板 + 规则页</b>；明细、权益页、推送、动态流都是 P1。P0 版本里三格数据不可点，进度条保留——它是动机的核心，不能砍。</div>
+</section>
+</div>
+
+<script>
+(function(){
+  // fake QR
+  var g=document.getElementById('qrg'),s=9137,out='',N=21;
+  function rnd(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;}
+  var m=[];for(var y=0;y<N;y++){m.push([]);for(var x=0;x<N;x++)m[y].push(rnd()>0.5?1:0);}
+  function fd(ox,oy){for(var y=0;y<7;y++)for(var x=0;x<7;x++){m[oy+y][ox+x]=((x===0||x===6||y===0||y===6)||(x>=2&&x<=4&&y>=2&&y<=4))?1:0;}
+    for(var y=-1;y<8;y++)for(var x=-1;x<8;x++){var yy=oy+y,xx=ox+x;if(yy<0||xx<0||yy>=N||xx>=N)continue;if(y===-1||y===7||x===-1||x===7)m[yy][xx]=0;}}
+  fd(0,0);fd(14,0);fd(0,14);
+  for(var y=0;y<N;y++)for(var x=0;x<N;x++)if(m[y][x])out+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>';
+  g.innerHTML=out;
+})();
+
+var S={click:12,buy:2,act:1,days:60,pending:1,form:'img',n:0};
+var names=['Zhao**','Qian**','Sun**','Li**','Zhou**','Wu**'];
+var pendingQueue=['Wang**']; // ordered, not yet activated
+var activated=['Lin**','Chen**'];
+
+function $(id){return document.getElementById(id);}
+function go(id){document.querySelectorAll('.scr').forEach(function(e){e.classList.remove('on');});$('s-'+id).classList.add('on');$('s-'+id).scrollTop=0;}
+function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on');},1600);}
+function openSheet(f){if(f)pick(f);$('veil').classList.add('on');$('sheet').classList.add('on');}
+function closeSheet(){$('veil').classList.remove('on');$('sheet').classList.remove('on');}
+function pick(f){S.form=f;$('f-img').classList.toggle('on',f==='img');$('f-link').classList.toggle('on',f==='link');}
+function share(ch){closeSheet();toast((S.form==='img'?'邀请图':'链接')+' 已分享到 '+ch);log('邀请人分享了 <b>'+(S.form==='img'?'邀请图':'链接')+'</b> → '+ch+'（token 7K2A 已带上）');}
+function hidePush(){$('push').classList.remove('on');}
+function push(t,d){$('pushT').textContent=t;$('pushD').textContent=d;$('push').classList.add('on');clearTimeout(window._p);window._p=setTimeout(hidePush,3200);}
+function bump(id){var e=$(id);e.classList.add('bump');setTimeout(function(){e.classList.remove('bump');},900);}
+function log(h){var l=$('log');if(!l.dataset.x){l.innerHTML='';l.dataset.x=1;}var d=new Date();l.innerHTML='<div>'+d.toTimeString().slice(0,8)+'  '+h+'</div>'+l.innerHTML;}
+function feed(html,cls){var f=$('feed');f.querySelectorAll('.f.new').forEach(function(e){e.classList.remove('new');});var d=document.createElement('div');d.className='f new';d.innerHTML=html;f.insertBefore(d,f.firstChild);}
+
+function render(){
+  $('nClick').textContent=S.click;$('nBuy').textContent=S.buy;$('nRw').textContent=S.days;
+  $('dClick').textContent=S.click;$('dBuy').textContent=S.buy;$('dAct').textContent=S.act;
+  $('rwBig').innerHTML=S.days+'<small>天</small>';
+  var tier=S.buy>=5?5:(S.buy>=3?3:1), next=S.buy>=5?null:(S.buy>=3?5:3), cap=next||5;
+  var pct=Math.min(100,S.buy/cap*100);
+  $('progBar').style.width=pct+'%';$('progBar2').style.width=Math.min(100,S.buy/3*100)+'%';
+  $('progN').textContent=Math.min(S.buy,cap)+' / '+cap;$('progN2').textContent=Math.min(S.buy,3)+' / 3';
+  $('progT').textContent= next? ('再邀 '+(next-S.buy)+' 位，解锁'+(next===3?'配件券':'限定套装')) : '已解锁全部档位';
+}
+function evClick(){S.click++;render();bump('nClick');log('落地页命中 token 7K2A → <b>点击 +1</b>（用户端立即可见）');}
+function evBuy(){var n=names[S.n++%names.length];S.buy++;S.pending++;pendingQueue.push(n);render();bump('nBuy');
+  feed('<div class="a">'+n[0]+'</div><div class="tx">'+n+' 已下单，等待激活<small>刚刚 · 通过'+(S.form==='img'?'邀请图':'链接')+'</small></div><div class="rw dim">待到账</div>');
+  push(n+' 通过你的邀请下单了','激活设备后 30 天会员到账');
+  log('订单带 token（或激活填码）→ <b>购买 +1</b>，权益记为 <b>待到账</b>；业务侧"分享带来的订单"+1');}
+function evActivate(){if(!pendingQueue.length){toast('没有待激活的订单');log('无待激活订单，先点"好友下单了"');return;}
+  var n=pendingQueue.shift();S.act++;S.pending--;S.days+=30;activated.push(n);render();bump('nRw');
+  feed('<div class="a">'+n[0]+'</div><div class="tx">'+n+' 激活了 Atom<small>刚刚</small></div><div class="rw">+30 天</div>');
+  push('+30 天会员已到账',n+' 已激活 Atom · 查看权益');
+  var r=$('rwList');var d=document.createElement('div');d.className='f';d.innerHTML='<div class="tx">30 天会员<small>刚刚 · '+n+' 激活</small></div><span class="pill">已到账</span>';r.insertBefore(d,r.firstChild);
+  log('激活事件 → 权益 <b>已到账 +30 天</b>，推送通知');}
+function evRefund(){if(!activated.length){toast('没有可退的订单');return;}
+  var n=activated.pop();S.buy=Math.max(0,S.buy-1);S.act=Math.max(0,S.act-1);S.days=Math.max(0,S.days-30);render();
+  feed('<div class="a">'+n[0]+'</div><div class="tx">'+n+' 退货，权益已收回<small>刚刚</small></div><div class="rw" style="color:#C2410C">−30 天</div>');
+  log('退货 → <b>权益收回 −30 天</b>，动态留痕；业务侧订单数 −1');}
+function reset(){S={click:12,buy:2,act:1,days:60,pending:1,form:'img',n:0};pendingQueue=['Wang**'];activated=['Lin**','Chen**'];render();$('feed').querySelectorAll('.f.new').forEach(function(e){e.remove();});$('log').innerHTML='<span style="color:var(--faint)">已重置</span>';$('log').dataset.x='';go('referral');}
+render();
+</script>
