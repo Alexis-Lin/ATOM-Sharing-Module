@@ -1,0 +1,663 @@
+<title>邀请分享与归因设计 · Referral & Attribution v1.0</title>
+<style>
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3; --wire:#B8C0B4;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --warn:#C2410C; --warn-soft:#FFF1E7;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+      --warn:#FB923C;--warn-soft:#2A1508;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="light"]{--bg:#F6F7F4;--surface:#FFFFFF;--surface-2:#EFF2EC;--canvas:#FAFBF8;
+    --ink:#141712;--muted:#5C645A;--faint:#939C8F;--line:#E4E8E1;--line-strong:#C8CFC3;--wire:#B8C0B4;
+    --acc:#6FCC1B;--acc-soft:#ECF8DC;--acc-ink:#47940B;--on-acc:#10240A;--warn:#C2410C;--warn-soft:#FFF1E7;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--wire:#4E584A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--warn:#FB923C;--warn-soft:#2A1508;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px 100px;}
+  section{margin-top:56px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  h3{font-size:15px;font-weight:700;margin:26px 0 8px;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--acc);}
+  .lede{color:var(--muted);max-width:74ch;font-size:14px;margin:6px 0 0;}
+  .mono{font-family:var(--mono);}
+  code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+  header{padding:50px 0 24px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(25px,4.2vw,38px);font-weight:800;letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+
+  /* verdict cards */
+  .verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:20px;}
+  .vc{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);}
+  .vc .n{font-family:var(--mono);font-size:11px;color:var(--acc-ink);font-weight:700;letter-spacing:.1em;}
+  .vc h4{margin:6px 0 6px;font-size:15px;font-weight:700;letter-spacing:-.01em;}
+  .vc p{margin:0;font-size:13px;color:var(--muted);line-height:1.6;}
+  .vc p b{color:var(--ink);}
+
+  table{border-collapse:collapse;width:100%;font-size:12.8px;background:var(--surface);}
+  th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-size:11.5px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:16px;}
+  td .mono,th .mono{font-size:11.5px;}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;border-radius:var(--r-sm);padding:2px 7px;white-space:nowrap;}
+  .t-det{background:var(--acc);color:var(--on-acc);}
+  .t-act{background:var(--acc-soft);color:var(--acc-ink);border:1px solid var(--acc);}
+  .t-plat{background:var(--surface-2);color:var(--muted);border:1px solid var(--line-strong);}
+  .t-no{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn);}
+
+  /* chain simulator */
+  .sim{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:18px;overflow:hidden;}
+  .simbar{display:flex;flex-wrap:wrap;gap:20px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--surface-2);}
+  .grp{display:flex;align-items:center;gap:8px;}
+  .grp>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;}
+  .btn{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);
+    border-radius:999px;padding:5px 13px;cursor:pointer;transition:.14s;}
+  .btn:hover{border-color:var(--acc);color:var(--acc-ink);}
+  .btn.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc);font-weight:700;}
+  .simbody{padding:20px 18px 24px;}
+  .simhead{font-size:13px;color:var(--muted);margin:0 0 16px;padding-left:2px;}
+  .simhead b{color:var(--ink);}
+  .lane{margin-bottom:18px;}
+  .lane-h{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+  .lane-h .lbl{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:var(--r-sm);}
+  .lane.main .lbl{background:var(--acc);color:var(--on-acc);}
+  .lane.alt .lbl{background:var(--acc-soft);color:var(--acc-ink);border:1px solid var(--acc);}
+  .lane.fb .lbl{background:var(--surface-2);color:var(--muted);border:1px solid var(--line-strong);}
+  .lane-h .cap{font-size:12.5px;color:var(--muted);}
+  .chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;}
+  .step{background:var(--canvas);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;min-width:118px;max-width:190px;}
+  .step .s1{font-size:12.5px;font-weight:600;line-height:1.35;}
+  .step .s2{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:3px;line-height:1.4;}
+  .step.hit{border-color:var(--acc);background:var(--acc-soft);}
+  .step.hit .s2{color:var(--acc-ink);}
+  .step.dead{border-style:dashed;border-color:var(--warn);background:var(--warn-soft);}
+  .step.dead .s2{color:var(--warn);}
+  .arw{align-self:center;color:var(--wire);font-family:var(--mono);font-size:14px;padding:0 7px;}
+  .note{margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--acc-soft);border-left:2px solid var(--acc);padding:9px 13px;border-radius:0 var(--r-sm) var(--r-sm) 0;}
+  .note b{color:var(--acc-ink);}
+
+  /* artifact renders */
+  .arts{display:flex;flex-wrap:wrap;gap:26px;margin-top:20px;align-items:flex-start;}
+  .art{flex:0 0 auto;}
+  .art > .cap{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:9px;max-width:270px;line-height:1.5;}
+  .art > .cap b{color:var(--acc-ink);}
+  .exwrap{--u:1px;--cbg:#FFFFFF;--cink:#141712;--cmute:#6C7468;--cline:#E4E8E1;--cacc:#6FCC1B;--csoft:#ECF8DC;--conacc:#10240A;}
+  .shot{width:calc(var(--u)*270);background:var(--cbg);color:var(--cink);border:1px solid var(--line-strong);
+    border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);font-family:var(--cjk);}
+  .shot .pad{padding:calc(var(--u)*18);}
+  .ttl{font-size:calc(var(--u)*17px);font-weight:800;letter-spacing:-.02em;line-height:1.2;}
+  .sub{font-size:calc(var(--u)*10px);color:var(--cmute);font-family:var(--mono);margin-top:calc(var(--u)*4);}
+  .idrow{display:flex;align-items:center;gap:calc(var(--u)*8);margin-bottom:calc(var(--u)*14);}
+  .av{width:calc(var(--u)*30);height:calc(var(--u)*30);border-radius:999px;background:var(--csoft);border:1px solid var(--cacc);
+    display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*12px);font-weight:800;color:var(--conacc);}
+  .idtx .a{font-size:calc(var(--u)*12px);font-weight:700;line-height:1.2;}
+  .idtx .b{font-size:calc(var(--u)*9px);color:var(--cmute);font-family:var(--mono);margin-top:calc(var(--u)*2);}
+  .hero{height:calc(var(--u)*108);background:var(--csoft);border:1px solid var(--cline);border-radius:calc(var(--u)*5);
+    margin:calc(var(--u)*12) 0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .hero .dev{width:calc(var(--u)*128);height:calc(var(--u)*74);border:calc(var(--u)*2) solid var(--conacc);border-radius:calc(var(--u)*4);
+    background:var(--cbg);position:relative;}
+  .hero .dev::after{content:"";position:absolute;left:12%;top:26%;width:40%;height:6%;background:var(--cacc);}
+  .hero .dev::before{content:"";position:absolute;left:12%;top:44%;width:66%;height:6%;background:var(--cline);}
+  .hero .tagp{position:absolute;left:calc(var(--u)*8);top:calc(var(--u)*8);background:var(--conacc);color:#fff;
+    font-family:var(--mono);font-size:calc(var(--u)*9px);font-weight:700;padding:calc(var(--u)*3) calc(var(--u)*7);border-radius:calc(var(--u)*2);}
+  .offer{display:flex;align-items:baseline;gap:calc(var(--u)*7);margin:calc(var(--u)*10) 0 calc(var(--u)*4);}
+  .offer .big{font-family:var(--mono);font-size:calc(var(--u)*26px);font-weight:800;letter-spacing:-.03em;color:var(--cink);}
+  .offer .unit{font-size:calc(var(--u)*10px);color:var(--cmute);}
+  .offer .old{font-size:calc(var(--u)*10px);color:var(--cmute);text-decoration:line-through;}
+  .codebar{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*8);
+    border:calc(var(--u)*1) dashed var(--cacc);background:var(--csoft);border-radius:calc(var(--u)*2);
+    padding:calc(var(--u)*7) calc(var(--u)*10);margin-top:calc(var(--u)*8);}
+  .codebar .k{font-size:calc(var(--u)*9px);color:var(--cmute);font-family:var(--mono);}
+  .codebar .v{font-family:var(--mono);font-size:calc(var(--u)*15px);font-weight:800;letter-spacing:.08em;color:var(--conacc);}
+  .qrow{display:flex;align-items:center;gap:calc(var(--u)*11);margin-top:calc(var(--u)*13);
+    border-top:1px solid var(--cline);padding-top:calc(var(--u)*12);}
+  .qrx{width:calc(var(--u)*54);height:calc(var(--u)*54);flex:0 0 auto;}
+  .qtx .a{font-size:calc(var(--u)*10.5px);font-weight:700;line-height:1.3;}
+  .qtx .b{font-size:calc(var(--u)*9px);color:var(--cmute);font-family:var(--mono);margin-top:calc(var(--u)*3);line-height:1.4;}
+  .stats{display:flex;gap:calc(var(--u)*14);margin-top:calc(var(--u)*10);}
+  .stats div .n{font-family:var(--mono);font-size:calc(var(--u)*15px);font-weight:800;letter-spacing:-.02em;}
+  .stats div .l{font-size:calc(var(--u)*8.5px);color:var(--cmute);font-family:var(--mono);margin-top:calc(var(--u)*1);}
+
+  /* phone mock for H5 */
+  .phone{width:270px;border:8px solid var(--ink);border-radius:22px;background:#fff;overflow:hidden;box-shadow:var(--shadow);}
+  .pnav{background:#F2F3EF;color:#5C645A;font-family:var(--mono);font-size:9.5px;padding:6px 10px;display:flex;justify-content:space-between;border-bottom:1px solid #E4E8E1;}
+  .pbody{background:#fff;color:#141712;font-family:var(--cjk);padding:16px 15px 18px;}
+  .pcta{display:block;text-align:center;background:#6FCC1B;color:#10240A;font-weight:800;font-size:13px;padding:11px;border-radius:999px;margin-top:12px;}
+  .pcta.ghost{background:#fff;color:#47940B;border:1px solid #6FCC1B;font-weight:700;margin-top:8px;}
+  .pmini{font-size:10px;color:#939C8F;font-family:var(--mono);text-align:center;margin-top:10px;line-height:1.5;}
+  .pdivider{display:flex;align-items:center;gap:8px;margin:14px 0 2px;color:#939C8F;font-family:var(--mono);font-size:9px;}
+  .pdivider::before,.pdivider::after{content:"";flex:1;height:1px;background:#E4E8E1;}
+
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:16px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);}
+  .card h4{margin:0 0 8px;font-size:14px;font-weight:700;}
+  .card ul{margin:0;padding-left:17px;font-size:13px;color:var(--muted);line-height:1.7;}
+  .card ul b{color:var(--ink);}
+  .kv{font-family:var(--mono);font-size:12px;line-height:1.9;color:var(--muted);}
+  .kv b{color:var(--acc-ink);}
+  ul.plain{margin:10px 0 0;padding-left:18px;font-size:13.5px;color:var(--muted);line-height:1.75;}
+  ul.plain b{color:var(--ink);}
+  .q{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:var(--r);padding:14px 17px;margin-top:12px;box-shadow:var(--shadow);}
+  .q .who{font-family:var(--mono);font-size:10.5px;color:var(--warn);font-weight:700;letter-spacing:.08em;}
+  .q h4{margin:5px 0 5px;font-size:14.5px;font-weight:700;}
+  .q p{margin:0;font-size:13px;color:var(--muted);}
+  .q p b{color:var(--ink);}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="brand">Body Park Atom · Sharing Module</div>
+  <h1>邀请分享与归因设计<br>Referral &amp; Attribution</h1>
+  <p class="lede">把"分享给朋友"从一个孤立功能，还原成分享模块上的一层薄挂载。目标以<b>电商硬件购买</b>为先，分享形式只有<b>图片（带二维码）</b>与<b>直接 URL（H5）</b>两种，邀请码不是第三种形式、而是这两种形式里的一个字段。</p>
+  <div class="meta">
+    <span class="mchip hot">v1.0 · 2026-09-03</span>
+    <span class="mchip">目标：电商购买 &gt; 下载 App</span>
+    <span class="mchip">形式：图片 + H5 两种</span>
+    <span class="mchip">归因：全链路确定性</span>
+    <span class="mchip">地区：CN / GLOBAL 双 Profile</span>
+  </div>
+</header>
+
+<section>
+  <div class="eyebrow">01 · 结论先行</div>
+  <h2>三条判断</h2>
+  <p class="lede">这三条决定了后面所有结构。如果不认同其中任何一条，后面的方案要重来。</p>
+  <div class="verdicts">
+    <div class="vc">
+      <div class="n">判断 A</div>
+      <h4>落到电商，归因就不再靠猜</h4>
+      <p>跳应用商店的链路里，iOS 没有官方的按人延迟深链、微信屏蔽 <code>itms-apps</code>、国内安卓没有统一商店与 Install Referrer——只能做概率匹配。改成落到<b>购买页</b>后，归因点从"安装时刻"移到"<b>下单时刻</b>"：订单一定有号、一定能带码、一定进账本。<b>整条阶梯每一层都是确定性的，没有概率层。</b></p>
+    </div>
+    <div class="vc">
+      <div class="n">判断 B</div>
+      <h4>落地页是唯一的变化点</h4>
+      <p>分享物（图片、短链）在全球是<b>同一份</b>；地区差异、环境差异、目标差异全部由 H5 落地页在运行时吸收。这意味着 App 端和 Atom 设备端<b>不需要写任何地区逻辑</b>——它们只负责渲染一个 token。国际化不是多做几套分享 UI，是多配几份 Profile。</p>
+    </div>
+    <div class="vc">
+      <div class="n">判断 C</div>
+      <h4>一个码，两个时刻</h4>
+      <p>优惠码在<b>结算时是折扣</b>（促成交，被邀请人的钩子），在<b>首次激活 Atom 时是凭证</b>（做归因，邀请人的奖励依据）。同一个码复用两次，所以即使在天猫/京东这类归因黑洞里成交，激活那一刻也能把关系补回来。<b>这是电商链路能兜底的根本原因。</b></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">02 · 链路总图（可交互）</div>
+  <h2>选地区 × 选环境，看这条链怎么走</h2>
+  <p class="lede">每种组合都有三条道：<b>主路</b>（我们希望走的，归因最干净）、<b>备路</b>（用户偏要去第三方电商时走的）、<b>兜底</b>（前两条都失败时的最后一次机会）。注意兜底那条在所有组合里是同一条——这就是它作为架构底座的价值。</p>
+
+  <div class="sim">
+    <div class="simbar">
+      <div class="grp"><span>地区</span>
+        <button class="btn on" data-k="r" data-v="cn">中国大陆</button>
+        <button class="btn" data-k="r" data-v="gl">海外</button>
+      </div>
+      <div class="grp"><span>接收环境</span>
+        <button class="btn on" data-k="e" data-v="wx">微信内</button>
+        <button class="btn" data-k="e" data-v="br">手机浏览器</button>
+        <button class="btn" data-k="e" data-v="dv">扫 Atom 设备屏</button>
+      </div>
+      <div class="grp"><span>目标</span>
+        <button class="btn on" data-k="t" data-v="hw">买硬件 ★</button>
+        <button class="btn" data-k="t" data-v="ap">下载 App</button>
+      </div>
+    </div>
+    <div class="simbody">
+      <p class="simhead" id="simhead"></p>
+      <div id="lanes"></div>
+      <div class="note" id="simnote"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">03 · 归因阶梯</div>
+  <h2>五层，越往下越兜底，全部确定性</h2>
+  <p class="lede">按顺序命中即停。<span class="tag t-det">确定</span> = 系统自动、无需用户动作；<span class="tag t-act">需动作</span> = 依赖用户填/用了那个码；<span class="tag t-plat">平台口径</span> = 数据由第三方平台回传，我们无法自证。</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:52px">层</th><th style="width:190px">归因点</th><th style="width:150px">触发时机</th><th style="width:92px">确定性</th><th>覆盖范围与说明</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="mono"><b>L0</b></td>
+          <td><b>自有商城订单带 token</b><br><span class="mono" style="color:var(--faint)">order.referral_token</span></td>
+          <td>落地页 → 自有商城下单</td>
+          <td><span class="tag t-det">确定 100%</span></td>
+          <td>官方商城 / 微信小程序商城 / 海外独立站。token 从落地页透传进购物车属性，随订单落库。<b>这是我们唯一能完全控制的一层，也是把用户往自有渠道推的最强理由。</b></td>
+        </tr>
+        <tr>
+          <td class="mono"><b>L1</b></td>
+          <td><b>专属优惠码在结算时被使用</b><br><span class="mono" style="color:var(--faint)">coupon = ALEX-7K2A</span></td>
+          <td>任意电商结算页</td>
+          <td><span class="tag t-act">需动作</span></td>
+          <td>用户手动输入/自动填充。用了就是 100% 准确，问题是<b>漏斗漏</b>（忘了填、平台限制自定义码）。天猫/京东对自定义码有规则限制，需与店铺运营确认可用形态。</td>
+        </tr>
+        <tr>
+          <td class="mono"><b>L2</b></td>
+          <td><b>平台联盟追踪链接</b><br><span class="mono" style="color:var(--faint)">淘宝客 / 京东联盟 / Amazon Attribution</span></td>
+          <td>落地页 → 第三方平台</td>
+          <td><span class="tag t-plat">平台口径</span></td>
+          <td>平台官方的归因能力，可用但有三个代价：需入驻、结算走平台、<b>回传粒度到渠道而非到人</b>（除非为每个邀请人生成独立推广位，量大时不现实）。建议只做<b>渠道级</b>统计，不作为发奖依据。</td>
+        </tr>
+        <tr style="background:var(--acc-soft)">
+          <td class="mono"><b>L3</b> ★</td>
+          <td><b>首次激活 Atom 时填邀请码</b><br><span class="mono" style="color:var(--acc-ink)">activation.referral_code</span></td>
+          <td>硬件开箱 → App 配网激活</td>
+          <td><span class="tag t-det">确定 100%</span></td>
+          <td><b>与"在哪买的"完全无关</b>——天猫、京东、线下门店、别人转送，全都能兜住。激活流程本来就必须走我们的 App，把邀请码做成激活向导的一个可跳过步骤即可。<b>这是电商优先方案里最重要的一层，也是唯一覆盖全渠道的一层。</b></td>
+        </tr>
+        <tr>
+          <td class="mono"><b>L4</b></td>
+          <td><b>App 内自助补填</b></td>
+          <td>激活后 7 天内</td>
+          <td><span class="tag t-act">需动作</span></td>
+          <td>"忘填邀请码？"入口，限时限次。同时给邀请人一个"提醒 TA 填码"的动作，把补录的压力转移到有动机的一方。</td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--faint)">—</td>
+          <td style="color:var(--faint)"><s>安装归因 / IDFA 概率匹配</s></td>
+          <td style="color:var(--faint)">—</td>
+          <td><span class="tag t-no">已移除</span></td>
+          <td style="color:var(--muted)">电商优先方案下<b>不需要这一层</b>。App 下载作为次要目标时，Android 仍可用 Play Install Referrer（确定性），iOS 走 L3/L4 兜底即可，不引入任何第三方归因 SDK。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>设计含义：</b>因为 L3 覆盖全渠道且 100% 确定，我们<b>不必强求 L0/L1 的漏斗完美</b>。L0/L1 优化的是"成交转化"，L3 优化的是"关系记账"。两件事分开算 KPI，不要混。</div>
+</section>
+
+<section>
+  <div class="eyebrow">04 · 两种分享形式</div>
+  <h2>图片（带二维码）· 直接 URL（H5）</h2>
+  <p class="lede">只有这两种。邀请码不是第三种形式——它<b>印在图片上、显示在落地页上</b>，作为两种形式内部的一个字段存在。这样用户心智里只有"发张图"和"发个链接"两件事。</p>
+
+  <h3>形式一 · 图片（带二维码）</h3>
+  <p class="lede">图片形式有两个来源，一个是<b>挂载</b>（邀请是内容的副产品），一个是<b>专用卡</b>（邀请就是内容本身）。</p>
+  <div class="arts">
+    <div class="art exwrap">
+      <div class="shot">
+        <div class="pad">
+          <div class="idrow">
+            <div class="av">A</div>
+            <div class="idtx"><div class="a">Alex 邀请你</div><div class="b">TRAINING SINCE 2025.03 · 142 SESSIONS</div></div>
+          </div>
+          <div class="ttl">把力量训练<br>装进 1.2㎡</div>
+          <div class="sub">BODY PARK ATOM · SMART STRENGTH</div>
+          <div class="hero"><span class="tagp">好友专享</span><div class="dev"></div></div>
+          <div class="offer">
+            <span class="big">¥5,499</span><span class="unit">起</span><span class="old">¥5,999</span>
+          </div>
+          <div class="codebar"><span class="k">邀请码 / 优惠码</span><span class="v">ALEX-7K2A</span></div>
+          <div class="qrow">
+            <svg class="qrx" viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><g fill="#141712" id="qrg1"></g></svg>
+            <div class="qtx"><div class="a">扫码查看 · 自动带优惠</div><div class="b">bp.fit/i/7K2A</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>B · 专用邀请卡（新模板 T28）</b><br>从"邀请好友"入口发起。3:4 竖版。要素：邀请人身份条 G3 + 产品图 + 价格钩子 + 明文码 G4 + 二维码 G1。</div>
+    </div>
+
+    <div class="art exwrap">
+      <div class="shot">
+        <div class="pad">
+          <div class="sub" style="margin:0 0 calc(var(--u)*4)">2026.09.02 · 上肢推 · 42 MIN</div>
+          <div class="ttl">胸推力量创新高</div>
+          <div class="stats">
+            <div><div class="n">8,240</div><div class="l">总容量 KG</div></div>
+            <div><div class="n">+12%</div><div class="l">较上次</div></div>
+            <div><div class="n">36</div><div class="l">组数</div></div>
+          </div>
+          <div class="hero" style="height:calc(var(--u)*96);background:var(--cbg);border-style:dashed;">
+            <div style="font-family:var(--mono);font-size:calc(var(--u)*9px);color:var(--cmute)">［ B2 肌肉热力图 ］</div>
+          </div>
+          <div style="font-size:calc(var(--u)*10.5px);line-height:1.5;border-left:calc(var(--u)*2) solid var(--cacc);padding-left:calc(var(--u)*8);color:var(--cink)">
+            连续 3 次卧推递增，胸大肌已进入适应期——下周可以加一组窄距。
+          </div>
+          <div class="qrow" style="margin-top:calc(var(--u)*12)">
+            <svg class="qrx" style="width:calc(var(--u)*40);height:calc(var(--u)*40)" viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><g fill="#141712" id="qrg2"></g></svg>
+            <div class="qtx"><div class="a" style="font-size:calc(var(--u)*9.5px)">BODY PARK ATOM</div><div class="b">扫码看 Alex 的训练 · bp.fit/i/7K2A</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>A · 内容图挂载（27 个模板全部适用）★主路径</b><br>任何一张分享图的 G1 水印二维码里<b>本来就该带 token</b>。用户在分享训练成果，邀请是免费搭车的副产品——量最大、零额外动作。</div>
+    </div>
+
+    <div class="art exwrap" style="--u:0.86px">
+      <div class="shot" style="width:calc(var(--u)*270);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center;padding:calc(var(--u)*16)">
+          <div class="sub" style="margin-bottom:calc(var(--u)*10)">BODY PARK ATOM</div>
+          <svg style="width:calc(var(--u)*104);height:calc(var(--u)*104)" viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><g fill="#141712" id="qrg3"></g></svg>
+          <div style="font-size:calc(var(--u)*12px);font-weight:700;margin-top:calc(var(--u)*10)">扫码 · 好友专享价</div>
+          <div class="codebar" style="justify-content:center;margin-top:calc(var(--u)*8)"><span class="v">ALEX-7K2A</span></div>
+          <div style="font-family:var(--mono);font-size:calc(var(--u)*9px);color:var(--cmute);margin-top:calc(var(--u)*7)">bp.fit/i/7K2A</div>
+        </div>
+      </div>
+      <div class="cap"><b>C · 设备屏版（1:1，超大二维码）</b><br><b>Atom 设备上图片是唯一可能的形式</b>——设备没有浏览器、没有分享面板，只能把二维码打到屏幕上让朋友当场扫。这一条硬约束单独就足以让图片形式必须存在。短链以明文并列，供扫不上时手输。</div>
+    </div>
+  </div>
+
+  <h3>形式二 · 直接 URL（H5 落地页）</h3>
+  <p class="lede">短链 <code>bp.fit/i/7K2A</code>。复制、发微信、发 iMessage 都是同一串。落地页是整个方案的<b>路由器</b>：认人、认环境、认地区，然后决定给谁看什么。</p>
+  <div class="arts">
+    <div class="art">
+      <div class="phone">
+        <div class="pnav"><span>bp.fit/i/7K2A</span><span>微信</span></div>
+        <div class="pbody">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:999px;background:#ECF8DC;border:1px solid #6FCC1B;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#10240A">A</div>
+            <div><div style="font-size:12px;font-weight:700">Alex 邀请你加入 Body Park</div>
+                 <div style="font-family:var(--mono);font-size:9px;color:#939C8F">已训练 142 次 · 累计 68 万 kg</div></div>
+          </div>
+          <div style="height:82px;background:#ECF8DC;border-radius:5px;margin:12px 0 0;display:flex;align-items:center;justify-content:center">
+            <div style="width:104px;height:58px;border:2px solid #10240A;border-radius:4px;background:#fff"></div>
+          </div>
+          <div style="font-size:15px;font-weight:800;margin-top:11px;letter-spacing:-.02em">Atom 智能力量设备</div>
+          <div style="display:flex;align-items:baseline;gap:7px;margin-top:4px">
+            <span style="font-family:var(--mono);font-size:20px;font-weight:800">¥5,499</span>
+            <span style="font-size:10px;color:#939C8F;text-decoration:line-through">¥5,999</span>
+            <span style="font-family:var(--mono);font-size:9px;background:#6FCC1B;color:#10240A;font-weight:700;padding:2px 6px;border-radius:2px">好友 -500</span>
+          </div>
+          <div class="pcta">立即购买 · 优惠已自动生效</div>
+          <div class="pmini">小程序商城下单 · 归因 L0 · 无需填码</div>
+          <div class="pdivider">或</div>
+          <a class="pcta ghost">去天猫旗舰店 / 京东自营</a>
+          <div class="pmini">结算时输入 <b style="color:#47940B">ALEX-7K2A</b> 立减<br>忘了也没关系，激活时还能补</div>
+          <div class="pdivider">已有 Atom？</div>
+          <a class="pcta ghost">下载 App · 领 30 天会员</a>
+        </div>
+      </div>
+      <div class="cap" style="font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:9px;max-width:270px;line-height:1.5">
+        <b style="color:var(--acc-ink)">CN · 微信内 · 买硬件</b><br>主 CTA 指向小程序商城（L0 直通），第三方电商降级为次选并明示优惠码，最下面才是 App 下载。<b style="color:var(--acc-ink)">整页没有一个应用商店跳转</b>——微信屏蔽的问题被电商优先顺手绕过了。
+      </div>
+    </div>
+    <div class="art" style="flex:1 1 300px;min-width:280px">
+      <div class="card">
+        <h4>落地页必须做的六件事</h4>
+        <ul>
+          <li><b>认人</b>：token → 邀请人昵称/头像/训练数据，做社交证明。人比产品更有说服力。</li>
+          <li><b>认环境</b>：UA 判微信内 / 系统浏览器 / 桌面，决定 CTA 形态与是否可唤起小程序。</li>
+          <li><b>认地区</b>：加载对应 Profile（见 §06）。<b>用 App Store 区/店铺归属判定，不要用 IP</b>——出差和 VPN 会把判定打歪。</li>
+          <li><b>透传 token</b>：无论下一跳是小程序、独立站还是应用商店，token 必须活着传下去。</li>
+          <li><b>始终显示明文码</b>：链路里任何一跳断了，用户手上还有这个码。</li>
+          <li><b>富媒体卡片</b>：配 OG / 微信 JS-SDK 的标题、描述、缩略图，让链接在聊天里渲染成卡片而不是裸网址。<b>这不是第三种形式，是同一个 URL 的渠道渲染。</b></li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h4>两种形式 × 两个端</h4>
+        <div class="scroll" style="margin-top:8px">
+          <table>
+            <thead><tr><th>端</th><th>图片（带二维码）</th><th>直接 URL</th></tr></thead>
+            <tbody>
+              <tr><td><b>手机 App</b></td><td>✅ 存图 / 朋友圈 / 群</td><td>✅ 复制 / 微信 / iMessage</td></tr>
+              <tr><td><b>Atom 设备</b></td><td>✅ 屏幕直出二维码</td><td>✗ 无分享能力<br><span style="color:var(--muted);font-size:11.5px">短链以明文显示供手输，是图片的降级不是独立形式</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">05 · Token 与链接结构</div>
+  <h2>一人一码，永久不变</h2>
+  <div class="cols">
+    <div class="card">
+      <h4>结构</h4>
+      <div class="kv">
+        <b>短链</b>　https://bp.fit/i/<b>7K2A</b>?s=post&amp;c=wx<br>
+        <b>明文码</b>　ALEX-<b>7K2A</b><br>
+        <b>二维码</b>　编码同一条短链
+      </div>
+      <ul class="plain" style="margin-top:12px">
+        <li><b>7K2A</b> = 邀请人 token，永久绑定，是<b>唯一被解析的部分</b>。Base32 去歧义字母表（无 0/O/1/I/L），4–6 位起步。</li>
+        <li><b>ALEX-</b> 前缀纯装饰，便于人念人记，服务端只取后缀。改昵称不影响归因。</li>
+        <li><code>s</code> 场景（哪个分享入口生成的）、<code>c</code> 渠道，<b>仅用于分析，永不参与归因</b>。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>为什么参数必须可丢</h4>
+      <ul class="plain" style="margin-top:0">
+        <li>图片会被<b>截图转发</b>、二维码会被<b>翻拍</b>、短链会被<b>手抄</b>。任何依赖参数完整性的设计在这三种动作面前都会碎。</li>
+        <li>把归因押在 token 上、把分析押在参数上，意味着<b>一张图被转发十手之后归因依然正确</b>，只是渠道标签失真。这是可接受的失真。</li>
+        <li>推论：<b>不做一次性链接、不做有效期链接</b>（活动券除外）。邀请关系是长期资产。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">06 · 地区 Profile</div>
+  <h2>一个内核 + 可插拔的地区配置</h2>
+  <p class="lede">内核（token 身份、归因账本、奖励引擎、降级链抽象）全球唯一。Profile 注入五样东西：成交场、落地页形态、归因优先级、奖励形态、合规文案。<b>新增一个地区 = 加一份配置，不是加一套代码。</b></p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:96px">Profile</th><th style="width:170px">落地页主 CTA</th><th style="width:160px">成交场</th><th>归因优先级</th><th style="width:180px">分享通道侧重</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="mono"><b>CN</b></td>
+          <td>买 Atom<br><span style="color:var(--muted);font-size:12px">小程序商城优先</span></td>
+          <td>微信小程序商城 &gt;&gt; 天猫 / 京东 &gt; 线下</td>
+          <td><span class="mono">L0（小程序 openid + 订单 token）→ L1 优惠码 → L3 激活回填</span><br><span style="color:var(--muted)">小程序天然带 openid，归因近 100%，且在微信里的传播衰减远小于 H5</span></td>
+          <td><b>图片为主</b>：朋友圈/群图片传播强于链接；链接在群里易被折叠</td>
+        </tr>
+        <tr>
+          <td class="mono"><b>GLOBAL</b></td>
+          <td>Buy Atom<br><span style="color:var(--muted);font-size:12px">自有独立站</span></td>
+          <td>自有 Shopify 站 &gt; Amazon</td>
+          <td><span class="mono">L0（<code>?ref=</code> → cart attribute → order）→ L1 coupon → L3 激活回填</span><br><span style="color:var(--muted)">Amazon 同样是归因黑洞，用 Amazon Attribution 只到渠道级</span></td>
+          <td><b>链接为主</b>：iMessage/WhatsApp/IG Story 对链接友好，OG 卡片渲染好</td>
+        </tr>
+        <tr>
+          <td class="mono" style="color:var(--muted)">（次要目标）<br><b>APP_ONLY</b></td>
+          <td style="color:var(--muted)">下载 App</td>
+          <td style="color:var(--muted)">App Store / Google Play</td>
+          <td><span class="mono" style="color:var(--muted)">Android：Play Install Referrer（确定性）<br>iOS：无官方按人延迟深链 → 直接走 L4 手动填码</span></td>
+          <td style="color:var(--muted)">仅当访客已有硬件、或明确是 App 用户时启用</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>三条 CN 特殊规则：</b>① 微信内不出现任何应用商店跳转（电商优先已天然满足）；② 小程序商城如能上，它同时解决成交与归因两件事，<b>应作为国内主路而非降级路</b>；③ 安卓渠道包只能做到渠道级、做不到人级归因，不要指望它替代 L3。</div>
+</section>
+
+<section>
+  <div class="eyebrow">07 · 奖励与风控</div>
+  <h2>双向奖励，延迟结算</h2>
+  <div class="cols">
+    <div class="card">
+      <h4>奖励形态</h4>
+      <ul class="plain" style="margin-top:0">
+        <li><b>被邀请人</b>：硬件立减（钩子必须在成交前可见，否则不构成购买理由）。</li>
+        <li><b>邀请人</b>：优先给<b>权益</b>而非现金——会员时长、配件券、限定内容、积分。国内现金返利涉及税务与资质，能不碰就不碰。</li>
+        <li>硬件客单价高，可以做<b>阶梯</b>（邀 1 人 / 3 人 / 5 人递增），但阶梯本身要在邀请卡上说清楚，否则不产生持续动机。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>结算时点</h4>
+      <ul class="plain" style="margin-top:0">
+        <li>邀请人的奖励在<b>确认收货 + 完成激活</b>之后发放，不在下单时发——硬件退货率不为零，提前发奖是套利入口。</li>
+        <li>账本记三个状态：<code>attributed</code>（已归因）→ <code>qualified</code>（已达成条件）→ <code>settled</code>（已发奖）。三态分离，对账才做得清。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>反薅</h4>
+      <ul class="plain" style="margin-top:0">
+        <li>同设备指纹 / 同支付账号 / 同收货地址高频 → 转人工审核。</li>
+        <li>邀请人自身需<b>已激活设备且有真实训练记录</b>才具备发奖资格——把门槛放在邀请人侧，比在被邀请人侧设卡更不伤转化。</li>
+        <li>异常速率（短时间大量归因）自动挂起而非拒绝，避免误伤真实 KOC。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">08 · 接入现有架构</div>
+  <h2>不是新模块，是分享模块上的一层薄挂载</h2>
+  <p class="lede">邀请是内容的副产品，不是内容本身。所以它不新增载体族、不新增自由度层级，只在既有五层模型里各加一点点。</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:120px">层</th><th style="width:200px">改动</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><b>① 分享体</b></td><td>新增 <span class="mono">E12 · 推荐邀请</span>（仅 R1：我的邀请）</td><td>规模很小的一个实体，只为让邀请卡在矩阵里有位置。不参与 R0/R2/R3。</td></tr>
+        <tr><td><b>② 原子</b></td><td>G 族 2 → 4 个</td><td><span class="mono">G1 二维码水印</span>：注入 token（改造，所有模板受益）<br><span class="mono">G2 App下载入口</span> → 改为 <b>购买入口</b>（商品 + 价格 + 优惠）<br><span class="mono">G3 邀请人身份条</span> 🆕：头像 + 昵称 + 训练凭证<br><span class="mono">G4 明文码条</span> 🆕：虚线框 + 大字码</td></tr>
+        <tr><td><b>③ 组装</b></td><td>新增 <span class="mono">T28 邀请卡</span>（3:4 手机版 / 1:1 设备版）</td><td>模板注册表加两条 JSON。其余 27 个模板<b>不改结构</b>，只是 G1 里的二维码内容变了。</td></tr>
+        <tr><td><b>④ 载体</b></td><td><b>不新增</b></td><td>只用既有的 ①图片 PNG 与 ③H5，与"两种形式"的约束一致。</td></tr>
+        <tr><td><b>⑤ 链路</b></td><td>新增入口：邀请好友、设备屏邀请</td><td>入口即分享体绑定规则不变——从"邀请好友"发起，分享体就是 E12·R1。</td></tr>
+        <tr><td><b>ShareKit</b></td><td><span class="mono">ReferralProvider</span>（DataProvider 层）<br><span class="mono">RegionProfile</span>（Composition 层注入）</td><td>归因账本、奖励引擎是<b>后端服务</b>，不进 ShareKit。ShareKit 只负责"把 token 渲染进图/链接"，边界要守住。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">09 · 待拍板</div>
+  <h2>六个需要在会上定的问题</h2>
+  <div class="cols">
+    <div class="q"><div class="who">电商 / 运营</div><h4>小程序商城这一路走不走得通？</h4><p>国内方案的强弱几乎全押在这里。<b>能上小程序商城 = L0 直通、归因近 100%、传播衰减最小</b>；上不了则国内退化为"优惠码 + 激活回填"双腿走路，仍可用但转化会打折。</p></div>
+    <div class="q"><div class="who">运营 / 法务</div><h4>天猫/京东能不能挂自定义优惠码？</h4><p>决定 L1 是否成立。平台对自定义券码有规则限制，需与店铺运营确认可用形态（专属券/口令/店铺优惠码），以及能否回传核销明细。</p></div>
+    <div class="q"><div class="who">硬件 / App</div><h4>邀请码填写放在激活流程的哪一步？</h4><p>L3 是全渠道兜底层，它的转化率直接决定整个方案的归因覆盖率。<b>建议放在配网成功后、首次训练前</b>，可跳过但有一次明显提示。</p></div>
+    <div class="q"><div class="who">PM</div><h4>P0 只做"内容图挂载"，还是连专用邀请卡一起做？</h4><p>挂载几乎零成本（G1 改造），量最大；专用卡要新模板 + 落地页 + 设备端。建议 <b>P0 只做挂载 + 落地页</b>，专用卡放 P1。</p></div>
+    <div class="q"><div class="who">增长</div><h4>邀请人奖励给什么、给多少？</h4><p>硬件客单价高，奖励力度需要财务口径。先定<b>形态</b>（权益 vs 现金）再定数值——形态定了才能开始做 UI。</p></div>
+    <div class="q"><div class="who">硬件</div><h4>设备屏能不能显示动态二维码？</h4><p>决定设备端邀请是"每台设备固定一张图"还是"按登录用户生成"。若设备只能显示静态图，则设备端邀请无法归因到具体用户，需降级为渠道码。</p></div>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  // ---- fake QR pattern (visual only, not a scannable code) ----
+  function qr(id, seed){
+    var g = document.getElementById(id); if(!g) return;
+    var N=29, s=seed, out='';
+    function rnd(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; }
+    var res=[]; for(var i=0;i<N;i++){res.push(new Array(N).fill(0));}
+    for(var y=0;y<N;y++) for(var x=0;x<N;x++) res[y][x] = rnd()>0.52?1:0;
+    // finder patterns
+    function finder(ox,oy){
+      for(var y=0;y<7;y++) for(var x=0;x<7;x++){
+        var on = (x===0||x===6||y===0||y===6) || (x>=2&&x<=4&&y>=2&&y<=4);
+        res[oy+y][ox+x]=on?1:0;
+      }
+      for(var y2=-1;y2<8;y2++) for(var x2=-1;x2<8;x2++){
+        var yy=oy+y2, xx=ox+x2;
+        if(yy<0||xx<0||yy>=N||xx>=N) continue;
+        if(y2===-1||y2===7||x2===-1||x2===7) res[yy][xx]=0;
+      }
+    }
+    finder(0,0); finder(N-7,0); finder(0,N-7);
+    for(var y=0;y<N;y++) for(var x=0;x<N;x++) if(res[y][x]) out+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>';
+    g.innerHTML = out;
+  }
+  qr('qrg1', 7482); qr('qrg2', 1193); qr('qrg3', 55021);
+
+  // ---- chain simulator ----
+  var st = {r:'cn', e:'wx', t:'hw'};
+  var S = function(a,b,cls){ return {a:a,b:b,c:cls||''}; };
+
+  function build(){
+    var r=st.r, e=st.e, t=st.t, lanes=[], head='', note='';
+    var recv = e==='wx' ? S('好友在微信收到','图片 或 短链')
+             : e==='br' ? S('好友在浏览器打开','短链 bp.fit/i/7K2A')
+             : S('好友扫 Atom 设备屏','1:1 大二维码 · 图片是唯一形式');
+    var land = S('H5 落地页','认人 · 认环境 · 认地区 · 透传 token');
+
+    if(t==='ap'){
+      head = '目标：<b>下载 App</b>（次要目标，仅当访客已有硬件或明确是 App 用户时才在落地页露出）';
+      if(r==='cn'){
+        lanes.push({k:'main',lbl:'主路',cap:'安卓 · 应用商店直达',steps:[recv,land,S('落地页领码 + 跳商店','国内无统一 Install Referrer'),S('首次打开 App 自动读剪贴板','需用户授权，非确定性','dead'),S('填邀请码','L4 手动兜底','hit')]});
+        lanes.push({k:'alt',lbl:'iOS',cap:'无官方按人延迟深链',steps:[recv,land,S('跳 App Store','微信内需"在浏览器打开"','dead'),S('首次打开填邀请码','L4','hit')]});
+      } else {
+        lanes.push({k:'main',lbl:'主路',cap:'Android · Play Install Referrer',steps:[recv,land,S('跳 Google Play','链接带 referrer 参数'),S('安装后读 Install Referrer','确定性归因 ✓','hit')]});
+        lanes.push({k:'alt',lbl:'iOS',cap:'无官方按人延迟深链',steps:[recv,land,S('跳 App Store','ATT 后概率匹配不可靠','dead'),S('首次打开填邀请码','L4','hit')]});
+      }
+      lanes.push({k:'fb',lbl:'兜底',cap:'与买硬件共用同一条',steps:[S('日后购买 Atom'),S('首次激活填邀请码','L3 · 100% 确定','hit')]});
+      note = 'App 下载路径<b>天然比电商路径弱</b>：iOS 没有官方按人延迟深链，国内安卓没有统一 Install Referrer。这正是把主目标定为电商购买的理由——<b>不要为了这条弱链路引入第三方归因 SDK</b>。';
+      return {head:head, lanes:lanes, note:note};
+    }
+
+    // 买硬件
+    if(r==='cn'){
+      head = '目标：<b>买硬件</b> · 中国大陆 · ' + (e==='wx'?'微信内':(e==='br'?'手机浏览器':'扫设备屏'));
+      lanes.push({k:'main',lbl:'主路',cap:'自有商城 · 归因 L0',steps:[
+        recv, land,
+        S('唤起小程序商城', e==='wx'?'微信内可直接唤起，体验最顺':'需先跳微信'),
+        S('下单','订单写入 referral_token'),
+        S('归因成立','L0 · 100% 确定 · 无需用户动作','hit')
+      ]});
+      lanes.push({k:'alt',lbl:'备路',cap:'用户偏要去天猫/京东',steps:[
+        land, S('落地页领专属码','ALEX-7K2A 一键复制'),
+        S('跳第三方店铺','平台归因不可用'),
+        S('结算时输码','用了才算 · L1','hit'),
+        S('未输码','此路归因断','dead')
+      ]});
+    } else {
+      head = '目标：<b>Buy hardware</b> · 海外 · ' + (e==='wx'?'（海外无微信场景，按浏览器处理）':(e==='br'?'手机浏览器':'扫设备屏'));
+      lanes.push({k:'main',lbl:'主路',cap:'自有独立站 · 归因 L0',steps:[
+        recv, land,
+        S('跳 Shopify 站','URL 带 ?ref=7K2A'),
+        S('写入 cart attribute','结算时随订单落库'),
+        S('归因成立','L0 · 100% 确定','hit')
+      ]});
+      lanes.push({k:'alt',lbl:'备路',cap:'Amazon 等第三方',steps:[
+        land, S('复制 coupon code'),
+        S('跳 Amazon','Attribution 仅到渠道级'),
+        S('结算时用码','L1','hit'),
+        S('未用码','此路归因断','dead')
+      ]});
+    }
+    lanes.push({k:'fb',lbl:'兜底',cap:'全渠道通用 · 与在哪买无关 ★',steps:[
+      S('收到设备 · 开箱'),
+      S('App 配网激活'),
+      S('激活向导填邀请码','L3 · 100% 确定','hit'),
+      S('7 天内 App 内补填','L4','hit')
+    ]});
+    note = '注意兜底这条链<b>在所有组合里完全一样</b>——它不关心用户在哪买、用什么系统、有没有微信。这就是它作为架构底座的价值：<b>L0/L1 优化成交转化，L3 保证关系记账，两件事分开算 KPI。</b>';
+    return {head:head, lanes:lanes, note:note};
+  }
+
+  function render(){
+    var d = build();
+    document.getElementById('simhead').innerHTML = d.head;
+    document.getElementById('simnote').innerHTML = d.note;
+    var h='';
+    d.lanes.forEach(function(L){
+      h += '<div class="lane '+L.k+'"><div class="lane-h"><span class="lbl">'+L.lbl+'</span><span class="cap">'+L.cap+'</span></div><div class="chain">';
+      L.steps.forEach(function(s,i){
+        if(i) h += '<span class="arw">&rarr;</span>';
+        h += '<div class="step '+s.c+'"><div class="s1">'+s.a+'</div>'+(s.b?'<div class="s2">'+s.b+'</div>':'')+'</div>';
+      });
+      h += '</div></div>';
+    });
+    document.getElementById('lanes').innerHTML = h;
+  }
+
+  document.querySelectorAll('.simbar .btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var k=b.dataset.k;
+      document.querySelectorAll('.simbar .btn[data-k="'+k+'"]').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); st[k]=b.dataset.v; render();
+    });
+  });
+  render();
+})();
+</script>
