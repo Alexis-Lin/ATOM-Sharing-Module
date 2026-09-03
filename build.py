@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the four root-level deliverables from sources/.
+"""Build the root-level deliverables from sources/ and the referral/ hand-off pack from referral/sources/.
 
 Rule: 根目录 = 给人看的（生成物）· sources/ = 给人改的（源文件）
 Run after editing anything in sources/:
@@ -9,6 +9,10 @@ Run after editing anything in sources/:
 import html, pathlib
 
 SRC = pathlib.Path('sources')
+REF = pathlib.Path('referral/sources')   # 邀请推荐模块单独成目录
+
+FOOTER_ROOT = '<b>阅读顺序</b> — 01 总览（从这读起）· 02 PRD（P0 需求）· 03 规范（网格与模板）· 04 设计（原子与报告）· README.md（架构总纲 · 事实源）· referral/（邀请推荐模块接力包）'
+FOOTER_REF = '<b>邀请推荐模块 · 接力包</b> — 01 PRD（需求源）· 02 Demo（全部界面，可点）· 03 设计（归因与权益的推导）· README.md（目录与交接说明）· 修改请编辑 referral/sources/ 后运行 python3 build.py'
 
 DOCS = [
     {
@@ -59,29 +63,27 @@ DOCS = [
             ('深钻 · 课后报告与洞察设计 ★', '深钻-课后报告与洞察设计.html'),
         ],
     },
+    # ---- referral/ 邀请推荐模块（独立目录，接力包）----
     {
-        'out': '05-推荐-邀请分享与归因.html',
-        'title': '推荐 · 邀请分享与归因',
-        'emoji': '🔗',
-        'who': 'PM · 增长 · 工程',
-        'sub': '邀请好友买硬件：电商优先的归因五级阶梯、图片+H5 两种分享形式、CN/GLOBAL 双 Profile，含可交互链路模拟器。',
-        'parts': [('邀请分享与归因设计', '推荐-邀请分享与归因设计.html')],
+        'out': 'referral/01-PRD-邀请推荐模块.html', 'src': REF,
+        'title': 'Referral · PRD', 'emoji': '📋', 'who': 'PM · 设计 · 工程',
+        'sub': '邀请推荐模块产品需求文档，中英双语、中国版 / 国际版可切：目标、范围、权益与漏斗、版本配置、FR-1~10、归因规则、数据事件、边界、里程碑。',
+        'parts': [('PRD', 'PRD-邀请推荐模块.html')],
+        'nav': [('02 Demo','02-Demo-邀请全链路交互.html'),('03 设计','03-设计-归因与权益.html'),('README','README.md')], 'footer': FOOTER_REF,
     },
     {
-        'out': '06-Demo-邀请页交互.html',
-        'title': 'Demo · 邀请页交互',
-        'emoji': '📱',
-        'who': 'PM · 设计',
-        'sub': '低保真可点 Demo：邀请页一屏三事（怎么做 / 一键分享 / 数据与权益），可模拟好友点击、下单、激活、退货看数字与权益怎么动。',
-        'parts': [('邀请页交互 Demo', 'Demo-邀请页交互.html')],
+        'out': 'referral/02-Demo-邀请全链路交互.html', 'src': REF,
+        'title': 'Referral · Demo', 'emoji': '🧩', 'who': '设计 · PM · 硬件',
+        'sub': '可交互全链路 Demo，中英双语、中国版 / 国际版可切：邀请人手机 / 好友手机 / Atom 466×466 圆屏三条泳道二十屏，可模拟好友注册、下单、激活、退货。',
+        'parts': [('Demo', 'Demo-邀请全链路交互.html')],
+        'nav': [('01 PRD','01-PRD-邀请推荐模块.html'),('03 设计','03-设计-归因与权益.html'),('README','README.md')], 'footer': FOOTER_REF,
     },
     {
-        'out': '07-原型-邀请全链路线框.html',
-        'title': '原型 · 邀请全链路线框',
-        'emoji': '🧩',
-        'who': '设计 · PM · 硬件',
-        'sub': '可交互低保真线框：邀请人手机 / 好友手机 / Atom 466×466 圆屏三条泳道，二十个界面全部可点走通，含每屏要素与去向。',
-        'parts': [('邀请全链路线框原型', '原型-邀请全链路线框.html')],
+        'out': 'referral/03-设计-归因与权益.html', 'src': REF,
+        'title': 'Referral · 设计', 'emoji': '🔗', 'who': 'PM · 增长 · 工程',
+        'sub': '归因与权益的推导：为什么落到电商而不是应用商店、五级归因阶梯与已决策的简化口径、两种分享形式、地区 Profile、权益结构、接入现有架构。',
+        'parts': [('设计', '设计-归因与权益.html')],
+        'nav': [('01 PRD','01-PRD-邀请推荐模块.html'),('02 Demo','02-Demo-邀请全链路交互.html'),('README','README.md')], 'footer': FOOTER_REF,
     },
 ]
 
@@ -120,9 +122,9 @@ SHELL = '''<title>{title}</title>
 </style>
 <div class="topbar"><span class="bd">{emoji} <em>BODY PARK ATOM</em> · {short}</span><span class="who">{who}</span>{nav}</div>
 <div class="subnote">{sub}</div>
-<div class="srcnote">源文件：{srcs} · 本文件由 build.py 生成，修改请编辑 sources/ 后重新构建</div>
+<div class="srcnote">源文件：{srcs} · 本文件由 build.py 生成，修改请编辑源文件后重新构建</div>
 {sections}
-<footer><b>阅读顺序</b> — 01 总览（从这读起）· 02 PRD（P0 需求）· 03 规范（网格与模板）· 04 设计（原子与报告）· README.md（架构总纲 · 事实源）</footer>
+<footer>{footer}</footer>
 <script>
 function fit(f){{try{{var d=f.contentDocument;if(!d||!d.documentElement)return;
   f.style.height=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0)+'px';}}catch(e){{}}}}
@@ -136,16 +138,17 @@ document.querySelectorAll('iframe').forEach(function(f){{
 
 for d in DOCS:
     if d.get('raw'):
-        body = (SRC / d['parts'][0][1]).read_text(encoding='utf-8')
+        body = (d.get('src', SRC) / d['parts'][0][1]).read_text(encoding='utf-8')
         pathlib.Path(d['out']).write_text(body, encoding='utf-8')
         print('built %-30s %4d KB  ← raw（整屏幻灯片，不套外壳）' % (d['out'], len(body) // 1024))
         continue
     multi = len(d['parts']) > 1
     nav, sections, srcs = [], [], []
     for i, (label, fname) in enumerate(d['parts']):
-        doc = (SRC / fname).read_text(encoding='utf-8')
+        base = d.get('src', SRC)
+        doc = (base / fname).read_text(encoding='utf-8')
         anchor = 'part%d' % (i + 1)
-        srcs.append('sources/' + fname)
+        srcs.append(str(base / fname))
         if multi:
             nav.append('<a href="#%s">%s</a>' % (anchor, label))
             sections.append('<div class="sechead" id="%s"><div class="kicker">0%d · %s</div></div>'
@@ -155,7 +158,9 @@ for d in DOCS:
     out = SHELL.format(
         title=d['title'], short=d['title'].split('·')[-1].strip(), emoji=d['emoji'],
         who=d['who'], sub=d['sub'], srcs=' · '.join(srcs),
-        nav=('<nav>' + ''.join(nav) + '</nav>') if multi else '',
+        nav=('<nav>' + ''.join(nav) + '</nav>') if multi else (
+            ('<nav>' + ''.join('<a href="%s">%s</a>' % (h, l) for l, h in d['nav']) + '</nav>') if d.get('nav') else ''),
+        footer=d.get('footer', FOOTER_ROOT),
         sections='\n'.join(sections))
     pathlib.Path(d['out']).write_text(out, encoding='utf-8')
     print('built %-30s %4d KB  ← %d part(s)' % (d['out'], len(out) // 1024, len(d['parts'])))

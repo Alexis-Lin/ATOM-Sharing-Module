@@ -1,0 +1,295 @@
+<title>邀请推荐模块 PRD · Referral PRD v1.0</title>
+<style>
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F; --line:#E4E8E1; --line-strong:#C8CFC3;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A; --warn:#C2410C; --warn-soft:#FFF1E7;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,"Helvetica Neue",sans-serif;
+    --r:5px; --r-sm:2px; --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;--ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--warn:#FB923C;--warn-soft:#2A1508;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}}
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;--ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;--acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;--warn:#FB923C;--warn-soft:#2A1508;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.65;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 100px;}
+  header{padding:44px 0 20px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.02em;margin:12px 0 0;text-wrap:balance;}
+  .lede{color:var(--muted);max-width:74ch;font-size:14px;margin:8px 0 0;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  .bar{display:flex;flex-wrap:wrap;gap:18px;align-items:center;padding:10px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:18px;position:sticky;top:8px;z-index:20;}
+  .grp{display:flex;align-items:center;gap:6px;} .grp>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;margin-right:4px;}
+  .tb{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);border-radius:999px;padding:5px 12px;cursor:pointer;}
+  .tb.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc);font-weight:700;}
+  section{margin-top:44px;}
+  h2{font-size:19px;font-weight:700;margin:0 0 6px;letter-spacing:-.01em;}
+  h3{font-size:15px;font-weight:700;margin:22px 0 8px;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--acc);}
+  p{margin:0 0 10px;} p.mu{color:var(--muted);font-size:14px;}
+  code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+  table{border-collapse:collapse;width:100%;font-size:12.8px;background:var(--surface);}
+  th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-size:11.5px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:12px;}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:12px;}
+  .vc{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);}
+  .vc h4{margin:0 0 6px;font-size:14px;} .vc p,.vc li{font-size:13px;color:var(--muted);margin:0;line-height:1.6;} .vc ul{margin:0;padding-left:17px;} .vc b{color:var(--ink);}
+  .fr{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-top:10px;box-shadow:var(--shadow);}
+  .fr .id{font-family:var(--mono);font-size:10.5px;color:var(--acc-ink);font-weight:700;letter-spacing:.1em;}
+  .fr h4{margin:3px 0 6px;font-size:14.5px;} .fr p{font-size:13px;color:var(--muted);margin:0 0 6px;} .fr p b{color:var(--ink);}
+  .fr ul{margin:4px 0 0;padding-left:17px;font-size:12.8px;color:var(--muted);line-height:1.6;} .fr ul b{color:var(--ink);}
+  .fr .ac{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-top:8px;}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;border-radius:var(--r-sm);padding:2px 7px;white-space:nowrap;margin-left:6px;vertical-align:middle;}
+  .p0{background:var(--acc);color:var(--on-acc);} .p1{background:var(--acc-soft);color:var(--acc-ink);border:1px solid var(--acc);} .p2{background:var(--surface-2);color:var(--muted);border:1px solid var(--line-strong);}
+  .note{margin-top:12px;font-size:12.5px;color:var(--muted);background:var(--acc-soft);border-left:2px solid var(--acc);padding:9px 13px;border-radius:0 var(--r-sm) var(--r-sm) 0;} .note b{color:var(--acc-ink);}
+  .q{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:var(--r);padding:12px 15px;margin-top:10px;} .q .who{font-family:var(--mono);font-size:10.5px;color:var(--warn);font-weight:700;} .q h4{margin:4px 0 4px;font-size:14px;} .q p{margin:0;font-size:13px;color:var(--muted);}
+  ul.plain{margin:6px 0 0;padding-left:18px;font-size:13.5px;color:var(--muted);line-height:1.7;} ul.plain b{color:var(--ink);}
+  /* language + edition switching */
+  .doc.en .zh{display:none!important} .doc.zh .en{display:none!important}
+  .doc.cn .gl{display:none!important} .doc.gl .cn{display:none!important}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;} .toc a{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px;} .toc a:hover{border-color:var(--acc);color:var(--acc-ink);}
+</style>
+
+<div class="doc zh cn" id="doc"><div class="wrap">
+<header>
+  <div class="brand">Body Park Atom · Referral</div>
+  <h1><span class="zh">邀请推荐模块 · 产品需求文档</span><span class="en">Referral Module · Product Requirements</span></h1>
+  <p class="lede"><span class="zh">让每一位 Atom 用户都能把主机推荐给朋友：朋友买主机拿优惠，自己拿抵扣金和 PRO。本文是接力开发的唯一需求源；界面见配套 Demo，归因与权益的推导见设计文档。</span><span class="en">Let every Atom owner recommend the device to a friend: the friend gets a discount, the owner gets store credit and Pro. This document is the single requirements source for hand-off; screens live in the companion Demo, the reasoning behind attribution and rewards in the design note.</span></p>
+  <div class="meta"><span class="mchip hot">v1.0 · 2026-09-03</span><span class="mchip zh">状态：待评审</span><span class="mchip en">Status: for review</span><span class="mchip">P0 → P2</span><span class="mchip zh">中国版 / 国际版</span><span class="mchip en">CN / GLOBAL editions</span></div>
+  <div class="toc">
+    <a href="#s1">01 <span class="zh">目标</span><span class="en">Goals</span></a><a href="#s2">02 <span class="zh">范围</span><span class="en">Scope</span></a><a href="#s3">03 <span class="zh">用户与故事</span><span class="en">Users</span></a><a href="#s4">04 <span class="zh">权益与漏斗</span><span class="en">Rewards</span></a><a href="#s5">05 <span class="zh">版本与语言</span><span class="en">Editions</span></a><a href="#s6">06 <span class="zh">功能需求</span><span class="en">Requirements</span></a><a href="#s7">07 <span class="zh">界面</span><span class="en">Screens</span></a><a href="#s8">08 <span class="zh">归因</span><span class="en">Attribution</span></a><a href="#s9">09 <span class="zh">数据与事件</span><span class="en">Data</span></a><a href="#s10">10 <span class="zh">边界</span><span class="en">Edge cases</span></a><a href="#s11">11 <span class="zh">非功能</span><span class="en">Non-functional</span></a><a href="#s12">12 <span class="zh">里程碑</span><span class="en">Milestones</span></a><a href="#s13">13 <span class="zh">待定</span><span class="en">Open</span></a>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="grp"><span>Lang</span><button class="tb on" data-l="zh" onclick="setL('zh')">中文</button><button class="tb" data-l="en" onclick="setL('en')">English</button></div>
+  <div class="grp"><span><span class="zh">版本</span><span class="en">Edition</span></span><button class="tb on" data-e="cn" onclick="setE('cn')"><span class="zh">中国版</span><span class="en">China</span></button><button class="tb" data-e="gl" onclick="setE('gl')"><span class="zh">国际版</span><span class="en">Global</span></button></div>
+  <div class="grp" style="margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--faint)"><span class="zh">切换版本时，文中金额与渠道随之变化</span><span class="en">Amounts and channels in the text follow the edition toggle</span></div>
+</div>
+
+<!-- 01 -->
+<section id="s1"><div class="eyebrow">01</div>
+  <h2><span class="zh">背景与目标</span><span class="en">Background &amp; Goals</span></h2>
+  <p class="mu"><span class="zh">Atom 是一台放在家里的力量训练设备，购买决策强依赖熟人推荐。现有分享模块已经能把训练成果做成图片和链接；邀请推荐是这套分享能力上的一层薄挂载，把"推荐"从口头变成可归因、可奖励的动作。</span><span class="en">Atom is a home strength device; purchase decisions lean heavily on word of mouth. The existing sharing module already turns workouts into images and links. Referral is a thin layer on top of it, turning a recommendation into an attributable, rewardable action.</span></p>
+  <div class="cols">
+    <div class="vc"><h4><span class="zh">业务目标</span><span class="en">Business goal</span></h4><p><span class="zh"><b>可归因的主机订单数</b>。这是唯一的北极星，不看点击。</span><span class="en"><b>Attributable device orders.</b> The only north star. Clicks are not tracked.</span></p></div>
+    <div class="vc"><h4><span class="zh">用户目标</span><span class="en">User goal</span></h4><p><span class="zh">邀请人：一个按钮就能发出去，随时看到朋友注册 / 购买了几个、自己拿到了什么。好友：优惠自动生效，不用研究规则。</span><span class="en">Inviter: one tap to send, always see how many friends registered / bought and what they earned. Friend: the discount just applies, no rules to study.</span></p></div>
+    <div class="vc"><h4><span class="zh">成功指标（首季）</span><span class="en">Success metrics (first quarter)</span></h4><ul><li><span class="zh">邀请页 CTA 点击率 ≥ 30%（进入页面的人）</span><span class="en">Invite page CTA rate ≥ 30% of page visitors</span></li><li><span class="zh">带码注册 / 带码订单比例</span><span class="en">Share of sign-ups / orders carrying a code</span></li><li><span class="zh">邀请带来的订单占主机订单 ≥ 8%</span><span class="en">Referred orders ≥ 8% of device orders</span></li><li><span class="zh">每单推荐成本 ≤ 客单价 12%</span><span class="en">Cost per referred order ≤ 12% of ticket</span></li></ul></div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="s2"><div class="eyebrow">02</div>
+  <h2><span class="zh">范围</span><span class="en">Scope</span></h2>
+  <div class="cols">
+    <div class="vc"><h4><span class="zh">本期做</span><span class="en">In scope</span></h4><ul>
+      <li><span class="zh">App 邀请页（单 CTA）、分享面板、邀请图模板 T28</span><span class="en">In-app invite page (single CTA), share sheet, invite image template T28</span></li>
+      <li><span class="zh">H5 落地页（认人 / 认版本 / 透传 token）</span><span class="en">H5 landing page (identifies inviter, edition, passes token)</span></li>
+      <li><span class="zh">好友：结算自动抵扣、注册存抵扣金、激活填码得 PRO</span><span class="en">Friend: auto discount at checkout, credit banked on sign-up, Pro on code entry at activation</span></li>
+      <li><span class="zh">邀请人：抵扣金 + PRO 账本、明细、权益、推送</span><span class="en">Inviter: credit + Pro ledger, details, rewards, push</span></li>
+      <li><span class="zh">Atom 设备端：邀请二维码、课后分享到手机二维码</span><span class="en">Atom device: invite QR, post-workout share-to-phone QR</span></li>
+      <li><span class="zh">中国版 / 国际版两套配置，中英双语</span><span class="en">CN / GLOBAL edition configs, zh / en strings</span></li>
+    </ul></div>
+    <div class="vc" style="border-left-color:var(--line-strong)"><h4><span class="zh">本期不做</span><span class="en">Out of scope</span></h4><ul>
+      <li><span class="zh">现金返利、提现</span><span class="en">Cash rebates, withdrawals</span></li>
+      <li><span class="zh">点击统计、安装归因 SDK、平台联盟链接</span><span class="en">Click tracking, install-attribution SDKs, affiliate networks</span></li>
+      <li><span class="zh">多级分销、KOC 后台</span><span class="en">Multi-level referral, creator back-office</span></li>
+      <li><span class="zh">第三方电商（<span class="cn">天猫 / 京东</span><span class="gl">Amazon</span>）的自动抵扣——只提供输码</span><span class="en">Automatic discount on third-party stores (<span class="cn">Tmall / JD</span><span class="gl">Amazon</span>) — code entry only</span></li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="s3"><div class="eyebrow">03</div>
+  <h2><span class="zh">用户与故事</span><span class="en">Users &amp; Stories</span></h2>
+  <div class="scroll"><table><thead><tr><th style="width:110px"><span class="zh">角色</span><span class="en">Role</span></th><th><span class="zh">故事</span><span class="en">Story</span></th><th style="width:230px"><span class="zh">验收</span><span class="en">Accepted when</span></th></tr></thead><tbody>
+    <tr><td><b><span class="zh">邀请人</span><span class="en">Inviter</span></b><br><span class="mchip" style="font-size:10px"><span class="zh">已激活 Atom</span><span class="en">activated Atom</span></span></td><td><span class="zh">练完一节课想发给朋友看，顺手把主机推荐出去；一周后想知道朋友买了没、自己拿到了什么。</span><span class="en">Finishes a workout, wants to show a friend, recommends the device in passing; a week later wants to know whether the friend bought and what they earned.</span></td><td><span class="zh">从入口到发出 ≤ 3 次点击；邀请页两个数字与权益随事件实时更新</span><span class="en">Entry to send in ≤ 3 taps; two counters and rewards on the invite page update on each event</span></td></tr>
+    <tr><td><b><span class="zh">好友</span><span class="en">Friend</span></b></td><td><span class="zh">收到图或链接，看到优惠已经生效；要么直接买，要么先注册把钱存起来；到货激活时填码拿 PRO。</span><span class="en">Receives an image or link, sees the discount already applied; either buys now or signs up to bank the credit; enters the code at activation for Pro.</span></td><td><span class="zh">落地页无需登录即显示优惠；结算页显示已抵扣；激活填码后 PRO 即时到账</span><span class="en">Landing page shows the discount without login; checkout shows it applied; Pro lands instantly on code entry</span></td></tr>
+    <tr><td><b><span class="zh">运营</span><span class="en">Ops</span></b></td><td><span class="zh">改金额、改渠道、上线新市场，不发版。</span><span class="en">Change amounts, channels, launch a market without an app release.</span></td><td><span class="zh">所有版本参数与文案在服务端配置下发</span><span class="en">All edition parameters and strings are server-delivered config</span></td></tr>
+  </tbody></table></div>
+</section>
+
+<!-- 04 -->
+<section id="s4"><div class="eyebrow">04</div>
+  <h2><span class="zh">权益与漏斗</span><span class="en">Rewards &amp; Funnel</span></h2>
+  <p class="mu"><span class="zh">两段漏斗：<b>注册 App</b>（只计数）和<b>购买 Atom 并激活</b>（发奖）。两侧权益都可叠加，永远不给现金。</span><span class="en">Two-stage funnel: <b>sign up</b> (counted only) and <b>buy Atom and activate</b> (rewarded). Rewards on both sides stack. Never cash.</span></p>
+  <div class="scroll"><table><thead><tr><th style="width:130px"><span class="zh">时点</span><span class="en">Moment</span></th><th><span class="zh">好友得到</span><span class="en">Friend gets</span></th><th><span class="zh">邀请人得到</span><span class="en">Inviter gets</span></th><th style="width:170px"><span class="zh">触发</span><span class="en">Trigger</span></th></tr></thead><tbody>
+    <tr><td><b><span class="zh">打开落地页</span><span class="en">Opens landing page</span></b></td><td><span class="zh">看到 −<span class="cn">¥50</span><span class="gl">$10</span> 已生效</span><span class="en">Sees −<span class="cn">¥50</span><span class="gl">$10</span> applied</span></td><td>—</td><td><span class="zh">无记录</span><span class="en">Not recorded</span></td></tr>
+    <tr><td><b><span class="zh">注册 App</span><span class="en">Signs up</span></b></td><td><span class="zh"><b><span class="cn">¥50</span><span class="gl">$10</span> 抵扣金</b>入账，限主机，90 天有效</span><span class="en"><b><span class="cn">¥50</span><span class="gl">$10</span> credit</b> banked, device only, 90 days</span></td><td><span class="zh">注册 App +1，<b>不发奖</b></span><span class="en">Sign-ups +1, <b>no reward</b></span></td><td><span class="zh">带 token 注册</span><span class="en">Sign-up carries token</span></td></tr>
+    <tr><td><b><span class="zh">下单主机</span><span class="en">Orders device</span></b></td><td><span class="zh">−<span class="cn">¥50</span><span class="gl">$10</span> 抵扣（<span class="cn">小程序商城</span><span class="gl">bodypark.com</span> 与促销叠加）</span><span class="en">−<span class="cn">¥50</span><span class="gl">$10</span> off (stacks with promos on <span class="cn">the mini-store</span><span class="gl">bodypark.com</span>)</span></td><td><span class="zh">显示"待激活"</span><span class="en">Shown as "pending activation"</span></td><td><span class="zh">订单带 token 或结算输码</span><span class="en">Order carries token or code</span></td></tr>
+    <tr><td><b><span class="zh">激活并填码</span><span class="en">Activates with code</span></b></td><td><span class="zh"><b>1 个月 PRO</b>（价值 <span class="cn">¥30</span><span class="gl">$4.99</span>）即时到账</span><span class="en"><b>1 month Pro</b> (<span class="cn">¥30</span><span class="gl">$4.99</span> value) instantly</span></td><td><span class="zh"><b>购买 Atom +1</b>；<b><span class="cn">¥50</span><span class="gl">$10</span> 抵扣金</b>（主机或配件，90 天）+ <b>1 个月 PRO</b>；推送</span><span class="en"><b>Purchases +1</b>; <b><span class="cn">¥50</span><span class="gl">$10</span> credit</b> (device or accessories, 90 days) + <b>1 month Pro</b>; push</span></td><td><span class="zh">激活向导填码 = 全渠道兜底</span><span class="en">Code at activation = works for every channel</span></td></tr>
+    <tr><td><b><span class="zh">退货</span><span class="en">Return</span></b></td><td><span class="zh">PRO 收回</span><span class="en">Pro reversed</span></td><td><span class="zh">抵扣金与 PRO 收回，动态留痕</span><span class="en">Credit and Pro reversed, shown in activity</span></td><td><span class="zh">退货完成事件</span><span class="en">Return completed</span></td></tr>
+  </tbody></table></div>
+  <div class="cols">
+    <div class="vc"><h4><span class="zh">力度</span><span class="en">Sizing</span></h4><p><span class="zh">主机 <span class="cn">¥1,799</span><span class="gl">$249</span>，好友侧 <span class="cn">¥50</span><span class="gl">$10</span> 约占 3–4%：够让人填码，不是购买理由。每成功推荐一台总成本约 <span class="cn">¥140</span><span class="gl">$20</span> 真实 / <span class="cn">¥170</span><span class="gl">$25</span> 名义，占客单价 8% 左右。</span><span class="en">Device <span class="cn">¥1,799</span><span class="gl">$249</span>; the friend-side <span class="cn">¥50</span><span class="gl">$10</span> is 3–4%: enough to get the code entered, not a reason to buy. Real cost per referred device ≈ <span class="cn">¥140</span><span class="gl">$20</span> (<span class="cn">¥170</span><span class="gl">$25</span> nominal), about 8% of ticket.</span></p></div>
+    <div class="vc"><h4><span class="zh">用词</span><span class="en">Wording</span></h4><p><span class="zh">叫「抵扣金」不叫「现金」：只能在我们店里用、有有效期，不涉及个税与资质，也不在账上堆成无期限负债。PRO 月必须标出价值。</span><span class="en">Call it "credit", never "cash": redeemable only in our store, expires, so no tax withholding, no open-ended liability. Always show the Pro month's value.</span></p></div>
+    <div class="vc"><h4><span class="zh">累计</span><span class="en">Accumulation</span></h4><p><span class="zh">PRO 月按次叠加不封顶；抵扣金按次累计，靠 90 天有效期控制敞口。权益页显示"累计 <span class="cn">¥150</span><span class="gl">$30</span> 可换一件配件"作为持续动力。</span><span class="en">Pro months stack without cap; credit accumulates and is bounded by the 90-day expiry. Rewards page shows "<span class="cn">¥150</span><span class="gl">$30</span> gets you an accessory" as the ongoing nudge.</span></p></div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="s5"><div class="eyebrow">05</div>
+  <h2><span class="zh">版本与语言</span><span class="en">Editions &amp; Language</span></h2>
+  <p class="mu"><span class="zh"><b>版本决定做什么，语言决定说什么</b>，两者正交。版本由 App Store 区 / 账号归属地判定，不用 IP；语言跟随系统，可手动改。版本配置里的字符串自带语言键，加一门语言 = 加一列，加一个市场 = 加一份配置。</span><span class="en"><b>Edition decides what the page does; language decides what it says.</b> They are orthogonal. Edition comes from App Store region / account home, never IP; language follows the system and can be changed. Edition config strings carry language keys, so a new language is a column and a new market is a config file.</span></p>
+  <div class="scroll"><table><thead><tr><th style="width:150px"><span class="zh">参数</span><span class="en">Parameter</span></th><th><span class="zh">中国版 CN</span><span class="en">China (CN)</span></th><th><span class="zh">国际版 GLOBAL</span><span class="en">Global</span></th></tr></thead><tbody>
+    <tr><td><span class="zh">好友立减 / 抵扣金</span><span class="en">Friend discount / credit</span></td><td>¥50</td><td>$10 <span class="mchip" style="font-size:10px">EUR/GBP <span class="zh">同额本币</span><span class="en">same in local currency</span></span></td></tr>
+    <tr><td><span class="zh">邀请人抵扣金</span><span class="en">Inviter credit</span></td><td>¥50</td><td>$10</td></tr>
+    <tr><td><span class="zh">PRO 月标注价值</span><span class="en">Pro month value shown</span></td><td>¥30</td><td>$4.99</td></tr>
+    <tr><td><span class="zh">主成交场</span><span class="en">Primary storefront</span></td><td><span class="zh">微信小程序商城</span><span class="en">WeChat mini-store</span></td><td>bodypark.com (Shopify)</td></tr>
+    <tr><td><span class="zh">第三方渠道（输码）</span><span class="en">Third-party (code entry)</span></td><td><span class="zh">天猫 / 京东</span><span class="en">Tmall / JD</span></td><td>Amazon</td></tr>
+    <tr><td><span class="zh">分享去处 · 图片</span><span class="en">Share targets · image</span></td><td><span class="zh">相册 / 微信好友 / 朋友圈 / 小红书</span><span class="en">Photos / WeChat / Moments / RED</span></td><td>Save / Instagram / WhatsApp / Messages</td></tr>
+    <tr><td><span class="zh">分享去处 · 链接</span><span class="en">Share targets · link</span></td><td><span class="zh">复制 / 微信好友 / 更多</span><span class="en">Copy / WeChat / More</span></td><td>Copy / Messages / WhatsApp / More</td></tr>
+    <tr><td><span class="zh">默认形式（面板顺序）</span><span class="en">Default form (sheet order)</span></td><td><span class="zh">图片在上</span><span class="en">Image first</span></td><td><span class="zh">链接在上</span><span class="en">Link first</span></td></tr>
+    <tr><td><span class="zh">昵称脱敏</span><span class="en">Name masking</span></td><td colspan="2"><span class="zh">按语言：中文 <code>Lin**</code>，英文 <code>Lin W.</code></span><span class="en">By language: zh <code>Lin**</code>, en <code>Lin W.</code></span></td></tr>
+    <tr><td><span class="zh">规则附加条款</span><span class="en">Extra rule clause</span></td><td><span class="zh">权益非现金，不开发票</span><span class="en">Rewards are not cash; no invoice</span></td><td><span class="zh">见 bodypark.com/terms</span><span class="en">Subject to bodypark.com/terms</span></td></tr>
+  </tbody></table></div>
+</section>
+
+<!-- 06 -->
+<section id="s6"><div class="eyebrow">06</div>
+  <h2><span class="zh">功能需求</span><span class="en">Functional Requirements</span></h2>
+
+  <div class="fr"><div class="id">FR-1 <span class="tag p0">P0</span></div><h4><span class="zh">邀请 token 与码</span><span class="en">Referral token &amp; code</span></h4>
+    <p><span class="zh">每个账号一个永久 token（Base32，无 0/O/1/I/L，4–6 位）。对外三种呈现共用一个 token：短链 <code>bp.fit/i/7K2A</code>、明文码 <code>ALEX-7K2A</code>（前缀装饰，只解析后缀）、二维码（编码短链）。</span><span class="en">One permanent token per account (Base32 without 0/O/1/I/L, 4–6 chars). Three renderings share it: short link <code>bp.fit/i/7K2A</code>, plain code <code>ALEX-7K2A</code> (prefix is cosmetic, only the suffix is parsed), QR (encodes the link).</span></p>
+    <ul><li><span class="zh">链接可带 <code>s</code>（场景）<code>c</code>（渠道）参数，<b>仅用于分析，缺失不影响归因</b>。</span><span class="en">Links may carry <code>s</code> (scene) and <code>c</code> (channel); <b>analytics only, attribution never depends on them</b>.</span></li><li><span class="zh">不做一次性、不做有效期链接。</span><span class="en">No one-time or expiring links.</span></li></ul>
+    <div class="ac"><span class="zh">验收：</span><span class="en">Accept: </span><span class="zh">截图转发、翻拍二维码、手抄短链三种情况下归因仍正确</span><span class="en">attribution survives screenshot forwarding, re-photographed QR, hand-typed link</span></div></div>
+
+  <div class="fr"><div class="id">FR-2 <span class="tag p0">P0</span></div><h4><span class="zh">邀请页</span><span class="en">Invite page</span></h4>
+    <p><span class="zh">入口：「我的」页 banner、课后报告底部、推送。自上而下：利益点 + 邀请码 → 怎么做（三步）→ <b>唯一 CTA</b> → 邀请结果（注册 App / 购买 Atom 两个数 + 我的权益 + 最近动态，同一区块）。</span><span class="en">Entries: "Me" banner, bottom of the post-workout report, push. Top to bottom: benefit + code → how it works (3 steps) → <b>the single CTA</b> → results (sign-ups / purchases counters + my rewards + recent activity in one block).</span></p>
+    <ul><li><span class="zh">邀请码可见但不是按钮；三格与「规则」是导航。</span><span class="en">Code is visible but not a button; counters and Rules are navigation.</span></li><li><span class="zh">不显示点击数。</span><span class="en">No click count.</span></li><li><span class="zh">未激活设备的账号：页面可见，CTA 置灰并说明"激活 Atom 后可邀请"。</span><span class="en">Accounts without an activated device see the page with the CTA disabled and an explanation.</span></li></ul>
+    <div class="ac"><span class="zh">验收：页面只有一个可点的主按钮；数字与动态在事件后 ≤ 5 秒更新</span><span class="en">Accept: exactly one primary button; counters and activity update ≤ 5 s after an event</span></div></div>
+
+  <div class="fr"><div class="id">FR-3 <span class="tag p0">P0</span></div><h4><span class="zh">分享面板与两种形式</span><span class="en">Share sheet &amp; the two forms</span></h4>
+    <p><span class="zh">CTA 拉起面板，两组：<b>邀请图</b>（模板 T28，3:4，含 G3 身份条、产品、利益点、G4 明文码、G1 二维码）与<b>链接</b>（H5，带 OG / 微信 JS-SDK 卡片元数据）。每组一排去处，按版本配置；每个去处都是终点。</span><span class="en">The CTA opens a sheet with two groups: <b>invite image</b> (template T28, 3:4, with inviter strip G3, product, benefit, plain code G4, QR G1) and <b>link</b> (H5, with OG / WeChat JS-SDK card metadata). Each group lists destinations from edition config; every destination completes the action.</span></p>
+    <ul><li><span class="zh">邀请图去处点击后进预览页，可发送 / 保存。</span><span class="en">Image destinations open a preview with send / save.</span></li><li><span class="zh">现有 27 个分享模板的 G1 水印二维码一律带 token（内容图挂载）。</span><span class="en">All 27 existing share templates carry the token in their G1 watermark QR (content mount).</span></li></ul>
+    <div class="ac"><span class="zh">验收：中国版图片组在上，国际版链接组在上；面板内完成分享后回到邀请页并 toast</span><span class="en">Accept: CN shows image group first, GLOBAL link first; completing a share returns to the invite page with a toast</span></div></div>
+
+  <div class="fr"><div class="id">FR-4 <span class="tag p0">P0</span></div><h4><span class="zh">H5 落地页</span><span class="en">H5 landing page</span></h4>
+    <p><span class="zh">解析 token → 显示邀请人昵称、头像、训练凭证；判断环境（微信内 / 浏览器）与版本；显示产品、原价 → 好友价、"已自动生效"；主 CTA 购买（<span class="cn">唤起小程序商城</span><span class="gl">bodypark.com，URL 带 ref</span>），次 CTA「先注册 App 把 <span class="cn">¥50</span><span class="gl">$10</span> 存起来」，底部第三方渠道输码说明。<b>整页没有应用商店跳转。</b></span><span class="en">Resolves the token → shows inviter name, avatar, workout proof; detects environment (in-WeChat / browser) and edition; shows product, list → friend price, "applied automatically"; primary CTA buy (<span class="cn">opens the mini-store</span><span class="gl">bodypark.com with ref in the URL</span>), secondary "sign up and bank <span class="cn">¥50</span><span class="gl">$10</span>", third-party code note at the bottom. <b>No app-store jump anywhere on the page.</b></span></p>
+    <ul><li><span class="zh">token 无效或邀请人不满足资格：仍显示产品页，不显示优惠，不报错。</span><span class="en">Invalid token or ineligible inviter: product page still renders, no discount, no error.</span></li><li><span class="zh">明文码始终可见。</span><span class="en">Plain code always visible.</span></li></ul>
+    <div class="ac"><span class="zh">验收：首屏 ≤ 1.5 s（4G）；微信内可直接唤起小程序</span><span class="en">Accept: first paint ≤ 1.5 s on 4G; in WeChat the mini-store opens directly</span></div></div>
+
+  <div class="fr"><div class="id">FR-5 <span class="tag p0">P0</span></div><h4><span class="zh">好友：结算抵扣与注册存抵扣金</span><span class="en">Friend: checkout discount &amp; banked credit</span></h4>
+    <p><span class="zh">自有商城结算页显示「邀请优惠 −<span class="cn">¥50</span><span class="gl">$10</span>」行与已应用的码，订单落库写 <code>referral_token</code>。带码注册 App 的账号，抵扣金 <span class="cn">¥50</span><span class="gl">$10</span> 入账，限主机、90 天有效，到期前 7 天推一次。</span><span class="en">Own-store checkout shows a "Referral −<span class="cn">¥50</span><span class="gl">$10</span>" line and the applied code; the order persists <code>referral_token</code>. Accounts that sign up with a code get <span class="cn">¥50</span><span class="gl">$10</span> credit, device-only, 90 days, with one reminder 7 days before expiry.</span></p>
+    <ul><li><span class="zh">同一账号只能享受一次好友优惠。</span><span class="en">One friend discount per account.</span></li><li><span class="zh">抵扣金与结算自动抵扣二选一，不重复。</span><span class="en">Banked credit and checkout discount are the same benefit, never both.</span></li></ul>
+    <div class="ac"><span class="zh">验收：结算行、订单字段、账户余额三处一致</span><span class="en">Accept: checkout line, order field and account balance agree</span></div></div>
+
+  <div class="fr"><div class="id">FR-6 <span class="tag p0">P0</span></div><h4><span class="zh">激活填码</span><span class="en">Code at activation</span></h4>
+    <p><span class="zh">设备配网成功后、首次训练前，一个可跳过的步骤：「有朋友的邀请码吗？」链接 / 注册来的码预填。填码即时发 1 个月 PRO 给好友；同时给邀请人发抵扣金 + PRO 并推送（如订单已确认收货；否则挂起到收货）。</span><span class="en">After pairing succeeds and before the first workout, one skippable step: "Got a friend's code?" Codes from the link / sign-up are prefilled. Entering it grants the friend 1 month Pro instantly and grants the inviter credit + Pro with a push (held until delivery is confirmed if not yet).</span></p>
+    <ul><li><span class="zh">激活后 7 天内可在 App 内补填（一次）。</span><span class="en">Backfill allowed once within 7 days in the app.</span></li><li><span class="zh">自己的码、已用过的账号、邀请人未激活设备：提示原因，不发奖。</span><span class="en">Own code, account already redeemed, inviter without activated device: explain, no reward.</span></li></ul>
+    <div class="ac"><span class="zh">验收：填码到 PRO 到账 ≤ 3 s；邀请人推送 ≤ 1 min</span><span class="en">Accept: code to Pro ≤ 3 s; inviter push ≤ 1 min</span></div></div>
+
+  <div class="fr"><div class="id">FR-7 <span class="tag p1">P1</span></div><h4><span class="zh">邀请明细与我的权益</span><span class="en">Invite details &amp; My rewards</span></h4>
+    <p><span class="zh">明细：两个总数；按人列出注册之后的每一位（已注册 / 待激活 / 已到账）；按来源（邀请图 / 链接 / 训练图二维码 / 设备扫码）。权益：抵扣金余额与到期、PRO 月数与到期、已获得列表、「累计 <span class="cn">¥150</span><span class="gl">$30</span> 可换一件配件」进度。</span><span class="en">Details: the two totals; every friend from sign-up on (signed up / pending activation / settled); by source (image / link / workout-share QR / device scan). Rewards: credit balance and expiry, Pro months and expiry, earned list, "<span class="cn">¥150</span><span class="gl">$30</span> gets an accessory" progress.</span></p>
+    <div class="ac"><span class="zh">验收：昵称按语言脱敏；纯注册标"仅计数"</span><span class="en">Accept: names masked per language; sign-up-only rows say "counted only"</span></div></div>
+
+  <div class="fr"><div class="id">FR-8 <span class="tag p1">P1</span></div><h4><span class="zh">推送</span><span class="en">Push</span></h4>
+    <p><span class="zh">邀请人：好友注册、好友下单、好友激活（权益到账）、抵扣金 7 天后过期。好友：抵扣金 7 天后过期。全部直达邀请页或权益页。</span><span class="en">Inviter: friend signed up, friend ordered, friend activated (rewards landed), credit expiring in 7 days. Friend: credit expiring in 7 days. All deep-link to the invite or rewards page.</span></p></div>
+
+  <div class="fr"><div class="id">FR-9 <span class="tag p1">P1</span></div><h4><span class="zh">Atom 设备端（466×466 圆屏）</span><span class="en">Atom device (466×466 round)</span></h4>
+    <p><span class="zh">菜单「邀请好友」→ 二维码屏（≥ 220px，明文码 + 短链）；课后总结「分享到手机」→ 二维码，手机扫码打开这次训练的分享页。内容落在内接正方形 330×330 内。设备按当前登录用户生成码；若只能显示静态图，则降级为设备渠道码。</span><span class="en">Menu "Invite" → QR screen (≥ 220 px, plain code + link); post-workout "Share to phone" → QR that opens this workout's share page on the phone. Content stays inside the inscribed 330×330 square. Codes are generated for the signed-in user; if only static images are possible, fall back to a device channel code.</span></p></div>
+
+  <div class="fr"><div class="id">FR-10 <span class="tag p0">P0</span></div><h4><span class="zh">配置下发与多语言</span><span class="en">Server config &amp; i18n</span></h4>
+    <p><span class="zh">§05 的全部参数与规则文案由服务端按版本下发；所有界面文案走字符串表，金额 / 天数 / 昵称作为参数注入；设计稿按英文最长版定容器高度。</span><span class="en">Every parameter and rule clause in §05 is server-delivered per edition; all UI strings come from the string table with amounts / days / names injected as parameters; layouts are sized to the longest English string.</span></p></div>
+</section>
+
+<!-- 07 -->
+<section id="s7"><div class="eyebrow">07</div>
+  <h2><span class="zh">界面</span><span class="en">Screens</span></h2>
+  <p class="mu"><span class="zh">全部界面见配套 Demo（三条泳道，二十屏，可点走通）。编号在 Demo 与本文一致。</span><span class="en">All screens are in the companion Demo (three lanes, twenty screens, clickable end to end). IDs match between the Demo and this document.</span></p>
+  <div class="scroll"><table><thead><tr><th style="width:130px"><span class="zh">泳道</span><span class="en">Lane</span></th><th><span class="zh">界面</span><span class="en">Screens</span></th></tr></thead><tbody>
+    <tr><td><b><span class="zh">邀请人手机</span><span class="en">Inviter phone</span></b></td><td>A1 <span class="zh">入口</span><span class="en">Entry</span> · A2 <span class="zh">邀请页</span><span class="en">Invite page</span> · A3 <span class="zh">分享面板</span><span class="en">Share sheet</span> · A4 <span class="zh">邀请图预览</span><span class="en">Image preview</span> · A6 <span class="zh">明细</span><span class="en">Details</span> · A7 <span class="zh">权益</span><span class="en">Rewards</span> · A8 <span class="zh">规则</span><span class="en">Rules</span> · A9 <span class="zh">推送</span><span class="en">Push</span></td></tr>
+    <tr><td><b><span class="zh">好友手机</span><span class="en">Friend phone</span></b></td><td>B1 <span class="zh">收到消息</span><span class="en">Message</span> · B2 <span class="zh">落地页</span><span class="en">Landing</span> · B3 <span class="zh">结算</span><span class="en">Checkout</span> · B4 <span class="zh">下单成功</span><span class="en">Order placed</span> · B5/B5s <span class="zh">注册存抵扣金</span><span class="en">Sign up &amp; bank credit</span> · B6 <span class="zh">激活填码</span><span class="en">Activation code</span> · B7 <span class="zh">权益到账</span><span class="en">Rewards landed</span></td></tr>
+    <tr><td><b>Atom</b></td><td>C1 <span class="zh">菜单</span><span class="en">Menu</span> · C2 <span class="zh">邀请二维码</span><span class="en">Invite QR</span> · C3 <span class="zh">课后总结</span><span class="en">Post-workout</span> · C4 <span class="zh">分享到手机</span><span class="en">Share to phone</span> · C5 <span class="zh">扫码反馈</span><span class="en">Scan feedback</span></td></tr>
+  </tbody></table></div>
+</section>
+
+<!-- 08 -->
+<section id="s8"><div class="eyebrow">08</div>
+  <h2><span class="zh">归因规则</span><span class="en">Attribution Rules</span></h2>
+  <p class="mu"><span class="zh">业务只需要一个数：通过邀请带来的主机订单。两条来源相加，全部确定性，不做概率匹配，不接安装归因 SDK。</span><span class="en">The business needs one number: device orders brought by referral. Two deterministic sources, no probabilistic matching, no install-attribution SDK.</span></p>
+  <div class="scroll"><table><thead><tr><th style="width:70px"><span class="zh">优先级</span><span class="en">Order</span></th><th style="width:220px"><span class="zh">归因点</span><span class="en">Attribution point</span></th><th><span class="zh">说明</span><span class="en">Notes</span></th></tr></thead><tbody>
+    <tr><td class="mono">1</td><td><b><span class="zh">订单带 token</span><span class="en">Order carries token</span></b><br><code>order.referral_token</code></td><td><span class="zh">自有商城（<span class="cn">小程序 openid + 订单字段</span><span class="gl">Shopify cart attribute</span>）。100% 确定。</span><span class="en">Own store (<span class="cn">mini-program openid + order field</span><span class="gl">Shopify cart attribute</span>). Deterministic.</span></td></tr>
+    <tr><td class="mono">2</td><td><b><span class="zh">激活时填码</span><span class="en">Code at activation</span></b><br><code>activation.referral_code</code></td><td><span class="zh">与在哪买的无关，覆盖 <span class="cn">天猫 / 京东</span><span class="gl">Amazon</span> / 线下 / 转送。100% 确定。</span><span class="en">Independent of where the box was bought; covers <span class="cn">Tmall / JD</span><span class="gl">Amazon</span> / retail / gifted. Deterministic.</span></td></tr>
+    <tr><td class="mono">3</td><td><b><span class="zh">7 天内补填</span><span class="en">Backfill within 7 days</span></b></td><td><span class="zh">同一账号一次。</span><span class="en">Once per account.</span></td></tr>
+    <tr><td class="mono">—</td><td><s><span class="zh">点击 / 安装归因 / 联盟链接</span><span class="en">Clicks / install attribution / affiliate links</span></s></td><td><span class="zh">不做。</span><span class="en">Not built.</span></td></tr>
+  </tbody></table></div>
+  <ul class="plain"><li><span class="zh"><b>一个订单只归一个邀请人</b>：先到先得；订单 token 与激活码冲突时以订单 token 为准并记录冲突。</span><span class="en"><b>One order, one inviter</b>: first wins; if order token and activation code disagree, the order token wins and the conflict is logged.</span></li><li><span class="zh"><b>账本状态</b>：<code>attributed</code> → <code>qualified</code>（收货 + 激活）→ <code>settled</code>（已发奖）→ <code>reversed</code>（退货）。</span><span class="en"><b>Ledger states</b>: <code>attributed</code> → <code>qualified</code> (delivered + activated) → <code>settled</code> → <code>reversed</code> (returned).</span></li></ul>
+</section>
+
+<!-- 09 -->
+<section id="s9"><div class="eyebrow">09</div>
+  <h2><span class="zh">数据与事件</span><span class="en">Data &amp; Events</span></h2>
+  <div class="cols">
+    <div class="vc"><h4><span class="zh">实体</span><span class="en">Entities</span></h4><ul>
+      <li><code>referral_token</code>：user_id, token, created_at</li>
+      <li><code>referral_ledger</code>：inviter_id, invitee_id, source (image/link/workout_qr/device), stage (signed_up/ordered/activated), order_id, device_id, state, timestamps</li>
+      <li><code>reward</code>：user_id, kind (credit/pro_month), amount, currency, expires_at, ledger_id, state</li>
+      <li><code>edition_config</code>：edition, amounts, storefronts, destinations, strings{zh,en}</li>
+    </ul></div>
+    <div class="vc"><h4><span class="zh">事件（埋点）</span><span class="en">Events</span></h4><ul>
+      <li><code>invite_page_view</code>, <code>invite_cta_tap</code>, <code>share_complete</code>{form, dest}</li>
+      <li><code>landing_view</code>{token, env, edition} <span class="zh">— 只记事件，不做点击统计展示</span><span class="en">— logged, never surfaced as a click count</span></li>
+      <li><code>signup_with_token</code>, <code>order_with_token</code>, <code>activation_code_entered</code>{prefilled}, <code>activation_code_skipped</code></li>
+      <li><code>reward_granted</code>, <code>reward_reversed</code>, <code>credit_redeemed</code>, <code>credit_expired</code></li>
+    </ul></div>
+    <div class="vc"><h4><span class="zh">看板</span><span class="en">Dashboard</span></h4><ul>
+      <li><span class="zh">邀请带来的订单数 / 占比（北极星）</span><span class="en">Referred orders / share (north star)</span></li><li><span class="zh">分享率、带码注册率、注册→购买转化</span><span class="en">Share rate, coded sign-up rate, sign-up→purchase</span></li><li><span class="zh">每单成本、抵扣金核销率、PRO 递延</span><span class="en">Cost per order, credit redemption, Pro deferral</span></li><li><span class="zh">按来源 / 版本 / 语言拆分</span><span class="en">Split by source / edition / language</span></li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="s10"><div class="eyebrow">10</div>
+  <h2><span class="zh">边界与异常</span><span class="en">Edge Cases</span></h2>
+  <div class="scroll"><table><thead><tr><th style="width:230px"><span class="zh">情况</span><span class="en">Case</span></th><th><span class="zh">处理</span><span class="en">Handling</span></th></tr></thead><tbody>
+    <tr><td><span class="zh">自己填自己的码</span><span class="en">Entering your own code</span></td><td><span class="zh">提示"这是你自己的邀请码"，不发奖</span><span class="en">"That's your own code", no reward</span></td></tr>
+    <tr><td><span class="zh">好友退货</span><span class="en">Friend returns the device</span></td><td><span class="zh">双方权益 <code>reversed</code>；已用掉的抵扣金不追回，未用的作废；PRO 剩余天数扣除</span><span class="en">Both sides <code>reversed</code>; spent credit not clawed back, unspent voided; remaining Pro days removed</span></td></tr>
+    <tr><td><span class="zh">邀请人设备未激活 / 账号封禁</span><span class="en">Inviter has no activated device / is banned</span></td><td><span class="zh">落地页照常显示产品，不显示优惠；码无效</span><span class="en">Landing page shows product without discount; code invalid</span></td></tr>
+    <tr><td><span class="zh">好友已是老用户</span><span class="en">Friend is an existing user</span></td><td><span class="zh">已有激活设备的账号不能作为被邀请人；未激活的可以</span><span class="en">Accounts with an activated device cannot be invitees; unactivated ones can</span></td></tr>
+    <tr><td><span class="zh">两个码 / 换码</span><span class="en">Two codes / switching codes</span></td><td><span class="zh">先绑定的生效；激活前可在 App 里改一次</span><span class="en">First binding wins; changeable once before activation</span></td></tr>
+    <tr><td><span class="zh">版本不匹配（中国版账号扫到国际版链接）</span><span class="en">Edition mismatch (CN account opens a GLOBAL link)</span></td><td><span class="zh">按<b>好友账号</b>的版本发权益，金额取该版本；邀请人按自己版本得奖</span><span class="en">Friend's reward follows the <b>friend's</b> edition; inviter's follows the inviter's</span></td></tr>
+    <tr><td><span class="zh">抵扣金到期</span><span class="en">Credit expires</span></td><td><span class="zh">到期前 7 天推一次；到期作废，明细留痕</span><span class="en">One push 7 days before; voided on expiry, shown in details</span></td></tr>
+    <tr><td><span class="zh">刷单</span><span class="en">Fraud</span></td><td><span class="zh">同设备指纹 / 同支付账号 / 同收货地址高频 → 人工审核；异常速率挂起而非拒绝；邀请人需有真实训练记录</span><span class="en">Same device fingerprint / payment account / address at volume → manual review; abnormal velocity suspends rather than rejects; inviter must have real workout history</span></td></tr>
+    <tr><td><span class="zh">token 无效链接被打开</span><span class="en">Link with invalid token</span></td><td><span class="zh">当普通产品页处理，不报错</span><span class="en">Treated as a plain product page, no error</span></td></tr>
+  </tbody></table></div>
+</section>
+
+<!-- 11 -->
+<section id="s11"><div class="eyebrow">11</div>
+  <h2><span class="zh">非功能需求</span><span class="en">Non-functional</span></h2>
+  <div class="cols">
+    <div class="vc"><h4><span class="zh">隐私</span><span class="en">Privacy</span></h4><ul><li><span class="zh">好友昵称按语言脱敏，头像不展示给邀请人</span><span class="en">Friend names masked per language; avatars not shown to the inviter</span></li><li><span class="zh">落地页展示的邀请人训练凭证只用聚合数（次数、总量）</span><span class="en">Inviter proof on the landing page uses aggregates only</span></li><li><span class="zh">中国版数据境内存储</span><span class="en">CN data stored in-country</span></li></ul></div>
+    <div class="vc"><h4><span class="zh">性能</span><span class="en">Performance</span></h4><ul><li><span class="zh">落地页首屏 ≤ 1.5 s（4G）；二维码本地生成</span><span class="en">Landing first paint ≤ 1.5 s on 4G; QR generated on device</span></li><li><span class="zh">邀请图渲染 ≤ 1 s（走 ShareKit 现有管线）</span><span class="en">Invite image renders ≤ 1 s (existing ShareKit pipeline)</span></li></ul></div>
+    <div class="vc"><h4><span class="zh">安全</span><span class="en">Security</span></h4><ul><li><span class="zh">发奖只在服务端触发，客户端不可请求发奖</span><span class="en">Rewards are granted server-side only</span></li><li><span class="zh">token 不可枚举（随机，非自增）</span><span class="en">Tokens are random, not sequential</span></li><li><span class="zh">PRO 天数走服务端权益延期，不走商店 offer code</span><span class="en">Pro days extend server-side entitlement, not store offer codes</span></li></ul></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section id="s12"><div class="eyebrow">12</div>
+  <h2><span class="zh">里程碑</span><span class="en">Milestones</span></h2>
+  <div class="scroll"><table><thead><tr><th style="width:80px"><span class="zh">阶段</span><span class="en">Phase</span></th><th><span class="zh">范围</span><span class="en">Scope</span></th><th style="width:230px"><span class="zh">依赖</span><span class="en">Depends on</span></th></tr></thead><tbody>
+    <tr><td><b>P0</b></td><td><span class="zh">FR-1/2/3/4/5/6/10：token、邀请页、分享面板 + T28、落地页、结算抵扣、注册存抵扣金、激活填码、配置下发。两版两语言一起上。</span><span class="en">FR-1/2/3/4/5/6/10: token, invite page, share sheet + T28, landing, checkout discount, banked credit, activation code, server config. Both editions and languages together.</span></td><td><span class="zh"><span class="cn">小程序商城</span><span class="gl">bodypark.com</span>接 token 字段；激活向导加一步</span><span class="en"><span class="cn">Mini-store</span><span class="gl">bodypark.com</span> accepts the token field; activation wizard gains one step</span></td></tr>
+    <tr><td><b>P1</b></td><td><span class="zh">FR-7/8/9：明细、权益页、推送、设备端二维码</span><span class="en">FR-7/8/9: details, rewards page, push, device QR</span></td><td><span class="zh">设备端能否显示动态二维码</span><span class="en">Whether the device can render a dynamic QR</span></td></tr>
+    <tr><td><b>P2</b></td><td><span class="zh">配件兑换、阶梯活动、按市场调整金额的 A/B</span><span class="en">Accessory redemption, tiered campaigns, per-market amount A/B</span></td><td>—</td></tr>
+  </tbody></table></div>
+</section>
+
+<!-- 13 -->
+<section id="s13"><div class="eyebrow">13</div>
+  <h2><span class="zh">待定</span><span class="en">Open Questions</span></h2>
+  <div class="q"><div class="who"><span class="zh">电商 / 运营</span><span class="en">E-commerce / Ops</span></div><h4><span class="zh"><span class="cn">小程序商城</span><span class="gl">bodypark.com</span> 能否在订单上带 token 字段？</span><span class="en">Can <span class="cn">the mini-store</span><span class="gl">bodypark.com</span> carry a token field on the order?</span></h4><p><span class="zh">决定归因第 1 层是否成立；不成立则全靠激活填码。</span><span class="en">Decides whether attribution layer 1 exists; otherwise everything rides on the activation code.</span></p></div>
+  <div class="q"><div class="who"><span class="zh">运营 / 财务</span><span class="en">Ops / Finance</span></div><h4><span class="zh">各市场金额与 PRO 标注价值</span><span class="en">Per-market amounts and the Pro value shown</span></h4><p><span class="zh">本文 <span class="cn">¥50 / ¥30</span><span class="gl">$10 / $4.99</span> 为占位；欧洲、日本等市场同额本币还是按购买力调整。</span><span class="en"><span class="cn">¥50 / ¥30</span><span class="gl">$10 / $4.99</span> here are placeholders; whether EU / JP use the same figure in local currency or a PPP-adjusted one.</span></p></div>
+  <div class="q"><div class="who"><span class="zh">硬件</span><span class="en">Hardware</span></div><h4><span class="zh">466 圆屏能否显示动态二维码？</span><span class="en">Can the 466 round screen render a dynamic QR?</span></h4><p><span class="zh">不能则设备端邀请只能归到设备渠道，不能归到人。</span><span class="en">If not, device-side invites attribute to a device channel, not a person.</span></p></div>
+  <div class="q"><div class="who"><span class="zh">法务</span><span class="en">Legal</span></div><h4><span class="zh">抵扣金的会计与税务口径确认</span><span class="en">Accounting and tax treatment of credit</span></h4><p><span class="zh">中国版：非现金、不开票、90 天有效；国际版：terms 条款。</span><span class="en">CN: non-cash, no invoice, 90-day expiry; GLOBAL: terms clause.</span></p></div>
+</section>
+</div></div>
+
+<script>
+function setL(l){var d=document.getElementById('doc');d.classList.remove('zh','en');d.classList.add(l);document.querySelectorAll('[data-l]').forEach(function(b){b.classList.toggle('on',b.dataset.l===l);});}
+function setE(e){var d=document.getElementById('doc');d.classList.remove('cn','gl');d.classList.add(e);document.querySelectorAll('[data-e]').forEach(function(b){b.classList.toggle('on',b.dataset.e===e);});}
+</script>

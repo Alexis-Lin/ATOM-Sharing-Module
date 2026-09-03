@@ -1,4 +1,4 @@
-<title>邀请分享与归因设计 · Referral & Attribution v1.0</title>
+<title>邀请推荐 · 归因与权益设计 v1.1</title>
 <style>
   :root{
     --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
@@ -282,7 +282,7 @@
       </tbody>
     </table>
   </div>
-  <div class="note"><b>设计含义：</b>因为 L3 覆盖全渠道且 100% 确定，我们<b>不必强求 L0/L1 的漏斗完美</b>。L0/L1 优化的是"成交转化"，L3 优化的是"关系记账"。两件事分开算 KPI，不要混。</div>
+  <div class="note"><b>已决策的简化口径：</b>P0 只做 L0（订单带 token）与 L3（激活填码）+ L4 补填；L1/L2 不做；<b>不记录点击</b>。因为 L3 覆盖全渠道且 100% 确定，我们<b>不必强求 L0 的漏斗完美</b>。L0/L1 优化的是"成交转化"，L3 优化的是"关系记账"。两件事分开算 KPI，不要混。</div>
 </section>
 
 <section>
@@ -304,7 +304,7 @@
           <div class="sub">BODY PARK ATOM · SMART STRENGTH</div>
           <div class="hero"><span class="tagp">好友专享</span><div class="dev"></div></div>
           <div class="offer">
-            <span class="big">¥5,499</span><span class="unit">起</span><span class="old">¥5,999</span>
+            <span class="big">¥1,749</span><span class="unit">好友价</span><span class="old">¥1,799</span>
           </div>
           <div class="codebar"><span class="k">邀请码 / 优惠码</span><span class="v">ALEX-7K2A</span></div>
           <div class="qrow">
@@ -372,17 +372,17 @@
           </div>
           <div style="font-size:15px;font-weight:800;margin-top:11px;letter-spacing:-.02em">Atom 智能力量设备</div>
           <div style="display:flex;align-items:baseline;gap:7px;margin-top:4px">
-            <span style="font-family:var(--mono);font-size:20px;font-weight:800">¥5,499</span>
-            <span style="font-size:10px;color:#939C8F;text-decoration:line-through">¥5,999</span>
-            <span style="font-family:var(--mono);font-size:9px;background:#6FCC1B;color:#10240A;font-weight:700;padding:2px 6px;border-radius:2px">好友 -500</span>
+            <span style="font-family:var(--mono);font-size:20px;font-weight:800">¥1,749</span>
+            <span style="font-size:10px;color:#939C8F;text-decoration:line-through">¥1,799</span>
+            <span style="font-family:var(--mono);font-size:9px;background:#6FCC1B;color:#10240A;font-weight:700;padding:2px 6px;border-radius:2px">好友 −¥50</span>
           </div>
           <div class="pcta">立即购买 · 优惠已自动生效</div>
           <div class="pmini">小程序商城下单 · 归因 L0 · 无需填码</div>
           <div class="pdivider">或</div>
           <a class="pcta ghost">去天猫旗舰店 / 京东自营</a>
-          <div class="pmini">结算时输入 <b style="color:#47940B">ALEX-7K2A</b> 立减<br>忘了也没关系，激活时还能补</div>
+          <div class="pmini">结算时输入 <b style="color:#47940B">ALEX-7K2A</b> 立减 ¥50<br>激活时填码再得 1 个月 PRO</div>
           <div class="pdivider">已有 Atom？</div>
-          <a class="pcta ghost">下载 App · 领 30 天会员</a>
+          <a class="pcta ghost">下载 App · 把 ¥50 存起来</a>
         </div>
       </div>
       <div class="cap" style="font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:9px;max-width:270px;line-height:1.5">
@@ -482,43 +482,42 @@
 
 <section>
   <div class="eyebrow">07 · 奖励与风控</div>
-  <h2>两侧都两层，全部可叠加 <span class="tag t-det" style="vertical-align:middle">已决策 09-03</span></h2>
-  <p class="lede">每一侧都有一个<b>万能层</b>（PRO 天数，全球统一、不看在哪买）和一个<b>市场层</b>（钱，依赖官网在该市场可售且允许用券）。阶梯的<b>形状</b>是全球的，每一档的<b>奖品</b>由地区 Profile 配。</p>
+  <h2>两侧各两样，全部可叠加 <span class="tag t-det" style="vertical-align:middle">已决策 09-03</span></h2>
+  <p class="lede">主机 $239–299（≈ ¥1,700–2,150）。每一侧都是「一笔小钱 + 一个月 PRO」：钱让人填码，PRO 是全球都能无条件发的底座。永远不给现金。</p>
   <div class="scroll">
     <table>
-      <thead><tr><th style="width:110px">谁</th><th style="width:150px">层</th><th>内容</th><th style="width:170px">依赖</th><th style="width:150px">无官网 / 不可用券的市场</th></tr></thead>
+      <thead><tr><th style="width:110px">谁</th><th style="width:170px">内容</th><th>规则</th><th style="width:190px">触发</th></tr></thead>
       <tbody>
-        <tr><td rowspan="2"><b>好友</b><br><span style="color:var(--muted);font-size:12px">成交钩子</span></td><td>市场层 · 硬件立减</td><td>¥500 / $70，落地页自动带，或结算填码</td><td>官网 / 平台券可用</td><td>不显示</td></tr>
-        <tr><td>万能层 · PRO 1 个月</td><td>激活时填邀请码即得，<b>与立减叠加</b></td><td>无</td><td>照常</td></tr>
-        <tr><td rowspan="2"><b>邀请人</b><br><span style="color:var(--muted);font-size:12px">分享动机</span></td><td>万能层 · PRO 30 天 / 位</td><td>每成功邀请 1 位固定给，不封顶。服务端权益延期，不走商店 offer code</td><td>无</td><td>照常</td></tr>
-        <tr><td>市场层 · 官网 coupon</td><td>挂在阶梯第 3 / 5 档（¥100 / ¥300，本币配置），<b>与 PRO 叠加</b>；与促销价叠加、不与其他券码叠加、90 天有效、只发给已激活设备的账号</td><td>官网在该市场可售 + 允许用券</td><td>该档退化为 <b>PRO +90 / +365 天</b>，阶梯形状不变</td></tr>
+        <tr><td rowspan="2"><b>好友</b><br><span style="color:var(--muted);font-size:12px">成交钩子</span></td><td><b>−¥50 / $10</b> 买主机</td><td>无条件、官网可与促销叠加；第三方渠道结算输码。注册 App 即存入账户，限主机，90 天有效，到期前 7 天提醒。同一账号一次。</td><td>结算自动抵扣，或注册入账</td></tr>
+        <tr><td><b>1 个月 PRO</b>（标注价值）</td><td>与立减叠加。</td><td>激活时填码，即时到账</td></tr>
+        <tr><td rowspan="2"><b>邀请人</b><br><span style="color:var(--muted);font-size:12px">分享动机</span></td><td><b>¥50 / $10 抵扣金</b></td><td>主机或配件可用，90 天有效，按次累计不封顶；权益页显示"累计 ¥150 / $30 可换一件配件"。</td><td rowspan="2">好友<b>购买 + 激活</b>之后；好友仅注册<b>只计数不发奖</b></td></tr>
+        <tr><td><b>1 个月 PRO</b> / 位</td><td>按次叠加不封顶，服务端权益延期，不走商店 offer code。</td></tr>
       </tbody>
     </table>
   </div>
   <div class="cols">
     <div class="card">
-      <h4>为什么这么分</h4>
+      <h4>力度判断</h4>
       <ul class="plain" style="margin-top:0">
-        <li><b>PRO 天数是唯一能全球无条件发的东西</b>：边际成本≈0、不是现金、无税务与地区合规问题、不依赖在哪买。所以它做底座。</li>
-        <li>Coupon 有真实成本且分市场可用，所以做<b>里程碑</b>而不是按次发，敞口有上限。</li>
-        <li><b>绝不显示一个兑不了的权益</b>：某市场 coupon 为 null，页面上就不出现，换成 PRO 天数。</li>
-        <li>永远不给现金。</li>
+        <li>好友侧 ¥50 / $10 占客单价 3–4%：<b>够让人填码，不是购买理由</b>。落地页 hero 讲的是"优惠已自动生效"，不是折扣力度。</li>
+        <li>每成功推荐一台总成本约 $20 真实 / $25 名义，<b>占客单价 8% 左右</b>；整包控制在 10–12% 内。</li>
+        <li>同一个 $10，在好友侧是象征，在邀请人侧是一件配件的 1/6 到 2/3——这是持续邀请的真实动力。</li>
       </ul>
     </div>
     <div class="card">
       <h4>结算时点</h4>
       <ul class="plain" style="margin-top:0">
-        <li>好友的 PRO 1 个月在<b>激活填码</b>那一刻发（它本身就是填码的激励）。</li>
-        <li>邀请人的奖励在好友<b>确认收货 + 完成激活</b>之后发——硬件退货率不为零，提前发奖是套利入口。</li>
-        <li>账本三态：<code>attributed</code> → <code>qualified</code> → <code>settled</code>，退货则 <code>reversed</code>。</li>
+        <li>好友的 PRO 在<b>激活填码</b>那一刻发（它本身就是填码的激励）。</li>
+        <li>邀请人的奖励在好友<b>确认收货 + 完成激活</b>之后发——硬件退货率不为零。</li>
+        <li>账本：<code>attributed</code> → <code>qualified</code> → <code>settled</code>，退货 <code>reversed</code>。</li>
       </ul>
     </div>
     <div class="card">
-      <h4>反薅</h4>
+      <h4>反薅与用词</h4>
       <ul class="plain" style="margin-top:0">
-        <li>同设备指纹 / 同支付账号 / 同收货地址高频 → 转人工审核。</li>
-        <li>邀请人自身需<b>已激活设备且有真实训练记录</b>才具备发奖资格——门槛放在邀请人侧比放在被邀请人侧更不伤转化。</li>
-        <li>异常速率自动挂起而非拒绝，避免误伤真实 KOC。PRO 天数价值低、薅的动机弱；coupon 每人每档限 1 次。</li>
+        <li>邀请人奖励<b>只在购买 + 激活后触发</b>，注册不触发——假号无利可图。</li>
+        <li>同设备指纹 / 同支付账号 / 同收货地址高频 → 人工审核；异常速率挂起而非拒绝；邀请人需有真实训练记录。</li>
+        <li>叫「抵扣金」不叫「现金」：只能店内用、有有效期，避开个税与资质，不在账上堆成无期限负债。</li>
       </ul>
     </div>
   </div>
