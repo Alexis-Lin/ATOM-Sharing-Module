@@ -220,6 +220,7 @@
     <span class="mchip">手机 320×660 · 设备 466×466 圆</span>
     <span class="mchip">好友 −$10 + 1 个月 PRO</span>
     <span class="mchip">邀请人 $10 抵扣金 + 1 个月 PRO / 位</span>
+    <span class="mchip">统计：注册 App · 购买 Atom</span>
     <span class="mchip">低保真 · 黑白线框</span>
   </div>
 </header>
@@ -247,10 +248,10 @@
     <table>
       <thead><tr><th style="width:130px">时点</th><th style="width:110px">界面</th><th>好友得到</th><th>邀请人得到</th><th style="width:150px">归因</th></tr></thead>
       <tbody>
-        <tr><td><b>收到 / 点击</b></td><td class="mono">B1 → B2</td><td>看到 −$10 已生效 + 填码得 1 个月 PRO</td><td>点击 +1（明细可见）</td><td>落地页按 token 计数</td></tr>
-        <tr><td><b>注册 App</b>（先不买）</td><td class="mono">B5</td><td>$10 抵扣金入账，90 天内买主机可用</td><td>注册 +1，<b>不发奖</b></td><td>token 绑定账号（防假号：只计数）</td></tr>
-        <tr><td><b>下单</b></td><td class="mono">B3 → B4</td><td>−$10 在订单里抵扣（官网可叠加）</td><td>下单 +1，权益标"待到账"</td><td>官网订单带 token；第三方靠码</td></tr>
-        <tr><td><b>激活填码</b></td><td class="mono">B6 → B7</td><td><b>1 个月 PRO 即时到账</b></td><td><b>$10 抵扣金 + 1 个月 PRO 到账</b>，推送 A9</td><td>激活填码 = 全渠道兜底</td></tr>
+        <tr><td><b>收到 / 打开</b></td><td class="mono">B1 → B2</td><td>看到 −$10 已生效 + 填码得 1 个月 PRO</td><td>—（<b>不记录点击</b>）</td><td>落地页只做透传，不计数</td></tr>
+        <tr><td><b>注册 App</b>（先不买）</td><td class="mono">B5</td><td>$10 抵扣金入账，90 天内买主机可用</td><td><b>注册 App +1</b>，不发奖</td><td>token 绑定账号（防假号：只计数）</td></tr>
+        <tr><td><b>下单</b></td><td class="mono">B3 → B4</td><td>−$10 在订单里抵扣（官网可叠加）</td><td>购买 Atom 显示"待激活"</td><td>官网订单带 token；第三方靠码</td></tr>
+        <tr><td><b>激活填码</b></td><td class="mono">B6 → B7</td><td><b>1 个月 PRO 即时到账</b></td><td><b>购买 Atom +1</b>，$10 抵扣金 + 1 个月 PRO 到账，推送 A9</td><td>激活填码 = 全渠道兜底</td></tr>
         <tr><td><b>退货</b></td><td class="mono">—</td><td>PRO 收回</td><td>抵扣金与 PRO 收回，动态留痕</td><td>—</td></tr>
       </tbody>
     </table>
@@ -306,16 +307,19 @@ S.A1={lane:'A',kind:'phone',title:'入口 · "我的"页',why:'邀请入口挂�
     '<div class="b soft"><div class="kv"><b>训练记录</b><span class="v">142</span></div><div class="kv"><b>我的报告</b><span class="v">›</span></div><div class="kv"><b>PRO · 剩 74 天</b><span class="v">›</span></div><div class="kv"><b>我的设备</b><span class="v">Atom</span></div><div class="kv" style="color:var(--wf-mute)"><b>设置</b><span class="v">›</span></div></div>'+
     '<div class="lbl">其他入口（同样到 A2）</div><div class="row"><div class="b fill" style="font-size:11px;text-align:center;cursor:pointer" onclick="go(\'A2\')">课后报告底部</div><div class="b fill" style="font-size:11px;text-align:center;cursor:pointer" onclick="go(\'A9\')">推送通知</div></div>'+
     '</div><div class="tabs"><div><i></i>训练</div><div><i></i>课程</div><div><i></i>数据</div><div class="on"><i></i>我的</div></div>';}};
-S.A2={lane:'A',kind:'phone',title:'邀请页（单 CTA）',why:'一屏三事：怎么做、一键分享、我的数据与权益。页面上<b>只有一个按钮</b>，形式与去处在按钮之后选。邀请码可见但不是按钮。',
-  el:['hero：好友得什么 / 我得什么，两句话','邀请码 + 短链（只展示）','唯一 CTA → A3','三格：点击 / 注册 / 购买激活 → A6','权益格：抵扣金 + PRO → A7','怎么做三步','最近动态'],next:['A3','A6','A7','A8'],pri:'P0',
+S.A2={lane:'A',kind:'phone',title:'邀请页（单 CTA）',why:'自上而下：利益点 → 怎么做 → <b>唯一的按钮</b> → 邀请结果。先讲清楚再让人按，按完往下就是结果。不记录点击，只统计注册 App 与购买 Atom 两件事。',
+  el:['hero：好友得什么 / 我得什么 + 邀请码（只展示）','怎么做三步（在按钮之上）','唯一 CTA → A3','邀请结果：注册 App / 购买 Atom 两格 + 我的权益 + 最近动态，同一个区块'],next:['A3','A6','A7','A8'],pri:'P0',
   render:function(){var r=R();return nav('邀请好友','A1','规则','A8')+'<div class="p">'+
     '<div class="b"><p class="t1">好友买 Atom 立减 '+m(r.off)+'，<br>激活填码再得 1 个月 PRO</p><p class="t2">你每邀 1 位：<b>'+m(r.off)+' 抵扣金</b> + <b>1 个月 PRO</b>（价值 '+r.pro+'），可叠加</p>'+
     '<div class="b fill" style="margin:10px 0 0;display:flex;justify-content:space-between;align-items:center"><div><div class="lbl" style="margin:0 0 2px">我的邀请码</div><div class="code">'+r.code+'</div></div><div class="mu" style="text-align:right;font-family:var(--mono);font-size:10px">'+r.link+'</div></div></div>'+
-    '<div class="btn pri" onclick="go(\'A3\')">邀请好友</div>'+
-    '<div class="stats"><div class="st" onclick="go(\'A6\')"><div class="n">12</div><div class="l">点击</div></div><div class="st" onclick="go(\'A6\')"><div class="n">4</div><div class="l">注册 App</div></div><div class="st" onclick="go(\'A6\')"><div class="n">2</div><div class="l">购买并激活</div></div></div>'+
-    '<div class="b acc" style="cursor:pointer" onclick="go(\'A7\')"><div class="kv" style="border:0;padding:0"><b>我的权益</b><span class="v">'+m(2*+r.off.replace(',',''))+' 抵扣金 · PRO +2 个月 ›</span></div></div>'+
     '<div class="lbl">怎么做</div><div class="b soft"><div class="steps"><div class="step"><i>1</i><div class="t">发给朋友</div><div class="d">图片或链接都带码</div></div><div class="ar">›</div><div class="step"><i>2</i><div class="t">朋友下单</div><div class="d">'+m(r.off)+' 自动抵扣</div></div><div class="ar">›</div><div class="step"><i>3</i><div class="t">激活填码</div><div class="d">两边权益同时到账</div></div></div></div>'+
-    '<div class="lbl">最近动态</div><div class="b soft"><div class="li"><div class="av">L</div><div class="tx">Lin** 激活了 Atom<small>09-01 · 邀请图</small></div><span class="rt">+'+m(r.off)+' · +1 月</span></div><div class="li"><div class="av">W</div><div class="tx">Wang** 已下单，等待激活<small>08-30 · 链接</small></div><span class="pill d">待到账</span></div><div class="li"><div class="av">Z</div><div class="tx">Zhao** 注册了 App<small>08-29 · 抵扣金已存</small></div><span class="pill d">仅计数</span></div></div>'+
+    '<div class="btn pri" onclick="go(\'A3\')">邀请好友</div>'+
+    '<div class="lbl">邀请结果</div><div class="b soft">'+
+      '<div class="stats" style="grid-template-columns:1fr 1fr;margin-bottom:8px"><div class="st" onclick="go(\'A6\')"><div class="n">4</div><div class="l">注册 App</div></div><div class="st" onclick="go(\'A6\')"><div class="n">2</div><div class="l">购买 Atom</div></div></div>'+
+      '<div class="kv" style="cursor:pointer" onclick="go(\'A7\')"><b>我的权益</b><span class="v">'+m(2*+r.off.replace(',',''))+' 抵扣金 · PRO +2 个月 ›</span></div>'+
+      '<div class="lbl" style="margin-top:8px">最近动态</div>'+
+      '<div class="li"><div class="av">L</div><div class="tx">Lin** 购买并激活了 Atom<small>09-01 · 邀请图</small></div><span class="rt">+'+m(r.off)+' · +1 月</span></div><div class="li"><div class="av">W</div><div class="tx">Wang** 已下单，等待激活<small>08-30 · 链接</small></div><span class="pill d">待到账</span></div><div class="li"><div class="av">Z</div><div class="tx">Zhao** 注册了 App<small>08-29 · 抵扣金已存</small></div><span class="pill d">仅计数</span></div>'+
+    '</div>'+
     (toastMsg?'<div class="toast">'+toastMsg+'</div>':'')+'</div>';}};
 S.A3={lane:'A',kind:'phone',title:'分享面板',why:'CTA 拉起的覆盖层。两组：邀请图 / 链接，每组一排去处，按版本配置顺序（中国版图片在上，国际版链接在上）。每个去处都是终点。',
   el:['邀请图组：缩略 + 去处（相册 / '+'聊天 / 社区）→ A4 预览','链接组：缩略 + 去处（复制 / 聊天 / 更多）→ 直接完成','取消'],next:['A4','A2'],pri:'P0',
@@ -332,12 +336,12 @@ S.A4={lane:'A',kind:'phone',title:'邀请图预览（T28）',why:'发送或保�
     '<div class="b fill" style="margin:6px 0;display:flex;justify-content:space-between;align-items:center"><span class="code" style="font-size:14px">'+r.code+'</span><span class="mu" style="font-family:var(--mono);font-size:9.5px">'+r.link+'</span></div>'+
     '<div style="display:flex;align-items:center;gap:10px">'+qr(52,7)+'<div class="mu">扫码查看<br>优惠自动生效</div></div></div>'+
     '<div class="row"><div class="btn pri" onclick="done(\''+r.chat+'\')">发送到 '+r.chat+'</div><div class="btn" onclick="done(\'相册\')">保存</div></div></div>';}};
-S.A6={lane:'A',kind:'phone',title:'邀请明细',why:'两段漏斗分开看：注册（只计数）和购买激活（发奖）。按人只列下单之后的，纯点击只计数。',
-  el:['漏斗：点击 → 注册 → 下单 → 激活','按人：阶段 pill','按来源：邀请图 / 链接 / 训练图二维码 / 设备扫码'],next:['A2','A7'],pri:'P1',
+S.A6={lane:'A',kind:'phone',title:'邀请明细',why:'只统计两件事：注册 App（只计数）和购买 Atom（下单 → 激活后发奖）。不记录点击。按人列出注册之后的每一位。',
+  el:['两个总数：注册 App / 购买 Atom','按人：阶段 pill（已注册 / 待激活 / 已到账）','按来源：邀请图 / 链接 / 训练图二维码 / 设备扫码'],next:['A2','A7'],pri:'P1',
   render:function(){return nav('邀请明细','A2')+'<div class="p">'+
-    '<div class="b funnel"><div class="fr"><span class="k">点击</span><div class="bar"><i style="width:100%"></i></div><span class="n">12</span></div><div class="fr"><span class="k">注册 App</span><div class="bar"><i style="width:33%"></i></div><span class="n">4</span></div><div class="fr"><span class="k">下单</span><div class="bar"><i style="width:25%"></i></div><span class="n">3</span></div><div class="fr"><span class="k">激活</span><div class="bar"><i style="width:17%"></i></div><span class="n">2</span></div></div>'+
-    '<div class="lbl">按人</div><div class="b soft"><div class="li"><div class="av">L</div><div class="tx">Lin**<small>点击 → 下单 → 激活</small></div><span class="pill g">已到账</span></div><div class="li"><div class="av">C</div><div class="tx">Chen**<small>点击 → 下单 → 激活</small></div><span class="pill g">已到账</span></div><div class="li"><div class="av">W</div><div class="tx">Wang**<small>点击 → 下单</small></div><span class="pill d">待激活</span></div><div class="li"><div class="av">Z</div><div class="tx">Zhao**<small>点击 → 注册（抵扣金已存）</small></div><span class="pill d">仅计数</span></div><div class="li"><div class="av">?</div><div class="tx">未注册访客 × 8<small>仅点击</small></div><span class="pill d">—</span></div></div>'+
-    '<div class="lbl">按来源</div><div class="b soft"><div class="kv"><b>邀请图</b><span class="v">7 点击 · 1 激活</span></div><div class="kv"><b>链接</b><span class="v">3 点击 · 1 激活</span></div><div class="kv"><b>训练分享图二维码</b><span class="v">1 点击</span></div><div class="kv"><b>设备屏扫码</b><span class="v">1 点击</span></div></div></div>';}};
+    '<div class="stats" style="grid-template-columns:1fr 1fr"><div class="st"><div class="n">4</div><div class="l">注册 App</div></div><div class="st"><div class="n">2</div><div class="l">购买 Atom<br><span style="font-size:9.5px">另 1 位已下单待激活</span></div></div></div>'+
+    '<div class="lbl">按人</div><div class="b soft"><div class="li"><div class="av">L</div><div class="tx">Lin**<small>注册 → 下单 → 激活</small></div><span class="pill g">已到账</span></div><div class="li"><div class="av">C</div><div class="tx">Chen**<small>注册 → 下单 → 激活</small></div><span class="pill g">已到账</span></div><div class="li"><div class="av">W</div><div class="tx">Wang**<small>注册 → 下单</small></div><span class="pill d">待激活</span></div><div class="li"><div class="av">Z</div><div class="tx">Zhao**<small>注册（抵扣金已存）</small></div><span class="pill d">仅计数</span></div></div>'+
+    '<div class="lbl">按来源</div><div class="b soft"><div class="kv"><b>邀请图</b><span class="v">2 注册 · 1 购买</span></div><div class="kv"><b>链接</b><span class="v">1 注册 · 1 购买</span></div><div class="kv"><b>训练分享图二维码</b><span class="v">1 注册</span></div><div class="kv"><b>设备屏扫码</b><span class="v">—</span></div></div></div>';}};
 S.A7={lane:'A',kind:'phone',title:'我的权益',why:'抵扣金和 PRO 分开显示，各有到期。抵扣金按次累计、90 天有效，"累计可换一件配件"是持续邀请的动力。',
   el:['抵扣金余额 + 有效期 + 去用','PRO 已到账月数 + 到期日','已获得列表（含待到账）','累计进度 → 配件'],next:['A2'],pri:'P1',
   render:function(){var r=R();var off=+r.off.replace(',','');return nav('我的权益','A2')+'<div class="p">'+
