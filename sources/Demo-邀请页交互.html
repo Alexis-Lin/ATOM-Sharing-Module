@@ -1,4 +1,4 @@
-<title>邀请页交互 Demo · Referral Page v0.1</title>
+<title>邀请页交互 Demo · Referral Page v0.2</title>
 <style>
   :root{
     --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
@@ -7,7 +7,7 @@
     --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
     --warn:#C2410C; --warn-soft:#FFF1E7;
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,"Helvetica Neue",sans-serif;
     --r:5px; --r-sm:2px;
     --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
   }
@@ -38,161 +38,146 @@
   section{margin-top:48px;}
   code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
 
-  /* ===== stage: phone + controls ===== */
   .stage{display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:start;margin-top:22px;}
   @media (max-width:760px){.stage{grid-template-columns:1fr;}}
-  .phone{width:320px;height:660px;border:9px solid #141712;border-radius:30px;background:#F6F7F4;position:relative;overflow:hidden;box-shadow:var(--shadow);
-    font-family:var(--cjk);color:#141712;flex:0 0 auto;}
+
+  /* ===== phone ===== */
+  .phone{width:320px;height:660px;border:9px solid #141712;border-radius:30px;background:#F6F7F4;position:relative;overflow:hidden;box-shadow:var(--shadow);font-family:var(--cjk);color:#141712;}
   .phone *{box-sizing:border-box;}
   .sb{height:26px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;font-family:var(--mono);font-size:10px;color:#141712;background:#F6F7F4;}
   .scr{position:absolute;left:0;right:0;top:26px;bottom:0;overflow-y:auto;overflow-x:hidden;background:#F6F7F4;display:none;scrollbar-width:none;}
   .scr::-webkit-scrollbar{display:none;}
   .scr.on{display:block;}
   .nav{display:flex;align-items:center;gap:10px;padding:8px 14px 10px;font-weight:700;font-size:15px;background:#F6F7F4;position:sticky;top:0;z-index:2;}
-  .nav .bk{width:26px;height:26px;border-radius:999px;border:1px solid #C8CFC3;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;cursor:pointer;background:#fff;}
+  .nav .bk{width:26px;height:26px;border-radius:999px;border:1px solid #C8CFC3;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;cursor:pointer;background:#fff;flex:0 0 auto;}
   .nav .sp{flex:1;}
   .nav .rt{font-size:11.5px;color:#47940B;font-weight:600;cursor:pointer;}
   .p{padding:0 14px;}
   .card{background:#fff;border:1px solid #E4E8E1;border-radius:5px;padding:13px 14px;margin-bottom:10px;}
-  .card.acc{background:#ECF8DC;border-color:#6FCC1B;}
-  .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#939C8F;}
-  .lbl.g{color:#47940B;}
-  .btn{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;border:1px solid transparent;user-select:none;}
-  .btn.pri{background:#6FCC1B;color:#10240A;}
-  .btn.sec{background:#fff;color:#47940B;border-color:#6FCC1B;font-weight:700;font-size:12.5px;padding:9px;}
+  .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#939C8F;margin:4px 0 6px;}
+  .btn{display:flex;align-items:center;justify-content:center;border-radius:999px;padding:13px;font-weight:800;font-size:14.5px;cursor:pointer;user-select:none;background:#6FCC1B;color:#10240A;margin-bottom:14px;}
   .btn:active{transform:translateY(1px);}
-  .row{display:flex;gap:8px;}
-  .row>*{flex:1;}
 
-  /* home stub */
   .me{display:flex;align-items:center;gap:12px;padding:6px 0 14px;}
   .av{width:46px;height:46px;border-radius:999px;background:#ECF8DC;border:1px solid #6FCC1B;display:flex;align-items:center;justify-content:center;font-weight:800;color:#10240A;}
   .me .n{font-weight:800;font-size:16px;line-height:1.2;}
   .me .s{font-family:var(--mono);font-size:10px;color:#939C8F;margin-top:3px;}
   .banner{display:flex;align-items:center;gap:12px;background:#141712;color:#fff;border-radius:5px;padding:13px 14px;cursor:pointer;margin-bottom:10px;position:relative;overflow:hidden;}
-  .banner .t{font-weight:800;font-size:14px;}
+  .banner .t{font-weight:800;font-size:14px;line-height:1.25;}
   .banner .d{font-size:11px;color:#B9C1B5;margin-top:2px;}
   .banner .go{margin-left:auto;font-family:var(--mono);font-size:11px;background:#6FCC1B;color:#10240A;font-weight:800;padding:5px 10px;border-radius:999px;white-space:nowrap;}
   .banner .dot{position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:999px;background:#6FCC1B;opacity:.18;}
   .list .it{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #EFF2EC;font-size:13.5px;}
   .list .it:last-child{border-bottom:0;}
   .list .it span{color:#939C8F;font-family:var(--mono);font-size:11px;}
-  .list .it.dim{color:#939C8F;}
   .tabs{position:absolute;left:0;right:0;bottom:0;height:52px;background:#fff;border-top:1px solid #E4E8E1;display:flex;font-family:var(--mono);font-size:10px;color:#939C8F;}
   .tabs div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
   .tabs div i{width:16px;height:16px;border:1.5px solid currentColor;border-radius:2px;display:block;}
   .tabs .on{color:#141712;font-weight:700;}
 
-  /* referral hero */
-  .hero{background:#141712;color:#fff;border-radius:5px;padding:16px 15px 14px;margin-bottom:10px;position:relative;overflow:hidden;}
+  .hero{background:#141712;color:#fff;border-radius:5px;padding:16px 15px 14px;margin-bottom:12px;position:relative;overflow:hidden;}
   .hero .dot{position:absolute;right:-40px;top:-40px;width:130px;height:130px;border-radius:999px;background:#6FCC1B;opacity:.16;}
-  .hero .h{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.25;}
+  .hero .h{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.28;text-wrap:balance;}
   .hero .h em{font-style:normal;color:#A3E635;}
-  .hero .sub{font-size:11.5px;color:#B9C1B5;margin-top:5px;}
-  .codebox{display:flex;align-items:center;justify-content:space-between;margin-top:12px;border:1px dashed #6FCC1B;border-radius:2px;padding:8px 11px;background:rgba(111,204,27,.08);cursor:pointer;}
+  .hero .sub{font-size:11.5px;color:#B9C1B5;margin-top:6px;line-height:1.45;}
+  .codebox{display:flex;align-items:center;justify-content:space-between;margin-top:12px;border:1px dashed #6FCC1B;border-radius:2px;padding:8px 11px;background:rgba(111,204,27,.08);}
   .codebox .k{font-family:var(--mono);font-size:9px;color:#B9C1B5;letter-spacing:.1em;}
   .codebox .v{font-family:var(--mono);font-size:16px;font-weight:800;letter-spacing:.1em;color:#A3E635;}
-  .codebox .cp{font-family:var(--mono);font-size:10px;color:#fff;border:1px solid #3E463A;border-radius:999px;padding:3px 9px;}
+  .codebox .rg{font-family:var(--mono);font-size:9px;color:#707A6B;text-align:right;line-height:1.4;}
 
-  /* stats */
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
-  .st{background:#fff;border:1px solid #E4E8E1;border-radius:5px;padding:11px 10px;cursor:pointer;}
+  .st{background:#fff;border:1px solid #E4E8E1;border-radius:5px;padding:11px 10px;cursor:pointer;min-width:0;}
   .st .n{font-family:var(--mono);font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;transition:color .2s;}
   .st .n.bump{color:#47940B;}
-  .st .l{font-size:10.5px;color:#5C645A;margin-top:5px;}
+  .st .l{font-size:10.5px;color:#5C645A;margin-top:5px;line-height:1.3;}
   .st .u{font-family:var(--mono);font-size:9px;color:#939C8F;}
   .st.hot{background:#ECF8DC;border-color:#6FCC1B;}
-  .st.hot .n{color:#10240A;}
-  .prog{margin-top:2px;}
-  .prog .t{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:6px;}
+  .prog .t{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;margin-bottom:6px;}
   .prog .t b{font-weight:700;}
-  .prog .t span{font-family:var(--mono);font-size:10px;color:#939C8F;}
+  .prog .t span{font-family:var(--mono);font-size:10px;color:#939C8F;white-space:nowrap;}
   .bar{height:6px;background:#EFF2EC;border-radius:2px;overflow:hidden;position:relative;}
   .bar i{display:block;height:100%;background:#6FCC1B;width:0;transition:width .5s;}
   .bar .tk{position:absolute;top:-2px;width:1px;height:10px;background:#C8CFC3;}
-  .ladder{display:flex;justify-content:space-between;margin-top:6px;font-family:var(--mono);font-size:9px;color:#939C8F;}
+  .ladder{display:flex;justify-content:space-between;gap:6px;margin-top:6px;font-family:var(--mono);font-size:9px;color:#939C8F;}
   .ladder b{color:#47940B;}
 
-  /* how-to steps */
   .steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:6px;}
-  .step{text-align:center;}
+  .step{text-align:center;min-width:0;}
   .step .ic{width:40px;height:40px;margin:0 auto 6px;border-radius:5px;background:#ECF8DC;border:1px solid #6FCC1B;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:800;color:#10240A;}
   .step .t{font-size:11.5px;font-weight:700;line-height:1.3;}
   .step .d{font-size:10px;color:#5C645A;line-height:1.4;margin-top:2px;}
   .steps .ar{color:#C8CFC3;font-family:var(--mono);padding-top:12px;}
 
-  /* feed */
   .feed .f{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #EFF2EC;font-size:12.5px;}
   .feed .f:last-child{border-bottom:0;}
   .feed .f .a{width:28px;height:28px;border-radius:999px;background:#EFF2EC;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#5C645A;flex:0 0 auto;}
-  .feed .f .tx{flex:1;line-height:1.3;}
+  .feed .f .tx{flex:1;line-height:1.3;min-width:0;}
   .feed .f .tx small{display:block;font-family:var(--mono);font-size:9.5px;color:#939C8F;margin-top:1px;}
   .feed .f .rw{font-family:var(--mono);font-size:11px;font-weight:800;color:#47940B;white-space:nowrap;}
   .feed .f .rw.dim{color:#939C8F;font-weight:500;}
+  .feed .f .rw.neg{color:#C2410C;}
   .feed .f.new{background:#ECF8DC;margin:0 -14px;padding:9px 14px;}
-  .pill{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;background:#ECF8DC;color:#47940B;border:1px solid #6FCC1B;}
+  .pill{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;background:#ECF8DC;color:#47940B;border:1px solid #6FCC1B;white-space:nowrap;}
   .pill.gray{background:#EFF2EC;color:#5C645A;border-color:#C8CFC3;}
   .pill.wait{background:#FFF1E7;color:#C2410C;border-color:#C2410C;}
 
-  /* rewards screen */
   .rw-big{background:#ECF8DC;border:1px solid #6FCC1B;border-radius:5px;padding:14px;margin-bottom:10px;}
   .rw-big .n{font-family:var(--mono);font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1;color:#10240A;}
   .rw-big .n small{font-size:13px;font-weight:700;margin-left:3px;}
   .rw-big .l{font-size:11px;color:#47940B;margin-top:5px;}
   .rule{font-size:12px;color:#5C645A;line-height:1.55;}
-  .rule b{color:#141712;}
-  .rule p{margin:0 0 6px;}
+  .rule b{color:#141712;display:block;}
+  .rule p{margin:0 0 8px;}
 
-  /* share sheet */
+  /* sheet: the one CTA opens this */
   .veil{position:absolute;inset:0;background:rgba(20,23,18,.45);display:none;z-index:5;}
   .veil.on{display:block;}
-  .sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:14px 14px 0 0;padding:12px 14px 18px;transform:translateY(100%);transition:transform .25s;z-index:6;}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:14px 14px 0 0;padding:10px 14px 16px;transform:translateY(100%);transition:transform .25s;z-index:6;max-height:88%;overflow-y:auto;}
   .sheet.on{transform:translateY(0);}
-  .sheet .hd{width:36px;height:4px;border-radius:2px;background:#C8CFC3;margin:0 auto 12px;}
-  .sheet h4{margin:0 0 3px;font-size:15px;font-weight:800;}
-  .sheet .sd{font-size:11px;color:#5C645A;margin-bottom:12px;}
-  .forms{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-  .form{border:1px solid #E4E8E1;border-radius:5px;padding:10px;cursor:pointer;}
-  .form.on{border-color:#6FCC1B;background:#ECF8DC;}
-  .form .t{font-weight:800;font-size:13px;}
-  .form .d{font-size:10px;color:#5C645A;margin-top:2px;line-height:1.4;}
-  .form .pv{margin-top:8px;height:64px;border:1px dashed #C8CFC3;border-radius:2px;background:#fff;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px;}
-  .form .pv .qr{width:40px;height:40px;flex:0 0 auto;}
-  .form .pv .lk{font-family:var(--mono);font-size:9.5px;color:#141712;word-break:break-all;line-height:1.3;}
-  .chans{display:flex;gap:8px;margin-top:12px;}
-  .chan{flex:1;text-align:center;font-size:10px;color:#5C645A;cursor:pointer;}
-  .chan i{display:block;width:40px;height:40px;margin:0 auto 4px;border-radius:999px;background:#EFF2EC;border:1px solid #E4E8E1;}
-  .chan:hover i{border-color:#6FCC1B;background:#ECF8DC;}
+  .sheet .hd{width:36px;height:4px;border-radius:2px;background:#C8CFC3;margin:0 auto 10px;}
+  .sheet h4{margin:0 0 2px;font-size:15px;font-weight:800;}
+  .sheet .sd{font-size:11px;color:#5C645A;margin-bottom:10px;}
+  .grp{border-top:1px solid #EFF2EC;padding:10px 0 4px;}
+  .grp .gh{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .grp .th{width:44px;height:44px;border:1px solid #E4E8E1;border-radius:2px;background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto;overflow:hidden;}
+  .grp .th .qr{width:30px;height:30px;}
+  .grp .th .lk{font-family:var(--mono);font-size:7.5px;color:#47940B;text-align:center;line-height:1.2;padding:3px;word-break:break-all;}
+  .grp .gt{font-weight:800;font-size:13px;}
+  .grp .gd{font-size:10px;color:#5C645A;line-height:1.35;}
+  .dests{display:flex;gap:6px;}
+  .dest{flex:1;text-align:center;font-size:9.5px;color:#5C645A;cursor:pointer;line-height:1.2;min-width:0;}
+  .dest i{display:block;width:40px;height:40px;margin:0 auto 4px;border-radius:999px;background:#EFF2EC;border:1px solid #E4E8E1;font-family:var(--mono);font-size:9px;font-weight:800;color:#5C645A;line-height:38px;font-style:normal;}
+  .dest:hover i{border-color:#6FCC1B;background:#ECF8DC;color:#10240A;}
+  .sheet .cancel{text-align:center;font-size:12.5px;color:#939C8F;padding:8px 0 0;cursor:pointer;margin-top:6px;border-top:1px solid #EFF2EC;}
 
-  /* toast + push */
-  .toast{position:absolute;left:50%;bottom:70px;transform:translateX(-50%) translateY(10px);background:#141712;color:#fff;font-size:12px;padding:8px 14px;border-radius:999px;opacity:0;transition:.2s;z-index:9;white-space:nowrap;pointer-events:none;}
+  .toast{position:absolute;left:50%;bottom:70px;transform:translateX(-50%) translateY(10px);background:#141712;color:#fff;font-size:12px;padding:8px 14px;border-radius:999px;opacity:0;transition:.2s;z-index:9;white-space:nowrap;pointer-events:none;max-width:90%;}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-  .push{position:absolute;left:10px;right:10px;top:-80px;background:#fff;border:1px solid #E4E8E1;border-radius:10px;padding:10px 12px;box-shadow:0 8px 24px -10px rgba(0,0,0,.35);transition:top .3s;z-index:8;display:flex;gap:10px;align-items:center;cursor:pointer;}
+  .push{position:absolute;left:10px;right:10px;top:-90px;background:#fff;border:1px solid #E4E8E1;border-radius:10px;padding:10px 12px;box-shadow:0 8px 24px -10px rgba(0,0,0,.35);transition:top .3s;z-index:8;display:flex;gap:10px;align-items:center;cursor:pointer;}
   .push.on{top:34px;}
   .push .ic{width:30px;height:30px;border-radius:7px;background:#6FCC1B;flex:0 0 auto;}
-  .push .t{font-size:12px;font-weight:800;}
+  .push .t{font-size:12px;font-weight:800;line-height:1.25;}
   .push .d{font-size:11px;color:#5C645A;}
   .push .tm{margin-left:auto;font-family:var(--mono);font-size:9px;color:#939C8F;align-self:flex-start;}
 
-  /* controls panel */
+  /* ===== controls ===== */
   .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;}
+  .panel+.panel{margin-top:14px;}
   .panel h3{margin:0 0 4px;font-size:14px;font-weight:700;}
   .panel .d{font-size:12.5px;color:var(--muted);margin-bottom:12px;}
-  .cbtns{display:flex;flex-wrap:wrap;gap:8px;}
+  .cbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .cbtns .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;margin-right:2px;}
   .cb{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 13px;cursor:pointer;transition:.14s;}
   .cb:hover{border-color:var(--acc);color:var(--acc-ink);}
+  .cb.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc);font-weight:700;}
   .cb.pri{background:var(--acc);border-color:var(--acc);color:var(--on-acc);font-weight:700;}
   .cb.warn{border-color:var(--warn);color:var(--warn);}
-  .log{margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;max-height:150px;overflow-y:auto;border-top:1px solid var(--line);padding-top:8px;}
+  .cbtns+.cbtns{margin-top:8px;}
+  .log{margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;max-height:140px;overflow-y:auto;border-top:1px solid var(--line);padding-top:8px;}
   .log b{color:var(--acc-ink);}
-  .map{margin-top:16px;}
-  .map .mrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
-  .map .nd{font-size:12px;border:1px solid var(--line);background:var(--canvas);border-radius:var(--r);padding:6px 10px;}
-  .map .nd.hi{border-color:var(--acc);background:var(--acc-soft);font-weight:700;}
-  .map .nd small{display:block;font-family:var(--mono);font-size:9.5px;color:var(--faint);}
-  .map .aw{color:var(--line-strong);font-family:var(--mono);}
+  .cfg{font-family:var(--mono);font-size:11px;line-height:1.75;color:var(--muted);background:var(--canvas);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;white-space:pre;overflow-x:auto;}
+  .cfg b{color:var(--acc-ink);font-weight:700;}
+  .cfg .c{color:var(--faint);}
 
-  /* spec tables */
   table{border-collapse:collapse;width:100%;font-size:12.8px;background:var(--surface);}
   th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
   thead th{background:var(--surface-2);font-size:11.5px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
@@ -205,202 +190,60 @@
   .vc b{color:var(--ink);}
   .note{margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--acc-soft);border-left:2px solid var(--acc);padding:9px 13px;border-radius:0 var(--r-sm) var(--r-sm) 0;}
   .note b{color:var(--acc-ink);}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;border-radius:var(--r-sm);padding:2px 7px;white-space:nowrap;}
+  .t-r{background:var(--acc);color:var(--on-acc);} .t-l{background:var(--acc-soft);color:var(--acc-ink);border:1px solid var(--acc);}
 </style>
 
 <div class="wrap">
 <header>
   <div class="brand">Body Park Atom · Sharing Module</div>
   <h1>邀请页交互 Demo</h1>
-  <p class="lede">粗糙但可点的低保真 Demo。一个页面回答三件事：<b>怎么做</b>、<b>一键分享</b>、<b>我的数据与权益</b>。归因口径简化为"通过分享带来的订单数"，右侧可以模拟好友的动作，看数字和权益怎么动。</p>
+  <p class="lede">粗糙但可点的低保真 Demo。页面上<b>只有一个 CTA</b>，点了之后再选形式与去处。分<b>中国版</b>与<b>国际版</b>两个版本，语言独立于版本切换——<b>版本决定做什么，语言决定说什么</b>。右侧可以模拟好友的动作，看数字和权益怎么动。</p>
   <div class="meta">
-    <span class="mchip hot">v0.1 · 2026-09-03</span>
-    <span class="mchip">手机端 · 一屏三事</span>
-    <span class="mchip">形式：图片 + 链接</span>
+    <span class="mchip hot">v0.2 · 2026-09-03</span>
+    <span class="mchip">单 CTA</span>
+    <span class="mchip">CN / GLOBAL 两版</span>
+    <span class="mchip">zh / en 多语言</span>
     <span class="mchip">归因：订单数 · 简化口径</span>
   </div>
 </header>
 
 <section>
   <div class="eyebrow">01 · 可点 Demo</div>
-  <h2>点手机，或用右侧按钮模拟好友动作</h2>
+  <h2>切版本、切语言、模拟好友动作</h2>
   <div class="stage">
-    <!-- ================= PHONE ================= -->
     <div class="phone" id="phone">
       <div class="sb"><span>9:41</span><span>●●● ▲ ▮</span></div>
-
-      <!-- push notification -->
       <div class="push" id="push" onclick="go('referral');hidePush()">
         <div class="ic"></div>
-        <div><div class="t" id="pushT">好友通过你的邀请下单了</div><div class="d" id="pushD">+30 天会员已到账 · 查看</div></div>
-        <div class="tm">现在</div>
+        <div><div class="t" id="pushT"></div><div class="d" id="pushD"></div></div>
+        <div class="tm" id="pushTm"></div>
       </div>
-
-      <!-- SCREEN: home -->
-      <div class="scr on" id="s-home">
-        <div class="nav">我的<div class="sp"></div></div>
-        <div class="p">
-          <div class="me"><div class="av">A</div><div><div class="n">Alex</div><div class="s">142 SESSIONS · 68.4 万 KG · ATOM #A2-0417</div></div></div>
-          <div class="banner" onclick="go('referral')">
-            <div class="dot"></div>
-            <div><div class="t">邀请好友买 Atom</div><div class="d">好友立减 ¥500 · 你得 30 天会员</div></div>
-            <div class="go">去邀请</div>
-          </div>
-          <div class="card list">
-            <div class="it">训练记录<span>142</span></div>
-            <div class="it">我的报告<span>›</span></div>
-            <div class="it">会员 · 剩 74 天<span>›</span></div>
-            <div class="it">我的设备<span>Atom</span></div>
-            <div class="it dim">设置<span>›</span></div>
-          </div>
-        </div>
-        <div class="tabs"><div><i></i>训练</div><div><i></i>课程</div><div><i></i>数据</div><div class="on"><i></i>我的</div></div>
-      </div>
-
-      <!-- SCREEN: referral -->
-      <div class="scr" id="s-referral">
-        <div class="nav"><div class="bk" onclick="go('home')">‹</div>邀请好友<div class="sp"></div><div class="rt" onclick="go('rules')">规则</div></div>
-        <div class="p">
-          <div class="hero">
-            <div class="dot"></div>
-            <div class="h">好友买 Atom <em>立减 ¥500</em><br>你得 <em>30 天会员</em></div>
-            <div class="sub">每成功邀请 1 位，权益自动到账。邀满 3 位再送配件券。</div>
-            <div class="codebox" onclick="toast('邀请码已复制')">
-              <div><div class="k">我的邀请码</div><div class="v">ALEX-7K2A</div></div>
-              <div class="cp">复制</div>
-            </div>
-          </div>
-
-          <div class="btn pri" onclick="openSheet()">一键分享给朋友</div>
-          <div class="row" style="margin:8px 0 12px">
-            <div class="btn sec" onclick="openSheet('img')">保存邀请图</div>
-            <div class="btn sec" onclick="toast('链接已复制 · bp.fit/i/7K2A')">复制链接</div>
-          </div>
-
-          <div class="lbl" style="margin-bottom:6px">我的数据与权益</div>
-          <div class="stats">
-            <div class="st" onclick="go('detail')"><div class="n" id="nClick">12</div><div class="l">点击了链接</div><div class="u">CLICKS</div></div>
-            <div class="st" onclick="go('detail')"><div class="n" id="nBuy">2</div><div class="l">好友已购买</div><div class="u">ORDERS</div></div>
-            <div class="st hot" onclick="go('rewards')"><div class="n" id="nRw">60</div><div class="l">会员天数到账</div><div class="u">DAYS</div></div>
-          </div>
-          <div class="card">
-            <div class="prog">
-              <div class="t"><b id="progT">再邀 1 位，解锁配件券</b><span id="progN">2 / 3</span></div>
-              <div class="bar"><i id="progBar"></i><span class="tk" style="left:33.3%"></span><span class="tk" style="left:66.6%"></span></div>
-              <div class="ladder"><span><b>1 位</b> 30 天会员 ✓</span><span>3 位 配件券 ¥199</span><span>5 位 限定套装</span></div>
-            </div>
-          </div>
-
-          <div class="lbl" style="margin:4px 0 6px">怎么做</div>
-          <div class="card">
-            <div class="steps">
-              <div class="step"><div class="ic">1</div><div class="t">发给朋友</div><div class="d">图片或链接，都带你的码</div></div>
-              <div class="ar">›</div>
-              <div class="step"><div class="ic">2</div><div class="t">朋友下单</div><div class="d">落地页自动带优惠，或结算填码</div></div>
-              <div class="ar">›</div>
-              <div class="step"><div class="ic">3</div><div class="t">你得权益</div><div class="d">朋友激活设备后自动到账</div></div>
-            </div>
-          </div>
-
-          <div class="lbl" style="margin:4px 0 6px">最近动态</div>
-          <div class="card feed" id="feed">
-            <div class="f"><div class="a">L</div><div class="tx">Lin** 购买并激活了 Atom<small>09-01 · 通过邀请图</small></div><div class="rw">+30 天</div></div>
-            <div class="f"><div class="a">W</div><div class="tx">Wang** 已下单，等待激活<small>08-30 · 通过链接</small></div><div class="rw dim">待到账</div></div>
-            <div class="f"><div class="a">?</div><div class="tx">3 位好友点击了链接<small>08-28 ~ 08-30</small></div><div class="rw dim">—</div></div>
-          </div>
-          <div style="height:20px"></div>
-        </div>
-      </div>
-
-      <!-- SCREEN: detail -->
-      <div class="scr" id="s-detail">
-        <div class="nav"><div class="bk" onclick="go('referral')">‹</div>邀请明细<div class="sp"></div></div>
-        <div class="p">
-          <div class="stats">
-            <div class="st"><div class="n" id="dClick">12</div><div class="l">点击</div></div>
-            <div class="st"><div class="n" id="dBuy">2</div><div class="l">下单</div></div>
-            <div class="st"><div class="n" id="dAct">1</div><div class="l">已激活</div></div>
-          </div>
-          <div class="lbl" style="margin-bottom:6px">按人</div>
-          <div class="card feed" id="people">
-            <div class="f"><div class="a">L</div><div class="tx">Lin**<small>点击 → 下单 → 激活</small></div><span class="pill">已到账</span></div>
-            <div class="f"><div class="a">W</div><div class="tx">Wang**<small>点击 → 下单</small></div><span class="pill wait">待激活</span></div>
-            <div class="f"><div class="a">?</div><div class="tx">未注册访客 × 10<small>仅点击</small></div><span class="pill gray">—</span></div>
-          </div>
-          <div class="lbl" style="margin:4px 0 6px">按来源</div>
-          <div class="card feed">
-            <div class="f"><div class="tx">邀请图（微信 / 朋友圈）</div><div class="rw dim" style="color:#141712">8 点击 · 1 单</div></div>
-            <div class="f"><div class="tx">链接（复制 / iMessage）</div><div class="rw dim" style="color:#141712">3 点击 · 1 单</div></div>
-            <div class="f"><div class="tx">训练分享图上的二维码</div><div class="rw dim" style="color:#141712">1 点击 · 0 单</div></div>
-          </div>
-          <div class="note" style="font-size:11px;margin-top:6px;background:#ECF8DC;border-color:#6FCC1B;color:#5C645A">好友昵称做脱敏；只有下单后才出现在"按人"里，纯点击只计数。</div>
-        </div>
-      </div>
-
-      <!-- SCREEN: rewards -->
-      <div class="scr" id="s-rewards">
-        <div class="nav"><div class="bk" onclick="go('referral')">‹</div>我的权益<div class="sp"></div></div>
-        <div class="p">
-          <div class="rw-big"><div class="n" id="rwBig">60<small>天</small></div><div class="l">会员已到账 · 当前会员到期 2026-11-16</div></div>
-          <div class="lbl" style="margin-bottom:6px">已获得</div>
-          <div class="card feed" id="rwList">
-            <div class="f"><div class="tx">30 天会员<small>09-01 · Lin** 激活</small></div><span class="pill">已到账</span></div>
-            <div class="f"><div class="tx">30 天会员<small>08-12 · Chen** 激活</small></div><span class="pill">已到账</span></div>
-            <div class="f"><div class="tx">30 天会员<small>Wang** 下单，等待激活</small></div><span class="pill wait">待到账</span></div>
-          </div>
-          <div class="lbl" style="margin:4px 0 6px">下一档</div>
-          <div class="card">
-            <div class="prog">
-              <div class="t"><b>配件券 ¥199</b><span id="progN2">2 / 3</span></div>
-              <div class="bar"><i id="progBar2"></i></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SCREEN: rules -->
-      <div class="scr" id="s-rules">
-        <div class="nav"><div class="bk" onclick="go('referral')">‹</div>活动规则<div class="sp"></div></div>
-        <div class="p">
-          <div class="card rule">
-            <p><b>怎么算成功邀请？</b>好友通过你的邀请图或链接下单 Atom，并完成设备激活。</p>
-            <p><b>忘了带码怎么办？</b>好友在激活设备时可以填写你的邀请码 <code style="background:#EFF2EC">ALEX-7K2A</code>，同样算数。</p>
-            <p><b>权益什么时候到账？</b>好友确认收货并激活后自动到账，一般 1 天内。</p>
-            <p><b>有上限吗？</b>会员天数不设上限；配件券与套装每人各限 1 次。</p>
-            <p><b>退货了呢？</b>对应权益会被收回。</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- share sheet -->
+      <div class="scr on" id="s-home"></div>
+      <div class="scr" id="s-referral"></div>
+      <div class="scr" id="s-detail"></div>
+      <div class="scr" id="s-rewards"></div>
+      <div class="scr" id="s-rules"></div>
       <div class="veil" id="veil" onclick="closeSheet()"></div>
-      <div class="sheet" id="sheet">
-        <div class="hd"></div>
-        <h4>分享给朋友</h4>
-        <div class="sd">两种形式都带你的邀请码，朋友怎么转发都算你的。</div>
-        <div class="forms">
-          <div class="form on" id="f-img" onclick="pick('img')">
-            <div class="t">邀请图</div><div class="d">带二维码 · 适合微信 / 朋友圈</div>
-            <div class="pv"><svg class="qr" viewBox="0 0 21 21" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/><g fill="#141712" id="qrg"></g></svg><div style="font-size:9px;line-height:1.3"><b>好友立减 ¥500</b><br><span style="font-family:var(--mono);color:#47940B">ALEX-7K2A</span></div></div>
-          </div>
-          <div class="form" id="f-link" onclick="pick('link')">
-            <div class="t">链接</div><div class="d">H5 落地页 · 适合 iMessage / 群</div>
-            <div class="pv"><div class="lk">bp.fit/i/7K2A<br><span style="color:#939C8F">Alex 邀请你 · 好友立减 ¥500</span></div></div>
-          </div>
-        </div>
-        <div class="chans">
-          <div class="chan" onclick="share('微信')"><i></i>微信</div>
-          <div class="chan" onclick="share('朋友圈')"><i></i>朋友圈</div>
-          <div class="chan" onclick="share('iMessage')"><i></i>iMessage</div>
-          <div class="chan" onclick="share('保存')"><i></i>保存</div>
-          <div class="chan" onclick="share('更多')"><i></i>更多</div>
-        </div>
-      </div>
-
+      <div class="sheet" id="sheet"></div>
       <div class="toast" id="toast"></div>
     </div>
 
-    <!-- ================= CONTROLS ================= -->
     <div>
+      <div class="panel">
+        <h3>版本与语言</h3>
+        <div class="d">版本改的是<b>做什么</b>（成交场、金额、渠道、码、规则）；语言改的是<b>说什么</b>。两者正交：一个在海外用中文的用户，看到的是国际版 × 中文。</div>
+        <div class="cbtns"><span class="k">版本</span>
+          <button class="cb on" data-k="reg" data-v="cn" onclick="setReg('cn')">中国版 CN</button>
+          <button class="cb" data-k="reg" data-v="gl" onclick="setReg('gl')">国际版 GLOBAL</button>
+        </div>
+        <div class="cbtns"><span class="k">语言</span>
+          <button class="cb on" data-k="lang" data-v="zh" onclick="setLang('zh')">中文</button>
+          <button class="cb" data-k="lang" data-v="en" onclick="setLang('en')">English</button>
+        </div>
+        <div class="cfg" id="cfg" style="margin-top:12px"></div>
+      </div>
+
       <div class="panel">
         <h3>模拟好友的动作</h3>
         <div class="d">这些事件真实发生在服务端；这里按一下，看邀请人这一端会看到什么。</div>
@@ -413,127 +256,312 @@
         </div>
         <div class="log" id="log"><span style="color:var(--faint)">事件日志会出现在这里</span></div>
       </div>
-
-      <div class="panel map" style="margin-top:14px">
-        <h3>页面结构</h3>
-        <div class="d">一个主页面 + 三个二级页；分享面板是覆盖层不是页面。</div>
-        <div class="mrow"><div class="nd">"我的" 页 banner<small>入口 ①</small></div><span class="aw">/</span><div class="nd">课后报告底部<small>入口 ②</small></div><span class="aw">/</span><div class="nd">推送通知<small>入口 ③</small></div></div>
-        <div class="mrow"><span class="aw">↓</span></div>
-        <div class="mrow"><div class="nd hi">邀请页<small>hero · 一键分享 · 数据 · 怎么做 · 动态</small></div></div>
-        <div class="mrow"><span class="aw">↓</span><div class="nd">分享面板<small>覆盖层：图片 / 链接 × 渠道</small></div><div class="nd">邀请明细<small>按人 · 按来源</small></div><div class="nd">我的权益<small>已得 · 下一档</small></div><div class="nd">规则<small>五问五答</small></div></div>
-      </div>
     </div>
   </div>
 </section>
 
 <section>
-  <div class="eyebrow">02 · 简化后的口径</div>
-  <h2>业务只看一个数，用户看三个数</h2>
+  <div class="eyebrow">02 · 两版 × 多语言</div>
+  <h2>版本决定做什么，语言决定说什么</h2>
+  <p class="lede">这是两个独立的维度，不能合成一个"中文=中国版"。判定版本用 App Store 区 / 账号归属地，不用 IP；语言跟随系统语言，用户可手动改。</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:150px">内容</th><th style="width:90px">归谁管</th><th>中国版 CN</th><th>国际版 GLOBAL</th></tr></thead>
+      <tbody>
+        <tr><td><b>好友利益</b></td><td><span class="tag t-r">版本</span></td><td>立减 ¥500</td><td>$70 off</td></tr>
+        <tr><td><b>邀请人权益</b></td><td><span class="tag t-r">版本</span></td><td>30 天会员 → 配件券 ¥199 → 限定套装</td><td>30 days Pro → $29 accessory credit → Limited bundle</td></tr>
+        <tr><td><b>成交场</b></td><td><span class="tag t-r">版本</span></td><td>微信小程序商城（主）· 天猫/京东（码）</td><td>bodypark.com（Shopify）· Amazon（code）</td></tr>
+        <tr><td><b>分享去处</b></td><td><span class="tag t-r">版本</span></td><td>图：相册 / 微信好友 / 朋友圈 / 小红书<br>链：复制 / 微信好友 / 更多</td><td>Image: Save / Instagram / WhatsApp / Messages<br>Link: Copy / Messages / WhatsApp / More</td></tr>
+        <tr><td><b>默认形式</b></td><td><span class="tag t-r">版本</span></td><td>图片排前（朋友圈/群图片传播强）</td><td>链接排前（iMessage/WhatsApp 对链接友好）</td></tr>
+        <tr><td><b>邀请码格式</b></td><td><span class="tag t-r">版本</span></td><td><code>ALEX-7K2A</code>（激活时也可填）</td><td><code>ALEX-7K2A</code>（同一个码，结算 coupon 字段）</td></tr>
+        <tr><td><b>规则文案</b></td><td><span class="tag t-r">版本</span></td><td>含税务/发票口径、退货收回</td><td>含 terms 链接、退货收回</td></tr>
+        <tr><td><b>页面所有文案</b></td><td><span class="tag t-l">语言</span></td><td colspan="2">按 key 走字符串表；金额、天数、昵称作为<b>参数</b>注入，不写死在句子里</td></tr>
+        <tr><td><b>昵称脱敏</b></td><td><span class="tag t-l">语言</span></td><td>Lin**（保留姓氏拼音）</td><td>Lin W.（名 + 姓首字母）</td></tr>
+        <tr><td><b>数字与日期</b></td><td><span class="tag t-l">语言</span></td><td>09-01 · 30 天 · ¥5,499</td><td>Sep 1 · 30 days · $799</td></tr>
+      </tbody>
+    </table>
+  </div>
   <div class="cols">
-    <div class="vc">
-      <h4>业务侧：通过分享带来的订单数</h4>
-      <p>不追求逐单归因到人也能算清楚。凡是<b>订单带 token</b>（自有商城）或<b>激活时填了码</b>的，都算"分享带来的订单"。两条来源相加就是这个数，不需要联盟链接、不需要安装归因 SDK。</p>
-    </div>
-    <div class="vc">
-      <h4>用户侧：点击 · 购买 · 权益</h4>
-      <ul>
-        <li><b>点击</b>：落地页按 token 计数，几乎零成本，但它是用户最先看到变化的数字——<b>动机的第一反馈</b>。</li>
-        <li><b>购买</b>：同上面业务口径，按 token 拆到人。</li>
-        <li><b>权益</b>：会员天数 + 下一档进度。<b>"再邀 1 位解锁 ×"</b> 这一行是页面上最有推力的一句话。</li>
-      </ul>
-    </div>
-    <div class="vc">
-      <h4>三个状态，别混</h4>
-      <ul>
-        <li><code>下单</code> → 数字动、权益标"待到账"</li>
-        <li><code>激活</code> → 权益到账、推送通知</li>
-        <li><code>退货</code> → 权益收回、动态里留痕</li>
-      </ul>
-      <p style="margin-top:6px">用户看到"待到账"会去催朋友激活——把补录压力交给有动机的一方。</p>
-    </div>
+    <div class="vc"><h4>版本管的内容也要多语言</h4><p>"配件券 ¥199" 是版本的东西，但它也得有英文。所以版本配置里的字符串本身带语言键：<code>tier3: {zh:'配件券 ¥199', en:'¥199 accessory credit'}</code>。<b>版本 = 一份带语言键的配置，语言 = 选哪个键。</b></p></div>
+    <div class="vc"><h4>英文会比中文长 30%~50%</h4><p>Hero 两行、CTA 一行、三格数据的标签——这三处最先被撑爆。Demo 里切到 English 就能看到 hero 换行位置和标签行高的变化，设计稿要按<b>英文最长</b>那一版定容器高度。</p></div>
+    <div class="vc"><h4>加一门语言 = 加一列</h4><p>字符串表加一列，版本配置里每条带语言键的字符串加一个键，其他不动。日文、韩文、德文都是这个路径。<b>不新增页面，不新增版本。</b></p></div>
   </div>
 </section>
 
 <section>
-  <div class="eyebrow">03 · 页面要素清单</div>
+  <div class="eyebrow">03 · 单 CTA</div>
+  <h2>页面上只有一个按钮，选择放在按钮之后</h2>
+  <div class="cols">
+    <div class="vc"><h4>为什么</h4><ul><li>页面的任务只有一个：让用户按下去。多一个次级按钮就多一次"我该点哪个"。</li><li>形式（图 / 链接）和去处（微信 / 相册 / iMessage…）是<b>同一个决定的两半</b>，放在同一张面板里一次选完。</li><li>邀请码留在页面上但<b>不做成按钮</b>——它是保底信息，不是动作。</li></ul></div>
+    <div class="vc"><h4>面板结构</h4><ul><li>两组，按版本决定顺序：CN 图片在上，GLOBAL 链接在上。</li><li>每组 = 缩略预览 + 一句说明 + 一排去处。去处按版本配置。</li><li>"更多"走系统分享面板，兜住所有没列出来的 App。</li><li>每个去处都是终点：点完就分享 / 保存 / 复制，面板关掉，toast 确认。</li></ul></div>
+    <div class="vc"><h4>三格数据可点，但不是 CTA</h4><p>点击 / 购买 / 权益三格和"规则"是<b>导航</b>，不是行动号召——它们把用户带到二级页看东西，不会产生分享。视觉上用卡片而不是按钮，避免和 CTA 争。</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">04 · 页面要素清单</div>
   <h2>给设计的任务书</h2>
   <div class="scroll">
     <table>
       <thead><tr><th style="width:120px">区块</th><th style="width:250px">内容</th><th>交互</th><th style="width:70px">优先级</th></tr></thead>
       <tbody>
-        <tr><td><b>Hero</b></td><td>利益点两句话（好友得什么 / 我得什么）+ 我的邀请码</td><td>点码复制。码永远可见，是链路断了时的最后一根绳</td><td>P0</td></tr>
-        <tr><td><b>一键分享</b></td><td>主按钮 + 两个次按钮（保存图 / 复制链接）</td><td>拉起分享面板：图片 / 链接 二选一 × 渠道；默认选图片（国内）或链接（海外），由 Profile 决定</td><td>P0</td></tr>
-        <tr><td><b>数据</b></td><td>点击 / 购买 / 权益 三格</td><td>点击进明细页；数字变化时有一次高亮</td><td>P0</td></tr>
-        <tr><td><b>下一档进度</b></td><td>"再邀 N 位解锁 ×" + 进度条 + 三档阶梯</td><td>随购买数实时更新</td><td>P0</td></tr>
-        <tr><td><b>怎么做</b></td><td>三步：发给朋友 → 朋友下单 → 你得权益</td><td>静态，可折叠</td><td>P0</td></tr>
-        <tr><td><b>最近动态</b></td><td>脱敏昵称 + 事件 + 来源 + 权益状态</td><td>新事件置顶高亮</td><td>P1</td></tr>
-        <tr><td><b>邀请明细</b></td><td>按人（漏斗态）/ 按来源（图 vs 链接 vs 训练图二维码）</td><td>只读</td><td>P1</td></tr>
+        <tr><td><b>Hero</b></td><td>利益点两句话（好友得什么 / 我得什么）+ 我的邀请码 + 版本标识</td><td>码只展示不做按钮。文案参数化（金额、天数）</td><td>P0</td></tr>
+        <tr><td><b>唯一 CTA</b></td><td>"邀请好友" / "Invite friends"</td><td>拉起分享面板：形式组 × 去处，按版本配置；点去处即完成</td><td>P0</td></tr>
+        <tr><td><b>数据三格</b></td><td>点击 / 购买 / 权益</td><td>点进明细页；数字变化时高亮一次。P0 可不做跳转</td><td>P0</td></tr>
+        <tr><td><b>下一档进度</b></td><td>"再邀 N 位解锁 ×" + 进度条 + 三档阶梯（按版本）</td><td>随购买数实时更新</td><td>P0</td></tr>
+        <tr><td><b>怎么做</b></td><td>三步，第二步文案按版本（小程序商城 / bodypark.com）</td><td>静态</td><td>P0</td></tr>
+        <tr><td><b>规则</b></td><td>五问五答，按版本</td><td>只读</td><td>P0（法务）</td></tr>
+        <tr><td><b>最近动态</b></td><td>脱敏昵称（按语言规则）+ 事件 + 来源 + 权益状态</td><td>新事件置顶高亮</td><td>P1</td></tr>
+        <tr><td><b>邀请明细</b></td><td>按人（漏斗态）/ 按来源</td><td>只读</td><td>P1</td></tr>
         <tr><td><b>我的权益</b></td><td>总天数 + 已得列表 + 下一档</td><td>只读</td><td>P1</td></tr>
-        <tr><td><b>规则</b></td><td>五问五答</td><td>只读</td><td>P0（法务要看）</td></tr>
         <tr><td><b>推送</b></td><td>好友下单 / 激活 / 权益到账</td><td>点击直达邀请页</td><td>P1</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="note"><b>P0 只做邀请页 + 分享面板 + 规则页</b>；明细、权益页、推送、动态流都是 P1。P0 版本里三格数据不可点，进度条保留——它是动机的核心，不能砍。</div>
+  <div class="note"><b>P0 = 邀请页 + 分享面板 + 规则页，两版 × 两语言一起上</b>——版本和语言是配置不是页面，从第一天就按配置做，后补的成本远高于现在。</div>
 </section>
 </div>
 
 <script>
-(function(){
-  // fake QR
-  var g=document.getElementById('qrg'),s=9137,out='',N=21;
-  function rnd(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;}
-  var m=[];for(var y=0;y<N;y++){m.push([]);for(var x=0;x<N;x++)m[y].push(rnd()>0.5?1:0);}
+/* ===================== CONFIG ===================== */
+var REGION = {
+  cn: {
+    id:'CN', offer:'¥500', price:'¥5,499', code:'ALEX-7K2A', link:'bp.fit/i/7K2A', defaultForm:'img',
+    store:{zh:'微信小程序商城', en:'WeChat mini-store'},
+    alt:{zh:'天猫 / 京东', en:'Tmall / JD'},
+    tier3:{zh:'配件券 ¥199', en:'¥199 accessory credit'},
+    tier5:{zh:'限定套装', en:'Limited bundle'},
+    dests:{ img:['save','wechat','moments','red'], link:['copy','wechat','more'] },
+    order:['img','link'],
+    step2:{zh:'落地页自动带优惠；去天猫/京东则结算填码', en:'Discount applies on the landing page; enter the code at Tmall/JD checkout'},
+    rulesExtra:{zh:'权益为会员时长与券，不涉及现金，无需开具发票。', en:'Rewards are membership time and credits, never cash. No invoice is issued.'}
+  },
+  gl: {
+    id:'GLOBAL', offer:'$70', price:'$799', code:'ALEX-7K2A', link:'bp.fit/i/7K2A', defaultForm:'link',
+    store:{zh:'bodypark.com 官方商城', en:'bodypark.com'},
+    alt:{zh:'Amazon', en:'Amazon'},
+    tier3:{zh:'配件券 $29', en:'$29 accessory credit'},
+    tier5:{zh:'限定套装', en:'Limited bundle'},
+    dests:{ img:['save','instagram','whatsapp','messages'], link:['copy','messages','whatsapp','more'] },
+    order:['link','img'],
+    step2:{zh:'链接在 bodypark.com 结算时自动抵扣；Amazon 则输入优惠码', en:'The link applies the discount at bodypark.com checkout; on Amazon, enter the code'},
+    rulesExtra:{zh:'适用条款见 bodypark.com/terms。', en:'Subject to bodypark.com/terms.'}
+  }
+};
+var I18N = {
+  zh: {
+    me:'我的', records:'训练记录', reports:'我的报告', member:'会员 · 剩 74 天', device:'我的设备', settings:'设置',
+    tabs:['训练','课程','数据','我的'],
+    bannerT:'邀请好友买 Atom', bannerD:function(R){return '好友立减 '+R.offer+' · 你得 30 天会员';}, go:'去邀请',
+    title:'邀请好友', rules:'规则',
+    heroH:function(R){return '好友买 Atom <em>立减 '+R.offer+'</em><br>你得 <em>30 天会员</em>';},
+    heroSub:'每成功邀请 1 位，权益自动到账。邀满 3 位再送'+'{t3}'+'。',
+    myCode:'我的邀请码', ver:'版本 {id}',
+    cta:'邀请好友',
+    stClick:'点击了链接', stBuy:'好友已购买', stRw:'会员天数到账',
+    progNext:function(n,what){return '再邀 '+n+' 位，解锁'+what;}, progDone:'已解锁全部档位',
+    ladder:function(R,L){return ['<b>1 位</b> 30 天会员 ✓','3 位 '+R.tier3[L],'5 位 '+R.tier5[L]];},
+    howto:'怎么做', steps:function(R,L){return [['发给朋友','图片或链接，都带你的码'],['朋友下单',R.step2[L]],['你得权益','朋友激活设备后自动到账']];},
+    recent:'最近动态', feedTitleClicks:function(n){return n+' 位好友点击了链接';},
+    evBuy:function(n){return n+' 已下单，等待激活';}, evAct:function(n){return n+' 激活了 Atom';}, evRefund:function(n){return n+' 退货，权益已收回';}, evBought:function(n){return n+' 购买并激活了 Atom';},
+    via:function(f){return '通过'+(f==='img'?'邀请图':'链接');}, now:'刚刚', pending:'待到账', days:function(n){return (n>0?'+':'−')+Math.abs(n)+' 天';},
+    detail:'邀请明细', dClick:'点击', dBuy:'下单', dAct:'已激活', byPerson:'按人', bySource:'按来源',
+    funnel:{c:'点击',o:'下单',a:'激活'}, settled:'已到账', waitAct:'待激活', guests:function(n){return '未注册访客 × '+n;}, onlyClick:'仅点击',
+    srcImg:'邀请图', srcLink:'链接', srcQR:'训练分享图上的二维码', srcN:function(c,o){return c+' 点击 · '+o+' 单';},
+    detailNote:'好友昵称做脱敏；只有下单后才出现在"按人"里，纯点击只计数。',
+    rewards:'我的权益', rwBigL:'会员已到账 · 当前会员到期 2026-11-16', got:'已获得', memberDays:'30 天会员', actBy:function(n){return n+' 激活';}, waitFor:function(n){return n+' 下单，等待激活';}, nextTier:'下一档',
+    rulesT:'活动规则',
+    rulesQA:function(R,L){return [
+      ['怎么算成功邀请？','好友通过你的邀请图或链接下单 Atom，并完成设备激活。'],
+      ['忘了带码怎么办？','好友在激活设备时可以填写你的邀请码 '+R.code+'，同样算数。'],
+      ['权益什么时候到账？','好友确认收货并激活后自动到账，一般 1 天内。'],
+      ['有上限吗？','会员天数不设上限；'+R.tier3[L]+'与'+R.tier5[L]+'每人各限 1 次。'],
+      ['退货了呢？','对应权益会被收回。'+R.rulesExtra[L]]
+    ];},
+    sheetT:'分享给朋友', sheetD:'两种形式都带你的邀请码，朋友怎么转发都算你的。',
+    formImg:['邀请图','带二维码 · 适合发群、发朋友圈'], formLink:['链接','H5 落地页 · 适合私聊'],
+    dest:{save:'保存到相册',wechat:'微信好友',moments:'朋友圈',red:'小红书',copy:'复制链接',more:'更多',instagram:'Instagram',whatsapp:'WhatsApp',messages:'信息'},
+    cancel:'取消',
+    toastShared:function(f,d){return (f==='img'?'邀请图':'链接')+'已分享到 '+d;}, toastSaved:'邀请图已保存到相册', toastCopied:'链接已复制',
+    pushBuy:function(n){return [n+' 通过你的邀请下单了','激活设备后 30 天会员到账'];}, pushAct:function(n){return ['+30 天会员已到账',n+' 已激活 Atom · 查看权益'];}, pushNow:'现在',
+    noPending:'没有待激活的订单', noRefund:'没有可退的订单'
+  },
+  en: {
+    me:'Me', records:'Workouts', reports:'Reports', member:'Pro · 74 days left', device:'My device', settings:'Settings',
+    tabs:['Train','Classes','Data','Me'],
+    bannerT:'Invite friends to Atom', bannerD:function(R){return 'They get '+R.offer+' off · You get 30 days Pro';}, go:'Invite',
+    title:'Invite friends', rules:'Rules',
+    heroH:function(R){return 'Friends get <em>'+R.offer+' off</em> Atom.<br>You get <em>30 days Pro</em>.';},
+    heroSub:'Rewards land automatically for every friend who joins. Invite 3 and unlock {t3}.',
+    myCode:'My invite code', ver:'{id} edition',
+    cta:'Invite friends',
+    stClick:'Link clicks', stBuy:'Friends bought', stRw:'Pro days earned',
+    progNext:function(n,what){return 'Invite '+n+' more to unlock '+what;}, progDone:'All tiers unlocked',
+    ladder:function(R,L){return ['<b>1</b> 30 days Pro ✓','3 '+R.tier3[L],'5 '+R.tier5[L]];},
+    howto:'How it works', steps:function(R,L){return [['Send it','Image or link, both carry your code'],['They buy',R.step2[L]],['You earn','Lands when they activate their Atom']];},
+    recent:'Recent', feedTitleClicks:function(n){return n+' friends clicked your link';},
+    evBuy:function(n){return n+' ordered, awaiting activation';}, evAct:function(n){return n+' activated Atom';}, evRefund:function(n){return n+' returned it, reward reversed';}, evBought:function(n){return n+' bought and activated Atom';},
+    via:function(f){return 'via '+(f==='img'?'invite image':'link');}, now:'just now', pending:'pending', days:function(n){return (n>0?'+':'−')+Math.abs(n)+' days';},
+    detail:'Invite details', dClick:'Clicks', dBuy:'Orders', dAct:'Activated', byPerson:'By person', bySource:'By source',
+    funnel:{c:'click',o:'order',a:'activate'}, settled:'settled', waitAct:'pending', guests:function(n){return 'Guests × '+n;}, onlyClick:'click only',
+    srcImg:'Invite image', srcLink:'Link', srcQR:'QR on workout shares', srcN:function(c,o){return c+' clicks · '+o+' orders';},
+    detailNote:'Names are masked; friends appear here only after ordering. Clicks are counted, not listed.',
+    rewards:'My rewards', rwBigL:'Pro days earned · Pro ends Nov 16, 2026', got:'Earned', memberDays:'30 days Pro', actBy:function(n){return n+' activated';}, waitFor:function(n){return n+' ordered, awaiting activation';}, nextTier:'Next tier',
+    rulesT:'Program rules',
+    rulesQA:function(R,L){return [
+      ['What counts as a successful invite?','A friend orders Atom through your image or link and activates the device.'],
+      ['What if they forgot the code?','They can enter your code '+R.code+' when activating the device. It still counts.'],
+      ['When do rewards land?','After delivery is confirmed and the device is activated, usually within a day.'],
+      ['Is there a cap?','No cap on Pro days. '+R.tier3[L]+' and '+R.tier5[L]+' are once per person.'],
+      ['What about returns?','The matching reward is reversed. '+R.rulesExtra[L]]
+    ];},
+    sheetT:'Share with a friend', sheetD:'Both carry your code, however it gets forwarded.',
+    formImg:['Invite image','With QR · for groups and stories'], formLink:['Link','Landing page · for direct messages'],
+    dest:{save:'Save to Photos',wechat:'WeChat',moments:'Moments',red:'RED',copy:'Copy link',more:'More',instagram:'Instagram',whatsapp:'WhatsApp',messages:'Messages'},
+    cancel:'Cancel',
+    toastShared:function(f,d){return (f==='img'?'Image':'Link')+' shared to '+d;}, toastSaved:'Image saved to Photos', toastCopied:'Link copied',
+    pushBuy:function(n){return [n+' ordered through your invite','30 days Pro lands after activation'];}, pushAct:function(n){return ['+30 days Pro earned',n+' activated Atom · view rewards'];}, pushNow:'now',
+    noPending:'No orders awaiting activation', noRefund:'Nothing to return'
+  }
+};
+var DEST_ABBR={save:'⤓',wechat:'WX',moments:'○',red:'RED',copy:'⧉',more:'…',instagram:'IG',whatsapp:'WA',messages:'✉'};
+
+/* ===================== STATE ===================== */
+var L='zh', G='cn';
+var people=[{g:'Lin',f:'Wang'},{g:'Chen',f:'Li'},{g:'Wang',f:'Zhao'},{g:'Zhao',f:'Sun'},{g:'Qian',f:'Zhou'},{g:'Sun',f:'Wu'},{g:'Li',f:'Zheng'}];
+var S, feed, pendingQ, activated, rwList, nextP;
+function reset(){
+  S={click:12,buy:2,act:1,days:60}; nextP=3;
+  feed=[{k:'bought',p:people[0],date:'09-01',f:'img',rw:30},{k:'buy',p:people[2],date:'08-30',f:'link'},{k:'clicks',n:3,date:'08-28 ~ 08-30'}];
+  pendingQ=[people[2]]; activated=[people[0],people[1]];
+  rwList=[{p:people[0],date:'09-01',ok:true},{p:people[1],date:'08-12',ok:true},{p:people[2],ok:false}];
+  var l=$('log'); l.innerHTML='<span style="color:var(--faint)">已重置</span>'; l.dataset.x='';
+  renderAll(); go('referral');
+}
+function $(id){return document.getElementById(id);}
+function T(){return I18N[L];} function R(){return REGION[G];}
+function name(p){return L==='zh' ? p.g+'**' : p.g+' '+p.f[0]+'.';}
+function dateF(d){ if(L==='zh'||!/^\d\d-\d\d$/.test(d)) return d; var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return m[+d.slice(0,2)-1]+' '+(+d.slice(3)); }
+function tierName(n){return n===3?R().tier3[L]:R().tier5[L];}
+
+/* ===================== RENDER ===================== */
+function renderHome(){
+  var t=T(),r=R();
+  $('s-home').innerHTML='<div class="nav">'+t.me+'<div class="sp"></div></div><div class="p">'+
+    '<div class="me"><div class="av">A</div><div><div class="n">Alex</div><div class="s">142 SESSIONS · 684,000 KG · ATOM #A2-0417</div></div></div>'+
+    '<div class="banner" onclick="go(\'referral\')"><div class="dot"></div><div><div class="t">'+t.bannerT+'</div><div class="d">'+t.bannerD(r)+'</div></div><div class="go">'+t.go+'</div></div>'+
+    '<div class="card list"><div class="it">'+t.records+'<span>142</span></div><div class="it">'+t.reports+'<span>›</span></div><div class="it">'+t.member+'<span>›</span></div><div class="it">'+t.device+'<span>Atom</span></div><div class="it" style="color:#939C8F">'+t.settings+'<span>›</span></div></div></div>'+
+    '<div class="tabs">'+t.tabs.map(function(x,i){return '<div'+(i===3?' class="on"':'')+'><i></i>'+x+'</div>';}).join('')+'</div>';
+}
+function feedRow(e,isNew){
+  var t=T(),h;
+  if(e.k==='clicks') h='<div class="a">?</div><div class="tx">'+t.feedTitleClicks(e.n)+'<small>'+e.date+'</small></div><div class="rw dim">—</div>';
+  else if(e.k==='bought') h='<div class="a">'+e.p.g[0]+'</div><div class="tx">'+t.evBought(name(e.p))+'<small>'+dateF(e.date)+' · '+t.via(e.f)+'</small></div><div class="rw">'+t.days(30)+'</div>';
+  else if(e.k==='buy') h='<div class="a">'+e.p.g[0]+'</div><div class="tx">'+t.evBuy(name(e.p))+'<small>'+(e.date?dateF(e.date):t.now)+' · '+t.via(e.f)+'</small></div><div class="rw dim">'+t.pending+'</div>';
+  else if(e.k==='act') h='<div class="a">'+e.p.g[0]+'</div><div class="tx">'+t.evAct(name(e.p))+'<small>'+t.now+'</small></div><div class="rw">'+t.days(30)+'</div>';
+  else h='<div class="a">'+e.p.g[0]+'</div><div class="tx">'+t.evRefund(name(e.p))+'<small>'+t.now+'</small></div><div class="rw neg">'+t.days(-30)+'</div>';
+  return '<div class="f'+(isNew?' new':'')+'">'+h+'</div>';
+}
+function renderReferral(){
+  var t=T(),r=R();
+  var next=S.buy>=5?null:(S.buy>=3?5:3), cap=next||5, pct=Math.min(100,S.buy/cap*100);
+  var steps=t.steps(r,L);
+  $('s-referral').innerHTML='<div class="nav"><div class="bk" onclick="go(\'home\')">‹</div>'+t.title+'<div class="sp"></div><div class="rt" onclick="go(\'rules\')">'+t.rules+'</div></div><div class="p">'+
+    '<div class="hero"><div class="dot"></div><div class="h">'+t.heroH(r)+'</div><div class="sub">'+t.heroSub.replace('{t3}',r.tier3[L])+'</div>'+
+    '<div class="codebox"><div><div class="k">'+t.myCode.toUpperCase()+'</div><div class="v">'+r.code+'</div></div><div class="rg">'+t.ver.replace('{id}',r.id)+'<br>'+r.link+'</div></div></div>'+
+    '<div class="btn" onclick="openSheet()">'+t.cta+'</div>'+
+    '<div class="stats"><div class="st" onclick="go(\'detail\')"><div class="n" id="nClick">'+S.click+'</div><div class="l">'+t.stClick+'</div><div class="u">CLICKS</div></div>'+
+    '<div class="st" onclick="go(\'detail\')"><div class="n" id="nBuy">'+S.buy+'</div><div class="l">'+t.stBuy+'</div><div class="u">ORDERS</div></div>'+
+    '<div class="st hot" onclick="go(\'rewards\')"><div class="n" id="nRw">'+S.days+'</div><div class="l">'+t.stRw+'</div><div class="u">DAYS</div></div></div>'+
+    '<div class="card"><div class="prog"><div class="t"><b>'+(next?t.progNext(next-S.buy,tierName(next)):t.progDone)+'</b><span>'+Math.min(S.buy,cap)+' / '+cap+'</span></div>'+
+    '<div class="bar"><i style="width:'+pct+'%"></i><span class="tk" style="left:33.3%"></span><span class="tk" style="left:66.6%"></span></div>'+
+    '<div class="ladder">'+t.ladder(r,L).map(function(x){return '<span>'+x+'</span>';}).join('')+'</div></div></div>'+
+    '<div class="lbl">'+t.howto+'</div><div class="card"><div class="steps">'+
+      steps.map(function(s,i){return (i?'<div class="ar">›</div>':'')+'<div class="step"><div class="ic">'+(i+1)+'</div><div class="t">'+s[0]+'</div><div class="d">'+s[1]+'</div></div>';}).join('')+
+    '</div></div>'+
+    '<div class="lbl">'+t.recent+'</div><div class="card feed" id="feed">'+feed.map(function(e,i){return feedRow(e,e.isNew);}).join('')+'</div><div style="height:20px"></div></div>';
+}
+function renderDetail(){
+  var t=T();
+  var rows=activated.map(function(p){return '<div class="f"><div class="a">'+p.g[0]+'</div><div class="tx">'+name(p)+'<small>'+t.funnel.c+' → '+t.funnel.o+' → '+t.funnel.a+'</small></div><span class="pill">'+t.settled+'</span></div>';})
+    .concat(pendingQ.map(function(p){return '<div class="f"><div class="a">'+p.g[0]+'</div><div class="tx">'+name(p)+'<small>'+t.funnel.c+' → '+t.funnel.o+'</small></div><span class="pill wait">'+t.waitAct+'</span></div>';}));
+  rows.push('<div class="f"><div class="a">?</div><div class="tx">'+t.guests(Math.max(0,S.click-S.buy))+'<small>'+t.onlyClick+'</small></div><span class="pill gray">—</span></div>');
+  $('s-detail').innerHTML='<div class="nav"><div class="bk" onclick="go(\'referral\')">‹</div>'+t.detail+'<div class="sp"></div></div><div class="p">'+
+    '<div class="stats"><div class="st"><div class="n">'+S.click+'</div><div class="l">'+t.dClick+'</div></div><div class="st"><div class="n">'+S.buy+'</div><div class="l">'+t.dBuy+'</div></div><div class="st"><div class="n">'+S.act+'</div><div class="l">'+t.dAct+'</div></div></div>'+
+    '<div class="lbl">'+t.byPerson+'</div><div class="card feed">'+rows.join('')+'</div>'+
+    '<div class="lbl">'+t.bySource+'</div><div class="card feed">'+
+      '<div class="f"><div class="tx">'+t.srcImg+'</div><div class="rw dim" style="color:#141712">'+t.srcN(8,1)+'</div></div>'+
+      '<div class="f"><div class="tx">'+t.srcLink+'</div><div class="rw dim" style="color:#141712">'+t.srcN(3,1)+'</div></div>'+
+      '<div class="f"><div class="tx">'+t.srcQR+'</div><div class="rw dim" style="color:#141712">'+t.srcN(1,0)+'</div></div></div>'+
+    '<div class="note" style="font-size:11px;margin-top:6px;background:#ECF8DC;border-color:#6FCC1B;color:#5C645A">'+t.detailNote+'</div></div>';
+}
+function renderRewards(){
+  var t=T();
+  $('s-rewards').innerHTML='<div class="nav"><div class="bk" onclick="go(\'referral\')">‹</div>'+t.rewards+'<div class="sp"></div></div><div class="p">'+
+    '<div class="rw-big"><div class="n">'+S.days+'<small>'+(L==='zh'?'天':'days')+'</small></div><div class="l">'+t.rwBigL+'</div></div>'+
+    '<div class="lbl">'+t.got+'</div><div class="card feed">'+rwList.map(function(x){return '<div class="f"><div class="tx">'+t.memberDays+'<small>'+(x.ok?(x.date?dateF(x.date)+' · ':t.now+' · ')+t.actBy(name(x.p)):t.waitFor(name(x.p)))+'</small></div><span class="pill'+(x.ok?'':' wait')+'">'+(x.ok?t.settled:t.pending)+'</span></div>';}).join('')+'</div>'+
+    '<div class="lbl">'+t.nextTier+'</div><div class="card"><div class="prog"><div class="t"><b>'+tierName(S.buy>=3?5:3)+'</b><span>'+Math.min(S.buy,S.buy>=3?5:3)+' / '+(S.buy>=3?5:3)+'</span></div><div class="bar"><i style="width:'+Math.min(100,S.buy/(S.buy>=3?5:3)*100)+'%"></i></div></div></div></div>';
+}
+function renderRules(){
+  var t=T();
+  $('s-rules').innerHTML='<div class="nav"><div class="bk" onclick="go(\'referral\')">‹</div>'+t.rulesT+'<div class="sp"></div></div><div class="p"><div class="card rule">'+
+    t.rulesQA(R(),L).map(function(q){return '<p><b>'+q[0]+'</b>'+q[1]+'</p>';}).join('')+'</div></div>';
+}
+function qrSvg(){
+  var s=9137,N=21,out='',m=[];function rnd(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;}
+  for(var y=0;y<N;y++){m.push([]);for(var x=0;x<N;x++)m[y].push(rnd()>0.5?1:0);}
   function fd(ox,oy){for(var y=0;y<7;y++)for(var x=0;x<7;x++){m[oy+y][ox+x]=((x===0||x===6||y===0||y===6)||(x>=2&&x<=4&&y>=2&&y<=4))?1:0;}
     for(var y=-1;y<8;y++)for(var x=-1;x<8;x++){var yy=oy+y,xx=ox+x;if(yy<0||xx<0||yy>=N||xx>=N)continue;if(y===-1||y===7||x===-1||x===7)m[yy][xx]=0;}}
   fd(0,0);fd(14,0);fd(0,14);
   for(var y=0;y<N;y++)for(var x=0;x<N;x++)if(m[y][x])out+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>';
-  g.innerHTML=out;
-})();
+  return '<svg class="qr" viewBox="0 0 21 21" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/><g fill="#141712">'+out+'</g></svg>';
+}
+function renderSheet(){
+  var t=T(),r=R();
+  var groups=r.order.map(function(f){
+    var meta=f==='img'?t.formImg:t.formLink;
+    var th=f==='img'?qrSvg():'<div class="lk">'+r.link+'</div>';
+    return '<div class="grp"><div class="gh"><div class="th">'+th+'</div><div><div class="gt">'+meta[0]+'</div><div class="gd">'+meta[1]+'</div></div></div><div class="dests">'+
+      r.dests[f].map(function(d){return '<div class="dest" onclick="share(\''+f+'\',\''+d+'\')"><i>'+DEST_ABBR[d]+'</i>'+t.dest[d]+'</div>';}).join('')+'</div></div>';
+  }).join('');
+  $('sheet').innerHTML='<div class="hd"></div><h4>'+t.sheetT+'</h4><div class="sd">'+t.sheetD+'</div>'+groups+'<div class="cancel" onclick="closeSheet()">'+t.cancel+'</div>';
+}
+function renderCfg(){
+  var r=R();
+  $('cfg').innerHTML='<span class="c">// 这一屏读到的配置</span>\nregion   <b>'+r.id+'</b>   lang <b>'+L+'</b>\noffer    <b>'+r.offer+'</b>   reward <b>30d</b>   tier3 <b>'+r.tier3[L]+'</b>\nstore    <b>'+r.store[L]+'</b>\norder    <b>'+r.order.join(' → ')+'</b>\ndests    img  '+r.dests.img.join(' · ')+'\n         link '+r.dests.link.join(' · ')+'\ncode     <b>'+r.code+'</b>   link '+r.link;
+}
+function renderAll(){renderHome();renderReferral();renderDetail();renderRewards();renderRules();renderSheet();renderCfg();}
 
-var S={click:12,buy:2,act:1,days:60,pending:1,form:'img',n:0};
-var names=['Zhao**','Qian**','Sun**','Li**','Zhou**','Wu**'];
-var pendingQueue=['Wang**']; // ordered, not yet activated
-var activated=['Lin**','Chen**'];
-
-function $(id){return document.getElementById(id);}
+/* ===================== ACTIONS ===================== */
 function go(id){document.querySelectorAll('.scr').forEach(function(e){e.classList.remove('on');});$('s-'+id).classList.add('on');$('s-'+id).scrollTop=0;}
 function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on');},1600);}
-function openSheet(f){if(f)pick(f);$('veil').classList.add('on');$('sheet').classList.add('on');}
+function openSheet(){$('veil').classList.add('on');$('sheet').classList.add('on');}
 function closeSheet(){$('veil').classList.remove('on');$('sheet').classList.remove('on');}
-function pick(f){S.form=f;$('f-img').classList.toggle('on',f==='img');$('f-link').classList.toggle('on',f==='link');}
-function share(ch){closeSheet();toast((S.form==='img'?'邀请图':'链接')+' 已分享到 '+ch);log('邀请人分享了 <b>'+(S.form==='img'?'邀请图':'链接')+'</b> → '+ch+'（token 7K2A 已带上）');}
+function share(f,d){closeSheet();var t=T();S.lastForm=f;
+  if(d==='save')toast(t.toastSaved);else if(d==='copy')toast(t.toastCopied);else toast(t.toastShared(f,t.dest[d]));
+  log('邀请人分享了 <b>'+(f==='img'?'邀请图':'链接')+'</b> → '+t.dest[d]+'（'+R().id+' · token 7K2A 已带上）');}
 function hidePush(){$('push').classList.remove('on');}
-function push(t,d){$('pushT').textContent=t;$('pushD').textContent=d;$('push').classList.add('on');clearTimeout(window._p);window._p=setTimeout(hidePush,3200);}
-function bump(id){var e=$(id);e.classList.add('bump');setTimeout(function(){e.classList.remove('bump');},900);}
-function log(h){var l=$('log');if(!l.dataset.x){l.innerHTML='';l.dataset.x=1;}var d=new Date();l.innerHTML='<div>'+d.toTimeString().slice(0,8)+'  '+h+'</div>'+l.innerHTML;}
-function feed(html,cls){var f=$('feed');f.querySelectorAll('.f.new').forEach(function(e){e.classList.remove('new');});var d=document.createElement('div');d.className='f new';d.innerHTML=html;f.insertBefore(d,f.firstChild);}
+function push(a){$('pushT').textContent=a[0];$('pushD').textContent=a[1];$('pushTm').textContent=T().pushNow;$('push').classList.add('on');clearTimeout(window._p);window._p=setTimeout(hidePush,3200);}
+function bump(id){var e=$(id);if(!e)return;e.classList.add('bump');setTimeout(function(){e.classList.remove('bump');},900);}
+function log(h){var l=$('log');if(!l.dataset.x){l.innerHTML='';l.dataset.x=1;}l.innerHTML='<div>'+new Date().toTimeString().slice(0,8)+'  '+h+'</div>'+l.innerHTML;}
+function markNew(e){feed.forEach(function(x){x.isNew=false;});e.isNew=true;feed.unshift(e);}
+function setReg(g){G=g;document.querySelectorAll('[data-k="reg"]').forEach(function(b){b.classList.toggle('on',b.dataset.v===g);});renderAll();log('切换版本 → <b>'+REGION[g].id+'</b>：成交场 '+REGION[g].store[L]+'，分享去处重排，默认形式 '+REGION[g].defaultForm);}
+function setLang(l){L=l;document.querySelectorAll('[data-k="lang"]').forEach(function(b){b.classList.toggle('on',b.dataset.v===l);});renderAll();log('切换语言 → <b>'+l+'</b>：只换字符串表与脱敏/日期规则，版本不变');}
 
-function render(){
-  $('nClick').textContent=S.click;$('nBuy').textContent=S.buy;$('nRw').textContent=S.days;
-  $('dClick').textContent=S.click;$('dBuy').textContent=S.buy;$('dAct').textContent=S.act;
-  $('rwBig').innerHTML=S.days+'<small>天</small>';
-  var tier=S.buy>=5?5:(S.buy>=3?3:1), next=S.buy>=5?null:(S.buy>=3?5:3), cap=next||5;
-  var pct=Math.min(100,S.buy/cap*100);
-  $('progBar').style.width=pct+'%';$('progBar2').style.width=Math.min(100,S.buy/3*100)+'%';
-  $('progN').textContent=Math.min(S.buy,cap)+' / '+cap;$('progN2').textContent=Math.min(S.buy,3)+' / 3';
-  $('progT').textContent= next? ('再邀 '+(next-S.buy)+' 位，解锁'+(next===3?'配件券':'限定套装')) : '已解锁全部档位';
-}
-function evClick(){S.click++;render();bump('nClick');log('落地页命中 token 7K2A → <b>点击 +1</b>（用户端立即可见）');}
-function evBuy(){var n=names[S.n++%names.length];S.buy++;S.pending++;pendingQueue.push(n);render();bump('nBuy');
-  feed('<div class="a">'+n[0]+'</div><div class="tx">'+n+' 已下单，等待激活<small>刚刚 · 通过'+(S.form==='img'?'邀请图':'链接')+'</small></div><div class="rw dim">待到账</div>');
-  push(n+' 通过你的邀请下单了','激活设备后 30 天会员到账');
-  log('订单带 token（或激活填码）→ <b>购买 +1</b>，权益记为 <b>待到账</b>；业务侧"分享带来的订单"+1');}
-function evActivate(){if(!pendingQueue.length){toast('没有待激活的订单');log('无待激活订单，先点"好友下单了"');return;}
-  var n=pendingQueue.shift();S.act++;S.pending--;S.days+=30;activated.push(n);render();bump('nRw');
-  feed('<div class="a">'+n[0]+'</div><div class="tx">'+n+' 激活了 Atom<small>刚刚</small></div><div class="rw">+30 天</div>');
-  push('+30 天会员已到账',n+' 已激活 Atom · 查看权益');
-  var r=$('rwList');var d=document.createElement('div');d.className='f';d.innerHTML='<div class="tx">30 天会员<small>刚刚 · '+n+' 激活</small></div><span class="pill">已到账</span>';r.insertBefore(d,r.firstChild);
+function evClick(){S.click++;renderAll();bump('nClick');log('落地页命中 token 7K2A → <b>点击 +1</b>');}
+function evBuy(){var p=people[(S.buy+1)%people.length];S.buy++;pendingQ.push(p);rwList.push({p:p,ok:false});
+  markNew({k:'buy',p:p,f:S.lastForm||R().defaultForm});renderAll();bump('nBuy');push(T().pushBuy(name(p)));
+  log('订单带 token（或激活填码）→ <b>购买 +1</b>，权益 <b>待到账</b>；业务侧"分享带来的订单"+1');}
+function evActivate(){if(!pendingQ.length){toast(T().noPending);log('无待激活订单，先点"好友下单了"');return;}
+  var p=pendingQ.shift();S.act++;S.days+=30;activated.push(p);
+  rwList.forEach(function(x){if(x.p===p&&!x.ok){x.ok=true;x.date=null;}});
+  markNew({k:'act',p:p});renderAll();bump('nRw');push(T().pushAct(name(p)));
   log('激活事件 → 权益 <b>已到账 +30 天</b>，推送通知');}
-function evRefund(){if(!activated.length){toast('没有可退的订单');return;}
-  var n=activated.pop();S.buy=Math.max(0,S.buy-1);S.act=Math.max(0,S.act-1);S.days=Math.max(0,S.days-30);render();
-  feed('<div class="a">'+n[0]+'</div><div class="tx">'+n+' 退货，权益已收回<small>刚刚</small></div><div class="rw" style="color:#C2410C">−30 天</div>');
+function evRefund(){if(!activated.length){toast(T().noRefund);return;}
+  var p=activated.pop();S.buy=Math.max(0,S.buy-1);S.act=Math.max(0,S.act-1);S.days=Math.max(0,S.days-30);
+  rwList=rwList.filter(function(x){return x.p!==p;});
+  markNew({k:'refund',p:p});renderAll();
   log('退货 → <b>权益收回 −30 天</b>，动态留痕；业务侧订单数 −1');}
-function reset(){S={click:12,buy:2,act:1,days:60,pending:1,form:'img',n:0};pendingQueue=['Wang**'];activated=['Lin**','Chen**'];render();$('feed').querySelectorAll('.f.new').forEach(function(e){e.remove();});$('log').innerHTML='<span style="color:var(--faint)">已重置</span>';$('log').dataset.x='';go('referral');}
-render();
+
+reset(); go('home');
 </script>
