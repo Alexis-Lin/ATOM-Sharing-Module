@@ -12,3 +12,8 @@
 
 - `Demo-邀请页交互-v0.2-已被全链路Demo取代.html` — 早期单页 Demo（带好友事件模拟、中英双语），金额为旧口径（¥5,499 / 立减 ¥500），已被 `referral/02-Demo-邀请全链路交互.html` 取代（全链路 + 模拟 + 双语）。其在线版 <https://claude.ai/code/artifact/fa6b2b5d-32ce-4b5f-a0bd-643a615c6a01> 不再维护。
 - `原型-邀请全链路线框-v1.0-中文版-已被双语Demo取代.html` — 全链路线框中文版，已被双语版取代（同一在线链接已更新为双语版）。
+
+## 2026-09-03 · referral/ 收敛为两个文件
+
+- `Referral-PRD-HTML双语版-已并入Markdown-PRD.html` — 带语言 / 版本开关的 HTML 版 PRD，内容已并入 `referral/PRD-邀请推荐模块.md`。原在线链接 <https://claude.ai/code/artifact/6e7d4bbd-e8e2-4d04-8c65-ce1778e495d4> 已改为指引页。
+- `Referral-设计-归因与权益-已并入Markdown-PRD.html` — 归因与权益的推导（含可交互链路模拟器），核心结论已并入 PRD §3 / §5 / §6 / §7 / §10 / §14。原在线链接 <https://claude.ai/code/artifact/99194c54-cdf8-4f36-9272-0af9c925bc5e> 已改为指引页。

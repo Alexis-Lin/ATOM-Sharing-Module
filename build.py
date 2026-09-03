@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Build the root-level deliverables from sources/ and the referral/ hand-off pack from referral/sources/.
+"""Build the root-level deliverables from sources/.
+
+referral/ 目录不经过本脚本：PRD 是 Markdown，Demo 是独立 HTML，直接编辑。
 
 Rule: 根目录 = 给人看的（生成物）· sources/ = 给人改的（源文件）
 Run after editing anything in sources/:
@@ -9,10 +11,8 @@ Run after editing anything in sources/:
 import html, pathlib
 
 SRC = pathlib.Path('sources')
-REF = pathlib.Path('referral/sources')   # 邀请推荐模块单独成目录
 
-FOOTER_ROOT = '<b>阅读顺序</b> — 01 总览（从这读起）· 02 PRD（P0 需求）· 03 规范（网格与模板）· 04 设计（原子与报告）· README.md（架构总纲 · 事实源）· referral/（邀请推荐模块接力包）'
-FOOTER_REF = '<b>邀请推荐模块 · 接力包</b> — 01 PRD（需求源）· 02 Demo（全部界面，可点）· 03 设计（归因与权益的推导）· README.md（目录与交接说明）· 修改请编辑 referral/sources/ 后运行 python3 build.py'
+FOOTER_ROOT = '<b>阅读顺序</b> — 01 总览（从这读起）· 02 PRD（P0 需求）· 03 规范（网格与模板）· 04 设计（原子与报告）· README.md（架构总纲 · 事实源）· referral/（邀请推荐模块：PRD.md + Demo.html）'
 
 DOCS = [
     {
@@ -62,28 +62,6 @@ DOCS = [
             ('原子规格 · B2 肌肉热力图', '原子-B2肌肉热力图规格.html'),
             ('深钻 · 课后报告与洞察设计 ★', '深钻-课后报告与洞察设计.html'),
         ],
-    },
-    # ---- referral/ 邀请推荐模块（独立目录，接力包）----
-    {
-        'out': 'referral/01-PRD-邀请推荐模块.html', 'src': REF,
-        'title': 'Referral · PRD', 'emoji': '📋', 'who': 'PM · 设计 · 工程',
-        'sub': '邀请推荐模块产品需求文档，中英双语、中国版 / 国际版可切：目标、范围、权益与漏斗、版本配置、FR-1~10、归因规则、数据事件、边界、里程碑。',
-        'parts': [('PRD', 'PRD-邀请推荐模块.html')],
-        'nav': [('02 Demo','02-Demo-邀请全链路交互.html'),('03 设计','03-设计-归因与权益.html'),('README','README.md')], 'footer': FOOTER_REF,
-    },
-    {
-        'out': 'referral/02-Demo-邀请全链路交互.html', 'src': REF,
-        'title': 'Referral · Demo', 'emoji': '🧩', 'who': '设计 · PM · 硬件',
-        'sub': '可交互全链路 Demo，中英双语、中国版 / 国际版可切：邀请人手机 / 好友手机 / Atom 466×466 圆屏三条泳道二十屏，可模拟好友注册、下单、激活、退货。',
-        'parts': [('Demo', 'Demo-邀请全链路交互.html')],
-        'nav': [('01 PRD','01-PRD-邀请推荐模块.html'),('03 设计','03-设计-归因与权益.html'),('README','README.md')], 'footer': FOOTER_REF,
-    },
-    {
-        'out': 'referral/03-设计-归因与权益.html', 'src': REF,
-        'title': 'Referral · 设计', 'emoji': '🔗', 'who': 'PM · 增长 · 工程',
-        'sub': '归因与权益的推导：为什么落到电商而不是应用商店、五级归因阶梯与已决策的简化口径、两种分享形式、地区 Profile、权益结构、接入现有架构。',
-        'parts': [('设计', '设计-归因与权益.html')],
-        'nav': [('01 PRD','01-PRD-邀请推荐模块.html'),('02 Demo','02-Demo-邀请全链路交互.html'),('README','README.md')], 'footer': FOOTER_REF,
     },
 ]
 
