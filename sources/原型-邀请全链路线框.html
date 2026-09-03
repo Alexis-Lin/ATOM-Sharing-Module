@@ -1,0 +1,467 @@
+<title>邀请全链路线框原型 · Referral Flow Wireframes v1.0</title>
+<style>
+  :root{
+    --bg:#F6F7F4; --surface:#FFFFFF; --surface-2:#EFF2EC; --canvas:#FAFBF8;
+    --ink:#141712; --muted:#5C645A; --faint:#939C8F;
+    --line:#E4E8E1; --line-strong:#C8CFC3;
+    --acc:#6FCC1B; --acc-soft:#ECF8DC; --acc-ink:#47940B; --on-acc:#10240A;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,"Helvetica Neue",sans-serif;
+    --r:5px; --r-sm:2px;
+    --shadow:0 1px 2px rgba(20,25,35,.04),0 8px 28px -14px rgba(20,25,35,.14);
+    /* wireframe ink (frames are always light) */
+    --wf-ink:#1E221C; --wf-mute:#6C7468; --wf-faint:#A3AB9F; --wf-line:#C9CFC4; --wf-fill:#EEF0EB; --wf-bg:#FFFFFF;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+      --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;
+      --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="dark"]{--bg:#0F110E;--surface:#161A15;--surface-2:#20251E;--canvas:#131711;
+    --ink:#E9ECE6;--muted:#9AA396;--faint:#707A6B;--line:#262B24;--line-strong:#3E463A;
+    --acc:#A3E635;--acc-soft:#1F2A10;--acc-ink:#BEF264;--on-acc:#10240A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--cjk);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px 90px;}
+  header{padding:44px 0 20px;border-bottom:1px solid var(--line);}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);}
+  h1{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.02em;margin:12px 0 0;text-wrap:balance;}
+  .lede{color:var(--muted);max-width:74ch;font-size:14px;margin:8px 0 0;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .mchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:3px 10px;color:var(--muted);}
+  .mchip.hot{background:var(--acc);color:var(--on-acc);border-color:var(--acc);font-weight:700;}
+  h2{font-size:19px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-ink);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--acc);}
+  section{margin-top:44px;}
+  code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:1px 5px;border-radius:var(--r-sm);}
+
+  /* toolbar */
+  .bar{display:flex;flex-wrap:wrap;gap:18px;align-items:center;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:18px;position:sticky;top:8px;z-index:20;}
+  .grp{display:flex;align-items:center;gap:6px;}
+  .grp>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;margin-right:4px;}
+  .tb{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);border-radius:999px;padding:5px 12px;cursor:pointer;}
+  .tb:hover{border-color:var(--acc);color:var(--acc-ink);}
+  .tb.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc);font-weight:700;}
+
+  /* flow map */
+  .map{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;overflow-x:auto;}
+  .lane{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);}
+  .lane:last-child{border-bottom:0;}
+  .lane .ln{font-size:12.5px;font-weight:700;line-height:1.3;}
+  .lane .ln small{display:block;font-family:var(--mono);font-size:9.5px;color:var(--faint);font-weight:500;letter-spacing:.08em;}
+  .nodes{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;min-width:max-content;}
+  .nd{font-size:12px;border:1px solid var(--line-strong);background:var(--canvas);border-radius:var(--r);padding:5px 10px;cursor:pointer;white-space:nowrap;line-height:1.3;}
+  .nd small{font-family:var(--mono);font-size:9.5px;color:var(--faint);margin-right:5px;}
+  .nd:hover{border-color:var(--acc);}
+  .nd.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc);font-weight:700;}
+  .nd.on small{color:var(--on-acc);}
+  .nd.x{border-style:dashed;background:transparent;}
+  .aw{color:var(--line-strong);font-family:var(--mono);font-size:12px;padding:0 2px;}
+  .aw.lbl{font-size:9.5px;color:var(--acc-ink);border:1px dashed var(--acc);border-radius:999px;padding:1px 7px;white-space:nowrap;}
+
+  /* stage */
+  .stage{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:start;margin-top:22px;}
+  @media (max-width:820px){.stage{grid-template-columns:1fr;}}
+  .frame-col{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .frame-cap{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.08em;}
+
+  /* ---------- phone wireframe ---------- */
+  .phone{width:320px;height:660px;border:2px solid var(--wf-ink);border-radius:26px;background:var(--wf-bg);position:relative;overflow:hidden;color:var(--wf-ink);font-family:var(--cjk);}
+  .phone *{box-sizing:border-box;}
+  .sb{height:24px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;font-family:var(--mono);font-size:10px;color:var(--wf-mute);border-bottom:1px dashed var(--wf-line);}
+  .scr{position:absolute;left:0;right:0;top:24px;bottom:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;}
+  .scr::-webkit-scrollbar{display:none;}
+  .nav{display:flex;align-items:center;gap:10px;padding:9px 14px;font-weight:700;font-size:15px;position:sticky;top:0;background:var(--wf-bg);z-index:2;border-bottom:1px solid var(--wf-line);}
+  .nav .bk{width:26px;height:26px;border:1px solid var(--wf-ink);border-radius:999px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;cursor:pointer;flex:0 0 auto;}
+  .nav .sp{flex:1;}
+  .nav .rt{font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+  .nav.web{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--wf-mute);}
+  .p{padding:12px 14px 20px;}
+  .b{border:1px solid var(--wf-ink);border-radius:var(--r);padding:11px 12px;margin-bottom:10px;background:var(--wf-bg);}
+  .b.soft{border-color:var(--wf-line);}
+  .b.fill{background:var(--wf-fill);border-color:var(--wf-line);}
+  .b.acc{border-color:var(--acc);background:var(--acc-soft);}
+  .ph{background:var(--wf-fill);border:1px solid var(--wf-line);border-radius:var(--r-sm);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--wf-faint);}
+  .ph::before,.ph::after{content:"";position:absolute;left:-10%;right:-10%;top:50%;height:1px;background:var(--wf-line);}
+  .ph::before{transform:rotate(22deg);} .ph::after{transform:rotate(-22deg);}
+  .ph span{position:relative;background:var(--wf-fill);padding:0 4px;}
+  .t1{font-size:17px;font-weight:800;letter-spacing:-.015em;line-height:1.3;margin:0 0 4px;text-wrap:balance;}
+  .t2{font-size:13px;line-height:1.5;margin:0;}
+  .mu{color:var(--wf-mute);font-size:11.5px;line-height:1.5;}
+  .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--wf-faint);margin:6px 0 6px;}
+  .btn{display:flex;align-items:center;justify-content:center;border-radius:999px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;user-select:none;margin-bottom:8px;border:1px solid var(--wf-ink);background:var(--wf-bg);color:var(--wf-ink);}
+  .btn.pri{background:var(--acc);border-color:var(--acc);color:var(--on-acc);}
+  .btn.sm{padding:8px;font-size:12.5px;font-weight:700;}
+  .btn.txt{border:0;text-decoration:underline;text-underline-offset:3px;font-weight:600;font-size:12.5px;padding:6px;}
+  .row{display:flex;gap:8px;} .row>*{flex:1;min-width:0;}
+  .kv{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--wf-line);}
+  .kv:last-child{border-bottom:0;}
+  .kv b{font-weight:700;} .kv .v{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .kv .v.neg{color:var(--acc-ink);}
+  .code{font-family:var(--mono);font-size:16px;font-weight:800;letter-spacing:.1em;}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+  .st{border:1px solid var(--wf-ink);border-radius:var(--r);padding:10px;cursor:pointer;min-width:0;}
+  .st .n{font-family:var(--mono);font-size:21px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;}
+  .st .l{font-size:10.5px;color:var(--wf-mute);margin-top:5px;line-height:1.3;}
+  .pill{display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:700;padding:2px 7px;border:1px solid var(--wf-ink);border-radius:var(--r-sm);white-space:nowrap;}
+  .pill.g{background:var(--acc);border-color:var(--acc);color:var(--on-acc);}
+  .pill.d{border-style:dashed;color:var(--wf-mute);}
+  .steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:6px;align-items:start;}
+  .step{text-align:center;min-width:0;}
+  .step i{display:flex;width:34px;height:34px;margin:0 auto 5px;border:1px solid var(--wf-ink);border-radius:var(--r);align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:800;font-style:normal;}
+  .step .t{font-size:11.5px;font-weight:700;line-height:1.3;} .step .d{font-size:10px;color:var(--wf-mute);line-height:1.4;margin-top:2px;}
+  .steps .ar{padding-top:10px;color:var(--wf-faint);font-family:var(--mono);}
+  .li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--wf-line);font-size:12.5px;}
+  .li:last-child{border-bottom:0;}
+  .li .av{width:28px;height:28px;border-radius:999px;border:1px solid var(--wf-ink);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex:0 0 auto;}
+  .li .tx{flex:1;min-width:0;line-height:1.3;} .li .tx small{display:block;font-family:var(--mono);font-size:9.5px;color:var(--wf-mute);margin-top:1px;}
+  .li .rt{font-family:var(--mono);font-size:11px;font-weight:700;white-space:nowrap;}
+  .funnel .fr{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px;}
+  .funnel .fr .k{width:58px;color:var(--wf-mute);font-size:11px;} .funnel .fr .bar{flex:1;height:14px;border:1px solid var(--wf-ink);border-radius:var(--r-sm);overflow:hidden;background:var(--wf-bg);}
+  .funnel .fr .bar i{display:block;height:100%;background:var(--wf-ink);} .funnel .fr .n{font-family:var(--mono);font-size:11px;width:24px;text-align:right;}
+  .prog{height:8px;border:1px solid var(--wf-ink);border-radius:var(--r-sm);overflow:hidden;background:var(--wf-bg);margin:6px 0;}
+  .prog i{display:block;height:100%;background:var(--acc);}
+  .field{border:1px solid var(--wf-ink);border-radius:var(--r);padding:10px 12px;font-family:var(--mono);font-size:13px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+  .field.empty{color:var(--wf-faint);border-style:dashed;}
+  .field small{font-family:var(--cjk);font-size:10.5px;color:var(--wf-mute);}
+  .tabs{position:absolute;left:0;right:0;bottom:0;height:50px;border-top:1px solid var(--wf-line);display:flex;font-family:var(--mono);font-size:10px;color:var(--wf-faint);background:var(--wf-bg);}
+  .tabs div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+  .tabs div i{width:14px;height:14px;border:1.5px solid currentColor;border-radius:2px;display:block;}
+  .tabs .on{color:var(--wf-ink);font-weight:700;}
+  .veil{position:absolute;inset:0;background:rgba(30,34,28,.35);z-index:5;}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--wf-bg);border-top:2px solid var(--wf-ink);border-radius:14px 14px 0 0;padding:10px 14px 14px;z-index:6;}
+  .sheet .hd{width:36px;height:4px;border-radius:2px;background:var(--wf-line);margin:0 auto 10px;}
+  .sheet h4{margin:0 0 2px;font-size:15px;font-weight:800;}
+  .grpx{border-top:1px dashed var(--wf-line);padding:10px 0 4px;}
+  .grpx .gh{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .grpx .th{width:44px;height:44px;flex:0 0 auto;}
+  .grpx .gt{font-weight:800;font-size:13px;} .grpx .gd{font-size:10.5px;color:var(--wf-mute);line-height:1.35;}
+  .dests{display:flex;gap:6px;}
+  .dest{flex:1;text-align:center;font-size:9.5px;color:var(--wf-mute);cursor:pointer;line-height:1.2;min-width:0;}
+  .dest i{display:block;width:40px;height:40px;margin:0 auto 4px;border-radius:999px;border:1px solid var(--wf-ink);font-family:var(--mono);font-size:9px;font-weight:800;color:var(--wf-ink);line-height:38px;font-style:normal;}
+  .dest:hover i{background:var(--acc);border-color:var(--acc);}
+  .toast{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);background:var(--wf-ink);color:#fff;font-size:12px;padding:8px 14px;border-radius:999px;z-index:9;white-space:nowrap;}
+  .chat{padding:14px;display:flex;flex-direction:column;gap:10px;}
+  .msg{max-width:78%;border:1px solid var(--wf-ink);border-radius:var(--r);padding:9px 11px;font-size:12.5px;cursor:pointer;background:var(--wf-bg);}
+  .msg .who{font-family:var(--mono);font-size:9.5px;color:var(--wf-mute);margin-bottom:4px;}
+  .notif{border:1px solid var(--wf-ink);border-radius:10px;padding:10px 12px;margin:0 12px 8px;display:flex;gap:10px;align-items:center;cursor:pointer;background:var(--wf-bg);}
+  .notif .ic{width:30px;height:30px;border:1px solid var(--wf-ink);border-radius:7px;flex:0 0 auto;}
+  .notif .t{font-size:12px;font-weight:800;line-height:1.25;} .notif .d{font-size:11px;color:var(--wf-mute);}
+  .notif .tm{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--wf-faint);align-self:flex-start;}
+  .qr{display:block;}
+  .stepbar{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--wf-mute);margin-bottom:12px;}
+  .stepbar b{color:var(--wf-ink);} .stepbar i{flex:1;height:1px;background:var(--wf-line);}
+  .chk{display:inline-flex;width:20px;height:20px;border:1px solid var(--wf-ink);border-radius:999px;align-items:center;justify-content:center;font-size:12px;margin-right:6px;}
+
+  /* ---------- round device wireframe (466×466) ---------- */
+  .round-wrap{width:350px;height:350px;position:relative;}
+  .round{width:466px;height:466px;border-radius:999px;border:2px solid var(--wf-ink);background:var(--wf-bg);color:var(--wf-ink);position:relative;overflow:hidden;transform:scale(0.7468);transform-origin:top left;font-family:var(--cjk);}
+  .round *{box-sizing:border-box;}
+  .safe{position:absolute;left:68px;top:68px;width:330px;height:330px;border:1px dashed var(--acc);pointer-events:none;display:none;}
+  .safe.on{display:block;}
+  .safe::after{content:"安全区 330×330";position:absolute;right:4px;bottom:2px;font-family:var(--mono);font-size:10px;color:var(--acc-ink);}
+  .rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 70px;}
+  .rc .h{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.2;}
+  .rc .s{font-size:18px;color:var(--wf-mute);margin-top:8px;line-height:1.4;}
+  .rc .big{font-family:var(--mono);font-size:56px;font-weight:800;letter-spacing:-.03em;line-height:1;}
+  .rc .rcode{font-family:var(--mono);font-size:24px;font-weight:800;letter-spacing:.12em;margin-top:10px;}
+  .rc .link{font-family:var(--mono);font-size:15px;color:var(--wf-mute);margin-top:4px;}
+  .rbtn{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--wf-ink);border-radius:999px;padding:14px 32px;font-size:20px;font-weight:800;cursor:pointer;margin-top:16px;}
+  .rbtn.pri{background:var(--acc);border-color:var(--acc);color:var(--on-acc);}
+  .rbtn.small{padding:8px 20px;font-size:15px;border-width:1px;font-weight:700;}
+  .rlist{width:300px;}
+  .rlist .it{display:flex;justify-content:space-between;align-items:center;padding:13px 6px;border-bottom:1px solid var(--wf-line);font-size:21px;font-weight:600;cursor:pointer;}
+  .rlist .it:last-child{border-bottom:0;}
+  .rlist .it.on{background:var(--acc-soft);border-radius:var(--r);border-bottom-color:transparent;}
+  .rlist .it span{font-family:var(--mono);font-size:16px;color:var(--wf-faint);}
+  .rbk{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:14px;color:var(--wf-mute);cursor:pointer;border:1px solid var(--wf-line);border-radius:999px;padding:5px 16px;}
+  .rtop{position:absolute;top:26px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:13px;color:var(--wf-faint);letter-spacing:.14em;}
+  .rmini{display:flex;gap:26px;margin-top:12px;}
+  .rmini div{text-align:center;} .rmini .n{font-family:var(--mono);font-size:28px;font-weight:800;line-height:1;} .rmini .l{font-size:12px;color:var(--wf-mute);margin-top:4px;font-family:var(--mono);}
+
+  /* ---------- info panel ---------- */
+  .info{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;}
+  .info .id{font-family:var(--mono);font-size:10.5px;color:var(--acc-ink);font-weight:700;letter-spacing:.1em;}
+  .info h3{margin:4px 0 6px;font-size:16px;font-weight:800;}
+  .info .why{font-size:13px;color:var(--muted);margin:0 0 12px;line-height:1.6;}
+  .info .why b{color:var(--ink);}
+  .info h5{margin:12px 0 5px;font-size:11px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+  .info ul{margin:0;padding-left:17px;font-size:12.8px;color:var(--muted);line-height:1.65;}
+  .info ul b{color:var(--ink);}
+  .nexts{display:flex;flex-wrap:wrap;gap:6px;}
+  .nx{font-family:var(--mono);font-size:11px;border:1px solid var(--line-strong);border-radius:999px;padding:4px 11px;cursor:pointer;color:var(--muted);}
+  .nx:hover{border-color:var(--acc);color:var(--acc-ink);}
+  .nx b{color:var(--acc-ink);margin-right:4px;}
+
+  table{border-collapse:collapse;width:100%;font-size:12.8px;background:var(--surface);}
+  th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{background:var(--surface-2);font-size:11.5px;border-bottom:1.5px solid var(--line-strong);white-space:nowrap;}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:14px;}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px;}
+  .vc{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);}
+  .vc h4{margin:0 0 6px;font-size:14px;}
+  .vc p,.vc li{font-size:13px;color:var(--muted);margin:0;line-height:1.6;}
+  .vc ul{margin:0;padding-left:17px;} .vc b{color:var(--ink);}
+  .note{margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--acc-soft);border-left:2px solid var(--acc);padding:9px 13px;border-radius:0 var(--r-sm) var(--r-sm) 0;}
+  .note b{color:var(--acc-ink);}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="brand">Body Park Atom · Sharing Module</div>
+  <h1>邀请全链路线框原型</h1>
+  <p class="lede">三条泳道，二十个界面，全部可点：<b>邀请人手机</b>发起 → <b>好友手机</b>收到、购买、注册、激活 → 权益回到邀请人；<b>Atom 设备</b>（466×466 圆屏）作为第三个入口，用二维码把链路交给手机。点泳道里的节点或直接在界面里操作都能走通。</p>
+  <div class="meta">
+    <span class="mchip hot">v1.0 · 2026-09-03</span>
+    <span class="mchip">手机 320×660 · 设备 466×466 圆</span>
+    <span class="mchip">好友 −$10 + 1 个月 PRO</span>
+    <span class="mchip">邀请人 $10 抵扣金 + 1 个月 PRO / 位</span>
+    <span class="mchip">低保真 · 黑白线框</span>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="grp"><span>版本</span><button class="tb on" data-reg="cn" onclick="setReg('cn')">中国版</button><button class="tb" data-reg="gl" onclick="setReg('gl')">国际版</button></div>
+  <div class="grp"><span>泳道</span><button class="tb" onclick="go('A1')">邀请人手机</button><button class="tb" onclick="go('B1')">好友手机</button><button class="tb" onclick="go('C1')">Atom 设备</button></div>
+  <div class="grp"><span>设备</span><button class="tb" id="safeBtn" onclick="toggleSafe()">显示圆屏安全区</button></div>
+</div>
+
+<div class="map" id="map"></div>
+
+<div class="stage">
+  <div class="frame-col">
+    <div id="frame"></div>
+    <div class="frame-cap" id="frameCap"></div>
+  </div>
+  <div class="info" id="info"></div>
+</div>
+
+<section>
+  <div class="eyebrow">02 · 链路上的权益与时点</div>
+  <h2>两段漏斗，两侧权益，各在哪一屏发生</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:130px">时点</th><th style="width:110px">界面</th><th>好友得到</th><th>邀请人得到</th><th style="width:150px">归因</th></tr></thead>
+      <tbody>
+        <tr><td><b>收到 / 点击</b></td><td class="mono">B1 → B2</td><td>看到 −$10 已生效 + 填码得 1 个月 PRO</td><td>点击 +1（明细可见）</td><td>落地页按 token 计数</td></tr>
+        <tr><td><b>注册 App</b>（先不买）</td><td class="mono">B5</td><td>$10 抵扣金入账，90 天内买主机可用</td><td>注册 +1，<b>不发奖</b></td><td>token 绑定账号（防假号：只计数）</td></tr>
+        <tr><td><b>下单</b></td><td class="mono">B3 → B4</td><td>−$10 在订单里抵扣（官网可叠加）</td><td>下单 +1，权益标"待到账"</td><td>官网订单带 token；第三方靠码</td></tr>
+        <tr><td><b>激活填码</b></td><td class="mono">B6 → B7</td><td><b>1 个月 PRO 即时到账</b></td><td><b>$10 抵扣金 + 1 个月 PRO 到账</b>，推送 A9</td><td>激活填码 = 全渠道兜底</td></tr>
+        <tr><td><b>退货</b></td><td class="mono">—</td><td>PRO 收回</td><td>抵扣金与 PRO 收回，动态留痕</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cols">
+    <div class="vc"><h4>设备端为什么只有二维码</h4><p>圆屏没有浏览器、没有分享面板、没有键盘。它能做的只有<b>把一个二维码放大到中间</b>，让好友当场扫（C2）或让自己扫回手机（C4）。所以设备端的全部界面就是"入口 → 二维码 → 反馈"三步，不多做。</p></div>
+    <div class="vc"><h4>圆屏排版三条规则</h4><ul><li>内容落在内接正方形 <b>330×330</b> 里（466 / √2），四角不放东西。工具栏"显示圆屏安全区"能看到这条线。</li><li>一屏只放一件事：标题 + 一个主体（二维码 / 列表 / 数字）+ 一个动作。</li><li>字号不低于 15px（466 尺度），码用等宽字体，二维码边长不小于 220px 保证 60cm 内可扫。</li></ul></div>
+    <div class="vc"><h4>好友侧两个分支为什么都要</h4><p>想买的人从 B2 直接去 B3，$10 在结算里自动抵；犹豫的人从 B2 去 B5 注册把 $10 存起来，我们拿到一个能推送的线索。<b>B5 是 lead capture，不是奖励</b>，所以它对邀请人只计数不发奖。</p></div>
+  </div>
+  <div class="note"><b>数字占位：</b>主机 $249 / ¥1,799，抵扣 $10 / ¥50，PRO 月价值 $4.99 / ¥30 为示意，以运营口径为准。多语言按 06 Demo 的字符串表处理，线框以中文呈现。</div>
+</section>
+
+<section>
+  <div class="eyebrow">03 · 界面清单</div>
+  <h2>给设计的任务书</h2>
+  <div class="scroll"><table id="tbl"><thead><tr><th style="width:60px">编号</th><th style="width:150px">界面</th><th>要素</th><th style="width:210px">去向</th><th style="width:60px">优先级</th></tr></thead><tbody></tbody></table></div>
+</section>
+</div>
+
+<script>
+/* ===== region ===== */
+var REG={
+  cn:{cur:'¥',price:'1,799',net:'1,749',off:'50',pro:'¥30',store:'小程序商城',alt:'天猫 / 京东',chat:'微信',link:'bp.fit/i/7K2A',code:'ALEX-7K2A',
+      dImg:['保存到相册','微信好友','朋友圈','小红书'],dLink:['复制链接','微信好友','更多'],pay:'微信支付'},
+  gl:{cur:'$',price:'249',net:'239',off:'10',pro:'$4.99',store:'bodypark.com',alt:'Amazon',chat:'iMessage',link:'bp.fit/i/7K2A',code:'ALEX-7K2A',
+      dImg:['Save','Instagram','WhatsApp','Messages'],dLink:['Copy link','Messages','WhatsApp','More'],pay:'Apple Pay'}
+};
+var G='cn', cur='A1', safe=false, toastMsg='';
+function R(){return REG[G];}
+function m(v){return R().cur+v;}
+
+/* ===== fake QR ===== */
+function qr(size,seed){
+  var s=seed||9137,N=21,out='',mm=[];function rnd(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;}
+  for(var y=0;y<N;y++){mm.push([]);for(var x=0;x<N;x++)mm[y].push(rnd()>0.5?1:0);}
+  function fd(ox,oy){for(var y=0;y<7;y++)for(var x=0;x<7;x++){mm[oy+y][ox+x]=((x===0||x===6||y===0||y===6)||(x>=2&&x<=4&&y>=2&&y<=4))?1:0;}
+    for(var y=-1;y<8;y++)for(var x=-1;x<8;x++){var yy=oy+y,xx=ox+x;if(yy<0||xx<0||yy>=N||xx>=N)continue;if(y===-1||y===7||x===-1||x===7)mm[yy][xx]=0;}}
+  fd(0,0);fd(14,0);fd(0,14);
+  for(var y=0;y<N;y++)for(var x=0;x<N;x++)if(mm[y][x])out+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>';
+  return '<svg class="qr" width="'+size+'" height="'+size+'" viewBox="0 0 21 21" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/><g fill="#1E221C">'+out+'</g></svg>';
+}
+function nav(t,back,right,rightTo){return '<div class="nav">'+(back?'<div class="bk" onclick="go(\''+back+'\')">‹</div>':'')+t+'<div class="sp"></div>'+(right?'<div class="rt" onclick="go(\''+rightTo+'\')">'+right+'</div>':'')+'</div>';}
+function webnav(url){return '<div class="nav web"><span>‹ ›</span><span class="sp" style="text-align:center">'+url+'</span><span>⋯</span></div>';}
+
+/* ===== screens ===== */
+var S={};
+/* ---------- A · inviter phone ---------- */
+S.A1={lane:'A',kind:'phone',title:'入口 · "我的"页',why:'邀请入口挂在"我的"页 banner。另外两个入口（课后报告底部、推送）都指向同一个 A2。',
+  el:['banner：一句利益点 + 一个"去邀请"','其他入口：课后报告底部 G2 区块、推送通知 A9'],next:['A2'],pri:'P0',
+  render:function(){var r=R();return nav('我的')+'<div class="p">'+
+    '<div class="li" style="border:0;padding:4px 0 12px"><div class="av" style="width:44px;height:44px">A</div><div class="tx"><b style="font-size:15px">Alex</b><small>142 SESSIONS · ATOM #A2-0417</small></div></div>'+
+    '<div class="b acc" style="cursor:pointer" onclick="go(\'A2\')"><div style="display:flex;align-items:center;gap:10px"><div style="flex:1"><div class="t2" style="font-weight:800">邀请好友买 Atom</div><div class="mu">好友立减 '+m(r.off)+' · 你得 '+m(r.off)+' 抵扣金 + 1 个月 PRO</div></div><span class="pill g">去邀请</span></div></div>'+
+    '<div class="b soft"><div class="kv"><b>训练记录</b><span class="v">142</span></div><div class="kv"><b>我的报告</b><span class="v">›</span></div><div class="kv"><b>PRO · 剩 74 天</b><span class="v">›</span></div><div class="kv"><b>我的设备</b><span class="v">Atom</span></div><div class="kv" style="color:var(--wf-mute)"><b>设置</b><span class="v">›</span></div></div>'+
+    '<div class="lbl">其他入口（同样到 A2）</div><div class="row"><div class="b fill" style="font-size:11px;text-align:center;cursor:pointer" onclick="go(\'A2\')">课后报告底部</div><div class="b fill" style="font-size:11px;text-align:center;cursor:pointer" onclick="go(\'A9\')">推送通知</div></div>'+
+    '</div><div class="tabs"><div><i></i>训练</div><div><i></i>课程</div><div><i></i>数据</div><div class="on"><i></i>我的</div></div>';}};
+S.A2={lane:'A',kind:'phone',title:'邀请页（单 CTA）',why:'一屏三事：怎么做、一键分享、我的数据与权益。页面上<b>只有一个按钮</b>，形式与去处在按钮之后选。邀请码可见但不是按钮。',
+  el:['hero：好友得什么 / 我得什么，两句话','邀请码 + 短链（只展示）','唯一 CTA → A3','三格：点击 / 注册 / 购买激活 → A6','权益格：抵扣金 + PRO → A7','怎么做三步','最近动态'],next:['A3','A6','A7','A8'],pri:'P0',
+  render:function(){var r=R();return nav('邀请好友','A1','规则','A8')+'<div class="p">'+
+    '<div class="b"><p class="t1">好友买 Atom 立减 '+m(r.off)+'，<br>激活填码再得 1 个月 PRO</p><p class="t2">你每邀 1 位：<b>'+m(r.off)+' 抵扣金</b> + <b>1 个月 PRO</b>（价值 '+r.pro+'），可叠加</p>'+
+    '<div class="b fill" style="margin:10px 0 0;display:flex;justify-content:space-between;align-items:center"><div><div class="lbl" style="margin:0 0 2px">我的邀请码</div><div class="code">'+r.code+'</div></div><div class="mu" style="text-align:right;font-family:var(--mono);font-size:10px">'+r.link+'</div></div></div>'+
+    '<div class="btn pri" onclick="go(\'A3\')">邀请好友</div>'+
+    '<div class="stats"><div class="st" onclick="go(\'A6\')"><div class="n">12</div><div class="l">点击</div></div><div class="st" onclick="go(\'A6\')"><div class="n">4</div><div class="l">注册 App</div></div><div class="st" onclick="go(\'A6\')"><div class="n">2</div><div class="l">购买并激活</div></div></div>'+
+    '<div class="b acc" style="cursor:pointer" onclick="go(\'A7\')"><div class="kv" style="border:0;padding:0"><b>我的权益</b><span class="v">'+m(2*+r.off.replace(',',''))+' 抵扣金 · PRO +2 个月 ›</span></div></div>'+
+    '<div class="lbl">怎么做</div><div class="b soft"><div class="steps"><div class="step"><i>1</i><div class="t">发给朋友</div><div class="d">图片或链接都带码</div></div><div class="ar">›</div><div class="step"><i>2</i><div class="t">朋友下单</div><div class="d">'+m(r.off)+' 自动抵扣</div></div><div class="ar">›</div><div class="step"><i>3</i><div class="t">激活填码</div><div class="d">两边权益同时到账</div></div></div></div>'+
+    '<div class="lbl">最近动态</div><div class="b soft"><div class="li"><div class="av">L</div><div class="tx">Lin** 激活了 Atom<small>09-01 · 邀请图</small></div><span class="rt">+'+m(r.off)+' · +1 月</span></div><div class="li"><div class="av">W</div><div class="tx">Wang** 已下单，等待激活<small>08-30 · 链接</small></div><span class="pill d">待到账</span></div><div class="li"><div class="av">Z</div><div class="tx">Zhao** 注册了 App<small>08-29 · 抵扣金已存</small></div><span class="pill d">仅计数</span></div></div>'+
+    (toastMsg?'<div class="toast">'+toastMsg+'</div>':'')+'</div>';}};
+S.A3={lane:'A',kind:'phone',title:'分享面板',why:'CTA 拉起的覆盖层。两组：邀请图 / 链接，每组一排去处，按版本配置顺序（中国版图片在上，国际版链接在上）。每个去处都是终点。',
+  el:['邀请图组：缩略 + 去处（相册 / '+'聊天 / 社区）→ A4 预览','链接组：缩略 + 去处（复制 / 聊天 / 更多）→ 直接完成','取消'],next:['A4','A2'],pri:'P0',
+  render:function(){var r=R();var order=G==='cn'?['img','link']:['link','img'];
+    var g=order.map(function(f){var isImg=f==='img';return '<div class="grpx"><div class="gh"><div class="th">'+(isImg?qr(44,3):'<div class="ph" style="width:44px;height:44px"><span>URL</span></div>')+'</div><div><div class="gt">'+(isImg?'邀请图':'链接')+'</div><div class="gd">'+(isImg?'带二维码 · 群 / 朋友圈 / 社区':'H5 落地页 · 私聊')+'</div></div></div><div class="dests">'+
+      (isImg?r.dImg:r.dLink).map(function(d,i){return '<div class="dest" onclick="'+(isImg?'go(\'A4\')':'done(\''+d+'\')')+'"><i>'+(i+1)+'</i>'+d+'</div>';}).join('')+'</div></div>';}).join('');
+    return '<div style="opacity:.35;pointer-events:none">'+S.A2.render()+'</div><div class="veil" onclick="go(\'A2\')"></div><div class="sheet"><div class="hd"></div><h4>分享给朋友</h4><div class="mu">两种形式都带你的邀请码，怎么转发都算你的。</div>'+g+'<div class="btn txt" onclick="go(\'A2\')">取消</div></div>';}};
+S.A4={lane:'A',kind:'phone',title:'邀请图预览（T28）',why:'发送或保存前看一眼。这张图就是模板 T28：身份条 G3 + 产品 + 利益点 + 明文码 G4 + 二维码 G1。3:4 竖版。',
+  el:['邀请图全幅预览','底部两个动作：发送 / 保存'],next:['A2'],pri:'P0',
+  render:function(){var r=R();return nav('预览','A3')+'<div class="p">'+
+    '<div class="b" style="padding:16px;aspect-ratio:3/4;display:flex;flex-direction:column"><div class="li" style="border:0;padding:0 0 10px"><div class="av">A</div><div class="tx"><b>Alex 邀请你</b><small>142 SESSIONS · 68 万 KG</small></div></div>'+
+    '<p class="t1" style="font-size:19px">把力量训练<br>装进 1.2㎡</p><div class="ph" style="flex:1;margin:8px 0"><span>ATOM 产品图</span></div>'+
+    '<div class="kv" style="border:0;padding:4px 0"><b>好友专享</b><span class="v">−'+m(r.off)+' + 1 个月 PRO</span></div>'+
+    '<div class="b fill" style="margin:6px 0;display:flex;justify-content:space-between;align-items:center"><span class="code" style="font-size:14px">'+r.code+'</span><span class="mu" style="font-family:var(--mono);font-size:9.5px">'+r.link+'</span></div>'+
+    '<div style="display:flex;align-items:center;gap:10px">'+qr(52,7)+'<div class="mu">扫码查看<br>优惠自动生效</div></div></div>'+
+    '<div class="row"><div class="btn pri" onclick="done(\''+r.chat+'\')">发送到 '+r.chat+'</div><div class="btn" onclick="done(\'相册\')">保存</div></div></div>';}};
+S.A6={lane:'A',kind:'phone',title:'邀请明细',why:'两段漏斗分开看：注册（只计数）和购买激活（发奖）。按人只列下单之后的，纯点击只计数。',
+  el:['漏斗：点击 → 注册 → 下单 → 激活','按人：阶段 pill','按来源：邀请图 / 链接 / 训练图二维码 / 设备扫码'],next:['A2','A7'],pri:'P1',
+  render:function(){return nav('邀请明细','A2')+'<div class="p">'+
+    '<div class="b funnel"><div class="fr"><span class="k">点击</span><div class="bar"><i style="width:100%"></i></div><span class="n">12</span></div><div class="fr"><span class="k">注册 App</span><div class="bar"><i style="width:33%"></i></div><span class="n">4</span></div><div class="fr"><span class="k">下单</span><div class="bar"><i style="width:25%"></i></div><span class="n">3</span></div><div class="fr"><span class="k">激活</span><div class="bar"><i style="width:17%"></i></div><span class="n">2</span></div></div>'+
+    '<div class="lbl">按人</div><div class="b soft"><div class="li"><div class="av">L</div><div class="tx">Lin**<small>点击 → 下单 → 激活</small></div><span class="pill g">已到账</span></div><div class="li"><div class="av">C</div><div class="tx">Chen**<small>点击 → 下单 → 激活</small></div><span class="pill g">已到账</span></div><div class="li"><div class="av">W</div><div class="tx">Wang**<small>点击 → 下单</small></div><span class="pill d">待激活</span></div><div class="li"><div class="av">Z</div><div class="tx">Zhao**<small>点击 → 注册（抵扣金已存）</small></div><span class="pill d">仅计数</span></div><div class="li"><div class="av">?</div><div class="tx">未注册访客 × 8<small>仅点击</small></div><span class="pill d">—</span></div></div>'+
+    '<div class="lbl">按来源</div><div class="b soft"><div class="kv"><b>邀请图</b><span class="v">7 点击 · 1 激活</span></div><div class="kv"><b>链接</b><span class="v">3 点击 · 1 激活</span></div><div class="kv"><b>训练分享图二维码</b><span class="v">1 点击</span></div><div class="kv"><b>设备屏扫码</b><span class="v">1 点击</span></div></div></div>';}};
+S.A7={lane:'A',kind:'phone',title:'我的权益',why:'抵扣金和 PRO 分开显示，各有到期。抵扣金按次累计、90 天有效，"累计可换一件配件"是持续邀请的动力。',
+  el:['抵扣金余额 + 有效期 + 去用','PRO 已到账月数 + 到期日','已获得列表（含待到账）','累计进度 → 配件'],next:['A2'],pri:'P1',
+  render:function(){var r=R();var off=+r.off.replace(',','');return nav('我的权益','A2')+'<div class="p">'+
+    '<div class="row"><div class="b acc"><div class="lbl" style="margin:0 0 4px">抵扣金</div><div class="code" style="font-size:24px">'+m(off*2)+'</div><div class="mu">'+m(off)+' 将于 11-30 过期</div><div class="btn sm" style="margin:8px 0 0">去官网用</div></div><div class="b"><div class="lbl" style="margin:0 0 4px">PRO</div><div class="code" style="font-size:24px">+2 月</div><div class="mu">PRO 到期 2026-11-16</div><div class="mu" style="margin-top:8px">价值 '+r.pro+' / 月</div></div></div>'+
+    '<div class="b soft"><div class="kv" style="border:0;padding:0 0 6px"><b>累计 '+m(off*3)+' 可换一件配件</b><span class="v">'+m(off*2)+' / '+m(off*3)+'</span></div><div class="prog"><i style="width:66%"></i></div></div>'+
+    '<div class="lbl">已获得</div><div class="b soft"><div class="li"><div class="tx">'+m(off)+' 抵扣金 + 1 个月 PRO<small>09-01 · Lin** 激活</small></div><span class="pill g">已到账</span></div><div class="li"><div class="tx">'+m(off)+' 抵扣金 + 1 个月 PRO<small>08-12 · Chen** 激活</small></div><span class="pill g">已到账</span></div><div class="li"><div class="tx">'+m(off)+' 抵扣金 + 1 个月 PRO<small>Wang** 下单，等待激活</small></div><span class="pill d">待到账</span></div></div></div>';}};
+S.A8={lane:'A',kind:'phone',title:'规则',why:'五问五答，法务要看的那种。按版本切换成交场与叠加口径。',el:['Q&A 列表'],next:['A2'],pri:'P0',
+  render:function(){var r=R();return nav('活动规则','A2')+'<div class="p"><div class="b soft mu" style="color:var(--wf-ink)">'+
+    [['怎么算成功邀请？','好友通过你的邀请图或链接下单 Atom，并在激活时填写你的邀请码。'],['好友得到什么？','买主机立减 '+m(r.off)+'（'+r.store+' 可与促销叠加，'+r.alt+' 结算输码）；激活填码再得 1 个月 PRO。'],['我得到什么？','每位成功邀请：'+m(r.off)+' 抵扣金（主机或配件，90 天有效）+ 1 个月 PRO，不封顶。'],['好友只注册不买呢？','好友账户里会存 '+m(r.off)+'，你这边只计数不发奖。'],['退货了呢？','双方对应权益收回。']]
+    .map(function(q){return '<p style="margin:0 0 9px;font-size:12px;line-height:1.5"><b style="display:block">'+q[0]+'</b>'+q[1]+'</p>';}).join('')+'</div></div>';}};
+S.A9={lane:'A',kind:'phone',title:'推送通知',why:'四种事件推给邀请人。全部点开直达 A2。这也是三个入口之一。',el:['好友注册 / 下单 / 激活+到账 / 抵扣金将过期'],next:['A2'],pri:'P1',
+  render:function(){var r=R();return '<div class="p" style="padding-top:26px"><div class="mu" style="text-align:center;font-family:var(--mono);font-size:26px;color:var(--wf-ink);font-weight:800">9:41</div><div class="mu" style="text-align:center;margin-bottom:18px">锁屏</div></div>'+
+    [['Lin** 激活了 Atom','+'+m(r.off)+' 抵扣金 + 1 个月 PRO 已到账','刚刚'],['Wang** 通过你的邀请下单了','激活后权益到账','2 小时前'],['Zhao** 注册了 App','TA 的 '+m(r.off)+' 已存好，买主机时可用','昨天'],['抵扣金 '+m(r.off)+' 将于 7 天后过期','去官网看看配件','昨天']]
+    .map(function(n){return '<div class="notif" onclick="go(\'A2\')"><div class="ic"></div><div><div class="t">'+n[0]+'</div><div class="d">'+n[1]+'</div></div><div class="tm">'+n[2]+'</div></div>';}).join('');}};
+
+/* ---------- B · friend phone ---------- */
+S.B1={lane:'B',kind:'phone',title:'收到消息',why:'好友在聊天里收到的两种形式：邀请图（缩略）或链接卡片（OG 元数据渲染）。点任一进 B2。',el:['邀请图消息','链接卡片：标题 + 描述 + 缩略'],next:['B2'],pri:'P0',
+  render:function(){var r=R();return nav(r.chat+' · Alex')+'<div class="chat">'+
+    '<div class="msg" onclick="go(\'B2\')"><div class="who">Alex · 邀请图</div><div class="ph" style="height:140px"><span>T28 邀请图</span></div></div>'+
+    '<div class="msg" onclick="go(\'B2\')"><div class="who">Alex · 链接卡片</div><div style="display:flex;gap:8px"><div class="ph" style="width:44px;height:44px;flex:0 0 auto"><span>IMG</span></div><div><b style="font-size:12.5px">Alex 邀请你 · Atom 立减 '+m(r.off)+'</b><div class="mu" style="font-size:10.5px">激活填码再得 1 个月 PRO</div><div class="mu" style="font-family:var(--mono);font-size:9.5px">'+r.link+'</div></div></div></div>'+
+    '<div class="msg" style="align-self:flex-end;border-style:dashed"><div class="who">我</div>看看</div></div>';}};
+S.B2={lane:'B',kind:'phone',title:'H5 落地页',why:'整个方案的路由器：认人（Alex + 训练凭证）、认环境、认版本、透传 token。主 CTA 买，次 CTA 先注册把钱存起来，最下面才是第三方渠道。<b>整页没有应用商店跳转。</b>',
+  el:['邀请人身份 + 社交证明','产品 + 价格：原价 → 好友价','−'+'抵扣已生效 + 填码得 PRO','主 CTA → B3','次 CTA → B5','第三方：输码'],next:['B3','B5'],pri:'P0',
+  render:function(){var r=R();return webnav(r.link)+'<div class="p">'+
+    '<div class="li" style="border:0;padding:0 0 10px"><div class="av">A</div><div class="tx"><b>Alex 邀请你加入 Body Park</b><small>已训练 142 次 · 累计 68 万 kg</small></div></div>'+
+    '<div class="ph" style="height:110px"><span>ATOM 产品图</span></div>'+
+    '<p class="t1" style="margin-top:10px">Atom 智能力量设备</p><div style="display:flex;align-items:baseline;gap:8px"><span class="code" style="font-size:22px">'+m(r.net)+'</span><span class="mu" style="text-decoration:line-through">'+m(r.price)+'</span><span class="pill g">好友 −'+m(r.off)+'</span></div>'+
+    '<div class="b acc" style="margin-top:10px"><div class="t2">✓ '+m(r.off)+' 已自动生效，'+r.store+' 可与促销叠加</div><div class="mu">激活时填 <b class="code" style="font-size:12px">'+r.code+'</b> 再得 1 个月 PRO</div></div>'+
+    '<div class="btn pri" onclick="go(\'B3\')">立即购买 · '+m(r.net)+'</div>'+
+    '<div class="btn" onclick="go(\'B5\')">先注册 App，把 '+m(r.off)+' 存起来</div>'+
+    '<div class="mu" style="text-align:center;margin-top:6px">想在 '+r.alt+' 买？结算时输入 <b>'+r.code+'</b></div></div>';}};
+S.B3={lane:'B',kind:'phone',title:'结算',why:'官网 / 小程序商城的结算页。优惠已带入，码显示为已应用，订单落库时写 referral_token。',el:['商品行','邀请优惠行 −$10','合计','已应用的码','支付'],next:['B4'],pri:'P0',
+  render:function(){var r=R();return nav(r.store+' · 结算','B2')+'<div class="p">'+
+    '<div class="b soft"><div class="kv"><b>Atom 智能力量设备 × 1</b><span class="v">'+m(r.price)+'</span></div><div class="kv"><b>邀请优惠 · Alex</b><span class="v neg">−'+m(r.off)+'</span></div><div class="kv"><b>运费</b><span class="v">0</span></div><div class="kv"><b style="font-size:14px">合计</b><span class="v" style="font-size:16px;font-weight:800">'+m(r.net)+'</span></div></div>'+
+    '<div class="field">'+r.code+'<small>已应用 ✓</small></div>'+
+    '<div class="b soft"><div class="kv"><b>收货地址</b><span class="v">›</span></div><div class="kv"><b>支付方式</b><span class="v">'+r.pay+'</span></div></div>'+
+    '<div class="btn pri" onclick="go(\'B4\')">支付 '+m(r.net)+'</div></div>';}};
+S.B4={lane:'B',kind:'phone',title:'下单成功',why:'把下一步说清楚：激活时填码得 PRO。这一屏是让好友记住"到货后要做的事"，所以码要大。',el:['✓ 状态','下一步说明 + 码','下载 App'],next:['B6'],pri:'P0',
+  render:function(){var r=R();return nav('订单','B3')+'<div class="p" style="text-align:center;padding-top:30px">'+
+    '<div class="chk" style="width:48px;height:48px;font-size:22px;margin:0 auto 12px">✓</div><p class="t1">已下单</p><p class="mu">'+m(r.net)+' · 邀请优惠已抵扣</p>'+
+    '<div class="b acc" style="text-align:left;margin-top:18px"><div class="lbl" style="margin:0 0 4px">收到设备后</div><div class="t2">在 App 里激活时填这个码，再得 <b>1 个月 PRO</b>：</div><div class="code" style="font-size:20px;margin-top:6px">'+r.code+'</div></div>'+
+    '<div class="btn pri" onclick="go(\'B6\')">下载 App，等设备到货</div><div class="mu">原型：直接进入激活流程</div></div>';}};
+S.B5={lane:'B',kind:'phone',title:'注册 App（先不买）',why:'犹豫的人走这里：注册即把 $10 存进账户，90 天内买主机可用。对邀请人只计数、不发奖，所以假号无利可图。',el:['注册表单，码已预填','说明：抵扣金入账','注册 → B5s'],next:['B5s'],pri:'P0',
+  render:function(){var r=R();return nav('注册','B2')+'<div class="p">'+
+    '<p class="t1">注册，把 '+m(r.off)+' 存起来</p><p class="mu">90 天内买 Atom 主机可用。Alex 的邀请码已带上。</p>'+
+    '<div class="field empty" style="margin-top:14px">手机号 / 邮箱</div><div class="field empty">验证码</div><div class="field">'+r.code+'<small>邀请码 ✓</small></div>'+
+    '<div class="btn pri" onclick="go(\'B5s\')">注册</div></div>';}};
+S.B5s={lane:'B',kind:'phone',title:'抵扣金已入账',why:'账户里能看到钱和有效期，给一个直接去买的出口。到期前 7 天推一次提醒。',el:['余额 + 有效期','去买 Atom → B3','先逛逛'],next:['B3'],pri:'P0',
+  render:function(){var r=R();return nav('我的')+'<div class="p" style="padding-top:26px;text-align:center">'+
+    '<div class="lbl">抵扣金</div><div class="code" style="font-size:34px">'+m(r.off)+'</div><p class="mu">买 Atom 主机可用 · 11-30 前有效</p>'+
+    '<div class="btn pri" style="margin-top:18px" onclick="go(\'B3\')">去买 Atom · 立减 '+m(r.off)+'</div><div class="btn txt">先逛逛课程</div></div>';}};
+S.B6={lane:'B',kind:'phone',title:'激活 · 填邀请码',why:'全渠道兜底的那一层。放在配网成功后、首次训练前。可跳过，但填了立刻得 1 个月 PRO，所以大多数人会填。从链接 / 注册来的码已预填。',
+  el:['步骤条：配网 ✓ → 邀请码 → 完成','输入框（预填或空）','填码得 PRO 说明','确认 / 跳过'],next:['B7'],pri:'P0',
+  render:function(){var r=R();return nav('激活 Atom')+'<div class="p">'+
+    '<div class="stepbar"><b>1 配网 ✓</b><i></i><b>2 邀请码</b><i></i>3 完成</div>'+
+    '<p class="t1">有朋友的邀请码吗？</p><p class="mu">填了立刻得 1 个月 PRO（价值 '+r.pro+'）。不管在哪买的都算。</p>'+
+    '<div class="field" style="margin-top:14px">'+r.code+'<small>来自 Alex ✓</small></div>'+
+    '<div class="btn pri" onclick="go(\'B7\')">确认，领取 1 个月 PRO</div><div class="btn txt" onclick="go(\'B7\')">跳过</div></div>';}};
+S.B7={lane:'B',kind:'phone',title:'激活完成 · 权益到账',why:'好友这一屏落定的同时，邀请人收到 A9 推送。两边同时到账是"可叠加"最直观的证明。',el:['✓ 已激活','1 个月 PRO 已到账','Alex 也收到了奖励','开始训练'],next:['A9'],pri:'P0',
+  render:function(){var r=R();return nav('激活 Atom')+'<div class="p" style="text-align:center;padding-top:26px">'+
+    '<div class="stepbar" style="text-align:left"><b>1 配网 ✓</b><i></i><b>2 邀请码 ✓</b><i></i><b>3 完成</b></div>'+
+    '<div class="chk" style="width:48px;height:48px;font-size:22px;margin:8px auto 12px">✓</div><p class="t1">Atom 已激活</p>'+
+    '<div class="b acc" style="text-align:left;margin-top:14px"><div class="kv" style="border:0;padding:3px 0"><b>1 个月 PRO</b><span class="v">已到账</span></div><div class="kv" style="border:0;padding:3px 0"><b>邀请优惠 '+m(r.off)+'</b><span class="v">已在订单抵扣</span></div></div>'+
+    '<p class="mu">Alex 也收到了 '+m(r.off)+' 抵扣金 + 1 个月 PRO</p>'+
+    '<div class="btn pri" style="margin-top:10px">开始第一次训练</div><div class="btn txt" onclick="go(\'A9\')">→ 看邀请人收到的推送</div></div>';}};
+
+/* ---------- C · Atom round device ---------- */
+S.C1={lane:'C',kind:'round',title:'设备菜单',why:'"邀请好友"放在设备的更多 / 设置菜单里。圆屏列表最多 5 行，行高 ≥ 48px。',el:['列表：训练 / 课程 / 设备设置 / 邀请好友 / 关于'],next:['C2','C3'],pri:'P1',
+  render:function(){return '<div class="rtop">MENU</div><div class="rc"><div class="rlist"><div class="it" onclick="go(\'C3\')">训练<span>›</span></div><div class="it">课程<span>›</span></div><div class="it">设备设置<span>›</span></div><div class="it on" onclick="go(\'C2\')">邀请好友<span>›</span></div><div class="it">关于<span>›</span></div></div></div>';}};
+S.C2={lane:'C',kind:'round',title:'邀请二维码',why:'设备端唯一的邀请形式。二维码放中间、码放下面，好友当场扫。二维码编码的是同一条带 token 的短链，扫了就到 B2。',
+  el:['标题一句','二维码 ≥ 220px','明文码 + 短链','返回'],next:['B2','C5'],pri:'P1',
+  render:function(){var r=R();return '<div class="rtop">INVITE</div><div class="rc" style="padding-top:64px"><div class="h" style="font-size:24px">好友扫码 · 立减 '+m(r.off)+'</div><div style="margin:12px 0 6px;cursor:pointer" onclick="go(\'B2\')">'+qr(200,5)+'</div><div class="rcode">'+r.code+'</div><div class="link">'+r.link+'</div></div><div class="rbk" onclick="go(\'C1\')">‹ 返回</div>';}};
+S.C3={lane:'C',kind:'round',title:'课后总结',why:'训练结束屏。设备不能分享，所以这里的"分享"是把这次训练交给手机：出一个二维码，手机扫了打开这次训练的分享页（其水印二维码本来就带邀请码）。',
+  el:['完成 + 三个数字','分享到手机 → C4','完成'],next:['C4'],pri:'P1',
+  render:function(){return '<div class="rtop">DONE</div><div class="rc"><div class="h">训练完成</div><div class="rmini"><div><div class="n">42</div><div class="l">MIN</div></div><div><div class="n">8,240</div><div class="l">KG</div></div><div><div class="n">36</div><div class="l">SETS</div></div></div><div class="rbtn pri" onclick="go(\'C4\')">分享到手机</div><div class="rbtn small" onclick="go(\'C1\')">完成</div></div>';}};
+S.C4={lane:'C',kind:'round',title:'分享 → 手机',why:'扫码在手机上打开这次训练的分享页，然后走手机的分享模块。这条路让设备上的每一次训练都能变成一张带邀请码的图。',
+  el:['说明一句','二维码','返回'],next:['C3'],pri:'P1',
+  render:function(){return '<div class="rtop">SHARE</div><div class="rc" style="padding-top:64px"><div class="h" style="font-size:24px">手机扫码，领这次训练的分享图</div><div style="margin:12px 0 6px">'+qr(200,11)+'</div><div class="s">图上自带你的邀请码</div></div><div class="rbk" onclick="go(\'C3\')">‹ 返回</div>';}};
+S.C5={lane:'C',kind:'round',title:'扫码反馈',why:'好友扫了码，设备上给一个反馈，把注意力引回手机（后续都在手机上）。3 秒后自动回 C2。',el:['✓ + 一句','回手机看'],next:['C2','A6'],pri:'P2',
+  render:function(){return '<div class="rc"><div class="big">✓</div><div class="h" style="margin-top:10px">1 位好友刚扫了码</div><div class="s">后续在手机上查看</div><div class="rbtn small" onclick="go(\'C2\')" style="margin-top:22px">好</div></div>';}};
+
+/* ===== flow map ===== */
+var LANES=[
+  {id:'A',name:'邀请人手机',sub:'INVITER · APP',seq:['A1','A2','A3','A4','A6','A7','A8','A9'],links:{A4:'→ 好友收到 B1'}},
+  {id:'B',name:'好友手机',sub:'FRIEND · H5 + APP',seq:['B1','B2','B3','B4','B6','B7'],branch:{B2:['B5','B5s']},links:{B7:'→ 邀请人推送 A9'}},
+  {id:'C',name:'Atom 设备',sub:'DEVICE · 466 ROUND',seq:['C1','C2','C5'],branch:{C1:['C3','C4']},links:{C2:'→ 好友扫码 B2',C4:'→ 手机分享模块'}}
+];
+function drawMap(){
+  var h='';
+  LANES.forEach(function(l){
+    h+='<div class="lane"><div class="ln">'+l.name+'<small>'+l.sub+'</small></div><div class="nodes">';
+    l.seq.forEach(function(id,i){
+      if(i)h+='<span class="aw">→</span>';
+      h+=node(id);
+      if(l.branch&&l.branch[id]){h+='<span class="aw">⤷</span>';l.branch[id].forEach(function(b,j){if(j)h+='<span class="aw">→</span>';h+=node(b,true);});h+='<span class="aw">⤶</span>';}
+      if(l.links&&l.links[id])h+='<span class="aw lbl">'+l.links[id]+'</span>';
+    });
+    h+='</div></div>';
+  });
+  document.getElementById('map').innerHTML=h;
+}
+function node(id,x){return '<div class="nd'+(cur===id?' on':'')+(x?' x':'')+'" onclick="go(\''+id+'\')"><small>'+id+'</small>'+S[id].title+'</div>';}
+
+/* ===== render ===== */
+function go(id,t){toastMsg=t||'';cur=id;render();}
+function done(d){go('A2','已分享到 '+d);setTimeout(function(){if(toastMsg){toastMsg='';render();}},1800);}
+function setReg(g){G=g;document.querySelectorAll('[data-reg]').forEach(function(b){b.classList.toggle('on',b.dataset.reg===g);});render();}
+function toggleSafe(){safe=!safe;document.getElementById('safeBtn').classList.toggle('on',safe);render();}
+function render(){
+  var s=S[cur],f=document.getElementById('frame');
+  if(s.kind==='phone'){f.innerHTML='<div class="phone"><div class="sb"><span>9:41</span><span>●●● ▲ ▮</span></div><div class="scr">'+s.render()+'</div></div>';document.getElementById('frameCap').textContent='手机 · 320 × 660 逻辑像素';}
+  else{f.innerHTML='<div class="round-wrap"><div class="round">'+s.render()+'<div class="safe'+(safe?' on':'')+'"></div></div></div>';document.getElementById('frameCap').textContent='Atom 设备 · 466 × 466 圆屏（按 75% 显示）';}
+  var laneName={A:'邀请人手机',B:'好友手机',C:'Atom 设备'}[s.lane];
+  document.getElementById('info').innerHTML='<div class="id">'+cur+' · '+laneName+' · '+s.pri+'</div><h3>'+s.title+'</h3><p class="why">'+s.why+'</p>'+
+    '<h5>界面要素</h5><ul>'+s.el.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul>'+
+    '<h5>去向</h5><div class="nexts">'+s.next.map(function(n){return '<span class="nx" onclick="go(\''+n+'\')"><b>'+n+'</b>'+S[n].title+'</span>';}).join('')+'</div>';
+  drawMap();
+}
+/* ===== spec table ===== */
+(function(){
+  var tb=document.querySelector('#tbl tbody'),h='';
+  ['A1','A2','A3','A4','A6','A7','A8','A9','B1','B2','B3','B4','B5','B5s','B6','B7','C1','C2','C3','C4','C5'].forEach(function(id){var s=S[id];
+    h+='<tr><td class="mono"><b>'+id+'</b></td><td><b>'+s.title+'</b><br><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">'+({A:'邀请人手机',B:'好友手机',C:'设备 466 圆'})[s.lane]+'</span></td><td>'+s.el.join(' · ')+'</td><td class="mono" style="font-size:11px">'+s.next.join(', ')+'</td><td>'+s.pri+'</td></tr>';});
+  tb.innerHTML=h;
+})();
+render();
+</script>
