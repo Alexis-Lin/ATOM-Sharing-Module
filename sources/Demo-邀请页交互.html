@@ -204,7 +204,7 @@
     <span class="mchip">单 CTA</span>
     <span class="mchip">CN / GLOBAL 两版</span>
     <span class="mchip">zh / en 多语言</span>
-    <span class="mchip">归因：订单数 · 简化口径</span>
+    <span class="mchip">权益：PRO 底座 + 官网券按市场</span>
   </div>
 </header>
 
@@ -241,6 +241,10 @@
           <button class="cb on" data-k="lang" data-v="zh" onclick="setLang('zh')">中文</button>
           <button class="cb" data-k="lang" data-v="en" onclick="setLang('en')">English</button>
         </div>
+        <div class="cbtns"><span class="k">市场层</span>
+          <button class="cb on" id="cpOn" onclick="setCoupon(true)">官网券在该市场可用</button>
+          <button class="cb" id="cpOff" onclick="setCoupon(false)">不可用 → 退化为 PRO 天数</button>
+        </div>
         <div class="cfg" id="cfg" style="margin-top:12px"></div>
       </div>
 
@@ -268,8 +272,8 @@
     <table>
       <thead><tr><th style="width:150px">内容</th><th style="width:90px">归谁管</th><th>中国版 CN</th><th>国际版 GLOBAL</th></tr></thead>
       <tbody>
-        <tr><td><b>好友利益</b></td><td><span class="tag t-r">版本</span></td><td>立减 ¥500</td><td>$70 off</td></tr>
-        <tr><td><b>邀请人权益</b></td><td><span class="tag t-r">版本</span></td><td>30 天会员 → 配件券 ¥199 → 限定套装</td><td>30 days Pro → $29 accessory credit → Limited bundle</td></tr>
+        <tr><td><b>好友利益</b></td><td><span class="tag t-r">版本</span> + 万能层</td><td>立减 ¥500（市场层）+ 填码得 1 个月 PRO（万能层），可叠加</td><td>$70 off + 1 month Pro with code, stackable</td></tr>
+        <tr><td><b>邀请人权益</b></td><td><span class="tag t-r">版本</span> + 万能层</td><td>每位 30 天 PRO（万能层）→ 3 位 官网券 ¥100 → 5 位 官网券 ¥300（市场层；无券市场退化为 PRO +90 天 / +1 年）</td><td>30 days Pro each → 3: $15 store credit → 5: $45 store credit (falls back to +90 days / +1 year Pro where credit is unavailable)</td></tr>
         <tr><td><b>成交场</b></td><td><span class="tag t-r">版本</span></td><td>微信小程序商城（主）· 天猫/京东（码）</td><td>bodypark.com（Shopify）· Amazon（code）</td></tr>
         <tr><td><b>分享去处</b></td><td><span class="tag t-r">版本</span></td><td>图：相册 / 微信好友 / 朋友圈 / 小红书<br>链：复制 / 微信好友 / 更多</td><td>Image: Save / Instagram / WhatsApp / Messages<br>Link: Copy / Messages / WhatsApp / More</td></tr>
         <tr><td><b>默认形式</b></td><td><span class="tag t-r">版本</span></td><td>图片排前（朋友圈/群图片传播强）</td><td>链接排前（iMessage/WhatsApp 对链接友好）</td></tr>
@@ -284,6 +288,7 @@
   <div class="cols">
     <div class="vc"><h4>版本管的内容也要多语言</h4><p>"配件券 ¥199" 是版本的东西，但它也得有英文。所以版本配置里的字符串本身带语言键：<code>tier3: {zh:'配件券 ¥199', en:'¥199 accessory credit'}</code>。<b>版本 = 一份带语言键的配置，语言 = 选哪个键。</b></p></div>
     <div class="vc"><h4>英文会比中文长 30%~50%</h4><p>Hero 两行、CTA 一行、三格数据的标签——这三处最先被撑爆。Demo 里切到 English 就能看到 hero 换行位置和标签行高的变化，设计稿要按<b>英文最长</b>那一版定容器高度。</p></div>
+    <div class="vc"><h4>权益：万能层 + 市场层</h4><p>PRO 天数是唯一能全球无条件发的东西，做底座；官网券依赖该市场官网可售且允许用券，做第 3 / 5 档的里程碑。<b>阶梯形状全球一致，每档奖品由 Profile 配</b>；券不可用的市场那一档换成 PRO 天数，页面上绝不出现兑不了的权益。右侧"市场层"开关可以看这个退化。</p></div>
     <div class="vc"><h4>加一门语言 = 加一列</h4><p>字符串表加一列，版本配置里每条带语言键的字符串加一个键，其他不动。日文、韩文、德文都是这个路径。<b>不新增页面，不新增版本。</b></p></div>
   </div>
 </section>
@@ -329,8 +334,7 @@ var REGION = {
     id:'CN', offer:'¥500', price:'¥5,499', code:'ALEX-7K2A', link:'bp.fit/i/7K2A', defaultForm:'img',
     store:{zh:'微信小程序商城', en:'WeChat mini-store'},
     alt:{zh:'天猫 / 京东', en:'Tmall / JD'},
-    tier3:{zh:'配件券 ¥199', en:'¥199 accessory credit'},
-    tier5:{zh:'限定套装', en:'Limited bundle'},
+    coupon:{t3:{zh:'官网券 ¥100', en:'¥100 store credit'}, t5:{zh:'官网券 ¥300', en:'¥300 store credit'}},
     dests:{ img:['save','wechat','moments','red'], link:['copy','wechat','more'] },
     order:['img','link'],
     step2:{zh:'落地页自动带优惠；去天猫/京东则结算填码', en:'Discount applies on the landing page; enter the code at Tmall/JD checkout'},
@@ -340,8 +344,7 @@ var REGION = {
     id:'GLOBAL', offer:'$70', price:'$799', code:'ALEX-7K2A', link:'bp.fit/i/7K2A', defaultForm:'link',
     store:{zh:'bodypark.com 官方商城', en:'bodypark.com'},
     alt:{zh:'Amazon', en:'Amazon'},
-    tier3:{zh:'配件券 $29', en:'$29 accessory credit'},
-    tier5:{zh:'限定套装', en:'Limited bundle'},
+    coupon:{t3:{zh:'官网券 $15', en:'$15 store credit'}, t5:{zh:'官网券 $45', en:'$45 store credit'}},
     dests:{ img:['save','instagram','whatsapp','messages'], link:['copy','messages','whatsapp','more'] },
     order:['link','img'],
     step2:{zh:'链接在 bodypark.com 结算时自动抵扣；Amazon 则输入优惠码', en:'The link applies the discount at bodypark.com checkout; on Amazon, enter the code'},
@@ -350,17 +353,17 @@ var REGION = {
 };
 var I18N = {
   zh: {
-    me:'我的', records:'训练记录', reports:'我的报告', member:'会员 · 剩 74 天', device:'我的设备', settings:'设置',
+    me:'我的', records:'训练记录', reports:'我的报告', member:'PRO · 剩 74 天', device:'我的设备', settings:'设置',
     tabs:['训练','课程','数据','我的'],
-    bannerT:'邀请好友买 Atom', bannerD:function(R){return '好友立减 '+R.offer+' · 你得 30 天会员';}, go:'去邀请',
+    bannerT:'邀请好友买 Atom', bannerD:function(R){return '好友立减 '+R.offer+' + 1 个月 PRO · 你得 30 天 PRO';}, go:'去邀请',
     title:'邀请好友', rules:'规则',
-    heroH:function(R){return '好友买 Atom <em>立减 '+R.offer+'</em><br>你得 <em>30 天会员</em>';},
-    heroSub:'每成功邀请 1 位，权益自动到账。邀满 3 位再送'+'{t3}'+'。',
+    heroH:function(R){return '好友买 Atom <em>立减 '+R.offer+'</em>，填码再得 <em>1 个月 PRO</em><br>你每邀 1 位得 <em>30 天 PRO</em>';},
+    heroSub:'两边的权益都可叠加，自动到账。邀满 3 位再加 {t3}。',
     myCode:'我的邀请码', ver:'版本 {id}',
     cta:'邀请好友',
-    stClick:'点击了链接', stBuy:'好友已购买', stRw:'会员天数到账',
+    stClick:'点击了链接', stBuy:'好友已购买', stRw:'PRO 天数到账',
     progNext:function(n,what){return '再邀 '+n+' 位，解锁'+what;}, progDone:'已解锁全部档位',
-    ladder:function(R,L){return ['<b>1 位</b> 30 天会员 ✓','3 位 '+R.tier3[L],'5 位 '+R.tier5[L]];},
+    ladder:function(R,L){return ['<b>每位</b> 30 天 PRO ✓','3 位 +'+prize('t3'),'5 位 +'+prize('t5')];},
     howto:'怎么做', steps:function(R,L){return [['发给朋友','图片或链接，都带你的码'],['朋友下单',R.step2[L]],['你得权益','朋友激活设备后自动到账']];},
     recent:'最近动态', feedTitleClicks:function(n){return n+' 位好友点击了链接';},
     evBuy:function(n){return n+' 已下单，等待激活';}, evAct:function(n){return n+' 激活了 Atom';}, evRefund:function(n){return n+' 退货，权益已收回';}, evBought:function(n){return n+' 购买并激活了 Atom';},
@@ -369,13 +372,14 @@ var I18N = {
     funnel:{c:'点击',o:'下单',a:'激活'}, settled:'已到账', waitAct:'待激活', guests:function(n){return '未注册访客 × '+n;}, onlyClick:'仅点击',
     srcImg:'邀请图', srcLink:'链接', srcQR:'训练分享图上的二维码', srcN:function(c,o){return c+' 点击 · '+o+' 单';},
     detailNote:'好友昵称做脱敏；只有下单后才出现在"按人"里，纯点击只计数。',
-    rewards:'我的权益', rwBigL:'会员已到账 · 当前会员到期 2026-11-16', got:'已获得', memberDays:'30 天会员', actBy:function(n){return n+' 激活';}, waitFor:function(n){return n+' 下单，等待激活';}, nextTier:'下一档',
+    rewards:'我的权益', rwBigL:'PRO 已到账 · 当前 PRO 到期 2026-11-16', got:'已获得', memberDays:'30 天 PRO', actBy:function(n){return n+' 激活';}, waitFor:function(n){return n+' 下单，等待激活';}, nextTier:'下一档',
     rulesT:'活动规则',
     rulesQA:function(R,L){return [
       ['怎么算成功邀请？','好友通过你的邀请图或链接下单 Atom，并完成设备激活。'],
+      ['好友能得到什么？','买硬件立减 '+R.offer+'；激活时填你的邀请码，再得 1 个月 PRO。两项可叠加。'],
       ['忘了带码怎么办？','好友在激活设备时可以填写你的邀请码 '+R.code+'，同样算数。'],
       ['权益什么时候到账？','好友确认收货并激活后自动到账，一般 1 天内。'],
-      ['有上限吗？','会员天数不设上限；'+R.tier3[L]+'与'+R.tier5[L]+'每人各限 1 次。'],
+      ['有上限吗？','PRO 天数不设上限；'+prize('t3')+'与'+prize('t5')+'每人各限 1 次。'+(COUPON_OK?'官网券可与促销价叠加，不与其他券码叠加，90 天内有效。':'')],
       ['退货了呢？','对应权益会被收回。'+R.rulesExtra[L]]
     ];},
     sheetT:'分享给朋友', sheetD:'两种形式都带你的邀请码，朋友怎么转发都算你的。',
@@ -383,21 +387,21 @@ var I18N = {
     dest:{save:'保存到相册',wechat:'微信好友',moments:'朋友圈',red:'小红书',copy:'复制链接',more:'更多',instagram:'Instagram',whatsapp:'WhatsApp',messages:'信息'},
     cancel:'取消',
     toastShared:function(f,d){return (f==='img'?'邀请图':'链接')+'已分享到 '+d;}, toastSaved:'邀请图已保存到相册', toastCopied:'链接已复制',
-    pushBuy:function(n){return [n+' 通过你的邀请下单了','激活设备后 30 天会员到账'];}, pushAct:function(n){return ['+30 天会员已到账',n+' 已激活 Atom · 查看权益'];}, pushNow:'现在',
+    pushBuy:function(n){return [n+' 通过你的邀请下单了','激活设备后 30 天 PRO 到账'];}, pushAct:function(n){return ['+30 天 PRO 已到账',n+' 已激活 Atom · 查看权益'];}, pushNow:'现在',
     noPending:'没有待激活的订单', noRefund:'没有可退的订单'
   },
   en: {
     me:'Me', records:'Workouts', reports:'Reports', member:'Pro · 74 days left', device:'My device', settings:'Settings',
     tabs:['Train','Classes','Data','Me'],
-    bannerT:'Invite friends to Atom', bannerD:function(R){return 'They get '+R.offer+' off · You get 30 days Pro';}, go:'Invite',
+    bannerT:'Invite friends to Atom', bannerD:function(R){return 'They get '+R.offer+' off + 1 month Pro · You get 30 days Pro';}, go:'Invite',
     title:'Invite friends', rules:'Rules',
-    heroH:function(R){return 'Friends get <em>'+R.offer+' off</em> Atom.<br>You get <em>30 days Pro</em>.';},
-    heroSub:'Rewards land automatically for every friend who joins. Invite 3 and unlock {t3}.',
+    heroH:function(R){return 'Friends get <em>'+R.offer+' off</em> Atom, plus <em>1 month Pro</em> with your code.<br>You get <em>30 days Pro</em> per friend.';},
+    heroSub:'Everything stacks and lands automatically. Invite 3 and add {t3}.',
     myCode:'My invite code', ver:'{id} edition',
     cta:'Invite friends',
     stClick:'Link clicks', stBuy:'Friends bought', stRw:'Pro days earned',
     progNext:function(n,what){return 'Invite '+n+' more to unlock '+what;}, progDone:'All tiers unlocked',
-    ladder:function(R,L){return ['<b>1</b> 30 days Pro ✓','3 '+R.tier3[L],'5 '+R.tier5[L]];},
+    ladder:function(R,L){return ['<b>each</b> 30 days Pro ✓','3 · '+prize('t3'),'5 · '+prize('t5')];},
     howto:'How it works', steps:function(R,L){return [['Send it','Image or link, both carry your code'],['They buy',R.step2[L]],['You earn','Lands when they activate their Atom']];},
     recent:'Recent', feedTitleClicks:function(n){return n+' friends clicked your link';},
     evBuy:function(n){return n+' ordered, awaiting activation';}, evAct:function(n){return n+' activated Atom';}, evRefund:function(n){return n+' returned it, reward reversed';}, evBought:function(n){return n+' bought and activated Atom';},
@@ -410,9 +414,10 @@ var I18N = {
     rulesT:'Program rules',
     rulesQA:function(R,L){return [
       ['What counts as a successful invite?','A friend orders Atom through your image or link and activates the device.'],
+      ['What do friends get?',R.offer+' off the hardware, plus 1 month Pro when they enter your code at activation. Both stack.'],
       ['What if they forgot the code?','They can enter your code '+R.code+' when activating the device. It still counts.'],
       ['When do rewards land?','After delivery is confirmed and the device is activated, usually within a day.'],
-      ['Is there a cap?','No cap on Pro days. '+R.tier3[L]+' and '+R.tier5[L]+' are once per person.'],
+      ['Is there a cap?','No cap on Pro days. '+prize('t3')+' and '+prize('t5')+' are once per person.'+(COUPON_OK?' Store credit stacks with sale prices, not with other codes, and expires in 90 days.':'')],
       ['What about returns?','The matching reward is reversed. '+R.rulesExtra[L]]
     ];},
     sheetT:'Share with a friend', sheetD:'Both carry your code, however it gets forwarded.',
@@ -424,6 +429,8 @@ var I18N = {
     noPending:'No orders awaiting activation', noRefund:'Nothing to return'
   }
 };
+var PRO_FALLBACK={t3:{zh:'PRO +90 天', en:'+90 days Pro'}, t5:{zh:'PRO +1 年', en:'+1 year Pro'}};
+var COUPON_OK=true;   // 该市场官网可售且允许用券（右侧可切）
 var DEST_ABBR={save:'⤓',wechat:'WX',moments:'○',red:'RED',copy:'⧉',more:'…',instagram:'IG',whatsapp:'WA',messages:'✉'};
 
 /* ===================== STATE ===================== */
@@ -442,7 +449,8 @@ function $(id){return document.getElementById(id);}
 function T(){return I18N[L];} function R(){return REGION[G];}
 function name(p){return L==='zh' ? p.g+'**' : p.g+' '+p.f[0]+'.';}
 function dateF(d){ if(L==='zh'||!/^\d\d-\d\d$/.test(d)) return d; var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return m[+d.slice(0,2)-1]+' '+(+d.slice(3)); }
-function tierName(n){return n===3?R().tier3[L]:R().tier5[L];}
+function prize(k){return (COUPON_OK&&R().coupon)?R().coupon[k][L]:PRO_FALLBACK[k][L];}
+function tierName(n){return prize(n===3?'t3':'t5');}
 
 /* ===================== RENDER ===================== */
 function renderHome(){
@@ -467,7 +475,7 @@ function renderReferral(){
   var next=S.buy>=5?null:(S.buy>=3?5:3), cap=next||5, pct=Math.min(100,S.buy/cap*100);
   var steps=t.steps(r,L);
   $('s-referral').innerHTML='<div class="nav"><div class="bk" onclick="go(\'home\')">‹</div>'+t.title+'<div class="sp"></div><div class="rt" onclick="go(\'rules\')">'+t.rules+'</div></div><div class="p">'+
-    '<div class="hero"><div class="dot"></div><div class="h">'+t.heroH(r)+'</div><div class="sub">'+t.heroSub.replace('{t3}',r.tier3[L])+'</div>'+
+    '<div class="hero"><div class="dot"></div><div class="h">'+t.heroH(r)+'</div><div class="sub">'+t.heroSub.replace('{t3}',prize('t3'))+'</div>'+
     '<div class="codebox"><div><div class="k">'+t.myCode.toUpperCase()+'</div><div class="v">'+r.code+'</div></div><div class="rg">'+t.ver.replace('{id}',r.id)+'<br>'+r.link+'</div></div></div>'+
     '<div class="btn" onclick="openSheet()">'+t.cta+'</div>'+
     '<div class="stats"><div class="st" onclick="go(\'detail\')"><div class="n" id="nClick">'+S.click+'</div><div class="l">'+t.stClick+'</div><div class="u">CLICKS</div></div>'+
@@ -528,7 +536,7 @@ function renderSheet(){
 }
 function renderCfg(){
   var r=R();
-  $('cfg').innerHTML='<span class="c">// 这一屏读到的配置</span>\nregion   <b>'+r.id+'</b>   lang <b>'+L+'</b>\noffer    <b>'+r.offer+'</b>   reward <b>30d</b>   tier3 <b>'+r.tier3[L]+'</b>\nstore    <b>'+r.store[L]+'</b>\norder    <b>'+r.order.join(' → ')+'</b>\ndests    img  '+r.dests.img.join(' · ')+'\n         link '+r.dests.link.join(' · ')+'\ncode     <b>'+r.code+'</b>   link '+r.link;
+  $('cfg').innerHTML='<span class="c">// 这一屏读到的配置</span>\nregion   <b>'+r.id+'</b>   lang <b>'+L+'</b>   coupon <b>'+(COUPON_OK?'on':'null')+'</b>\nfriend   <b>'+r.offer+' off</b> + <b>30d PRO</b>（填码）\ninviter  <b>30d PRO / 位</b>   t3 <b>'+prize('t3')+'</b>   t5 <b>'+prize('t5')+'</b>\nstore    <b>'+r.store[L]+'</b>\norder    <b>'+r.order.join(' → ')+'</b>\ndests    img  '+r.dests.img.join(' · ')+'\n         link '+r.dests.link.join(' · ')+'\ncode     <b>'+r.code+'</b>   link '+r.link;
 }
 function renderAll(){renderHome();renderReferral();renderDetail();renderRewards();renderRules();renderSheet();renderCfg();}
 
@@ -546,6 +554,7 @@ function bump(id){var e=$(id);if(!e)return;e.classList.add('bump');setTimeout(fu
 function log(h){var l=$('log');if(!l.dataset.x){l.innerHTML='';l.dataset.x=1;}l.innerHTML='<div>'+new Date().toTimeString().slice(0,8)+'  '+h+'</div>'+l.innerHTML;}
 function markNew(e){feed.forEach(function(x){x.isNew=false;});e.isNew=true;feed.unshift(e);}
 function setReg(g){G=g;document.querySelectorAll('[data-k="reg"]').forEach(function(b){b.classList.toggle('on',b.dataset.v===g);});renderAll();log('切换版本 → <b>'+REGION[g].id+'</b>：成交场 '+REGION[g].store[L]+'，分享去处重排，默认形式 '+REGION[g].defaultForm);}
+function setCoupon(v){COUPON_OK=v;$('cpOn').classList.toggle('on',v);$('cpOff').classList.toggle('on',!v);renderAll();log(v?'官网 coupon <b>可用</b>：第 3/5 档显示官网券':'官网 coupon <b>不可用</b>：第 3/5 档退化为 <b>PRO 天数</b>，阶梯形状不变');}
 function setLang(l){L=l;document.querySelectorAll('[data-k="lang"]').forEach(function(b){b.classList.toggle('on',b.dataset.v===l);});renderAll();log('切换语言 → <b>'+l+'</b>：只换字符串表与脱敏/日期规则，版本不变');}
 
 function evClick(){S.click++;renderAll();bump('nClick');log('落地页命中 token 7K2A → <b>点击 +1</b>');}

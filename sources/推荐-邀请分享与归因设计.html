@@ -482,29 +482,43 @@
 
 <section>
   <div class="eyebrow">07 · 奖励与风控</div>
-  <h2>双向奖励，延迟结算</h2>
+  <h2>两侧都两层，全部可叠加 <span class="tag t-det" style="vertical-align:middle">已决策 09-03</span></h2>
+  <p class="lede">每一侧都有一个<b>万能层</b>（PRO 天数，全球统一、不看在哪买）和一个<b>市场层</b>（钱，依赖官网在该市场可售且允许用券）。阶梯的<b>形状</b>是全球的，每一档的<b>奖品</b>由地区 Profile 配。</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:110px">谁</th><th style="width:150px">层</th><th>内容</th><th style="width:170px">依赖</th><th style="width:150px">无官网 / 不可用券的市场</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="2"><b>好友</b><br><span style="color:var(--muted);font-size:12px">成交钩子</span></td><td>市场层 · 硬件立减</td><td>¥500 / $70，落地页自动带，或结算填码</td><td>官网 / 平台券可用</td><td>不显示</td></tr>
+        <tr><td>万能层 · PRO 1 个月</td><td>激活时填邀请码即得，<b>与立减叠加</b></td><td>无</td><td>照常</td></tr>
+        <tr><td rowspan="2"><b>邀请人</b><br><span style="color:var(--muted);font-size:12px">分享动机</span></td><td>万能层 · PRO 30 天 / 位</td><td>每成功邀请 1 位固定给，不封顶。服务端权益延期，不走商店 offer code</td><td>无</td><td>照常</td></tr>
+        <tr><td>市场层 · 官网 coupon</td><td>挂在阶梯第 3 / 5 档（¥100 / ¥300，本币配置），<b>与 PRO 叠加</b>；与促销价叠加、不与其他券码叠加、90 天有效、只发给已激活设备的账号</td><td>官网在该市场可售 + 允许用券</td><td>该档退化为 <b>PRO +90 / +365 天</b>，阶梯形状不变</td></tr>
+      </tbody>
+    </table>
+  </div>
   <div class="cols">
     <div class="card">
-      <h4>奖励形态</h4>
+      <h4>为什么这么分</h4>
       <ul class="plain" style="margin-top:0">
-        <li><b>被邀请人</b>：硬件立减（钩子必须在成交前可见，否则不构成购买理由）。</li>
-        <li><b>邀请人</b>：优先给<b>权益</b>而非现金——会员时长、配件券、限定内容、积分。国内现金返利涉及税务与资质，能不碰就不碰。</li>
-        <li>硬件客单价高，可以做<b>阶梯</b>（邀 1 人 / 3 人 / 5 人递增），但阶梯本身要在邀请卡上说清楚，否则不产生持续动机。</li>
+        <li><b>PRO 天数是唯一能全球无条件发的东西</b>：边际成本≈0、不是现金、无税务与地区合规问题、不依赖在哪买。所以它做底座。</li>
+        <li>Coupon 有真实成本且分市场可用，所以做<b>里程碑</b>而不是按次发，敞口有上限。</li>
+        <li><b>绝不显示一个兑不了的权益</b>：某市场 coupon 为 null，页面上就不出现，换成 PRO 天数。</li>
+        <li>永远不给现金。</li>
       </ul>
     </div>
     <div class="card">
       <h4>结算时点</h4>
       <ul class="plain" style="margin-top:0">
-        <li>邀请人的奖励在<b>确认收货 + 完成激活</b>之后发放，不在下单时发——硬件退货率不为零，提前发奖是套利入口。</li>
-        <li>账本记三个状态：<code>attributed</code>（已归因）→ <code>qualified</code>（已达成条件）→ <code>settled</code>（已发奖）。三态分离，对账才做得清。</li>
+        <li>好友的 PRO 1 个月在<b>激活填码</b>那一刻发（它本身就是填码的激励）。</li>
+        <li>邀请人的奖励在好友<b>确认收货 + 完成激活</b>之后发——硬件退货率不为零，提前发奖是套利入口。</li>
+        <li>账本三态：<code>attributed</code> → <code>qualified</code> → <code>settled</code>，退货则 <code>reversed</code>。</li>
       </ul>
     </div>
     <div class="card">
       <h4>反薅</h4>
       <ul class="plain" style="margin-top:0">
         <li>同设备指纹 / 同支付账号 / 同收货地址高频 → 转人工审核。</li>
-        <li>邀请人自身需<b>已激活设备且有真实训练记录</b>才具备发奖资格——把门槛放在邀请人侧，比在被邀请人侧设卡更不伤转化。</li>
-        <li>异常速率（短时间大量归因）自动挂起而非拒绝，避免误伤真实 KOC。</li>
+        <li>邀请人自身需<b>已激活设备且有真实训练记录</b>才具备发奖资格——门槛放在邀请人侧比放在被邀请人侧更不伤转化。</li>
+        <li>异常速率自动挂起而非拒绝，避免误伤真实 KOC。PRO 天数价值低、薅的动机弱；coupon 每人每档限 1 次。</li>
       </ul>
     </div>
   </div>
